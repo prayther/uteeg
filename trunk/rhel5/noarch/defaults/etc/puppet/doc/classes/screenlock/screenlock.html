@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: screenlock::screenlock</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">screenlock::screenlock</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/screenlock/manifests/init_pp.html">
+                /tmp/puppet/modules/screenlock/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="screenlock.html">screenlock</a>
+</p>
+<p>
+Class: <a href="screenlock.html">screenlock</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+      This class installs and sets up screenlock (may require a reboot/logoff
+        to become effective)
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+      None
+</pre>
+<p>
+LinuxGuide:
+</p>
+<pre>
+      2.3.5.6.1
+        2.3.5.6.2
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+      CCE-3315-9
+        CCE-3910-7
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000004">Exec[&quot;BlankOnly, 2.3.5.6&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000002">Exec[&quot;IdleActivation, 2.3.5.6&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000005">Exec[&quot;IdleDelay, 2.3.5.6&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000003">Exec[&quot;LockEnabled, 2.3.5.6&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000001">Package[&quot;vlock&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000004" class="method-detail">
+        <a name="R000004"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;BlankOnly, 2.3.5.6&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /apps/gnome-screensaver/mode blank-only"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test `/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /apps/gnome-screensaver/mode  | grep blank-only | wc -l` -eq 0"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => root</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000002" class="method-detail">
+        <a name="R000002"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;IdleActivation, 2.3.5.6&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type bool --set /apps/gnome-screensaver/idle_activation_enabled true"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test `/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /apps/gnome-screensaver/idle_activation_enabled | grep true | wc -l` -eq 0"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => root</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GUI screen locking
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000005" class="method-detail">
+        <a name="R000005"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;IdleDelay, 2.3.5.6&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type int --set /apps/gnome-screensaver/idle_delay 15"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test `/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /apps/gnome-screensaver/idle_delay  | grep 15 | wc -l` -eq 0"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => root</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000003" class="method-detail">
+        <a name="R000003"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;LockEnabled, 2.3.5.6&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type bool --set /apps/gnome-screensaver/lock_enabled true"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test `/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /apps/gnome-screensaver/lock_enabled  | grep true | wc -l` -eq 0"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => root</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000001" class="method-detail">
+        <a name="R000001"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Package[&quot;vlock&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => latest</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+install vlock for console only
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

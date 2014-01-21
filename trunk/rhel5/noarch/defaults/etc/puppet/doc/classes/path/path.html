@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: path::path</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">path::path</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/path/manifests/init_pp.html">
+                /tmp/puppet/modules/path/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Class: <a href="path.html">path</a>
+</p>
+<p>
+Module: <a href="path.html">path</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+        This class attempts to check for dots or empty elements in roots path.
+        It does a fairly decent job, but is not 100% error proof.  Some
+        elements are added to the path after login from other services that
+        the script cannot check.  This will catch things added in .bashrc and
+        .bash_profile.
+</pre>
+<p>
+Guide Reference:
+</p>
+<pre>
+        2.3.4.1
+</pre>
+<p>
+CCE Reference:
+</p>
+<pre>
+        CCE-3301-9
+</pre>
+<p>
+TODO:
+</p>
+<pre>
+        On my test box, echo $PATH returns an extra item '/usr/X11R6/bin':
+        Find out when this item is added and see if puppet can coax this
+        script into running after that and similar scripts have been added.
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000194">Exec[&quot;/etc/puppet/scripts/checkRootPath.bash&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000193">File[&quot;/etc/puppet/scripts/checkRootPath.bash&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000194" class="method-detail">
+        <a name="R000194"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;/etc/puppet/scripts/checkRootPath.bash&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/bin/su -lc /etc/puppet/scripts/checkRootPath.bash"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">logoutput => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">require => File["/etc/puppet/scripts/checkRootPath.bash"]</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000193" class="method-detail">
+        <a name="R000193"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/puppet/scripts/checkRootPath.bash&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 755</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">content => template("path/checkRootPath.bash.erb")</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.3.4.1 This template greps for a dot (.) or empty set (::) in
+roots $PATH
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

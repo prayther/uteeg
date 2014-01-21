@@ -1,0 +1,9 @@
+# Define a service to check the load on the local machine. 
+
+define service{
+        use                             generic-service         ; Name of service template to use
+        host_name                       <%= hostname %>
+        service_description             Load
+        check_command                   check_nrpe!check_load
+	action_url                      /pnp4nagios/index.php/graph?host=$HOSTNAME$&srv=$SERVICEDESC$
+        }

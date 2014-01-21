@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Virtual-Machines>
+  <Virtual-Machine>
+    <Name>$projectName-$serviceName-$roleName-$env-$hostName</Name>
+    <Datacenter>GES</Datacenter>
+    <Datastore>na_rhel6</Datastore>
+    <Disksize>230000000</Disksize>
+    <Guest-Id>rhel5_64Guest</Guest-Id>
+    <Host>150.125.75.12</Host>
+    <Memory>65536</Memory>
+    <Nic-Network>DMZ336</Nic-Network>
+    <Nic-Poweron>0</Nic-Poweron>
+    <Number-of-Processor>1</Number-of-Processor>
+  </Virtual-Machine>
+</Virtual-Machines>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Reconfigure-Virtual-Machine">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element ref="Host"/>
+        <xs:element minOccurs="0" ref="Add-Device"/>
+        <xs:element minOccurs="0" ref="Remove-Device"/>
+        <xs:element minOccurs="0" ref="Connect-Device"/>
+        <xs:element minOccurs="0" ref="Disconnect-Device"/>
+        <xs:element minOccurs="0" ref="PowerOn-Flag"/>
+        <xs:element minOccurs="0" ref="Shares"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Host" type="xs:NMTOKEN"/>
+  <xs:element name="Add-Device">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Network-Adapter"/>
+        <xs:element minOccurs="0" ref="Floppy-Drive"/>
+        <xs:element minOccurs="0" ref="CD-DVD-Drive"/>
+        <xs:element minOccurs="0" ref="Hard-Disk"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Remove-Device">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Network-Adapter"/>
+        <xs:element minOccurs="0" ref="Floppy-Drive"/>
+        <xs:element minOccurs="0" ref="CD-DVD-Drive"/>
+        <xs:element minOccurs="0" ref="Hard-Disk"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Connect-Device">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Network-Adapter"/>
+        <xs:element minOccurs="0" ref="Floppy-Drive"/>
+        <xs:element minOccurs="0" ref="CD-DVD-Drive"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Disconnect-Device">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Network-Adapter"/>
+        <xs:element minOccurs="0" ref="Floppy-Drive"/>
+        <xs:element minOccurs="0" ref="CD-DVD-Drive"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PowerOn-Flag">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Network-Adapter"/>
+        <xs:element minOccurs="0" ref="Floppy-Drive"/>
+        <xs:element minOccurs="0" ref="CD-DVD-Drive"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Shares">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="CPU"/>
+        <xs:element minOccurs="0" ref="Memory"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CPU" type="xs:string"/>
+  <xs:element name="Memory" type="xs:string"/>
+  <xs:element name="Name" type="xs:string"/>
+  <xs:element name="Network-Adapter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element minOccurs="0" ref="PowerOn"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Floppy-Drive">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element minOccurs="0" ref="PowerOn"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CD-DVD-Drive">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element minOccurs="0" ref="PowerOn"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Hard-Disk">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="Size"/>
+          <xs:element ref="Persistent-Mode"/>
+        </xs:sequence>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Size" type="xs:integer"/>
+  <xs:element name="Persistent-Mode" type="xs:string"/>
+  <xs:element name="PowerOn" type="xs:string"/>
+</xs:schema>

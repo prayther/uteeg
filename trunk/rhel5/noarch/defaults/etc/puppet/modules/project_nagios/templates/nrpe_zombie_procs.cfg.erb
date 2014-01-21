@@ -1,0 +1,10 @@
+# Define a service to check the number of currently running procs
+# on the local machine.  Warning if > 250 processes, critical if
+# > 400 users.
+
+define service{
+        use                             generic-service         ; Name of service template to use
+        host_name                       <%= hostname %>
+        service_description             Zombie Procs
+        check_command                   check_nrpe!check_zombie_procs
+        }

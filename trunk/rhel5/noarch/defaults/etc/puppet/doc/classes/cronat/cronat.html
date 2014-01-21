@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: cronat::cronat</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">cronat::cronat</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/cronat/manifests/init_pp.html">
+                /tmp/puppet/modules/cronat/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="cronat.html">cronat</a>
+</p>
+<p>
+Class: <a href="cronat.html">cronat</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+      This class configures the cronat process
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+      None
+</pre>
+<p>
+LinuxGuide:
+</p>
+<pre>
+      3.4
+      3.4.2
+      3.4.3
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+      CCE-4324-0
+        CCE-4304-2, CCE-3833-1, CCE-3604-6, CCE-3626-9, CCE-4022-0
+        CCE-3851-3, CCE-3481-9, CCE-4322-4, CCE-4203-6, CCE-4379-4
+        CCE-4054-3, CCE-4441-2, CCE-4250-7, CCE-4331-5, CCE-4106-1
+        CCE-4450-3, CCE-4388-5, CCE-3983-4, CCE-4380-2, CCE-4212-7,
+        CCE-4251-5
+</pre>
+<p>
+TODO:
+</p>
+<pre>
+      Use run stage to make sure this is one of the last things run.
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000061">File[&quot;/etc/anacrontab&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000066">File[&quot;/etc/cron.d&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000063">File[&quot;/etc/cron.daily&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000062">File[&quot;/etc/cron.hourly&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000065">File[&quot;/etc/cron.monthly&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000064">File[&quot;/etc/cron.weekly&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000060">File[&quot;/etc/crontab&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000067">File[&quot;/var/spool/cron&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000068">Service[&quot;atd&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000059">Service[&quot;crond&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000061" class="method-detail">
+        <a name="R000061"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/anacrontab&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000066" class="method-detail">
+        <a name="R000066"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/cron.d&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000063" class="method-detail">
+        <a name="R000063"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/cron.daily&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000062" class="method-detail">
+        <a name="R000062"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/cron.hourly&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000065" class="method-detail">
+        <a name="R000065"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/cron.monthly&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000064" class="method-detail">
+        <a name="R000064"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/cron.weekly&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000060" class="method-detail">
+        <a name="R000060"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/crontab&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 3.4.2 CCE-4304-2, CCE-3833-1, CCE-3604-6, CCE-3626-9,
+CCE-4022-0 CCE-3851-3, CCE-3481-9, CCE-4322-4, CCE-4203-6, CCE-4379-4
+CCE-4054-3, CCE-4441-2, CCE-4250-7, CCE-4331-5, CCE-4106-1 CCE-4450-3,
+CCE-4388-5, CCE-3983-4, CCE-4380-2, CCE-4212-7, CCE-4251-5 restrict
+permissions on cron files
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000067" class="method-detail">
+        <a name="R000067"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/spool/cron&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000068" class="method-detail">
+        <a name="R000068"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Service[&quot;atd&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">enable => false</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">hasstatus => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">hasrestart => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => stopped</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 3.4.3 disable at
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000059" class="method-detail">
+        <a name="R000059"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Service[&quot;crond&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => running</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">hasstatus => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">hasrestart => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">enable => true</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 3.4 CCE-4324-0 Configure cron and at daemons
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

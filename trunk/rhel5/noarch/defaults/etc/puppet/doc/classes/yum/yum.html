@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: yum::yum</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">yum::yum</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/yum/manifests/init_pp.html">
+                /tmp/puppet/modules/yum/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="yum.html">yum</a>
+</p>
+<p>
+Class: <a href="yum.html">yum</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+        This class ensures gpgcheck is set to 1 for all repositories and
+        verifies permissions on repo files.  It also disables yum-updatesd and
+        enables a cron job to check for yum updates.
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+        None
+</pre>
+<p>
+LinuxGuide:
+</p>
+<pre>
+      2.1.2.3
+      2.1.2.3.2
+      2.1.2.3.3
+      2.1.2.3.5
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+      CCE-4218-4
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000109">Augeas::Basic-change[&quot;Yum.conf gpgcheck, 2.1.2.3.3&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000110">Exec[&quot;/etc/yum.repos.d-gpgcheck&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000108">Exec[&quot;yum.repos.d-mode&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000107">File[&quot;/etc/cron.daily/yum.cron&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000106">File[&quot;/etc/yum.repos.d&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000111">Service[&quot;yum-updatesd&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000109" class="method-detail">
+        <a name="R000109"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Augeas::Basic-change[&quot;Yum.conf gpgcheck, 2.1.2.3.3&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">file => "/etc/yum.conf"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">lens => "yum.lns"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">changes => "set main/gpgcheck 1"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.1.2.3.3 Ensure package signature checking is globally
+activated
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000110" class="method-detail">
+        <a name="R000110"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;/etc/yum.repos.d-gpgcheck&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "sed -i 's/gpgcheck=0/gpgcheck=1/g' /etc/yum.repos.d/*"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test `grep gpgcheck=0 *.repo | wc -l` -eq 0"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.1.2.3.5 Ensure package signature checking is not disabled
+for any repo
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000108" class="method-detail">
+        <a name="R000108"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;yum.repos.d-mode&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "chmod 0755 /etc/yum.repos.d"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">require => File["/etc/yum.repos.d"]</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000107" class="method-detail">
+        <a name="R000107"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/cron.daily/yum.cron&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 700</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">replace => false</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">source => "puppet:///modules/yum/yum.cron"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000106" class="method-detail">
+        <a name="R000106"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/yum.repos.d&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => "root"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => "root"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 644</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">recurse => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ignore => "/etc/yum.repos.d"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.1.2.3 Configure updates with <a href="yum.html">yum</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000111" class="method-detail">
+        <a name="R000111"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Service[&quot;yum-updatesd&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => false</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">enable => false</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">require => File["/etc/cron.daily/yum.cron"]</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.1.2.3.2 Disable the <a href="yum.html">yum</a>-updatesd
+service and replace it with the cron job
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

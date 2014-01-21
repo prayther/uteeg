@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: pam::pam</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">pam::pam</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/pam/manifests/init_pp.html">
+                /tmp/puppet/modules/pam/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="pam.html">pam</a>
+</p>
+<p>
+Class: <a href="pam.html">pam</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+      This class Hardens the pam area
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+      pam::changeParm
+        pam::addNumTriesLock
+</pre>
+<p>
+LinuxGuide:
+</p>
+<pre>
+      2.3.3.1.1
+      2.3.3.2
+        2.3.3.6
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+      CCE-3762-2
+        CCE-3410-8
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000090">Augeas[&quot;remove-lines&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000091">Pam::Addnumtrieslock[&quot;login&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000085">Pam::Changeparm[&quot;dcredit&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000088">Pam::Changeparm[&quot;lcredit&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000084">Pam::Changeparm[&quot;minlen&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000087">Pam::Changeparm[&quot;ocredit&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000083">Pam::Changeparm[&quot;required&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000089">Pam::Changeparm[&quot;required-2.3.3.2&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000092">Pam::Changeparm[&quot;reusepass&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000086">Pam::Changeparm[&quot;ucredit&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000090" class="method-detail">
+        <a name="R000090"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Augeas[&quot;remove-lines&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">context => "/files/etc/pam.d"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">changes => ["remove system-auth/*[type='auth'][control='requisite'][module ='pam_succeed_if.so']", "remove system-auth/*[type='auth'][control='required'][module ='pam_deny.so']"]</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000091" class="method-detail">
+        <a name="R000091"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Addnumtrieslock[&quot;login&quot;]</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+add whatever files you want to enable locking out for.
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000085" class="method-detail">
+        <a name="R000085"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;dcredit&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "dcredit"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => "-1"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "argument"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_cracklib.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "password"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000088" class="method-detail">
+        <a name="R000088"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;lcredit&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "lcredit"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => "0"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "argument"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_cracklib.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "password"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000084" class="method-detail">
+        <a name="R000084"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;minlen&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "minlen"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => "14"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "argument"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_cracklib.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "password"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000087" class="method-detail">
+        <a name="R000087"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;ocredit&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "ocredit"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => "-1"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "argument"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_cracklib.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "password"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000083" class="method-detail">
+        <a name="R000083"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;required&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "required"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => ""</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "control"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_cracklib.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "password"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.3.3.1.1 CCE-3762-2 Protect accounts via pamcracklib
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000089" class="method-detail">
+        <a name="R000089"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;required-2.3.3.2&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "required"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => ""</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "control"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_unix.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "auth"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.3.3.2 CCE-3410-8 Set Lockouts for Failed Password Attempts
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000092" class="method-detail">
+        <a name="R000092"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;reusepass&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "remember"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => "5"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "argument"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_unix.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "password"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.3.3.6 Limit Password Reuse
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000086" class="method-detail">
+        <a name="R000086"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Pam::Changeparm[&quot;ucredit&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">parm => "ucredit"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">value => "-1"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">path => "argument"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "pam_cracklib.so"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">type => "password"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">filename => "system-auth"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

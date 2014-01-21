@@ -1,0 +1,98 @@
+<?php session_start() ?>
+<?php  
+//init variables  
+$cf = array();  
+$sr = false;  
+  
+if(isset($_SESSION['cf_returndata'])){  
+    $cf = $_SESSION['cf_returndata'];  
+    $sr = true;  
+}  
+?>
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title></title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="js/libs/modernizr-2.0.6.min.js"></script>
+</head>
+<body>
+
+<div id="contact-form" class="clearfix">  
+    <h1>Get In Touch!</h1>  
+<!--    <h2>Fill out our super swanky HTML5 contact form below to get in touch with us! Please provide as much information as possible for us to help you with your enquiry :)</h2> --> 
+
+<p id="success" class="<?php echo ($sr && $cf['form_ok']) ? 'visible' : ''; ?>">Thanks for your message! We will get back to you ASAP!</p>  
+
+<ul id="errors" class="<?php echo ($sr && !$cf['form_ok']) ? 'visible' : ''; ?>">  
+    <li id="info">There were some problems with your form submission:</li>  
+    <?php  
+    if(isset($cf['errors']) && count($cf['errors']) > 0) :  
+        foreach($cf['errors'] as $error) :  
+    ?>  
+    <li><?php echo $error ?></li>  
+    <?php  
+        endforeach;  
+    endif;  
+    ?>  
+</ul> 
+    <form method="post" action="process.php">  
+        <label for="name">Name: <span class="required">*</span></label>  
+        <input type="text" id="name" name="name" value="" placeholder="John Doe" required="required" autofocus="autofocus" />  
+  
+        <label for="email">Email Address: <span class="required">*</span></label>  
+        <input type="email" id="email" name="email" value="" placeholder="johndoe@example.com" required="required" />  
+  
+        <label for="telephone">Telephone: </label>  
+        <input type="tel" id="telephone" name="telephone" value="" />  
+  
+        <label for="enquiry">Enquiry: </label>  
+        <select id="enquiry" name="enquiry">  
+            <option value="general">General</option>  
+            <option value="sales">Sales</option>  
+            <option value="support">Support</option>  
+        </select>  
+  
+        <label for="message">Message: <span class="required">*</span></label>  
+        <textarea id="message" name="message" placeholder="Your message must be greater than 20 charcters" required="required" data-minlength="20"></textarea>  
+  
+        <span id="loading"></span>  
+        <input type="submit" value="Holla!" id="submit-button" />  
+        <p id="req-field-desc"><span class="required">*</span> indicates a required field</p>  
+    </form>  
+</div>  
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+
+<!-- scripts concatenated and minified via ant build script-->
+<script src="js/plugins.js"></script>
+<script src="js/script.js"></script>
+<!-- end scripts-->
+
+<script>
+	var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']]; // Change UA-XXXXX-X to be your site's ID
+	(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+	g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+	s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+<!--[if lt IE 7 ]>
+	<script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+	<script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+<![endif]-->
+
+</body>
+</html>

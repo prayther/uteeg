@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+ <Reconfigure-Virtual-Machine>
+  <Name>VMName</Name>
+  <Host>HostName</Host>
+  <Add-Device>
+   <Network-Adapter>
+    <Name>VM Network</Name>
+   </Network-Adapter>
+   <Floppy-Drive>
+    <Name>Floppy1</Name>
+   </Floppy-Drive>
+   <CD-DVD-Drive>
+    <Name>Drive22</Name>
+    <Media-Type>
+     <ISO-Image>
+      <Datastore>storage1</Datastore>
+      <FileName>iso2</FileName>
+     </ISO-Image>
+     <Physical-Drive>
+      <DeviceName>/dev/cdrom</DeviceName>
+     </Physical-Drive>
+    </Media-Type>
+   </CD-DVD-Drive>
+   <Hard-Disk>
+    <Name>Hard Disk12</Name>
+    <Size>10</Size>
+    <Persistent-Mode>persistent</Persistent-Mode>
+   </Hard-Disk>
+  </Add-Device>
+  <Remove-Device>
+   <Network-Adapter>
+    <Name>VM Network</Name>
+   </Network-Adapter>
+   <Floppy-Drive>
+    <Name>F1</Name>
+   </Floppy-Drive>
+   <CD-DVD-Drive>
+    <Name>CD2</Name>
+   </CD-DVD-Drive>
+   <Hard-Disk>
+    <Name>Disk22</Name>
+   </Hard-Disk>
+  </Remove-Device>
+  <Connect-Device>
+   <Network-Adapter>
+    <Name>VM Network</Name>
+   </Network-Adapter>
+   <Floppy-Drive>
+    <Name>Floppy</Name>
+   </Floppy-Drive>
+   <CD-DVD-Drive>
+    <Name>CD2</Name>
+   </CD-DVD-Drive>
+  </Connect-Device>
+  <Disconnect-Device>
+   <Network-Adapter>
+    <Name>VM Network</Name>
+   </Network-Adapter>
+   <Floppy-Drive>
+    <Name>Floppy</Name>
+   </Floppy-Drive>
+   <CD-DVD-Drive>
+    <Name>CD2</Name>
+   </CD-DVD-Drive>
+  </Disconnect-Device>
+  <PowerOn-Flag>
+   <Network-Adapter>
+    <Name>VM Network</Name>
+    <PowerOn>True</PowerOn>
+   </Network-Adapter>
+   <Floppy-Drive>
+    <Name>Floppy1</Name>
+    <PowerOn>False</PowerOn>
+   </Floppy-Drive>
+   <CD-DVD-Drive>
+    <Name>CD 1</Name>
+    <PowerOn>False</PowerOn>
+   </CD-DVD-Drive>
+  </PowerOn-Flag>
+  <Shares>
+   <CPU></CPU>
+   <Memory></Memory>
+  </Shares>
+ </Reconfigure-Virtual-Machine>

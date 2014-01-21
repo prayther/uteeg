@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Virtual-Machines>
+  <Virtual-Machine>
+    <Name>nces-dada</Name>
+    <Host>c2ebl010.c2e.lab</Host>
+    <Datacenter>NCES</Datacenter>
+    <Guest-Id>rhel5_64Guest</Guest-Id>
+    <Datastore>nces2</Datastore>
+    <Disksize>20000</Disksize>
+    <Memory>1024</Memory>
+    <Number-of-Processor>1</Number-of-Processor>
+    <Nic-Network>Trusted VM Network</Nic-Network>
+    <Nic-Poweron>0</Nic-Poweron>
+  </Virtual-Machine>
+  <Virtual-Machine>
+    <Name>nces-meat</Name>
+    <Host>c2ebl010.c2e.lab</Host>
+    <Datacenter>NCES</Datacenter>
+    <Guest-Id>rhel5_64Guest</Guest-Id>
+    <Datastore>nces4</Datastore>
+    <Disksize>20000</Disksize>
+    <Memory>1024</Memory>
+    <Number-of-Processor>1</Number-of-Processor>
+    <Nic-Network>Trusted VM Network</Nic-Network>
+    <Nic-Poweron>0</Nic-Poweron>
+  </Virtual-Machine>
+</Virtual-Machines>

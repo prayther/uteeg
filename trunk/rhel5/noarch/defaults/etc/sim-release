@@ -1,0 +1,59 @@
+# $Id: sim-release 1154 2012-12-14 17:48:55Z sysutil $
+#
+#/etc/sim-release
+#
+SIM (Standardized Installation & Management)
+version 1.1.9
+	-stale vince acct
+	-new ntp servers/step tickers
+	-added oscap capability
+	-new version of hbss
+	-hbss integrated virus scan
+	
+	-new login banner
+	-moved uvscan into defaults, for now.
+	-uvscan.sh needed updating
+	-hbss started leaving behind "zombie" processes, going to restart cma each nite #testing shows this clears up the Z's
+	-add a line to nrpe_cpu.conf to change check_interval 15
+	-nrpe.conf:debug=1, allowed_hosts=127.0.0.1,150.125.75.214,198.253.24.186, dont_blame_nrpe=0
+	-sleep `echo $$%900 | bc`  # added to the top of several cron.daily  scripts
+	-further /var/log cleanup
+	-starting to make small adjustments to nagios, to make more meaningful notifications
+	-replacing Cedrick public key, adding mcguiren
+	-updated hosts.master file
+	-chkconfig nrpe on
+	-find /var/log/ -type f -empty -exec rm {} \;
+	-modify a "default" logrotate.conf, changing only, weekly to daily
+	-move root-grub-passwd.sh to daily... if a passwd is changed for convenience, it does not "fix" itself for up to a month
+version 1.1.8
+	-this version is back porting current development on the defaults 2.0 to provided nagios/nrpe checks
+version 1.1.7 2012-10-16 12:35:15Z (defaults-.0.220-1)
+	-this version was just for managing local accts.
+version 1.1.6 2012-08-22 14:46:57Z (defaults-.0.200-1.noarch.rpm)
+	-changing back to default, removing compression in logrotate.  appears to cause a cascading log file naming issue.
+	-disabled the current nrpe client config as Darryl develops nagios solution
+	-cleanup of hosts.master file, removing all references to C2E
+	-updated POC's in hosts.master file
+	-added OS ABAC to hosts.master / wordpress.sh
+	-all /var/log/*, once a week, or daily if over 5mb, keep five and compress
+	-added and removed local linux accounts, based on Marco's input
+	-deployed a new sosreport.sh, that is used by wordpress.sh to publish the CM page on SIM Portal
+	-cleaned up the fixme.sh script, that was deployed to zero disc space for thin provisioning, when we were running out of disc space
+	-deployed a root-grub-passwd.sh script that sets the root and grub passwd monthly
+version 1.1.2
+	-changed puppet content to run daily, change from hourly
+	-adding/removing local user accts
+	-updated sosreport.sh to send a copy to rhn.chs.spawar.navy.mil
+	-enabled ping
+	-this version has been setup for "retrofit" of boxes that have not
+	 run defaults.rpm before.  to not affect current services, before we 
+	 have a "role" based rpm to address individual server/services needs,
+	 the modification or enabling of /etc/hosts, iptables and selinux
+	 have been disabled.  Based on testing and rolling out to select machines
+	 (dir-04 and db-04) we can succesfully role this package without affecting current services.	
+version 1.1.1
+	fixed "yum update" from running nightly
+	added complimentary key in ssh
+	combined puppet modules to address iptables issue
+version 1.1
+	is a major puppet content change from tresys CLIP to USGCB rhel5 desktop (so it works well on server but you will see some desktop specific items, like X) 

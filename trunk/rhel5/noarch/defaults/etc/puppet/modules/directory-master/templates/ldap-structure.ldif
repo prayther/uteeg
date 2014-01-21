@@ -1,0 +1,247 @@
+DN: o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+cn: root
+o: U.S. Government
+sn: root
+
+DN: cn=Directory Administrators,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: Directory Administrators
+
+DN: ou=Groups,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: Groups
+
+DN: ou=People,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: People
+
+DN: ou=Special Users,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+description: Special Administrative Accounts
+ou: Special Users
+
+DN: ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: DoD
+
+DN: cn=Directory Administrators,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: Directory Administrators
+
+DN: ou=Groups,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: Groups
+
+DN: cn=Administrators,ou=Groups,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: Administrators
+uniqueMember: cn=weblogic,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=weblogic2,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: PKI
+
+DN: ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: DIA
+ou: USN
+
+DN: ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: CONTRACTOR
+ou: DISA
+
+DN: ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: CONTRACTOR
+
+DN: ou=DIA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: DIA
+
+DN: ou=OTHER,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: OTHER
+
+DN: ou=USA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: USA
+
+DN: ou=USAF,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: USAF
+
+DDN: ou=DoD,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: USN
+ou: DoD
+
+DN: ou=USCG,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: USCG
+
+DN: ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: DISA
+
+DN: ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: NCES
+
+DN: ou=policies,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: policies
+
+DN: cn=default,ou=policies,o=U.S. Government,c=US
+objectClass: top
+objectClass: device
+objectClass: pwdPolicy
+cn: default
+pwdAllowUserChange: TRUE
+pwdAttribute: userPassword
+pwdCheckQuality: 1
+pwdExpireWarning: 864000
+pwdFailureCountInterval: 300
+pwdGraceAuthNLimit: 1
+pwdInHistory: 0
+pwdLockout: TRUE
+pwdLockoutDuration: 900
+pwdMaxAge: 5184000
+pwdMaxFailure: 0
+pwdMinLength: 8
+pwdMustChange: FALSE
+pwdSafeModify: FALSE
+
+DN: cn=system,ou=policies,o=U.S. Government,c=US
+objectClass: top
+objectClass: device
+objectClass: pwdPolicy
+cn: system
+pwdAllowUserChange: TRUE
+pwdAttribute: userPassword
+pwdCheckQuality: 1
+pwdExpireWarning: 864000
+pwdFailureCountInterval: 300
+pwdGraceAuthNLimit: 1
+pwdInHistory: 0
+pwdLockout: TRUE
+pwdLockoutDuration: 900
+pwdMaxAge: 31536000
+pwdMaxFailure: 0
+pwdMinLength: 8
+pwdMustChange: FALSE
+pwdSafeModify: FALSE
+
+DN: ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: ECA
+
+DN: ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: ORC
+
+DN: ou=Solers,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: SAIC
+ou: Solers
+
+DN: ou=THE MITRE CORPORATION,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: SAIC
+ou: Solers
+ou: THE MITRE CORPORATION
+
+DN: ou=MITRE,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: SAIC
+ou: Solers
+ou: THE MITRE CORPORATION
+ou: MITRE
+
+DN: ou=Gannett Fleming,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: SAIC
+ou: Solers
+ou: THE MITRE CORPORATION
+ou: MITRE
+ou: Gannett Fleming
+
+DN: ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: VeriSign, Inc.
+ou: 21st Century Systems Inc\.
+
+DN: ou=Solers,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: Lockheed Martin Corp.
+ou: Solers
+
+DN: ou=Solers\, inc,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: Solers, inc
+
+DN: ou=Johns Hopkins University\, inc,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: Johns Hopkins University, inc
+
+DN: ou=Quantum Intelligence\, Inc.,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: Gestalt, LLC
+ou: Quantum Intelligence, Inc.
+
+DN: ou=Technology Solutions,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+description: "Technology Solutions, Inc. multi-service systems integration and consulting firm."
+ou: Technology Solutions
+
+DN: ou=The Aerospace Corporation,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+description: "The Aerospace Corporation. multi-service systems integration and consulting firm."
+ou: The Aerospace Corporation
+
+DN: ou=FGM\, Inc.,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: FGM, Inc.
+
+DN: ou=Geocent\, LLC,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: organizationalUnit
+ou: Geocent, LLC

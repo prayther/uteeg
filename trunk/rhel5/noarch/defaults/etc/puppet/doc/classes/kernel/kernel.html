@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: kernel::kernel</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">kernel::kernel</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/kernel/manifests/init_pp.html">
+                /tmp/puppet/modules/kernel/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="kernel.html">kernel</a>
+</p>
+<p>
+Class: <a href="kernel.html">kernel</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+      This class sets various Kernel paramaters and removes wirless drivers.
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+      None
+</pre>
+<p>
+LinuxGuide:
+</p>
+<pre>
+      2.5.1.1
+      2.5.1.2
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+        CCE-4151-7, CCE-3561-8, CCE-4155-8, CCE-3339-9, CCE-4320-8, CCE-3644-2
+        CCE-4217-6, CCE-3840-6, CCE-3472-8, CCE-4186-3, CCE-4080-8, CCE-4091-5
+        CCE-4236-6, CCE-4133-5, CCE-4265-5, CCE-4170-7
+</pre>
+<p>
+###############################################################################
+</p>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000021">Augeas::Basic-change[&quot;Network Kern Parms, 2.5.1&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000023">Augeas::Basic-change[&quot;disable Zeroconf, 3.3.9.3&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000022">Exec[&quot;Rem wireless driver, 2.5.2.2.3&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000021" class="method-detail">
+        <a name="R000021"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Augeas::Basic-change[&quot;Network Kern Parms, 2.5.1&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">file => "/etc/sysctl.conf"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">lens => "sysctl.lns"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">changes => ["set net.ipv4.ip_forward 0", "set net.ipv4.conf.all.send_redirects 0", "set net.ipv4.conf.default.send_redirects 0", "set net.ipv4.conf.all.accept_source_route 0", "set net.ipv4.conf.all.accept_redirects 0", "set net.ipv4.conf.all.secure_redirects 0", "set net.ipv4.conf.all.log_martians 1", "set net.ipv4.conf.default.accept_source_route 0", "set net.ipv4.conf.default.accept_redirects 0", "set net.ipv4.conf.default.secure_redirects 0", "set net.ipv4.icmp_echo_ignore_broadcasts 1", "set net.ipv4.icmp_ignore_bogus_error_messages 1", "set net.ipv4.tcp_syncookies 1", "set net.ipv4.conf.all.rp_filter 1", "set net.ipv4.conf.default.rp_filter 1"]</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000023" class="method-detail">
+        <a name="R000023"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Augeas::Basic-change[&quot;disable Zeroconf, 3.3.9.3&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">file => "/etc/sysconfig/network"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">lens => "shellvars.lns"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">changes => "set NONZEROCONF yes"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 3.3.9.3 Disable zeroconf
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000022" class="method-detail">
+        <a name="R000022"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;Rem wireless driver, 2.5.2.2.3&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/bin/rm -r /lib/modules/*/kernel/drivers/net/wireless"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test -e /lib/modules/*/kernel/drivers/net/wireless"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => "root"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.5.2.2.3 CCE-4170-7 Remove wireless drivers
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

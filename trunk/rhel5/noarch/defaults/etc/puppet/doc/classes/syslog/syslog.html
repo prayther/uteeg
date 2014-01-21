@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: syslog::syslog</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">syslog::syslog</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/syslog/manifests/init_pp.html">
+                /tmp/puppet/modules/syslog/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Class: <a href="syslog.html">syslog</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+        This class configures syslogd from files included in the templates
+        directory and ensures appropriate log files are present.
+</pre>
+<p>
+Guide Sections:
+</p>
+<pre>
+        2.6.1
+        2.6.1.2
+        2.6.1.3
+        2.6.1.4
+</pre>
+<p>
+CCE Reference:
+</p>
+<pre>
+        CCE-3382-9
+        CCE-3679-8
+        CCE-3701-0
+        CCE-4233-3
+        CCE-4260-6
+        CCE-4366-1
+</pre>
+<p>
+File:
+</p>
+<pre>
+        /etc/puppet/modules/syslog/manifests/init.pp
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000164">File[&quot;/etc/sysconfig/syslog&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000163">File[&quot;/etc/syslog.conf&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000172">File[&quot;/var/log/cron&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000167">File[&quot;/var/log/daemon.log&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000166">File[&quot;/var/log/kern.log&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000171">File[&quot;/var/log/maillog&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000165">File[&quot;/var/log/messages&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000170">File[&quot;/var/log/secure&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000168">File[&quot;/var/log/syslog&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000169">File[&quot;/var/log/unused.log&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000162">Package[&quot;syslogd&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000173">Service[&quot;syslog&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000164" class="method-detail">
+        <a name="R000164"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/sysconfig/syslog&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 644</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">content => template("syslog/syslog.erb")</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">require => Package["syslogd"]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">notify => Service["syslog"]</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+CCE-3382-9
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000163" class="method-detail">
+        <a name="R000163"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/syslog.conf&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 644</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">content => template("syslog/syslog.conf.erb")</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">require => Package["syslogd"]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">notify => Service["syslog"]</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.6.1 CCE-4260-6 Configure <a href="syslog.html">syslog</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000172" class="method-detail">
+        <a name="R000172"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/cron&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000167" class="method-detail">
+        <a name="R000167"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/daemon.log&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000166" class="method-detail">
+        <a name="R000166"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/kern.log&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000171" class="method-detail">
+        <a name="R000171"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/maillog&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000165" class="method-detail">
+        <a name="R000165"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/messages&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000170" class="method-detail">
+        <a name="R000170"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/secure&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000168" class="method-detail">
+        <a name="R000168"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/syslog&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000169" class="method-detail">
+        <a name="R000169"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/var/log/unused.log&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000162" class="method-detail">
+        <a name="R000162"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Package[&quot;syslogd&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => latest</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">name => $operatingsystem ? { default, "sysklogd" }</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000173" class="method-detail">
+        <a name="R000173"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Service[&quot;syslog&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">enable => true</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">require => Package["syslogd"]</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.6.1 CCE-3679-8
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

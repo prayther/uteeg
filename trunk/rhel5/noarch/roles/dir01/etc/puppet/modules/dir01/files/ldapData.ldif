@@ -1,0 +1,2256 @@
+DN: cn=esm-administrators,ou=Groups,o=U.S. Government,c=US
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: esm-administrators
+description: ESM 7.0 Administrator Group
+uniqueMember: cn=PRICE.KEVIN.LEE.1364822185
+uniqueMember: cn=KEYS.SABRINA.LATOYA.1016502452
+uniqueMember: cn=SHAW.ANDRELL.A.1388666540
+uniqueMember: cn=WATSON.JASON.L.1281332062
+uniqueMember: cn=nces-str-msg.chs.spawar.navy.mil
+uniqueMember: cn=ZERBST.NICHOLAS.P.1061297444
+uniqueMember: cn=HAINOR.AARON.L.1050886499
+uniqueMember: cn=COLLINS.MARENINS.HENRIQUE.1406823101
+
+DN: cn=esm-services-client,ou=Groups,o=U.S. Government,c=US
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: esm-services-client
+description: ESM 7.0 Client Group
+uniqueMember: cn=bags.chs.spawar.navy.mil
+uniqueMember: cn=bait.chs.spawar.navy.mil
+uniqueMember: cn=bang.chs.spawar.navy.mil
+uniqueMember: cn=bake.chs.spawar.navy.mil
+uniqueMember: cn=alma.chs.spawar.navy.mil
+uniqueMember: cn=jum-sb.chs.spawar.navy.mil
+uniqueMember: cn=ESM
+uniqueMember: cn=ache.chs.spawar.navy.mil
+uniqueMember: cn=ahoy.chs.spawar.navy.mil
+uniqueMember: cn=acre.chs.spawar.navy.mil
+uniqueMember: cn=acid.chs.spawar.navy.mil
+
+DN: cn=nces-str-msg.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: nces-str-msg.chs.spawar.navy.mil
+givenName: cs
+ou: DISA
+ou: PKI
+ou: DoD
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: user.admin
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: Administrator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: test
+uid: nces-str-msg.chs.spawar.navy.mil
+
+DN: cn=maps.nswc.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: MAPS.NSWC.NAVY.MIL
+givenName: MAPS
+mail: BRYAN.DRISKELL@NAVY.MIL
+ou: People
+ou: dod
+ou: pki
+ou: USN
+pager: 249-0981
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+sn: NSWC.NAVY.MIL
+telephoneNumber: 249-0981
+uid: maps.nswc.navy.mil
+userPassword:: e1NTSEF9NTBCemN3VjlHVjl1a2t5ckdwUGFaY1hISUJ3OEtuZWN6b3c1ZlE9P
+ Q==
+
+DN: cn=MDA.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: MDA.spawar.navy.mil
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: White
+uid: Adam White
+
+DN: cn=mdadscoi.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn:: IE1EQS5zcGF3YXIubmF2eS5taWw=
+cn: mdadscoi.spawar.navy.mil
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+sn: White
+uid: Adam White
+
+DN: cn=caernarfon.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: caernarfon.spawar.navy.mil
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: White
+uid: Adam White
+
+DN: cn=strider.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: strider.spawar.navy.mil
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: White
+uid: Adam White
+
+DN: cn=c27massspsc.nadsuswe.nads.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: c27massspsc.nadsuswe.nads.navy.mil
+givenName: c27massspsc.nadsuswe.nads
+ou: USN
+ou: PKI
+ou: DoD
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: server.identity.asserter
+roleMemberOf: user.MDAFullAccess
+sn: c27massspsc.nadsuswe.nads.navy.mil
+uid: c27massspsc.nadsuswe.nads.navy.mil
+
+DN: cn=gstapps.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: gstapps.spawar.navy.mil
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: White
+uid: Adam White
+
+DN: cn=AISMASS.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: AISMASS.chs.spawar.navy.mil
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: White
+uid: Adam White
+
+DN: cn=mda-brite2.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: mda-brite2.sd.spawar.navy.mil
+givenName: mda-brite2.sd.spawar.navy.mil
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: User.MDAFullAccess
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: mda-brite2.sd.spawar.navy.mil
+uid: mda-brite2.sd.spawar.navy.mil
+
+DN: cn=mda-devel.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: mda-devel.sd.spawar.navy.mil
+givenName: mda-devel.sd.spawar.navy.mil
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: User.MDAFullAccess
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: uscg.mil
+uid: mda-devel.sd.spawar.navy.mil
+
+DN: cn=cert2.mda-services3.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: cert2.mda-services3.spawar.navy.mil
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+sn: White
+uid: cert2.mda-services3.spawar.navy.mil
+
+DN: cn=cert3.mda-services3.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: cert3.mda-services3.spawar.navy.mil
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+sn: White
+uid: cert3.mda-services3.spawar.navy.mil
+
+DN: cn=PASCH.JAMES.ROY.1132458452,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: PASCH.JAMES.ROY.1132458452
+givenName: JAMES
+initials: PJR
+mail: james.pasch@jfcom.mil
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+sn: PASCH
+telephoneNumber: 757-836-6437
+uid: PASCH.JAMES.ROY.1132458452
+
+DN: cn=service2.mda-devel.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+cn: service2.mda-devel.sd.spawar.navy.mil
+givenName: service2
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: admin.system
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+sn: service2.mda-devel.sd.spawar.navy.mil
+uid: service2.mda-devel.sd.spawar.navy.mil
+
+DN: cn=mda-vm1c.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: mda-vm1c.sd.spawar.navy.mil
+givenName: Weibert
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: User
+sn: mda-vm1c
+uid: mda-vm1c.sd.spawar.navy.mil
+
+DN: cn=usp.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: usp.sd.spawar.navy.mil
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: UCORE.FullAccess
+sn: Weibert
+uid: usp.sd.spawar.navy.mil
+
+DN: cn=mda-mass.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: mda-mass.sd.spawar.navy.mil
+givenName: mda-mass
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+sn: sd.spawar.navy.mil
+uid: mda-mass.sd.spawar.navy.mil
+
+DN: cn=scarecrows.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+clearance: S
+cn: scarecrows.sd.spawar.navy.mil
+givenName: scarecrows.sd.spawar.navy.mil
+mail: Robert.Gants@solers.com
+ou: People
+ou: dod
+ou: pki
+ou: USN
+pager: 123-456-7890
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: scarecrows.sd.spawar.navy.mil
+telephoneNumber: 123-456-7890
+userPassword:: e1NTSEF9NTBCemN3VjlHVjl1a2t5ckdwUGFaY1hISUJ3OEtuZWN6b3c1ZlE9P
+ Q==
+
+DN: cn=nces-directory.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: nces-directory.chs.spawar.navy.mil
+givenName: cs
+ou: DISA
+ou: PKI
+ou: DoD
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: user.admin
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: Administrator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: test
+uid: nces-directory.chs.spawar.navy.mil
+
+DN: cn=jumsandbox.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: U
+cn: jumsandbox.chs.spawar.navy.mil
+givenName: jumsandbox
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+roleMemberOf: JS
+sn: chs.spawar.navy.mil
+uid: jumsandbox.chs.spawar.navy.mil
+
+DN: cn=jum-ti.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: U
+cn: jum-ti.chs.spawar.navy.mil
+givenName: jum-ti
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+sn: chs.spawar.navy.mil
+uid: jum-ti.chs.spawar.navy.mil
+
+DN: cn=jum.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: U
+cn: jum.chs.spawar.navy.mil
+givenName: jum
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+sn: chs.spawar.navy.mil
+uid: jum.chs.spawar.navy.mil
+
+DN: cn=sscsd-aismass.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: sscsd-aismass.spawar.navy.mil
+givenName: sscsd-aismass.spawar.navy.mil
+ou: People
+ou: dod
+ou: USN
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: sscsd-aismass.spawar.navy.mil
+uid: sscsd-aismass.spawar.navy.mil
+
+DN: cn=Zelus.Louis.D.0202364638,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+clearance: S
+cn: Zelus.Louis.D.0202364638
+givenName: Zelus.Louis.D.0202364638
+ou: People
+ou: dod
+ou: pki
+ou: USN
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: Zelus.Louis.D.0202364638
+
+DN: cn=hf5.sd.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+clearance: S
+cn: hf5.sd.spawar.navy.mil
+givenName: hf5.sd.spawar.navy.mil
+mail: Chris Acantilado
+ou: People
+ou: dod
+ou: pki
+ou: USN
+pager: 123-456-7890
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: hf5.sd.spawar.navy.mil
+telephoneNumber: 123-456-7890
+uid: hf5.sd.spawar.navy.mil
+
+DN: cn=bags.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: bags.chs.spawar.navy.mil
+sn: bags.chs.spawar.navy.mil
+
+DN: cn=bait.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: bait.chs.spawar.navy.mil
+sn: bait.chs.spawar.navy.mil
+
+DN: cn=bang.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: bang.chs.spawar.navy.mil
+sn: bang.chs.spawar.navy.mil
+
+DN: cn=bake.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: bake.chs.spawar.navy.mil
+sn: bake.chs.spawar.navy.mil
+
+DN: cn=RAY.JEFFREY.DOUGLAS.1377153436,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: RAY.JEFFREY.DOUGLAS.1377153436
+sn: RAY.JEFFREY.DOUGLAS.1377153436
+
+DN: cn=WATSON.JASON.L.1281332062,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: WATSON.JASON.L.1281332062
+sn: WATSON.JASON.L.1281332062
+
+DN: cn=alma.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: alma.chs.spawar.navy.mil
+sn: alma.chs.spawar.navy.mil
+
+DN: cn=jum-sb.chs.spawar.navy.mil,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: jum-sb.chs.spawar.navy.mil
+sn: jum-sb.chs.spawar.navy.mil
+
+DN: cn=ESM,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: ESM
+sn: ESM
+
+DN: cn=KEYS.SABRINA.LATOYA.1016502452,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: U.S.A.
+clearance: S
+cn: KEYS.SABRINA.LATOYA.1016502452
+sn: KEYS.SABRINA.LATOYA.1016502452
+
+DN: cn=SHAW.ANDRELL.A.1388666540,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: U.S.A.
+clearance: S
+cn: SHAW.ANDRELL.A.1388666540
+sn: SHAW.ANDRELL.A.1388666540
+
+DN: cn=ZERBST.NICHOLAS.P.1061297444,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: ZERBST.NICHOLAS.P.1061297444
+sn: ZERBST.NICHOLAS.P.1061297444
+
+DN: cn=Swann.Bryan.B.1252596026,ou=USN,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: Swann.Bryan.B.1252596026
+roleMemberOf: user.operator
+sn: Swann.Bryan.B.1252596026
+
+DN: cn=cs-test,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: cs-test
+givenName: cs
+ou: DISA
+ou: PKI
+ou: DoD
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: user.admin
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: Administrator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: test
+uid: cs-test
+userPassword:: e1NTSEF9Z2tiOEtXNUhqbkN0cGVzZHlzQUdPbUxwWERuRkhxSVJYUE10bFE9P
+ Q==
+
+DN: cn=One.EUT.0300100537,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+clearance: S
+cn: One.EUT.0300100537
+employeeNumber: 0300100537
+givenName: One.EUT.0300100537
+mail: skeys@LCE.com
+ou: People
+ou: DoD
+ou: DISA
+ou: PKI
+pager: 8432187034
+roleMemberOf: user.majiic.video.archive
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: user.operator
+roleMemberOf: Deployers
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: PortalSystemAdministrator
+roleMemberOf: admin.system
+roleMemberOf: fismaData.consumer
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+roleMemberOf: user.majiic.video.live
+roleMemberOf: HF_tester
+roleMemberOf: user.analyst
+roleMemberOf: Security CES Administrators
+roleMemberOf: admin.sec.manager
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.sec.audit
+roleMemberOf: fake.role
+roleMemberOf: admin.database
+roleMemberOf: admin.datasource
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: tester.majiic
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: abacpilot
+roleMemberOf: user.admin
+roleMemberOf: user.synd.topic.create
+sn: One.EUT.0300100537
+telephoneNumber: 8432187034
+
+DN: cn=skynceswap01.sspl.disa.mil,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: skynceswap01.sspl.disa.mil
+givenName: skynceswap01
+ou: People
+ou: USN
+ou: dod
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: Security CES Administrators
+roleMemberOf: user.operator
+roleMemberOf: server.identity.asserter
+roleMemberOf: Service Discovery CES Administrators
+sn:: c3NwbC5kaXNhLm1pbCA=
+uid: skynceswap01.sspl.disa.mil
+
+DN: cn=client.necc.netcentriclab.com,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: client.necc.netcentriclab.com
+givenName: client.necc.netcentriclab.com
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: user.analyst
+roleMemberOf: Security CES Administrators
+roleMemberOf: user.s2
+roleMemberOf: user.operator
+sn: client.necc.netcentriclab.com
+uid: client.necc.netcentriclab.com
+
+DN: cn=beaver2.hr.c2fse.northgrum.com,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: beaver2.hr.c2fse.northgrum.com
+givenName: beaver2.hr.c2fse.northgrum.com
+mail: beaver@disa.com
+ou: People
+ou: dod
+ou: DISA
+ou: pki
+roleMemberOf: user.operator
+roleMemberOf: User
+sn: beaver2.hr.c2fse.northgrum.com
+telephoneNumber: 843-218-7013
+uid: beaver2.hr.c2fse.northgrum.com
+
+DN: cn=jum-portal.ces.mil,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: jum-portal.ces.mil
+givenName: jum-portal
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.messaging
+sn: jum-porta.ces.mil
+uid: jum-portal.ces.mil
+
+DN: cn=messaging.ces.mil,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: messaging.ces.mil
+givenName: cs
+ou: DISA
+ou: PKI
+ou: DoD
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: user.admin
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: Administrator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: test
+uid: cs-test
+
+DN: cn=Rech.Johannes.T.II.9000020507,ou=DISA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: Rech.Johannes.T.II.9000020507
+roleMemberOf: user.operator
+sn: Rech.Johannes.T.II.9000020507
+
+DN: cn=GORDON.MICHAEL.F.1289307466,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: GORDON.MICHAEL.F.1289307466
+givenName: Michael
+mail: Michael.Gordon@ngc.com
+ou: People
+ou: DoD
+ou: CONTRACTOR
+ou: PKI
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: user.admin
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: Administrator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: Gordon
+telephoneNumber: 7038820187
+userPassword:: e1NTSEF9NWx6NnpIaUlFeW5TUE96SWwzZ1ZxTTdiTjYxbks2bWlqVFUrQ1E9P
+ Q==
+
+DN: cn=WOOD.DOUGLAS.E.1269609563,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: U
+cn: WOOD.DOUGLAS.E.1269609563
+employeeNumber: 1269609563
+givenName: DOUGLAS
+initials: E
+mail: doug.wood@ieee.org
+ou: People
+ou: dod
+ou: pki
+ou: CONTRACTOR
+pager: 703-757-5958
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+sn: WOOD
+telephoneNumber: 703-757-5958
+uid: WOOD.DOUGLAS.E.1269609563
+userPassword:: e1NTSEF9RVFuWDdrNUEyS1BBS2JTR2VHZ1FGOWJ3enpMMk85TEEvcWVwOGc9
+
+DN: cn=PRICE.KEVIN.LEE.1364822185,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: PRICE.KEVIN.LEE.1364822185
+givenName: Kevin
+mail: kevin.l.price@saic.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: Admin
+roleMemberOf: User
+roleMemberOf: user.MDAFullAccess
+sn: Price
+telephoneNumber: 8432187042
+uid: PRICE.KEVIN.LEE.1364822185
+userPassword:: e1NTSEF9a0tHSTNVeG5ZWDM2YkR2bUdQZlBmeW5FTDEzS25wTFBNdGZMWnc9P
+ Q==
+
+DN: cn=CARR.FRANCIS.HENRY.1282646672,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: U
+cn: CARR.FRANCIS.HENRY.1282646672
+givenName: FRANCIS
+initials: HENRY
+mail: carr@mitre.org
+ou: People
+ou: DoD
+ou: PKI
+ou: CONTRACTOR
+pager: 703-983-6042
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+sn: CARR
+telephoneNumber: 703-983-6042
+userPassword:: e1NTSEF9RVFuWDdrNUEyS1BBS2JTR2VHZ1FGOWJ3enpMMk85TEEvcWVwOGc9
+
+DN: cn=DEBRA.HOUSER.J.1369753505,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: DEBRA.HOUSER.J.1369753505
+givenName: DEBRA
+mail: dhouser@geodecisions.com
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: user.MDAFullAccess
+sn: HOUSER
+uid: DEBRA.HOUSER.J.1369753505
+
+DN: cn=ORDONEZ.MARCO.1377007421,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: ORDONEZ.MARCO.1377007421
+givenName: Marco
+mail: marco.ordonez@saic.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: Ordonez
+uid: ORDONEZ.MARCO.1377007421
+
+DN: cn=Weibert.Jason.9000019225,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Weibert.Jason.9000019225
+givenName: Weibert.Jason.9000019225
+mail: jweibert@fgm.com
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: Weibert.Jason.9000019225
+telephoneNumber: 619-221-1321
+uid: Weibert.Jason.9000019225
+
+DN: cn=BOWMAN.HEATHER.L.1384965624,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: BOWMAN.HEATHER.L.1384965624
+o: U.S. Government
+sn: BOWMAN.HEATHER.L.1384965624
+userPassword:: e1NTSEF9c2ZOM01uNFRDUjlIeVNQaTBheGhXeGw5UC9lODZoUnE=
+
+DN: cn=HYDARI.RAZA.H.1384966078,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: HYDARI.RAZA.H.1384966078
+o: U.S. Government
+sn: HYDARI.RAZA.H.1384966078
+
+DN: cn=RAY.JEFFREY.DOUGLAS.1377153436,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: RAY.JEFFREY.DOUGLAS.1377153436
+givenName: Jeffrey
+mail: jray@barlingbay.comm
+sn: Ray
+uid: RAY.JEFFREY.DOUGLAS.1377153436
+
+DN: cn=NCES.Test.1300340000,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: NCES.Test.1300340000
+givenName: NCES
+mail: lsoutiere@scires.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: user.admin
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: Test
+telephoneNumber: 843-218-7013
+uid: NCES.Test.1300340000
+
+DN: cn=TYLER.FRANK.EDMUND.JR.1047535286,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: TYLER.FRANK.EDMUND.JR.1047535286
+o: U.S. Government
+roleMemberOf: amfadmin
+roleMemberOf: slmadmin
+roleMemberOf: exmadmin
+sn: TYLER.FRANK.EDMUND.JR.1047535286
+userPassword:: e1NTSEF9d1REdUJ5V0Q1TVNURnRrSkVmNkd5NzRDaVVqMEVwSmo=
+
+DN: cn=GETACHEW.ROBEL.1384965632,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: GETACHEW.ROBEL.1384965632
+o: U.S. Government
+sn: GETACHEW.ROBEL.1384965632
+
+DN: cn=JOSHI.SUDEEP.1386636377,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: JOSHI.SUDEEP.1386636377
+o: U.S. Government
+roleMemberOf: User
+sn: JOSHI.SUDEEP.1386636377
+
+DN: cn=SOUTIERE.LESLIE.SEDELL.1383904214,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: SOUTIERE.LESLIE.SEDELL.1383904214
+givenName: Leslie
+mail: lsoutiere@scires.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: Soutiere
+telephoneNumber: 843-218-7013
+uid: SOUTIERE.LESLIE.SEDELL.1383904214
+
+DN: cn=JOHNSON.JEFFERY.L.1380712284,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: JOHNSON.JEFFERY.L.1380712284
+givenName: JOHNSON
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: user.JITCNTAC
+sn: JOHNSON
+uid: JOHNSON.JEFFERY.L.1380712284
+
+DN: cn=Farthing.Carter.J.9000000253,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Farthing.Carter.J.9000000253
+givenName: DEBRA
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: user.JITCNTAC
+sn: CARTER
+uid: Farthing.Carter.J.9000000253
+
+DN: cn=VALID.USER.9000013140,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: VALID.USER.9000013140
+givenName: JOHNSON
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: user.JITCNTAC
+sn: JOHNSON
+uid: JOHNSON.JEFFERY.L.1380712284
+
+DN: cn=Second.User.9000013142,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Second.User.9000013142
+givenName: JOHNSON
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: user.JITCNTAC
+sn: JOHNSON
+uid: Second.User.9000013142
+
+DN: cn=Ronald.Reagan,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Ronald.Reagan
+givenName: Ronald.Reagan
+mail: abc123@gmail.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: Ronald.Reagan
+telephoneNumber: 843-218-7013
+uid: Ronald.Reagan
+userPassword:: UEAkJHcwcmQ=
+
+DN: cn=lmco.com,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: lmco.com
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+sn: lmco.com
+uid: lmco.com
+
+DN: cn=CARLSON.DEAN.THOMAS.1397721163,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: CARLSON.DEAN.THOMAS.1397721163
+givenName: Dean
+mail: dcarlson@scires.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: Carlson
+uid: CARLSON.DEAN.THOMAS.1397721163
+
+DN: cn=DESANTIS.JULIA.HICKS.1056736758,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: DESANTIS.JULIA.HICKS.1056736758
+givenName: Julia
+mail: julia.desantis@saic.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: DeSantis
+uid: DESANTIS.JULIA.HICKS.1056736758
+
+DN: cn=Peter.Pan,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Peter.Pan
+givenName: Peter.Pan
+mail: abc123@gmail.com
+ou: People
+ou: dod
+ou: CONTRACTOR
+ou: pki
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: Administrators
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Deployers
+roleMemberOf: user.analyst.weather
+roleMemberOf: ABAC Policy Tool Admin
+roleMemberOf: admin.abac
+roleMemberOf: user.synd.alert.create
+roleMemberOf: user.s2
+roleMemberOf: admin.database
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.sec.isso
+roleMemberOf: server.identity.asserter
+sn: Peter.Pan
+telephoneNumber: 843-218-7013
+uid: Peter.Pan
+
+DN: cn=Developer.NITESNext.9000042611,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Developer.NITESNext.9000042611
+givenName: Developer.NITESNext
+mail: Developer@NITESNext.com
+roleMemberOf: User
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+sn: Ray
+uid: Developer.NITESNext.9000042611
+
+DN: cn=WATSON.JASON.L.1281332062,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: WATSON.JASON.L.1281332062
+sn: WATSON.JASON.L.1281332062
+
+DN: cn=BUCHAN.SCOTT.ALLAN.1296242213,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: BUCHAN.SCOTT.ALLAN.1296242213
+roleMemberOf: user.operator
+sn: BUCHAN.SCOTT.ALLAN.1296242213
+
+DN: cn=IFIS,ou=DIA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: IFIS
+givenName: IFIS
+ou: People
+ou: dod
+ou: DIA
+ou: pki
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: user.analyst
+roleMemberOf: user.majiic.video.archive
+roleMemberOf: admin.messaging
+roleMemberOf: Deployers
+roleMemberOf: user.synd.alert.create
+roleMemberOf: PortalSystemAdministrator
+roleMemberOf: fismaData.consumer
+roleMemberOf: admin.sec.isso
+roleMemberOf: user.majiic.video.live
+roleMemberOf: HF_tester
+roleMemberOf: Security CES Administrators
+roleMemberOf: admin.sec.manager
+roleMemberOf: user.analyst.weather
+roleMemberOf: admin.sec.audit
+roleMemberOf: admin.database
+roleMemberOf: admin.datasource
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: tester.majiic
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: user.admin
+roleMemberOf: user.synd.topic.create
+roleMemberOf: Dummy2.Role
+sn: IFIS
+uid: IFIS
+
+DN: cn=numnwsvmsa5.manw.nato.int,ou=OTHER,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: numnwsvmsa5.manw.nato.int
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+sn: numnwsvmsa5.manw.nato.int
+uid: numnwsvmsa5.manw.nato.int
+
+DN: cn=numnwsvmsa6.manw.nato.int,ou=OTHER,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: numnwsvmsa6.manw.nato.int
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+sn: numnwsvmsa6.manw.nato.int
+uid: numnwsvmsa6.manw.nato.int
+
+DN: cn=LIEBSCH.FRANK.J.1137207199,ou=USA,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: LIEBSCH.FRANK.J.1137207199
+givenName: FRANK
+initials: J
+mail: Frank.Liebsch@us.army.mil
+ou: People
+ou: DoD
+ou: PKI
+ou: USA
+pager: 520-538-3157
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+sn: LIEBSCH
+telephoneNumber: 520-538-3157
+userPassword:: e1NTSEF9RVFuWDdrNUEyS1BBS2JTR2VHZ1FGOWJ3enpMMk85TEEvcWVwOGc9
+
+N: cn=164.236.0.76,ou=USAF,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: 164.236.0.76
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: White
+uid: Adam White
+
+DN: cn=messaging.nces.dod.mil,ou=USAF,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: messaging.nces.dod.mil
+givenName: messaging
+ou: USAF
+ou: PKI
+ou: DoD
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: user.admin
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: Administrator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: messaging
+uid: messaging.nces.dod.mil
+
+DN: cn=vonPapen.Franz.D.Sr.9000031329,ou=USAF,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: vonPapen.Franz.D.Sr.9000031329
+givenName: messaging
+ou: USAF
+ou: PKI
+ou: DoD
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: user.admin
+roleMemberOf: User
+roleMemberOf: Admin
+roleMemberOf: Administrator
+roleMemberOf: admin.system
+roleMemberOf: server.identity.asserter
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: messaging
+uid: messaging.nces.dod.mil
+
+DN: cn=Prestre.Sebastien.Vauban.Sr.9000031328,ou=USAF,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Prestre.Sebastien.Vauban.Sr.9000031328
+givenName: Sebastien
+mail: pestres@csd.disa.mil
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+sn: Pestre
+uid: Prestre.Sebastien.Vauban.Sr.9000031328
+
+DN: cn=POLYAKOV.IGOR.VLADIMIR.1363024854,ou=DoD,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: POLYAKOV.IGOR.VLADIMIR.1363024854
+givenName: IGOR
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: POLYAKOV
+uid: POLYAKOV.IGOR.VLADIMIR.1363024854
+
+DN: cn=dscoi3.rdc.uscg.gov,ou=USCG,ou=PKI,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: dscoi3.rdc.uscg.gov
+givenName: messaging
+ou: USCG
+ou: PKI
+ou: DoD
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: User
+roleMemberOf: server.identity.asserter
+sn: messaging
+uid: dscoi3.rdc.uscg.gov
+
+DN: cn=amfadmin,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: amfadmin
+uniqueMember: cn=TYLER.FRANK.EDMUND.JR.1047535286,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=BOWMAN.HEATHER.L.1384965624,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=HYDARI.RAZA.H.1384966078,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=GETACHEW.ROBEL.1384965632,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=JOSHI.SUDEEP.1386636377,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=ORDONEZ.MARCO.1377007421,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: cn=exmadmin,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: exmadmin
+uniqueMember: cn=TYLER.FRANK.EDMUND.JR.1047535286,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=BOWMAN.HEATHER.L.1384965624,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=HYDARI.RAZA.H.1384966078,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=GETACHEW.ROBEL.1384965632,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=JOSHI.SUDEEP.1386636377,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=ORDONEZ.MARCO.1377007421,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: cn=slmadmin,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: slmadmin
+uniqueMember: cn=TYLER.FRANK.EDMUND.JR.1047535286,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=BOWMAN.HEATHER.L.1384965624,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=HYDARI.RAZA.H.1384966078,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=GETACHEW.ROBEL.1384965632,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=JOSHI.SUDEEP.1386636377,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+uniqueMember: cn=ORDONEZ.MARCO.1377007421,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: cn=amfuser,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: amfuser
+
+DN: cn=amfobserver,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: amfobserver
+
+DN: cn=amf_limited_observer,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: amf_limited_observer
+uniqueMember: cn=SCHWEER.KEVIN.GREGORY.1367945369,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: cn=amf_proxy_user,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: amf_proxy_user
+
+DN: cn=exmuser,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: exmuser
+uniqueMember: cn=SCHWEER.KEVIN.GREGORY.1367945369,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: cn=exmobserver,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: exmobserver
+
+DN: cn=exm_limited_observer,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: exm_limited_observer
+
+DN: cn=exm_inspector,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: exm_inspector
+uniqueMember: cn=SCHWEER.KEVIN.GREGORY.1367945369,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: cn=exm_superinspector,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: exm_superinspector
+
+DN: cn=slmuser,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: slmuser
+
+DN: cn=slmobserver,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: slmobserver
+
+DN: cn=slm_limited_observer,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: slm_limited_observer
+uniqueMember: cn=SCHWEER.KEVIN.GREGORY.1367945369,ou=CONTRACTOR,ou=PKI,ou=DoD,o=U.S. Government,c=US
+
+DN: cn=AmberPointSSO,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: AmberPointSSO
+
+DN: cn=manager,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: groupOfUniqueNames
+cn: manager
+
+DN: cn=Frank.Tyler,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: Frank.Tyler
+groupMemberOf: userAccounts
+o: U.S. Government
+sn: Frank.Tyler
+uid: Frank.Tyler
+userPassword:: RitIMFV5aFpKNXY4K3BMbG1QZm9xbVFBdkNVPQ==
+
+DN: cn=Heather.Bowman,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: Heather.Bowman
+groupMemberOf: userAccounts
+o: U.S. Government
+sn: Heather.Bowman
+uid: Heather.Bowman
+userPassword:: QkJTczVjMktkbyt0QThwUGlYOFdrZWhJZUp3PQ==
+
+DN: cn=Raza.Hydari,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: Raza.Hydari
+groupMemberOf: userAccounts
+o: U.S. Government
+sn: Raza.Hydari
+uid: Raza.Hydari
+userPassword:: M2NCV2FaVkFMcTlGUURqUEErczJrajZObTA4PQ==
+
+DN: cn=Wesley.Wilson,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: Wesley.Wilson
+groupMemberOf: userAccounts
+o: U.S. Government
+sn: Wesley.Wilson
+uid: Wesley.Wilson
+userPassword:: NUVFMGx2RWFZV01XbXNSVVNwT0pISFZ4L0xNPQ==
+
+DN: cn=Kevin.Schweer,ou=NCES,ou=DISA,ou=DoD,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: Kevin.Schweer
+groupMemberOf: userAccounts
+o: U.S. Government
+sn: Kevin.Schweer
+uid: Kevin.Schweer
+userPassword:: e1NIQX1UQW5JUmRCSmlQaEhIV3dSQlBmTjNKLy9VQ2M9
+
+DN: cn=mda.solers.com,ou=Solers,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: mda.solers.com
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+sn: White
+uid: Adam White
+
+DN: cn=WITMER.JEREMY.T.ORC10000016900.ID,ou=THE MITRE CORPORATION,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: WITMER.JEREMY.T.ORC10000016900.ID
+givenName: JEREMY
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: WITMER
+uid: WITMER.JEREMY.T.ORC10000016900.ID
+
+DN: cn=ilab-xbis.mitre.org,ou=THE MITRE CORPORATION,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: ilab-xbis.mitre.org
+givenName: ilab-xbis.mitre.org
+mail: snbs@mitre.org
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: ilab-xbis.mitre.org
+telephoneNumber: 703-983-1004
+uid: ilab-xbis.mitre.org
+
+DN: cn=Gray.Justin.M.ORC1000018443.ID,ou=MITRE,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Gray.Justin.M.ORC1000018443.ID
+givenName: Gray.Justin.M.ORC1000018443.ID
+mail: jmgray@mitre.org
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: Gray.Justin.M.ORC1000018443.ID
+telephoneNumber: 719-572-8268
+uid: Gray.Justin.M.ORC1000018443.ID
+
+DN: cn=Houser.Debra.J.ORC1000013063.ID,ou=Gannett Fleming,ou=ORC,ou=ECA,o=U.S. Government,c=US
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+citizenship: USA
+clearance: S
+cn: Houser.Debra.J.ORC1000013063.ID
+givenName: Debra
+initials: J
+mail: rwwagner@geodecisions.com
+ou: People
+ou: ECA
+ou: ORC
+ou: Gannett Fleming
+pager: 123-456-7890
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: user.s2
+roleMemberOf: User
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+sn: Houser
+telephoneNumber: 123-456-7890
+userPassword:: e1NTSEF9RVFuWDdrNUEyS1BBS2JTR2VHZ1FGOWJ3enpMMk85TEEvcWVwOGc9
+
+DN: cn=Robert Gants,ou=Solers,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Robert Gants
+givenName: Robert
+mail: Robert.Gants@solers.com
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: User
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.system
+roleMemberOf: admin.datasource
+roleMemberOf: admin.messaging
+roleMemberOf: user.s2
+sn: Gants
+uid: Robert Gants
+
+DN: cn=Adam White,ou=Solers\, inc,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Adam White
+givenName: Adam
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+sn: White
+uid: Adam White
+
+DN: cn=Justin Gawrilow,ou=Solers\, inc,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Justin Gawrilow
+givenName: Justin
+mail: Justin.Gawrilow@solers.com
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: User
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Admin
+sn: Gawrilow
+uid: Justin Gawrilow
+
+DN: cn=Ying Zhao,ou=Quantum Intelligence\, Inc.,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Ying Zhao
+givenName: Zhao
+ou: Quantum Intelligence
+ou: VeriSign, Inc.
+ou: ECA
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+sn: Ying
+uid: Ying Zhao
+
+DN: cn=Robert Jenkins,ou=Technology Solutions,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+citizenship: USA
+clearance: S
+cn: Robert Jenkins
+givenName: Robert
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+roleMemberOf: User
+roleMemberOf: user.MDAFullAccess
+roleMemberOf: admin.system
+roleMemberOf: admin.messaging
+roleMemberOf: admin.datasource
+roleMemberOf: Security CES Administrators
+roleMemberOf: Service Discovery CES Administrators
+roleMemberOf: Admin
+sn: Jenkins
+uid: Robert Jenkins
+
+DN: cn=Krikor Geysimonyan,ou=The Aerospace Corporation,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Krikor Geysimonyan
+givenName: Krikor
+mail: Krikor.Geysimonyan@aero.org
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+sn: Geysimonyan
+uid: Krikor Geysimonyan
+
+DN: cn=Jason Weibert,ou=FGM\, Inc.,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: extendedorgperson
+citizenship: USA
+clearance: S
+cn: Jason Weibert
+givenName: Jason
+roleMemberOf: UCORE.FullAccess
+roleMemberOf: User
+roleMemberOf: user.analyst
+roleMemberOf: user.operator
+roleMemberOf: admin.system
+sn: Weibert
+uid: Jason Weibert
+
+DN: cn=Yancy Matherne,ou=Geocent\, LLC,ou=VeriSign\, Inc.,ou=ECA,o=U.S. Government,c=US
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: extendedorgperson
+objectClass: inetOrgPerson
+citizenship: USA
+clearance: S
+cn: Yancy Matherne
+givenName: Yancy
+mail: yancy@geocent.com
+roleMemberOf: user.operator
+roleMemberOf: user.analyst
+sn: Yancy
+uid: Yancy Matherne
+
+DN: cn=replication,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+citizenship: US
+clearance: S
+cn: replication
+groupMemberOf: systemAccounts
+o: U.S. Government
+sn: replication
+userPassword:: e1NIQX1FdXdnNXZHaldzSFR4N1FKQnRSL0NNSU0rU1k9
+
+DN: cn=Directory Manager,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+cn: Directory Manager
+o: U.S. Government
+sn: Directory Manager
+userPassword:: aGZsZGFwYWRtaW4=
+
+DN: cn=ldapreader,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+cn: ldapreader
+o: U.S. Government
+sn: ldapreader
+userPassword:: aGZsZGFwcmVhZGVy
+
+DN: cn=messaging,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+cn: messaging
+groupMemberOf: systemAccounts
+o: U.S. Government
+sn: messaging
+userPassword:: e1NIQX04Vis4UGlZMkwxYitpdjBxT2c0RTFmMzczNUU9
+
+DN: cn=Service Discovery,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+cn: Service Discovery
+groupMemberOf: systemAccounts
+o: U.S. Government
+sn: Service Discovery
+userPassword:: e1NIQX1OWHNJTmsreFJsR2R6NVVvWmhVbmJCZzU5WEU9
+
+DN: cn=ESM,o=U.S. Government,c=US
+objectClass: top
+objectClass: extendedorgperson
+cn: ESM
+groupMemberOf: systemAccounts
+o: U.S. Government
+sn: ESM
+userPassword:: e1NIQX1LZVlRTEFCbnVKU1BrY1puaWg0a2FzMG1vT1E9
+

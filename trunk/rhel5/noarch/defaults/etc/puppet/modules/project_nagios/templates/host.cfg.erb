@@ -1,0 +1,16 @@
+define host{                                                                                                                                                                                                                                 
+
+
+<% hosttemplates.each do |hosttemplates| -%>
+        use                     <%= hosttemplates %>    ; Name of host template to use                                                                                                                                                       
+<% end -%>
+                                                        ; This host definition will inherit all variables that are defined                                                                                                                   
+<% hostgroups.each do |hostgroups| -%>
+        hostgroups		<%= hostgroups%>        ; hostgroup membership
+<% end -%>
+                                                        ; This host definition will inherit all variables that are defined                                                                                                                   
+                                                        ; in (or inherited by) the linux-server host template definition.                                                                                                                    
+        host_name               <%= hostname %>                                                                                                                                                                                                    
+        alias                   <%= hostname %>                                                                                                                                                                                                    
+        address                 <%= ipaddress %>                                                                                                                                                                                               
+        }

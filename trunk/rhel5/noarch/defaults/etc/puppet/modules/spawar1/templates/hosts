@@ -1,0 +1,2 @@
+# This file is auto generated with puppet.  Anything modfified will be lost at the next run.
+127.0.0.1       <%= fqdn %> <%= hostname %>  localhost.localdomain localhost

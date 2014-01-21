@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: consoleperms::consoleperms</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">consoleperms::consoleperms</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/consoleperms/manifests/init_pp.html">
+                /tmp/puppet/modules/consoleperms/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="consoleperms.html">consoleperms</a>
+</p>
+<p>
+Class: <a href="consoleperms.html">consoleperms</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+        This class hardens what a console user can do.
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+        None
+</pre>
+<p>
+LinuxGuide:
+</p>
+<pre>
+        2.3.1.1
+        2.2.2.1
+        2.3.3.4
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+        CCE-4209-3
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000055">Exec[&quot;Restrict ConsoleDevice Access&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000054">File[&quot;/etc/securetty&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000056">File[&quot;/etc/security/console.perms&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000058">File[&quot;/usr/sbin/userhelper&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000057">Group[&quot;usergroup&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000055" class="method-detail">
+        <a name="R000055"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;Restrict ConsoleDevice Access&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "sed -i 's/^<x*console>/#&/g' /etc/security/console.perms.d/50-default.perms"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => root</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "grep -E '^<x*console>' /etc/security/console.perms.d/50-default.perms"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.2.2.1 Restrict console device access Comment out each line
+that starts with &lt;console&gt; or &lt;xconsole&gt;
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000054" class="method-detail">
+        <a name="R000054"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/securetty&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => "root"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => "root"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 600</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">source => "puppet:///modules/consoleperms/securetty"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.3.1.1 CCE-3820-8 CCE-3485-0, CCE-4111-1, CCE-4256-4 Restrict
+console device access
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000056" class="method-detail">
+        <a name="R000056"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/etc/security/console.perms&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">owner => "root"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => "root"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 644</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">source => "puppet:///modules/consoleperms/console.perms"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+Replace the console.perms file with a more strict one
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000058" class="method-detail">
+        <a name="R000058"></a>
+
+        <div class="method-heading">
+          <span class="method-name">File[&quot;/usr/sbin/userhelper&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">require => Group[usergroup]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">group => usergroup</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">mode => 4710</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000057" class="method-detail">
+        <a name="R000057"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Group[&quot;usergroup&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => present</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.3.3.4 restrict userhelper to console users
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

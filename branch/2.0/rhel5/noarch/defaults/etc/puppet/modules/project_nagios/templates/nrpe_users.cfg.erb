@@ -1,0 +1,11 @@
+# Define a service to check the number of currently logged in
+# users on the local machine.  Warning if > 2 users, critical
+# if > 5 users.
+
+define service{
+        use                             generic-service         ; Name of service template to use
+        host_name                       <%= hostname %>
+        service_description             Users
+        check_command                   check_nrpe!check_users
+	action_url                      /pnp4nagios/index.php/graph?host=$HOSTNAME$&srv=$SERVICEDESC$
+        }

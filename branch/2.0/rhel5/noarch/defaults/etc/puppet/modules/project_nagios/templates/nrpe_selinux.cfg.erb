@@ -1,0 +1,10 @@
+# Define a service to check SSH on the local machine.
+# Disable notifications for this service by default, as not all users may have SSH enabled.
+
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       <%= hostname %>
+        service_description             Selinux
+        check_command                   check_nrpe!check_selinux
+        notifications_enabled           0
+        }

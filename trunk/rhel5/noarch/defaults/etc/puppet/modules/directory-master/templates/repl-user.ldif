@@ -1,0 +1,13 @@
+dn: cn=replication, O=U.S. Government, C=US
+# Experienced problems automation of setup (-w ) without clear text alphanumeric passwords
+# If password were encrypted, it would be "userPassword::  <encyrpted password>"
+userPassword: password
+objectClass: top
+objectClass: extendedorgperson
+groupMemberOf: systemAccounts
+o: U.S. Government
+sn: replication
+citizenship: US
+cn: replication
+clearance: S
+

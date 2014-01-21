@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: modprobe::modprobe</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">modprobe::modprobe</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/modprobe/manifests/init_pp.html">
+                /tmp/puppet/modules/modprobe/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="modprobe.html">modprobe</a>
+</p>
+<p>
+Class: <a href="modprobe.html">modprobe</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+        This  class disables modules from loading such as odd filesystems, usb &amp;#      bluetooth drivers and so forth.
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+        modprobe::disableModule( $module )
+        modprobe::turnOffModule( $module )
+</pre>
+<p>
+LinuxGuide
+</p>
+<pre>
+        2.2.2.2.1
+        2.5.3.1.1
+        2.2.2.5
+        3.3.14.3
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+        CCE-4172-3
+</pre>
+<p>
+File: /etc/puppet/modules/modprobe/manifests/init.pp
+</p>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000112">Modprobe::Disablemodule[&quot;Disable Cramfs, 2.2.2.5&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000113">Modprobe::Disablemodule[&quot;Disable freevxfs, 2.2.2.5&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000115">Modprobe::Disablemodule[&quot;Disable hfs, 2.2.2.5&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000116">Modprobe::Disablemodule[&quot;Disable hfsplus, 2.2.2.5&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000119">Modprobe::Disablemodule[&quot;Disable ipv6, 2.5.3.1.1&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000114">Modprobe::Disablemodule[&quot;Disable jffs2, 2.2.2.5&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000117">Modprobe::Disablemodule[&quot;Disable udf, 2.2.2.5&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000118">Modprobe::Disablemodule[&quot;Disable usb-storage, 2.2.2.1&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000120">Modprobe::Turnoffmodule[&quot;Disable  Bluetooth, 3.3.14.3&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000121">Modprobe::Turnoffmodule[&quot;Disable  net-pf-31, 3.3.14.3&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000112" class="method-detail">
+        <a name="R000112"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable Cramfs, 2.2.2.5&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "cramfs"</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.2.2.2.1 2.5.3.1.1, 2.2.2.5, 3.3.14.3 Disable <a
+href="modprobe.html">modprobe</a> loading of usb-storage and unused file
+systems
+</p>
+        </div>
+      </div>
+
+      <div id="method-R000113" class="method-detail">
+        <a name="R000113"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable freevxfs, 2.2.2.5&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "freevxfs"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000115" class="method-detail">
+        <a name="R000115"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable hfs, 2.2.2.5&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "hfs"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000116" class="method-detail">
+        <a name="R000116"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable hfsplus, 2.2.2.5&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "hfsplus"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000119" class="method-detail">
+        <a name="R000119"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable ipv6, 2.5.3.1.1&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "ipv6"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000114" class="method-detail">
+        <a name="R000114"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable jffs2, 2.2.2.5&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "jffs2"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000117" class="method-detail">
+        <a name="R000117"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable udf, 2.2.2.5&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "udf"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000118" class="method-detail">
+        <a name="R000118"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Disablemodule[&quot;Disable usb-storage, 2.2.2.1&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "usb-storage"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000120" class="method-detail">
+        <a name="R000120"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Turnoffmodule[&quot;Disable  Bluetooth, 3.3.14.3&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "bluetooth"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000121" class="method-detail">
+        <a name="R000121"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Modprobe::Turnoffmodule[&quot;Disable  net-pf-31, 3.3.14.3&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">module => "net-pf-31"</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

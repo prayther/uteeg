@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: automnt::automnt</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">automnt::automnt</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/tmp/puppet/modules/automnt/manifests/init_pp.html">
+                /tmp/puppet/modules/automnt/manifests/init.pp
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Module: <a href="automnt.html">automnt</a>
+</p>
+<p>
+Class: <a href="automnt.html">automnt</a>
+</p>
+<p>
+Description:
+</p>
+<pre>
+        This class attempts to disable automounting of file systems through
+        the autofs service and through the gnome configuration files.
+</pre>
+<p>
+Defines:
+</p>
+<pre>
+        None
+</pre>
+<p>
+LinuxGuide:
+</p>
+<pre>
+        2.2.2.3
+        2.2.2.4
+</pre>
+<p>
+CCERef#:
+</p>
+<pre>
+        None
+</pre>
+<p>
+TODO:
+</p>
+<pre>
+        None
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+    <div id="method-list">
+      <h3 class="section-bar">Resources</h3>
+
+      <div class="name-list">
+      <a href="#R000137">Exec[&quot;Gnome automount_drivers, 2.2.2.4&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000136">Exec[&quot;Gnome automount_media, 2.2.2.4&quot;]</a>&nbsp;&nbsp;
+      <a href="#R000135">Service[&quot;autofs&quot;]</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+<!-- if facts -->
+
+<!-- if plugins -->
+
+<!-- if nodes -->
+
+<!-- if class -->
+
+
+
+
+
+
+
+    <!-- if method_list -->
+
+
+    <!-- if resource_list -->
+    <div id="resources">
+    <h3 class="section-bar">Resources</h3>
+
+      <div id="method-R000137" class="method-detail">
+        <a name="R000137"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;Gnome automount_drivers, 2.2.2.4&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type bool --set /desktop/gnome/volume_manager/automount_drives false"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test `/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /desktop/gnome/volume_manager/automount_drives | grep false | wc -l` -eq 0"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => root</span><br />
+        </div>
+
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-R000136" class="method-detail">
+        <a name="R000136"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Exec[&quot;Gnome automount_media, 2.2.2.4&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">command => "/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type bool --set /desktop/gnome/volume_manager/automount_media false"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">onlyif => "/usr/bin/test `/usr/bin/gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /desktop/gnome/volume_manager/automount_media | grep false | wc -l` -eq 0"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">user => root</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.2.2.4 Disable gnome automounting Requires a log-out to see
+changes through:
+</p>
+<pre>
+  gconftool-2 -R /desktop/gnome/volume_manager
+</pre>
+        </div>
+      </div>
+
+      <div id="method-R000135" class="method-detail">
+        <a name="R000135"></a>
+
+        <div class="method-heading">
+          <span class="method-name">Service[&quot;autofs&quot;]</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">enable => false</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">pattern => "automount"</span><br />
+          &nbsp;&nbsp;&nbsp;<span class="method-args">ensure => stopped</span><br />
+        </div>
+
+        <div class="method-description">
+          <p>
+GuideSection 2.2.2.3 Disable automounter
+</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

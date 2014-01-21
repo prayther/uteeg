@@ -1,0 +1,91 @@
+################################################################################
+# This file is not currently being used by the iptables manifest and so
+# changes made to the configuration in this file will NOT be reflected on
+# target systems. Remove this notice if this is no longer the caes.
+################################################################################
+<%
+
+# ICMP Rules
+# - 'echo-request' allows response to ping, not included by default
+allow_icmp_echo_request = "-A RH-Firewall-1-INPUT -p icmp --icmp-type echo-request -j ACCEPT"
+allow_icmp_echo_reply = "-A RH-Firewall-1-INPUT -p icmp --icmp-type echo-reply -j ACCEPT"
+allow_icmp_dest_unreachable = "-A RH-Firewall-1-INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT"
+allow_icmp_time_exceeded = "-A RH-Firewall-1-INPUT -p icmp --icmp-type time-exceeded -j ACCEPT"
+
+# Remove any intentionally used local addresses
+# Suspicious Source or Destination Addresses, possibly spoofed
+# Packets will get dropped later, so these rules only log
+log_spoof_a = '-A RH-Firewall-1-INPUT -i eth0 -s 10.0.0.0/8 -j LOG --log-prefix "IP DROP SPOOF A: "'
+log_spoof_b = '-A RH-Firewall-1-INPUT -i eth0 -s 172.16.0.0/12 -j LOG --log-prefix "IP DROP SPOOF B: "'
+log_spoof_c = '-A RH-Firewall-1-INPUT -i eth0 -s 192.168.0.0/16 -j LOG --log-prefix "IP DROP SPOOF C: "'
+log_spoof_d = '-A RH-Firewall-1-INPUT -i eth0 -s 224.0.0.0/4 -j LOG --log-prefix "IP DROP MULTICAST D: "'
+log_spoof_e = '-A RH-Firewall-1-INPUT -i eth0 -s 240.0.0.0/5 -j LOG --log-prefix "IP DROP SPOOF E: "'
+log_spoof_lo = '-A RH-Firewall-1-INPUT -i eth0 -d 127.0.0.0/8 -j LOG --log-prefix "IP DROP LOOPBACK: "'
+
+# Explicitly allowed incoming connections
+allow_loopback = '-A RH-Firewall-1-INPUT -i lo -j ACCEPT'
+allow_avahi = '-A RH-Firewall-1-INPUT -p udp --dport 5353 -d 224.0.0.251 -j ACCEPT'
+allow_cups_udp = '-A RH-Firewall-1-INPUT -p udp -m udp --dport 631 -j ACCEPT'
+allow_cups_tcp = '-A RH-Firewall-1-INPUT -p tcp -m tcp --dport 631 -j ACCEPT'
+allow_est = '-A RH-Firewall-1-INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT'
+allow_ssh = '-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT'
+allow_syslog = '-A RH-Firewall-1-INPUT -p udp -m udp --dport 514 -j ACCEPT'
+
+# Try to find the host's IP address
+# Puppet likes has_variable?, ruby likes defined?
+if has_variable?("ipaddress") then
+	iptables_ipaddr = ipaddress
+elsif has_variable?("ipaddress_eth0") then
+	iptables_ipaddr = ipaddress_eth0
+end
+
+# If we found an ip address, see if it's a syslog server, then add extra rule
+allow_syslog_rule = false
+if defined?("iptables_ipaddr") then
+	syslog_servers.each do |syslog_server|
+		if syslog_server == iptables_ipaddr then
+			allow_syslog_rule = true
+		end
+	end
+end
+
+# Easy settings to enable/disable rules
+allow_avahi_rule = false
+allow_ssh_rule = true 
+allow_cups_rule = false
+
+-%>
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+:RH-Firewall-1-INPUT - [0:0]
+-A INPUT -j RH-Firewall-1-INPUT
+-A FORWARD -j RH-Firewall-1-INPUT
+<%= allow_loopback %>
+<%= allow_icmp_echo_reply %>
+<%= allow_icmp_dest_unreachable %>
+<%= allow_icmp_time_exceeded %>
+<% if allow_cups_rule then -%>
+<%= allow_cups_udp %>
+<%= allow_cups_tcp %>
+<% end -%>
+<%= allow_est %>
+<% if allow_avahi_rule then -%>
+<%= allow_avahi %>
+<% end -%>
+<% if allow_ssh_rule then -%>
+<%= allow_ssh %>
+<% end -%>
+<% if allow_syslog_rule then -%>
+<%= allow_syslog %>
+<% end -%>
+<%= log_spoof_a %>
+<%= log_spoof_b %>
+<%= log_spoof_c %>
+<%= log_spoof_d %>
+<%= log_spoof_e %>
+<%= log_spoof_lo %>
+-A RH-Firewall-1-INPUT -j LOG
+-A RH-Firewall-1-INPUT -j DROP
+COMMIT

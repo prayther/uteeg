@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- definition of simple elements -->
+<xs:element name="Auto-Logon">
+  <xs:simpleType>
+         <xs:restriction base="xs:integer">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+         </xs:restriction>
+      </xs:simpleType>
+</xs:element>
+<xs:element name="Virtual-Machine-Name" type="xs:string"/>
+<xs:element name="Timezone" type="xs:integer"/>
+<xs:element name="Domain" type="xs:string"/>
+<xs:element name="Domain-User-Name" type="xs:string"/>
+<xs:element name="Domain-User-Password" type="xs:string"/>
+<xs:element name="Full-Name" type="xs:string"/>
+<xs:element name="Organization-Name" type="xs:string"/>
+
+<!-- definition of complex elements -->
+<xs:element name="Customization-Spec">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="Auto-Logon"/>
+   <xs:element ref="Virtual-Machine-Name"/>
+   <xs:element ref="Timezone"/>
+   <xs:element ref="Domain"/>
+   <xs:element ref="Domain-User-Name"/>
+   <xs:element ref="Domain-User-Password"/>
+   <xs:element ref="Full-Name"/>
+   <xs:element ref="Organization-Name"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="Specification">
+ <xs:complexType>
+  <xs:sequence>
+  <xs:element ref="Customization-Spec" maxOccurs="unbounded"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:element>
+
+</xs:schema>

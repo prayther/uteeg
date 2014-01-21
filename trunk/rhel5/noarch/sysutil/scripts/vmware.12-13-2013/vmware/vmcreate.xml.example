@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+
+<!-- This is a sample xml file for creating a virtual machine
+Following default values of the tags are set
+Name                 TestVM
+Host                 ABC.XXX.XXX
+Datacenter           ha-datacenter
+Guest-Id             winXPProGuest
+Datastore            storage1
+Disksize(in KB)      4194304(4GB)
+Memory(in MB)        256 
+Number-of-Processor  1
+Nic-Network          VM Network
+Nic-Poweron          0
+These values can be changed according to the requirement and network-->
+
+<Virtual-Machines>
+         <Virtual-Machine>
+            <Name>TestVM</Name>
+           	<Host>ABC.XXX.XXX</Host>
+	        <Datacenter>ha-datacenter</Datacenter>
+           	<Guest-Id>winXPProGuest</Guest-Id>
+           	<Datastore>storage1</Datastore>
+           	<Disksize>4194304</Disksize>
+           	<Memory>256</Memory>
+           	<Number-of-Processor>1</Number-of-Processor>
+           	<Nic-Network>VM Network</Nic-Network>
+           	<Nic-Poweron>0</Nic-Poweron>
+         </Virtual-Machine>
+</Virtual-Machines>

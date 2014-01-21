@@ -1,0 +1,14 @@
+[main]
+        vardir = /var/lib/puppet
+        logdir = $vardir/log
+        ssldir = $vardir/ssl
+        rundir = $vardir/run
+        templatedir = /etc/puppet/templates
+        pluginsync = true
+	factpath = $vardir/lib/facter
+
+[puppetmasterd]
+        storeconfigs = true
+
+[puppetd]
+        report = true
