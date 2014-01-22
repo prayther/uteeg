@@ -7,7 +7,6 @@
 #
 use Text::ParseWords; sub parse_csv { return quotewords(",",0, $_[0]); }
 use XML::Simple;
-#use XML::LibXML;
 
 # setup data structure to get the format we need
 my $virtualmachines = {
@@ -32,8 +31,9 @@ while (<$in>) {
     my $nic_network = $fields[11];
     my $rolename    = $fields[25];
     my $nic_poweron = $fields[31];
-    my $servicename = $fields[47];
-    my $vmname      = '$projectname-$servicename-$rolename-$env-$hostname';
+    my $env         = $fields[32];
+
+    my $vmname      = "$projectname-$rolename-$env-$hostname";
 
     $virtualmachines->{ 'Virtual-Machine' }{ $vmname } = {
         'Host'        => $vmhost,

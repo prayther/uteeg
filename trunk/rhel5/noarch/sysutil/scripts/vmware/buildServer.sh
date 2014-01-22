@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-# $Id: buildServer.sh 833 2012-08-23 17:40:42Z sysutil $
+# $Id: isogen.sh 315 2011-10-05 18:57:02Z sysutil $
 
 #  this script creates iso boot images to kickstart a rhel server from.
 #  while a little cumbersome, compared to pxe, etc it does eliminate
@@ -98,8 +98,6 @@ for vm in `cat $HOSTS | sed -e 's/\ /_/g'`; do
     ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_clone --name template-rhel-5-x86_64-server --clonename $ROLE-$ENV-$HOST \
     || error_exit "Line $LINENO $HOSTNAME:  ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_clone --name template --clonename $ROLE-$ENV-$HOST"
     ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_addoption $ROLE-$ENV-$HOST network "'network --device $IF --bootproto static --hostname $HOST.$DOMAIN --ip $IP --gateway $GATEWAY --netmask $MASK --nameserver $DNS1,$DNS2'"
-    echo "yum install -y $ROLE.rpm" > role.sh
-    #ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_addscript -p $ROLE-$ENV-$HOST -e post -i bash -f role.sh
 
     # Ryan Fenno perl script that  grabs "hosts" file and creates the vmcreate.xml
     echo $vm | sed 's/Trusted_VM_Network/Trusted\ VM\ Network/g' > makeXMLConfigFile.in
@@ -162,7 +160,10 @@ for vm in `cat $HOSTS | sed -e 's/\ /_/g'`; do
     cd $SCRIPTS/vmware/ && $SCRIPTS/vmware/addVMAnnotation.pl --annotationfile addVMAnnotation.input --username $VCENTERUSER --password $VCENTERPASSWORD --server $VCENTERSERVER \
     || error_exit "Line $LINENO $HOSTNAME:cd $SCRIPTS/vmware/ && $SCRIPTS/vmware/addVMAnnotation.pl --annotationfile addVMAnnotation.input --username $VCENTERUSER --password $VCENTERPASSWORD --server $VCENTERSERVER"
 
-    sleep 80
-    $SCRIPTS/vmware/vmISOManagement.pl --username $VCENTERUSER --password $VCENTERPASSWORD --server $VCENTERSERVER --vmname $PROJECT-$ROLE-$ENV-$HOST --operation umount
+#    sleep 80
+#    $SCRIPTS/vmware/vmISOManagement.pl --username $VCENTERUSER --password $VCENTERPASSWORD --server $VCENTERSERVER --vmname $PROJECT-$ROLE-$ENV-$HOST --operation umount
     #cd $SCRIPTS/vmware/ && $SCRIPTS/vmware/drs-control-final.pl --username $VCENTERUSER --password $VCENTERPASSWORD --server $VCENTERSERVER --vmname $PROJECT-$ROLE-$ENV-$HOST --ipaddress $IP --mode restore
 done
+
+
+

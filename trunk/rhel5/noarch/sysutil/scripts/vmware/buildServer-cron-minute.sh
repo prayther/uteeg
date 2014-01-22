@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-# $Id: buildServer-cron-minute.sh 763 2012-08-15 13:52:46Z sysutil $
+# $Id: isogen.sh 315 2011-10-05 18:57:02Z sysutil $
 
 #  this script creates iso boot images to kickstart a rhel server from.
 #  while a little cumbersome, compared to pxe, etc it does eliminate
@@ -100,8 +100,7 @@ for hostfiles in `ls /srv/www/htdocs/sim/output/*`;do
 
     # clean up old kickstart file, if exist and create a new one via clone from the "template".
     cd $SCRIPTS/vmware/ && ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_delete "$ROLE-$ENV-$HOST"
-    #ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_clone --name $ENV-template --clonename $ROLE-$ENV-$HOST \
-    ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_clone --name template-rhel-5-x86_64-server --clonename $ROLE-$ENV-$HOST \
+    ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_clone --name $ENV-template --clonename $ROLE-$ENV-$HOST \
     || error_exit "Line $LINENO $HOSTNAME:  ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_clone --name template --clonename $ROLE-$ENV-$HOST"
     ssh -i ../sysutil.private sysutil@$SATSERVER spacecmd -y --username=$SATUSER --password=$SATPASSWORD -- kickstart_addoption $ROLE-$ENV-$HOST network "'network --device $IF --bootproto static --hostname $HOST.$DOMAIN --ip $IP --gateway $GATEWAY --netmask $MASK --nameserver $DNS1,$DNS2'"
 

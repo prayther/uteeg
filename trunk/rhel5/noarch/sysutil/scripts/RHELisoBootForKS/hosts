@@ -1,0 +1,3 @@
+coco,00:50:56:00:00:a9,150.125.72.133,NCES,atlassian,c2ebl012.c2e.lab,41984,4096,nces4,'Aaron\ Prayther\ aprayther@LCE.com\ 843\ 218\ 2178/858\ 334\ 3171',rhel5_64Guest,Trusted VM Network,nces,1,thin,4096,3072,2048,1024,1024,1024,15360,512,2048,1024
+coin,00:50:56:00:00:aa,150.125.72.132,NCES,atlassian,c2ebl012.c2e.lab,93184,6144,nces2,"Aaron Prayther aprayther@LCE.com 843 218 2178/858 334 3171",rhel5_64Guest,Trusted VM Network,nces,1,thin,6144,5120,5120,5120,5120,1024,51200,512,2048,1024
+cold,00:50:56:00:00:ab,150.125.72.129

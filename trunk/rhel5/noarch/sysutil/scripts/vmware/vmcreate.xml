@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Virtual-Machines>
   <Virtual-Machine>
-    <Name>$projectName-$serviceName-$roleName-$env-$hostName</Name>
+    <Name>ges-defaults_2-in-nope</Name>
     <Datacenter>GES</Datacenter>
     <Datastore>na_rhel6</Datastore>
     <Disksize>230000000</Disksize>

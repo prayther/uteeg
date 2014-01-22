@@ -7,7 +7,7 @@ create there own input XML files and specify the file's location using <filename
 -->
  <Reconfigure-Virtual-Machine>
    <Name>ges-defaults_2-in-nope</Name>
-   <Host></Host>         
+   <Host>150.125.72.11</Host>         
    <Add-Device>
       <Network-Adapter>
 	     <Name></Name>

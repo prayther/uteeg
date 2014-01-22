@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-# $Id: buildServer-noVMbuild.sh 763 2012-08-15 13:52:46Z sysutil $
+# $Id: isogen.sh 315 2011-10-05 18:57:02Z sysutil $
 
 #  this script creates iso boot images to kickstart a rhel server from.
 #  while a little cumbersome, compared to pxe, etc it does eliminate
