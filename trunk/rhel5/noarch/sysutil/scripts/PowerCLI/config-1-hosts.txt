@@ -1,3 +1,0 @@
-<<<<<<< .mine
-﻿curl,00:50:56:00:00:b7,150.125.72.78,GES,fennor,c2ebl014.c2e.lab,50000,4096,nces1,Aaron Prayther aprayther@LCE.com 843 218 2178/858 334 3171,rhel5_64Guest,Trusted VM Network,ges,1,thin,2048,1024,2048,1024,1024,512,30720,512,2048,1024=======
-data,00:50:56:00:00:d8,150.125.72.68,NCES,aprayther,c2ebl012.c2e.lab,20000,384,nces1,Aaron Prayther aprayther@LCE.com 843 218 2178/858 334 3171,rhel5_64Guest,Trusted VM Network,nces,1,thin,2048,1024,2048,1024,1024,512,1024,512,2048,1024>>>>>>> .r380

@@ -1,8 +1,0 @@
-# resolv.conf
-#dnsserver,150.125.132.20
-#dnsserver1,150.125.132.24
-searchdomain,chs.spawar.navy.mil
-# mail relay
-relayhost,smtp.spawar.navy.mil
-# rhn server
-rhn,rhn.chs.spawar.navy.mil

@@ -1,2 +1,0 @@
--A INPUT -j DROP
--A FORWARD -j DROP

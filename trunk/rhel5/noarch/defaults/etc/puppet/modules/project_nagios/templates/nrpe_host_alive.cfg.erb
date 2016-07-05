@@ -1,9 +1,0 @@
-# Define a service to "ping" the local machine
-
-define service{
-        use                             generic-service         ; Name of service template to use
-        host_name                       <%= hostname %>
-        service_description             PING
-        check_command                   check_nrpe!check_host_alive
-	action_url                      /pnp4nagios/index.php/graph?host=$HOSTNAME$&srv=$SERVICEDESC$
-        }

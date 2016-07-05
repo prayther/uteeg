@@ -1,7 +1,0 @@
-dn: O=U.S. Government, C=US
-objectClass: top
-objectClass: extendedorgperson
-sn: root
-o: U.S. Government
-cn: root
-
