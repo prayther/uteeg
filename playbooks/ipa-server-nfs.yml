@@ -1,0 +1,15 @@
+- hosts: ipa
+  tasks:
+  - name: configure ipa server nfs
+    # command: /bin/kinit admin
+    command: /bin/ipa service-add nfs/ipa.example.org
+  - name: nfs client
+    command: /bin/ipa service-add nfs/wkstn.example.org
+  - name: add auto.home
+    command: /bin/ipa automountmap-add default auto.home
+  - name: add auto.master
+    command: /bin/ipa automountkey-add default --key "/home" --info auto.home auto.master
+  - name: add autohome map
+    command: /bin/ipa automountkey-add default --key "*" --info "-fstype=nfs4,rw.sec=krb5,soft,rsize=8192,wsize=8192 ipa.example.org:/exports/home/&" auto.home
+  - name: get /sbin/ipa-getkeytab
+    command: /sbin/ipa-getkeytab -s ipa.example.org -p nfs/ipa.example.org -k /etc/krb5.keytab

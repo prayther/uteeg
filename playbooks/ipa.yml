@@ -1,0 +1,83 @@
+- hosts: ipa
+  tasks:
+  - block:
+    - name: include some vars
+      include_vars: ../group_vars/ipaserver
+#    rescue:
+    - name: Confirm ipaserver, ipaserverdns installed
+      yum:
+        #name: ipa-server,ipa-server-dns
+        name: ipa-server,ipa-server-dns
+        state: latest
+
+    - name: Configure ipaserver
+      command: /usr/sbin/ipa-server-install -U -r EXAMPLE.ORG -n example.org -p password -a password --mkhomedir --hostname=ipa.example.org --ssh-trust-dns --setup-dns --forwarder=192.168.122.1
+#      register: ipaserverinstall
+      args:
+        creates: /var/log/ipaserver-install.log
+    always:
+    - name: open ports 80,443,389,636/tcp 53,88,464/tcp/udp 123/udp
+      firewalld:
+        service: "{{ item }}"
+        immediate: yes
+        permanent: yes
+        state: enabled
+      with_items:
+                  - http
+                  - https
+                  - ldap
+                  - ldaps
+                  - kerberos
+                  - dns
+                  - ntp
+                  - nfs
+                  - rpc-bind
+                  - kpasswd
+    - name: configure nfs for idm client automount homedir
+      copy:
+        content: /home *(rw,sec=krb5:krb5i:krb5p)
+        dest: /etc/exports 
+
+    - name: restart nfs
+      service:
+        name: nfs-server
+        state: restarted
+        enabled: yes
+
+    - name: ipa service-add
+      # manually running kinit admin on idm server, before running this
+      command: "/usr/bin/ipa service-add nfs/{{ ipaserver }}"
+      register: ipaserviceadd
+      ignore_errors: yes
+    - debug: 
+        var: ipaserviceadd
+
+    - name: ipa automoutmap-add
+      command: /usr/bin/ipa automountmap-add default auto.home
+      register: ipaautomountadd
+      ignore_errors: yes
+    - debug:
+        var: ipaautomountadd
+
+    - name: ipa automountkey add
+      command: /usr/bin/ipa automountkey-add default --key "/home" --info auto.home auto.master
+      register: ipaautomountkey
+      ignore_errors: yes
+    - debug: 
+        var: ipaautomountkey
+ 
+    - name: ipa automountkey add all
+      command: /usr/bin/ipa automountkey-add default --key "*" --info "-fstype=nfs4,rw,sec=krb5,soft,rsize=8192,wsize=8192 {{ ipaserver}}:/home/&" auto.home
+      register: ipaautomountkeyall
+      ignore_errors: yes
+    - debug: 
+        var: ipaautomountkeyall
+ 
+    - name: ipa getkeytab on nfs server ie ipa.example.org
+      command: "/usr/sbin/ipa-getkeytab -s {{ ipaserver }} -p nfs/{{ ipaserver }} -k /etc/krb5.keytab"
+      register: nfsgetkeytab
+      ignore_errors: yes
+    - debug: 
+        var: nfsgetkeytab
+ 
+
