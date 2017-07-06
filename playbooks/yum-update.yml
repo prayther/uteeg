@@ -1,6 +1,0 @@
----
-- hosts: all
-  sudo: yes
-  tasks:
-    - shell: yum clean all && yum -y update
-  
