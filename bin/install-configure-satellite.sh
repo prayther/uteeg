@@ -1,22 +1,15 @@
 #!/bin/bash -x
 
+cd "${BASH_SOURCE%/*}"
+source ../etc/install-configure-satellite.cfg
 
-exec 2>&1 >> /root/satellite_ks.log
-
-#mkdir /root/.ssh
-#chmod 700 /root/.ssh
-
-#cat <<'ROOTSSHKEY' > /root/.ssh/authorized_keys
-#ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqzz0IIJsnncRvTqrK8QM4y3Gt2I/c/GnW1pqFXst/uZGU14MxJSZsuFK5Xs7/GwpKPoDv9mwzUTs6Q4l5Pj8dHlwiJLjbFPi89Ri1kmV225+Tu+KgVO7q300kI5IknT4qpUKdlScAdSPm0mwJ6pb01hdc5iNKmGK8sEOkty+3nj7lbcXX1lR6NF2FmNaOn02c9ZKgun7uejJ2mplrIk/KR4AzMk9y0kuLhPpk1LDtitBKD2wpUTCh75C7j6GSe8BRGigvlcCBESZp7rCCoiAklhR9LcO0u9SaxHMnQpKmnQfLe3GMx7zJdJd0aD9XrvgG0aueZV0O7c9pAv+FETDD root@fedora.prayther.laptop
-#ROOTSSHKEY
-
-#chmod 400 /root/.ssh/authorized_keys
+exec >> ../log/install-configure-satellite.log 2>&1
 
 cd /root && wget --no-clobber http://10.0.0.1/ks/iso/satellite-6.2.9-rhel-7-x86_64-dvd.iso
 cd /root && wget --no-clobber http://10.0.0.1/ks/iso/rhel-server-7.3-x86_64-dvd.iso
 cd /root && wget --no-clobber http://10.0.0.1/ks/manifest/manifest.zip
 
-# Create Repository for Local Patching
+# Create Repository for Local install
 cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
 [rhel]
 name=RHEL local
@@ -32,15 +25,17 @@ mount -o loop /root/satellite-6.2.9-rhel-7-x86_64-dvd.iso /mnt/sat
 cd /mnt/sat
 ./install_packages
 cd /tmp
-#umount /mnt/sat
-#umount /mnt/rhel
 
+# After initial install using local media.
+# Turn off the local repos and patch from CDN.
 mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
 mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
+# Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
+# Register.
 /usr/sbin/subscription-manager unregister
-/usr/sbin/subscription-manager --username= --password='' register
-/usr/sbin/subscription-manager attach --pool=8a85f9873f77744e013f8944ab87680b
+/usr/sbin/subscription-manager --username="${RHN_USERNAME}" --password="${RHN_PASSWD}" register
+/usr/sbin/subscription-manager attach --pool="${RHN_POOL}"	#8a85f9873f77744e013f8944ab87680b
 /usr/sbin/subscription-manager repos '--disable=*'
 /usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
 /usr/bin/yum repolist
@@ -99,21 +94,21 @@ hammer subscription upload --file /root/manifest.zip  --organization=redhat
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
 
-hammer organization update --name redhat --redhat-repository-url http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
-hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
-hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
-# can't use releasesever on this one.
-#hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
-hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
-hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
-hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'RHN Tools for Red Hat Enterprise Linux 7 Server (RPMs)'
-hammer product create --organization redhat --name EPEL7
-#hammer repository update --url 'http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/custom/EPEL7/EPEL_7_-_x86_64/' --organization redhat --product EPEL7
-#hammer repository create --name='EPEL 7 - x86_64' --organization=redhat --product='EPEL7' --content-type='yum' --publish-via-http=true --url=http://dl.fedoraproject.org/pub/epel/7/x86_64/
-hammer repository create --name='EPEL 7 - x86_64' --organization=redhat --product='EPEL7' --content-type='yum' --publish-via-http=true --url=http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/custom/EPEL7/EPEL_7_-_x86_64/
-hammer product create --organization redhat --name Check_MK
-#chcon -t httpd_sys_content_t apps/check_mk/check-mk-raw-1.4.0p7-el7-54.x86_64.rpm # change selinux context on the repo
-hammer repository create --name='Check_MK' --organization=redhat --product='Check_MK' --content-type='yum' --publish-via-http=true --url=http://10.0.0.1/ks/apps/check_mk
+#hammer organization update --name redhat --redhat-repository-url http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
+#hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
+#hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
+## can't use releasesever on this one.
+##hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
+#hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
+#hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
+#hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'RHN Tools for Red Hat Enterprise Linux 7 Server (RPMs)'
+#hammer product create --organization redhat --name EPEL7
+##hammer repository update --url 'http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/custom/EPEL7/EPEL_7_-_x86_64/' --organization redhat --product EPEL7
+##hammer repository create --name='EPEL 7 - x86_64' --organization=redhat --product='EPEL7' --content-type='yum' --publish-via-http=true --url=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+#hammer repository create --name='EPEL 7 - x86_64' --organization=redhat --product='EPEL7' --content-type='yum' --publish-via-http=true --url=http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/custom/EPEL7/EPEL_7_-_x86_64/
+#hammer product create --organization redhat --name Check_MK
+##chcon -t httpd_sys_content_t apps/check_mk/check-mk-raw-1.4.0p7-el7-54.x86_64.rpm # change selinux context on the repo
+#hammer repository create --name='Check_MK' --organization=redhat --product='Check_MK' --content-type='yum' --publish-via-http=true --url=http://10.0.0.1/ks/apps/check_mk
 
 
 #Study the output

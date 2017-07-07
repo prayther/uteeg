@@ -28,7 +28,7 @@ echo ORG ${ORG} server ${SERVER}
 #  exit 1
 #fi
 
-NAME=${1} && echo "NAME=${1}" >> etc/virt-inst.cfg
+VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
 DISC_SIZE=${2} && echo "DISC_SIZE=${2}" >> etc/virt-inst.cfg
 VCPUS=${3} && echo "VCPUS=${3}" >> etc/virt-inst.cfg
 RAM=${4} && echo "RAM=${4}" >> etc/virt-inst.cfg
@@ -53,7 +53,7 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-%include /tmp/${NAME}.network
+%include /tmp/${VMNAME}.network
 
 # Root password
 rootpw --iscrypted \$6\$zBfR6/MikcoIX79Q\$G5Dv5HxUmsRrEOy2kTtrgO3o0rx7zNyvJWFhZpubxX9hhlH1bM7n9HW/6y6coDwsrO8qZssMRyxpdbSeSJoMO.
@@ -67,13 +67,13 @@ zerombr
 # Partition clearing information
 clearpart --all --initlabel
 # Disk partitioning information
-%include /tmp/${NAME}.partitions
+%include /tmp/${VMNAME}.partitions
 
 repo --name=epel --baseurl=http://dl.fedoraproject.org/pub/epel/7/x86_64
 
 %packages
 @core
-%include /tmp/${NAME}.packages
+%include /tmp/${VMNAME}.packages
 %end
 
 %pre
@@ -82,13 +82,13 @@ hostname=""
 set -- `cat /proc/cmdline`
 for I in $*; do case "$I" in *=*) eval $I;; esac; done
 
-curl ${URL}/ks/network/${NAME}.network > /tmp/${NAME}.network
-curl ${URL}/ks/post/${NAME}.post > /tmp/${NAME}.post
-curl ${URL}/ks/partitions/${NAME}.partitions > /tmp/${NAME}.partitions
-curl ${URL}/ks/packages/${NAME}.packages > /tmp/${NAME}.packages
+curl ${URL}/ks/network/${VMNAME}.network > /tmp/${VMNAME}.network
+curl ${URL}/ks/post/${VMNAME}.post > /tmp/${VMNAME}.post
+curl ${URL}/ks/partitions/${VMNAME}.partitions > /tmp/${VMNAME}.partitions
+curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 %end
 
-%include /tmp/${NAME}.post
+%include /tmp/${VMNAME}.post
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'
 %end
@@ -102,8 +102,8 @@ cat <<'EOFKS' > /etc/rc.local.ks.sh
 #!/bin/bash -x
 
 #Copy over the main script for configuration
-cd /root && wget http://${GATEWAY}/ks/post/${NAME}.sh
-chmod 700 /root/${NAME}.sh
+cd /root && wget http://${GATEWAY}/ks/post/${VMNAME}.sh
+chmod 700 /root/${VMNAME}.sh
 
 mkdir /root/.ssh
 chmod 700 /root/.ssh
@@ -178,15 +178,15 @@ rm -rf /var/lib/libvirt/images/sat.qcow2
 virsh net-destroy ${NETWORK}
 virsh net-start ${NETWORK}
 
-/bin/sed -i /${NAME}/d /root/.ssh/known_hosts
-/bin/sed -i /${NAME}/d /home/apraythe/.ssh/known_hosts
+/bin/sed -i /${VMNAME}/d /root/.ssh/known_hosts
+/bin/sed -i /${VMNAME}/d /home/apraythe/.ssh/known_hosts
 
 virt-install \
-   --name=${NAME} \
-   --disk path=/var/lib/libvirt/images/${NAME}.qcow2,size=${DISC_SIZE},sparse=false,format=qcow2,cache=none \
+   --name=${VMNAME} \
+   --disk path=/var/lib/libvirt/images/${VMNAME}.qcow2,size=${DISC_SIZE},sparse=false,format=qcow2,cache=none \
    --vcpus=${VCPUS} --ram=${RAM} \
    --location=/var/lib/libvirt/images/rhel-server-${OSVERSION}-x86_64-dvd.iso \
    --os-type=linux \
    --os-variant=rhel${OSVERSION} \
    --network network=${NETWORK} \
-   --extra-args ks="http://${GATEWAY}/ks/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${NAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+   --extra-args ks="http://${GATEWAY}/ks/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
