@@ -49,15 +49,6 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.o
 /usr/bin/yum -y update
 /usr/bin/yum -y install nfs-utils
 
-#ansible sat -a "/usr/sbin/subscription-manager --username= --password=
-#ansible localhost -a "/usr/sbin/subscription-manager attach --pool=8a85f9873f77744e013f8944ab87680b"
-#ansible localhost -a "/usr/sbin/subscription-manager repos '--disable=*'"
-#ansible localhost -a "/usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms"
-#ansible localhost -a "yum repolist"
-#ansible localhost -a "yum -y update"
-#ansible localhost -a "yum -y install satellite"
-#ansible localhost -a "reboot"
-
 /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
@@ -82,8 +73,6 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 /usr/sbin/satellite-installer --scenario satellite --upgrade
 
 /usr/sbin/satellite-installer --scenario satellite \
---foreman-initial-organization "redhat" \
---foreman-initial-location "laptop" \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
@@ -98,14 +87,15 @@ cat << EOF > ~/.hammer/cli_config.yml
        :password: 'password'
        :organization: redhat
 EOF
+
 #Create an organization
-#hammer organization create --name=redhat --label=redhat
+hammer organization create --name=redhat --label=redhat
 #hammer organization add-user --user=admin --name=redhat
 #Upload our manifest.zip (created in RH Portal) to our org and list our products:
 hammer subscription upload --file /root/manifest.zip  --organization=redhat
-hammer product list --organization redhat
+#hammer product list --organization redhat
 #List all repositories included in a previous imported product:
-hammer repository-set list --organization=redhat --product 'Red Hat Enterprise Linux Server'
+#hammer repository-set list --organization=redhat --product 'Red Hat Enterprise Linux Server'
 
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.

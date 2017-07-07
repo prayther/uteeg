@@ -1,10 +1,12 @@
 #!/bin/bash -x
 
-if [ "${1}" == "" ];then
+cd "${BASH_SOURCE%/*}"
+source ../etc/virt-inst.cfg
+
+if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   echo ""
   echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
   echo ""
-  echo "Run from current dir /var/www/html/ks"
   echo "Ex: ./virt-install.sh testvm 10 2 2048"
   echo ""
   echo "Only run one of these at a time. Building multiple"
@@ -12,6 +14,14 @@ if [ "${1}" == "" ];then
   echo "starting and stopping the network"
   echo ""
   echo "All the starting and stopping is to get dhcp leases straight"
+  echo ""
+  echo ""
+  exit 1
+fi
+
+if [ -z "${ORG}" ]; [ -z "${SEVER}" ];then
+  echo ""
+  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
   echo ""
   echo ""
   exit 1
