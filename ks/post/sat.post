@@ -1,0 +1,3 @@
+%post
+cd && /usr/bin/git clone https://github.com/prayther/uteeg.git
+%end

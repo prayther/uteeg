@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 cd "${BASH_SOURCE%/*}"
-source ../etc/virt-inst.cfg
+source etc/virt-inst.cfg
 
 if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   echo ""
@@ -19,41 +19,23 @@ if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   exit 1
 fi
 
-if [ -z "${ORG}" ]; [ -z "${SEVER}" ];then
-  echo ""
-  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
-  echo ""
-  echo ""
-  exit 1
-fi
+echo ORG ${ORG} server ${SERVER}
+#if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
+#  echo ""
+#  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
+#  echo ""
+#  echo ""
+#  exit 1
+#fi
 
-NAME=$1
-#DISC_SIZE=100
-DISC_SIZE=$2
-DOMAIN=prayther.laptop
-UNIQ=${NAME}_$(date '+%s') 
-#URL=http://192.168.122.1/ks
-URL=http://10.0.0.1/ks
-# Use default for dhcp, laptoplab or homelab for non dhcp, because satellite or idm is providing dns
-#NETWORK=default
-NETWORK=laptoplab
-IP=10.0.0.8
-MASK=255.255.255.0
-GATEWAY=10.0.0.1
-NIC=eth0
-AUTOCONF=none
-#VCPUS=2
-VCPUS=$3
-#RAM=4096
-RAM=$4
-DISC=vda
-OS=rhel
-OSVER=7
-OSVERSION=7.3
-ORG=prayther
-LOC=laptop
+NAME=${1} && echo "NAME=${1}" >> etc/virt-inst.cfg
+DISC_SIZE=${2} && echo "DISC_SIZE=${2}" >> etc/virt-inst.cfg
+VCPUS=${3} && echo "VCPUS=${3}" >> etc/virt-inst.cfg
+RAM=${4} && echo "RAM=${4}" >> etc/virt-inst.cfg
 
-cat >> ./ks_${UNIQ}.cfg <<EOF
+source etc/virt-inst.cfg
+
+cat >> tmp/ks_${UNIQ}.cfg <<EOF
 # System authorization information
 reboot
 auth --enableshadow --passalgo=sha512
@@ -71,7 +53,7 @@ keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
 
 # Network information
-%include /tmp/network
+%include /tmp/${NAME}.network
 
 # Root password
 rootpw --iscrypted \$6\$zBfR6/MikcoIX79Q\$G5Dv5HxUmsRrEOy2kTtrgO3o0rx7zNyvJWFhZpubxX9hhlH1bM7n9HW/6y6coDwsrO8qZssMRyxpdbSeSJoMO.
@@ -85,19 +67,13 @@ zerombr
 # Partition clearing information
 clearpart --all --initlabel
 # Disk partitioning information
-%include /tmp/partitions
+%include /tmp/${NAME}.partitions
 
 repo --name=epel --baseurl=http://dl.fedoraproject.org/pub/epel/7/x86_64
 
 %packages
 @core
-wget
-vim
-bind-utils
-# ansible comes from epel. so install it after reboot in post
-#ansible
-deltarpm
-%include /tmp/packages
+%include /tmp/${NAME}.packages
 %end
 
 %pre
@@ -106,13 +82,13 @@ hostname=""
 set -- `cat /proc/cmdline`
 for I in $*; do case "$I" in *=*) eval $I;; esac; done
 
-curl http://${GATEWAY}/ks/network/${NAME} > /tmp/network
-#curl http://${GATEWAY}/ks/post/${NAME}.sh > /tmp/${NAME}.sh
-curl http://${GATEWAY}/ks/partitions/${NAME} > /tmp/partitions
-curl http://${GATEWAY}/ks/packages/${NAME} > /tmp/packages
+curl ${URL}/ks/network/${NAME}.network > /tmp/${NAME}.network
+curl ${URL}/ks/post/${NAME}.post > /tmp/${NAME}.post
+curl ${URL}/ks/partitions/${NAME}.partitions > /tmp/${NAME}.partitions
+curl ${URL}/ks/packages/${NAME}.packages > /tmp/${NAME}.packages
 %end
 
-#%include /tmp/post
+%include /tmp/${NAME}.post
 
 %addon com_redhat_kdump --disable --reserve-mb='auto'
 %end
@@ -132,6 +108,7 @@ chmod 700 /root/${NAME}.sh
 mkdir /root/.ssh
 chmod 700 /root/.ssh
 
+# Use different keys
 cat <<'ROOTSSHKEY' > /root/.ssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqzz0IIJsnncRvTqrK8QM4y3Gt2I/c/GnW1pqFXst/uZGU14MxJSZsuFK5Xs7/GwpKPoDv9mwzUTs6Q4l5Pj8dHlwiJLjbFPi89Ri1kmV225+Tu+KgVO7q300kI5IknT4qpUKdlScAdSPm0mwJ6pb01hdc5iNKmGK8sEOkty+3nj7lbcXX1lR6NF2FmNaOn02c9ZKgun7uejJ2mplrIk/KR4AzMk9y0kuLhPpk1LDtitBKD2wpUTCh75C7j6GSe8BRGigvlcCBESZp7rCCoiAklhR9LcO0u9SaxHMnQpKmnQfLe3GMx7zJdJd0aD9XrvgG0aueZV0O7c9pAv+FETDD root@fedora.prayther.laptop
 ROOTSSHKEY
@@ -190,6 +167,8 @@ chmod 0755 /etc/rc.local
 %end
 EOF
 
+exit 1
+
 ansible sat --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
 virsh destroy sat
@@ -211,18 +190,3 @@ virt-install \
    --os-variant=rhel${OSVERSION} \
    --network network=${NETWORK} \
    --extra-args ks="http://${GATEWAY}/ks/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${NAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
-
-
-#until ansible sat -a "echo Alive!"
-#  do
-#        echo "Waiting for server to come up ${NAME}"
-# done
-
-  #ansible sat -a "/usr/sbin/subscription-manager --username= --password=
-  #ansible sat -a "/usr/sbin/subscription-manager attach --pool=8a85f9873f77744e013f8944ab87680b"
-  #ansible sat -a "/usr/sbin/subscription-manager repos '--disable=*'"
-  #ansible sat -a "/usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms"
-  #ansible sat -a "yum repolist"
-  #ansible sat -a "yum -y update"
-  #ansible sat -a "yum -y install satellite"
-  #ansible sat -a "reboot"

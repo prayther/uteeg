@@ -1,6 +1,5 @@
 #!/bin/bash -x
 
-#instead of %post for kickstart. This is just a shell script. then you skip the rc.local hurdles and mostly the variable conversions the mess up anything with $ in it.
 
 exec 2>&1 >> /root/satellite_ks.log
 
