@@ -2,6 +2,7 @@
 
 cd "${BASH_SOURCE%/*}"
 source etc/virt-inst.cfg
+source etc/register_cdn.cfg
 
 if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   echo ""
