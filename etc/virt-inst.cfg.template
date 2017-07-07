@@ -3,7 +3,6 @@
 # for provisioning with a ks.cfg file that is created.
 
 DOMAIN=laptop.prayther		# whatever you want example.com
-UNIQ=${NAME}_$(date '+%s')	# used when writing the dynamic ks.cfg to make uniq name ks_${UNIQ}.cfg
 URL=http://10.0.0.1/ks		# 192.168.122.1 would be default. I setup 10.0.0.0 without DHCP
 NETWORK=laptoplab		# 'default' is normal, I create laptoplab for 10.0.0.0
 IP=10.0.0.8			# static ip for vm being created
@@ -26,8 +25,11 @@ SERVER="10.0.0.1"
 # Vars from here down are generated based on command line parameters:
 # virt-install.sh <vmname> <disc in GB> <vcpus> <ram>
 # virt-install.sh testvm 10 2 2048
-# NAME=$1
-# DISC_SIZE=$2
-# VCPUS=$3
-# RAM=$4
+# If you rerun virt-inst.sh it replaces the variables below with
+# a sed command that deletes the line if it exists.
 
+
+VMNAME=4
+DISC_SIZE=4
+VCPUS=4
+RAM=4

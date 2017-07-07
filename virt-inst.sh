@@ -19,7 +19,14 @@ if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   exit 1
 fi
 
-echo ORG ${ORG} server ${SERVER}
+if [ -n "${VMNAME}" ]; [ -n "${DISC_SIZE}" ];then
+      /bin/sed -i /VMNAME=/d etc/virt-inst.cfg
+      /bin/sed -i /DISC_SIZE=/d etc/virt-inst.cfg
+      /bin/sed -i /VCPUS=/d etc/virt-inst.cfg
+      /bin/sed -i /RAM=/d etc/virt-inst.cfg
+fi
+
+
 #if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
 #  echo ""
 #  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
@@ -34,6 +41,8 @@ VCPUS=${3} && echo "VCPUS=${3}" >> etc/virt-inst.cfg
 RAM=${4} && echo "RAM=${4}" >> etc/virt-inst.cfg
 
 source etc/virt-inst.cfg
+
+exit 1
 
 cat >> tmp/ks_${UNIQ}.cfg <<EOF
 # System authorization information

@@ -2,6 +2,7 @@
 
 cd "${BASH_SOURCE%/*}"
 source ../etc/install-configure-satellite.cfg
+source ../etc/register_cdn.cfg
 
 exec >> ../log/install-configure-satellite.log 2>&1
 
@@ -114,14 +115,14 @@ hammer subscription upload --file /root/manifest.zip  --organization=redhat
 #Study the output
 #hammer repository-set list --organization=redhat --product 'Red Hat Enterprise Linux Server'
 #Then we can sync all repositories that we've enabled with this simple script:
-hammer --csv repository list --organization=redhat
-for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat; done
-for i in $(hammer --csv repository list --organization=redhat  | grep -i "Check_MK" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat --async; done
+#hammer --csv repository list --organization=redhat
+#for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat; done
+#for i in $(hammer --csv repository list --organization=redhat  | grep -i "Check_MK" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat --async; done
 #for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat --async; done
-for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat; done
+#for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat; done
  
 # Put CDN back to redhat and sync latest
-hammer organization update --name redhat --redhat-repository-url https://cdn.redhat.com
+#hammer organization update --name redhat --redhat-repository-url https://cdn.redhat.com
 
 # Create a new product for Puppet modules in forge (this slows down adding any Puppet module as it re-indexes all of them.  Only add Puppet Forge when you need it.):
 # hammer product create --name='Forge' --organization=redhat
