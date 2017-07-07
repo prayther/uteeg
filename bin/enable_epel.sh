@@ -25,5 +25,17 @@ for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODU
 # Put pulic mirror back to sync latest
 hammer repository update --url ${URL_EPEL} --organization redhat --product ${NAME_EPEL7}
 for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
+
+###########################
+#cleanup and add to epel, check_mk
+###########################
+#Create a content view for EPEL 7 x86_64e:
+hammer content-view create --name='CV_EPEL7' --organization=redhat
+for i in $(hammer --csv repository list --organization=redhat | grep "EPEL7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_EPEL7' --organization=redhat --repository-id=${i}; done
+for i in $(hammer --csv repository list --organization=redhat | grep "EPEL7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_EPEL7' --organization=redhat --repository-id=${i}; done
+
+#Publish the content views to Library:
+hammer content-view publish --name="CV_EPEL7" --organization=redhat #--async
+
 # then run cv_promote.sh
 

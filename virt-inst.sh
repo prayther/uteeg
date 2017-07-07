@@ -112,8 +112,7 @@ cat <<'EOFKS' > /etc/rc.local.ks.sh
 #!/bin/bash -x
 
 #Copy over the main script for configuration
-cd /root && wget http://${GATEWAY}/ks/post/${VMNAME}.sh
-chmod 700 /root/${VMNAME}.sh
+cd && /usr/bin/git clone https://github.com/prayther/uteeg.git
 
 mkdir /root/.ssh
 chmod 700 /root/.ssh

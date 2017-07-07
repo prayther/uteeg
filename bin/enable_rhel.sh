@@ -43,12 +43,56 @@ hammer repository-set enable \
   --releasever=${RELEASEVER} \
   --name 'RHN Tools for Red Hat Enterprise Linux 7 Server (RPMs)'
 
+###########################
+#cleanup and add to epel, check_mk
+###########################
 # Then we can sync all repositories that we've enable
 for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
 
 # Put CDN back to redhat and sync latest
 hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
+
+#Create a content view for RHEL 7 Core server x86_64:
+hammer content-view create --name='CV_RHEL7_Core' --organization=redhat
+for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep -v Optional | grep -v Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Core' --organization=redhat --repository-id=${i}; done
+
+#Publish the content views to Library:
+hammer content-view publish --name="CV_RHEL7_Core" --organization=redhat #--async
+
+#Create a content view for RHEL 7 Extras server x86_64:
+hammer content-view create --name='CV_RHEL7_Extras' --organization=redhat
+for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Extras' --organization=redhat --repository-id=${i}; done
+
+#Publish the content views to Library:
+hammer content-view publish --name="CV_RHEL7_Extras" --organization=redhat #--async
+
+#Create a content view for RHEL 7 Optional server x86_64:
+hammer content-view create --name='CV_RHEL7_Optional' --organization=redhat
+for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep Optional | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Optional' --organization=redhat --repository-id=${i}; done
+
+#Publish the content views to Library:
+hammer content-view publish --name="CV_RHEL7_Optional" --organization=redhat #--async
+
+
+###########################
+#cleanup and add to epel, check_mk
+###########################
+#Create a daily sync plan:
+hammer sync-plan create --interval=daily --name='Daily' --organization=redhat --sync-date '2017-07-03 24:00:00' --enabled 1
+hammer sync-plan list --organization=redhat
+
+#And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
+hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='Red Hat Enterprise Linux Server'
+#hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='Forge'
+hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='EPEL7'
+
+COMP_RHEL7=$(hammer content-view version list  --organization=redhat  --content-view CV_RHEL7_Core | awk '/CV_RHEL7_Core/ {print $1}')
+#COMP_Check_MK=$(hammer content-view version list  --organization=redhat  --content-view CV_Check_MK | awk '/CV_Check_MK/ {print $1}')
+# CCVs would contain the RHEL 7 Core Server.
+hammer content-view create --organization=redhat --name="CCV_RHEL7_Server" --composite  --component-ids="${COMP_RHEL7}" --description="Combines RHEL 7 with Basic Core Server"
+hammer content-view publish --name="CCV_RHEL7_Server" --organization=redhat --async
+
 # then run cv_promote.sh
 
 # from here down added to other scripts

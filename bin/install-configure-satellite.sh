@@ -84,7 +84,7 @@ cat << EOF > ~/.hammer/cli_config.yml
 EOF
 
 #Create an organization
-hammer organization create --name=redhat --label=redhat
+hammer organization create --name=${ORG} --label=${ORG}
 #hammer organization add-user --user=admin --name=redhat
 #Upload our manifest.zip (created in RH Portal) to our org and list our products:
 hammer subscription upload --file /root/manifest.zip  --organization=redhat
@@ -92,6 +92,8 @@ hammer subscription upload --file /root/manifest.zip  --organization=redhat
 #List all repositories included in a previous imported product:
 #hammer repository-set list --organization=redhat --product 'Red Hat Enterprise Linux Server'
 
+# timeout for testing.
+hammer settings set --name idle_timeout --value 99999999
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
 
@@ -129,29 +131,29 @@ hammer subscription upload --file /root/manifest.zip  --organization=redhat
 # hammer repository create --name='Puppet Forge' --organization=redhat --product='Forge' --content-type='puppet' --publish-via-http=true --url=https://forge.puppetlabs.com
 
 # Update EPEL repo to point back to public to get latest. After pulling from local above.
-hammer repository update --url 'http://dl.fedoraproject.org/pub/epel/7/x86_64/' --organization redhat --product EPEL7
+#hammer repository update --url 'http://dl.fedoraproject.org/pub/epel/7/x86_64/' --organization redhat --product EPEL7
 
 # Now lets sync from internet
 #for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat; done
-for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat --async; done
+#for i in $(hammer --csv repository list --organization=redhat  | grep -i "7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=redhat --async; done
 
 #Export latest so next time local is used it's more up-to-date
-mkdir /mnt/share
-echo "10.0.0.1:/var/www/html/ks	/mnt/share	nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
-/usr/bin/mount -a
-cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
-hammer content-view version export --id 1
-#rsync -av /var/lib/pulp/katello-export 10.0.01:/var/www/html/ks/
+#mkdir /mnt/share
+#echo "10.0.0.1:/var/www/html/ks	/mnt/share	nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
+#/usr/bin/mount -a
+#cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
+#hammer content-view version export --id 1
+##rsync -av /var/lib/pulp/katello-export 10.0.01:/var/www/html/ks/
  
  
 #Create a daily sync plan:
-hammer sync-plan create --interval=daily --name='Daily' --organization=redhat --sync-date '2017-07-03 24:00:00' --enabled 1
-hammer sync-plan list --organization=redhat
+#hammer sync-plan create --interval=daily --name='Daily' --organization=redhat --sync-date '2017-07-03 24:00:00' --enabled 1
+#hammer sync-plan list --organization=redhat
  
 #And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
-hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='Red Hat Enterprise Linux Server'
-#hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='Forge'
-hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='EPEL7'
+#hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='Red Hat Enterprise Linux Server'
+##hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='Forge'
+#hammer product set-sync-plan --sync-plan-id=1 --organization=redhat --name='EPEL7'
 
 # setup activation keys
 # moving to separate script. ak_create.sh
@@ -200,33 +202,33 @@ hammer lifecycle-environment create --name='App_Prod' --prior='App_UAT' --organi
  
  
 #Create a content view for RHEL 7 Core server x86_64:
-hammer content-view create --name='CV_RHEL7_Core' --organization=redhat
-for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep -v Optional | grep -v Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Core' --organization=redhat --repository-id=${i}; done
+#hammer content-view create --name='CV_RHEL7_Core' --organization=redhat
+#for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep -v Optional | grep -v Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Core' --organization=redhat --repository-id=${i}; done
 
 #Publish the content views to Library:
-hammer content-view publish --name="CV_RHEL7_Core" --organization=redhat #--async
+#hammer content-view publish --name="CV_RHEL7_Core" --organization=redhat #--async
  
 #Create a content view for RHEL 7 Extras server x86_64:
-hammer content-view create --name='CV_RHEL7_Extras' --organization=redhat
-for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Extras' --organization=redhat --repository-id=${i}; done
+#hammer content-view create --name='CV_RHEL7_Extras' --organization=redhat
+#for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Extras' --organization=redhat --repository-id=${i}; done
 
 #Publish the content views to Library:
-hammer content-view publish --name="CV_RHEL7_Extras" --organization=redhat #--async
+#hammer content-view publish --name="CV_RHEL7_Extras" --organization=redhat #--async
  
 #Create a content view for RHEL 7 Optional server x86_64:
-hammer content-view create --name='CV_RHEL7_Optional' --organization=redhat
-for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep Optional | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Optional' --organization=redhat --repository-id=${i}; done
+#hammer content-view create --name='CV_RHEL7_Optional' --organization=redhat
+#for i in $(hammer --csv repository list --organization=redhat | grep "Linux 7 " | grep Optional | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Optional' --organization=redhat --repository-id=${i}; done
 
 #Publish the content views to Library:
-hammer content-view publish --name="CV_RHEL7_Optional" --organization=redhat #--async
+#hammer content-view publish --name="CV_RHEL7_Optional" --organization=redhat #--async
  
 #Create a content view for EPEL 7 x86_64e:
-hammer content-view create --name='CV_EPEL7' --organization=redhat
-for i in $(hammer --csv repository list --organization=redhat | grep "EPEL7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_EPEL7' --organization=redhat --repository-id=${i}; done
-for i in $(hammer --csv repository list --organization=redhat | grep "EPEL7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_EPEL7' --organization=redhat --repository-id=${i}; done
+#hammer content-view create --name='CV_EPEL7' --organization=redhat
+#for i in $(hammer --csv repository list --organization=redhat | grep "EPEL7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_EPEL7' --organization=redhat --repository-id=${i}; done
+#for i in $(hammer --csv repository list --organization=redhat | grep "EPEL7" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_EPEL7' --organization=redhat --repository-id=${i}; done
 
 #Publish the content views to Library:
-hammer content-view publish --name="CV_EPEL7" --organization=redhat #--async
+#hammer content-view publish --name="CV_EPEL7" --organization=redhat #--async
  
 #Create a content view for Check_MK:
 #hammer content-view create --name='CV_Check_MK' --organization=redhat
@@ -236,11 +238,11 @@ hammer content-view publish --name="CV_EPEL7" --organization=redhat #--async
 #hammer content-view publish --name="CV_Check_MK" --organization=redhat #--async
  
  
-COMP_RHEL7=$(hammer content-view version list  --organization=redhat  --content-view CV_RHEL7_Core | awk '/CV_RHEL7_Core/ {print $1}')
+#COMP_RHEL7=$(hammer content-view version list  --organization=redhat  --content-view CV_RHEL7_Core | awk '/CV_RHEL7_Core/ {print $1}')
 #COMP_Check_MK=$(hammer content-view version list  --organization=redhat  --content-view CV_Check_MK | awk '/CV_Check_MK/ {print $1}')
 # CCVs would contain the RHEL 7 Core Server.
-hammer content-view create --organization=redhat --name="CCV_RHEL7_Server" --composite  --component-ids="${COMP_RHEL7}" --description="Combines RHEL 7 with Basic Core Server"
-hammer content-view publish --name="CCV_RHEL7_Server" --organization=redhat --async
+#hammer content-view create --organization=redhat --name="CCV_RHEL7_Server" --composite  --component-ids="${COMP_RHEL7}" --description="Combines RHEL 7 with Basic Core Server"
+#hammer content-view publish --name="CCV_RHEL7_Server" --organization=redhat --async
  
 # CCVs would contain the Check_MK application and RHEL 7 Core Server.
 #hammer content-view create --organization=redhat --name="CCV_Check_MK" --composite  --component-ids="${COMP_RHEL7},${COMP_Check_MK}" --description="Combines RHEL 7 with the Check_MK application"
@@ -255,21 +257,21 @@ hammer content-view publish --name="CCV_RHEL7_Server" --organization=redhat --as
 ###################################################################################################
  
 #Create a host collection for RHEL7:
-hammer host-collection create --name='HC_RHEL_7' --organization=redhat
-hammer host-collection create --name='HC_Check_MK' --organization=redhat
+#hammer host-collection create --name='HC_RHEL_7' --organization=redhat
+#hammer host-collection create --name='HC_Check_MK' --organization=redhat
  
 # Operating Systems are automatically added as the kickstart repos are synchronised.
 # Associate the operating systems hosted on this server with the specified organisation and location.
-ORG='redhat'
-LOC='laptop'
-for i in $(hammer --csv medium list | grep $(hostname) | cut -d, -f1)
-do
-   hammer organization add-medium --name ${ORG} --medium-id ${i}
-   hammer location add-medium --name ${LOC} --medium-id ${i}
-done
+#ORG='redhat'
+#LOC='laptop'
+#for i in $(hammer --csv medium list | grep $(hostname) | cut -d, -f1)
+#do
+#   hammer organization add-medium --name ${ORG} --medium-id ${i}
+#   hammer location add-medium --name ${LOC} --medium-id ${i}
+#done
 
 #set really idle use timeout
-hammer settings set --name idle_timeout --value 99999999
+#hammer settings set --name idle_timeout --value 99999999
 
 #/usr/bin/yum -y install ansible --enablerepo=epel
 #restore rc.local after we install
