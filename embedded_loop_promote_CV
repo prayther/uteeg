@@ -1,9 +1,0 @@
-for CV in $(hammer --csv content-view list --organization=redhat | awk -F"," '{print $1}' | sort -r | grep -vi ID | grep -v 1); do
-  for LF in $(hammer --csv lifecycle-environment list --organization=redhat | awk -F"," '{print $1}' | sort -n | grep -vi ID | grep -v 1); do
-    for RLF in $(hammer --csv lifecycle-environment list --organization=redhat | awk -F"," '{print $1}' | sort -r | grep -vi ID | grep -v 1); do
-       echo "hammer content-view version promote --organization=redhat --from-lifecycle-environment-id=${LF} --to-lifecycle-environment-id=${RLF} --content-view-id=${CV}"
-       hammer content-view version promote --organization=redhat --from-lifecycle-environment-id=${LF} --to-lifecycle-environment-id=${RLF} --content-view-id=${CV}
-    done
-  done
-done
-
