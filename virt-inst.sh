@@ -28,13 +28,13 @@ if [ -n "${VMNAME}" ]; [ -n "${DISC_SIZE}" ];then
 fi
 
 
-#if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
-#  echo ""
-#  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
-#  echo ""
-#  echo ""
-#  exit 1
-#fi
+if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
+  echo ""
+  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
+  echo ""
+  echo ""
+  exit 1
+fi
 
 VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
 DISC_SIZE=${2} && echo "DISC_SIZE=${2}" >> etc/virt-inst.cfg
@@ -43,15 +43,15 @@ RAM=${4} && echo "RAM=${4}" >> etc/virt-inst.cfg
 
 source etc/virt-inst.cfg
 
-exit 1
+#exit 1
 
-cat >> tmp/ks_${UNIQ}.cfg <<EOF
+cat >> ./ks_${UNIQ}.cfg <<EOF
 # System authorization information
 reboot
 auth --enableshadow --passalgo=sha512
 # Use CDROM installation media
 #cdrom
-url --url http://${GATEWAY}/ks/${OS}${OSVERSION}
+url --url ${URL}/${OS}${OSVERSION}
 # Use graphical install
 text
 # Run the Setup Agent on first boot
@@ -177,7 +177,7 @@ chmod 0755 /etc/rc.local
 %end
 EOF
 
-exit 1
+#exit 1
 
 ansible sat --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
@@ -199,4 +199,4 @@ virt-install \
    --os-type=linux \
    --os-variant=rhel${OSVERSION} \
    --network network=${NETWORK} \
-   --extra-args ks="http://${GATEWAY}/ks/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
