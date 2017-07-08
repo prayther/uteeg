@@ -16,20 +16,20 @@ hammer repository-set enable \
   --product "${PRODUCT}" \
   --basearch="${BASEARCH}" \
   --releasever="${RELEASEVER}" \
-  --name "${PRODUCT} ${KICKSTART}"
+  --name "${PRODUCT_VER}"
 hammer repository-set enable \
   --organization ${ORG} \
   --product "${PRODUCT}" \
   --basearch=${BASEARCH} \
   --releasever=${RELEASEVER} \
-  --name "${PRODUCT} ${RPMS}"
+  --name "${PRODUCT_VER}"
 # can't use releasesever on this one.
 #hammer repository-set enable --organization ${ORG} --product 'Red Hat Enterprise Linux Server' --basearch=${BASEARCH} --releasever=${RELEASEVER} --name ${PRODUCT} - Extras (RPMs)'
 hammer repository-set enable \
   --organization ${ORG} \
   --product ${PRODUCT} \
   --basearch=${BASEARCH} \
-  --name "${PRODUCT} ${EXTRAS}  ${RPMS}"
+  --name "${PRODUCT} ${EXTRAS} ${RPMS}"
 hammer repository-set enable \
   --organization ${ORG} \
   --product ${PRODUCT} \

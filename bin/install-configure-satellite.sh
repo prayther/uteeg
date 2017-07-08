@@ -56,8 +56,6 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
 
 /usr/sbin/satellite-installer --scenario satellite \
---foreman-initial-organization "redhat" \
---foreman-initial-location "laptop" \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
