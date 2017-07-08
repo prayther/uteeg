@@ -78,14 +78,14 @@ cat << EOF > ~/.hammer/cli_config.yml
        :host: 'https://sat.laptop.prayther'
        :username: 'admin'
        :password: 'password'
-       :organization: redhat
+       :organization: ${ORG}
 EOF
 
 #Create an organization
 hammer organization create --name=${ORG} --label=${ORG}
 #hammer organization add-user --user=admin --name=redhat
 #Upload our manifest.zip (created in RH Portal) to our org and list our products:
-hammer subscription upload --file /root/manifest.zip  --organization=redhat
+hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 #hammer product list --organization redhat
 #List all repositories included in a previous imported product:
 #hammer repository-set list --organization=redhat --product 'Red Hat Enterprise Linux Server'

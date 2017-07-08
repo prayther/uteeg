@@ -105,16 +105,16 @@ curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 
 %post
 # Backup the original rc.local file... empty
-cp /etc/rc.local /root/rc.local.orig
+cp /etc/rc.local /tmp/rc.local.orig
 
 # step one creat a file to run by rc.local at next boot
-cat <<'EOFKS' > /etc/rc.local
+cat <<'EOFKS' > /tmp/ks_post.sh
 #!/bin/bash -x
 
 exec >> /root/virt-inst.log 2>&1
 
 #Copy over the main script for configuration
-cd && /usr/bin/git clone https://github.com/prayther/uteeg.git
+cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
 
 mkdir /root/.ssh
 chmod 700 /root/.ssh
@@ -161,20 +161,23 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKzWzOv7dZGlh1VWuP68Hng374ZemSPT50tdSwXBXU
 ID_RSAPUB
 chmod 644 /root/.ssh/id_rsa.pub
 
-EOFKS
-
 # step 2 put the orig rc.local in place and reboot
-cp /root/rc.local.orig /etc/rc.local
+cp /tmp/rc.local.orig /etc/rc.local
 /sbin/reboot
+EOFKS
 
 chmod 0755 /etc/rc.local.ks.sh
 chmod 0755 /etc/rc.local
 /sbin/reboot
-%end
-EOF
 
+cat << EOH > /etc/rc.d/rc.local
+#!/bin/bash
+bash /tmp/ks_post.sh
+EOH
 #exit 1
+%end
 
+EOF
 ansible sat --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
 virsh destroy sat
