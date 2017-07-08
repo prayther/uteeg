@@ -2,6 +2,7 @@
 
 cd "${BASH_SOURCE%/*}"
 source ../etc/install-configure-satellite.cfg
+source ../etc/virt-inst.cfg
 source ../etc/register_cdn.cfg
 
 exec >> ../log/install-configure-satellite.log 2>&1
@@ -75,9 +76,9 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 mkdir  ~/.hammer
 cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
-       :host: 'https://${VMNAME}.${DOMAIN}'
-       :username: 'admin'
-       :password: 'password'
+       :host: https://${VMNAME}.${DOMAIN}
+       :username: ${ADMIN}
+       :password: ${PASSWD}
        :organization: ${ORG}
 EOF
 
