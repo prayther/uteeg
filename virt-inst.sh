@@ -108,8 +108,10 @@ curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 cp /etc/rc.local /etc/rc.local.orig
 
 # step one creat a file to run by rc.local at next boot
-cat <<'EOFKS' > /etc/rc.local.ks.sh
+cat <<'EOFKS' > /etc/rc.local
 #!/bin/bash -x
+
+exec >> /root/virt-inst.log 2>&1
 
 #Copy over the main script for configuration
 cd && /usr/bin/git clone https://github.com/prayther/uteeg.git
@@ -161,18 +163,13 @@ chmod 644 /root/.ssh/id_rsa.pub
 
 EOFKS
 
-# step 2 backup the ks stuff and put the orig rc.local in place and reboot again
-cat <<'EOFKS1' > /etc/rc.local
-#!/bin/bash -x
-/etc/rc.local.ks.sh
-cp /etc/rc.local /tmp/
-cp /etc/rc.local.ks.sh /tmp/
-cp /etc/rc.local.orig /etc/rc.local
+# step 2 put the orig rc.local in place and reboot
+cp /root/rc.local.orig /etc/rc.local
 /sbin/reboot
-EOFKS1
 
 chmod 0755 /etc/rc.local.ks.sh
 chmod 0755 /etc/rc.local
+/sbin/reboot
 %end
 EOF
 
