@@ -16,32 +16,32 @@ hammer repository-set enable \
   --product "${PRODUCT}" \
   --basearch="${BASEARCH}" \
   --releasever="${RELEASEVER}" \
-  --name "${PRODUCT_VER}"
+  --name "Red Hat Enterprise Linux 7 Server (RPMs)"
 hammer repository-set enable \
   --organization ${ORG} \
   --product "${PRODUCT}" \
   --basearch=${BASEARCH} \
   --releasever=${RELEASEVER} \
-  --name "${PRODUCT_VER}"
+  --name "Red Hat Enterprise Linux 7 Server - Optional (RPMs)"
 # can't use releasesever on this one.
 #hammer repository-set enable --organization ${ORG} --product 'Red Hat Enterprise Linux Server' --basearch=${BASEARCH} --releasever=${RELEASEVER} --name ${PRODUCT} - Extras (RPMs)'
 hammer repository-set enable \
   --organization ${ORG} \
   --product ${PRODUCT} \
   --basearch=${BASEARCH} \
-  --name "${PRODUCT} ${EXTRAS} ${RPMS}"
+  --name "Red Hat Enterprise Linux 7 Server - Extras (RPMs)"
 hammer repository-set enable \
   --organization ${ORG} \
   --product ${PRODUCT} \
   --basearch=${BASEARCH} \
   --releasever=${RELEASEVER} \
-  --name "${PRODUCT} ${OPTIONAL} ${RPMS}"
+  --name "Red Hat Enterprise Linux 7 Server (Kickstart)"
 hammer repository-set enable \
   --organization ${ORG} \
   --product ${PRODUCT} \
   --basearch=${BASEARCH} \
   --releasever=${RELEASEVER} \
-  --name 'RHN Tools for Red Hat Enterprise Linux 7 Server (RPMs)'
+  --name "Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)"
 
 ###########################
 #cleanup and add to epel, check_mk
