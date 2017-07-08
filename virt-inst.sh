@@ -105,7 +105,7 @@ curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 
 %post
 # Backup the original rc.local file... empty
-cp /etc/rc.local /etc/rc.local.orig
+cp /etc/rc.local /root/rc.local.orig
 
 # step one creat a file to run by rc.local at next boot
 cat <<'EOFKS' > /etc/rc.local
