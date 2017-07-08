@@ -6,9 +6,9 @@ source ../etc/register_cdn.cfg
 
 exec >> ../log/install-configure-satellite.log 2>&1
 
-cd /root && wget --no-clobber http://10.0.0.1/ks/iso/satellite-6.2.9-rhel-7-x86_64-dvd.iso
-cd /root && wget --no-clobber http://10.0.0.1/ks/iso/rhel-server-7.3-x86_64-dvd.iso
-cd /root && wget --no-clobber http://10.0.0.1/ks/manifest/manifest.zip
+cd /root && wget --no-clobber http://${SERVER}/ks/iso/satellite-6.2.9-rhel-7-x86_64-dvd.iso
+cd /root && wget --no-clobber http://${SERVER}/ks/iso/rhel-server-7.3-x86_64-dvd.iso
+cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
 cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
@@ -75,7 +75,7 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 mkdir  ~/.hammer
 cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
-       :host: 'https://sat.laptop.prayther'
+       :host: 'https://${VMNAME}.${DOMAIN}'
        :username: 'admin'
        :password: 'password'
        :organization: ${ORG}
