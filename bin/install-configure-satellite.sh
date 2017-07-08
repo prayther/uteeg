@@ -83,7 +83,7 @@ EOF
 
 #Create an organization
 hammer organization create --name=${ORG} --label=${ORG}
-#hammer organization add-user --user=admin --name=redhat
+hammer organization add-user --user=admin --name=${ORG}
 #Upload our manifest.zip (created in RH Portal) to our org and list our products:
 hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 #hammer product list --organization redhat
