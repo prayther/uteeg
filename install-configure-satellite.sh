@@ -57,6 +57,8 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
 
 /usr/sbin/satellite-installer --scenario satellite \
+--foreman-initial-organization "${ORG}" \
+--foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
@@ -67,6 +69,8 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 /usr/sbin/satellite-installer --scenario satellite --upgrade
 
 /usr/sbin/satellite-installer --scenario satellite \
+--foreman-initial-organization "${ORG}" \
+--foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
@@ -83,8 +87,8 @@ cat << EOF > ~/.hammer/cli_config.yml
 EOF
 
 #Create an organization
-hammer organization create --name=${ORG} --label=${ORG}
-hammer organization add-user --user=admin --name=${ORG}
+#hammer organization create --name=${ORG} --label=${ORG}
+#hammer organization add-user --user=admin --name=${ORG}
 #Upload our manifest.zip (created in RH Portal) to our org and list our products:
 hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 #hammer product list --organization redhat
