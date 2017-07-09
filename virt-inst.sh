@@ -163,7 +163,7 @@ chmod 644 /root/.ssh/id_rsa.pub
 
 # step 2 put the orig rc.local in place and reboot
 cp /tmp/rc.local.orig /etc/rc.local
-/sbin/reboot
+#/sbin/reboot
 EOFKS
 
 chmod 0755 /etc/rc.local.ks.sh
@@ -174,7 +174,6 @@ cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
 bash /tmp/ks_post.sh
 EOH
-#exit 1
 %end
 
 EOF

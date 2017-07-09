@@ -1,9 +1,9 @@
 #!/bin/bash -x
 
 cd "${BASH_SOURCE%/*}"
-source ../etc/install-configure-satellite.cfg
-source ../etc/virt-inst.cfg
-source ../etc/register_cdn.cfg
+source etc/install-configure-satellite.cfg
+source etc/virt-inst.cfg
+source etc/register_cdn.cfg
 
 exec >> ../log/install-configure-satellite.log 2>&1
 
@@ -186,15 +186,15 @@ hammer settings set --name idle_timeout --value 99999999
 #    Public_Website -> Dev -> Test -> Prod
 #    App -> Dev -> Test -> UAT -> Prod -> Legacy
  
-hammer lifecycle-environment create --name='Infra_Dev' --prior='Library' --organization="${ORG}"
-hammer lifecycle-environment create --name='Infra_Test' --prior='Infra_Dev' --organization="${ORG}"
-hammer lifecycle-environment create --name='Infra_Prod' --prior='Infra_Test' --organization="${ORG}"
- 
- 
-hammer lifecycle-environment create --name='App_Dev' --prior='Library' --organization="${ORG}"
-hammer lifecycle-environment create --name='App_Test' --prior='App_Dev' --organization="${ORG}"
-hammer lifecycle-environment create --name='App_UAT' --prior='App_Test' --organization="${ORG}"
-hammer lifecycle-environment create --name='App_Prod' --prior='App_UAT' --organization="${ORG}"
+#hammer lifecycle-environment create --name='Infra_Dev' --prior='Library' --organization="${ORG}"
+#hammer lifecycle-environment create --name='Infra_Test' --prior='Infra_Dev' --organization="${ORG}"
+#hammer lifecycle-environment create --name='Infra_Prod' --prior='Infra_Test' --organization="${ORG}"
+# 
+# 
+#hammer lifecycle-environment create --name='App_Dev' --prior='Library' --organization="${ORG}"
+#hammer lifecycle-environment create --name='App_Test' --prior='App_Dev' --organization="${ORG}"
+#hammer lifecycle-environment create --name='App_UAT' --prior='App_Test' --organization="${ORG}"
+#hammer lifecycle-environment create --name='App_Prod' --prior='App_UAT' --organization="${ORG}"
  
 # This is How I get the ID of a repo by name
 #hammer --csv repository list --organization=redhat |  awk -F, '/^[0-9]*?,Red Hat Enterprise Linux 6 Server RPMs x86_64 6Server/ {print $1}'
