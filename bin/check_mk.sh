@@ -5,33 +5,20 @@ source ../etc/virt-inst.cfg
 #source ../etc/install-configure-satellite.cfg
 source ../etc/check_mk.cfg
 
-exec >> ../log/check_mk.log 2>&1
+#exec >> ../log/check_mk.log 2>&1
 
 exit 1
 
 # Configure all the ${NAME} stuff in satellite
-hammer product create \
-  --organization redhat \
-  --name ${NAME}
+hammer product create --organization redhat --name ${NAME}
 
 #chcon -t httpd_sys_content_t apps/check_mk/check-mk-raw-1.4.0p7-el7-54.x86_64.rpm # change selinux context on the repo
-hammer repository create \
-  --name='${NAME}' \
-  --organization=redhat \
-  --product='${NAME}' \
-  --content-type='yum' \
-  --publish-via-http=true \
-  --url=http://10.0.0.1/ks/apps/check_mk
+hammer repository create --name='${NAME}' --organization=redhat --product='${NAME}' --content-type='yum' --publish-via-http=true --url=http://10.0.0.1/ks/apps/check_mk
 
 #Create a content view for ${NAME}:
-hammer content-view create \
-  --name='CV_${NAME}' \
-  --organization=redhat
+hammer content-view create --name='CV_${NAME}' --organization=redhat
 for i in $(hammer --csv repository list --organization=redhat | grep "${NAME}" | awk -F, {'print $1'} | grep -vi '^ID')
-    do hammer content-view add-repository \
-      --name='CV_${NAME}' \
-      --organization=redhat \
-      --repository-id=${i}
+    do hammer content-view add-repository --name='CV_${NAME}' --organization=redhat --repository-id=${i}
 done
 
 #Publish the content views to Library:
@@ -45,13 +32,5 @@ COMP_${NAME}=$(hammer content-view version list  --organization=redhat  --conten
 #hammer content-view publish --name="CCV_RHEL7_Server" --organization=redhat --async
 
 # CCVs would contain the ${NAME} application and RHEL 7 Core Server.
-hammer content-view create \
-  --organization=redhat \
-  --name="CCV_${NAME}" \
-  --composite \
-  --component-ids="${COMP_RHEL7},${COMP_${NAME}}" \
-  --description="Combines RHEL 7 with the ${NAME} application"
-hammer content-view publish \
-  --name="CCV_${NAME}" \
-  --organization=redhat #--async
-
+hammer content-view create --organization=redhat --name="CCV_${NAME}" --composite --component-ids="${COMP_RHEL7},${COMP_${NAME}}" --description="Combines RHEL 7 with the ${NAME} application"
+hammer content-view publish --name="CCV_${NAME}" --organization=redhat #--async

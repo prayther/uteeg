@@ -177,7 +177,7 @@ EOH
 %end
 
 EOF
-ansible sat --timeout=5 -a "/usr/sbin/subscription-manager unregister"
+ansible sat.laptop.prayther --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
 virsh destroy sat
 virsh undefine sat
