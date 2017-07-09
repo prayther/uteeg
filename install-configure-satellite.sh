@@ -5,7 +5,7 @@ source etc/install-configure-satellite.cfg
 source etc/virt-inst.cfg
 source etc/register_cdn.cfg
 
-exec >> ../log/install-configure-satellite.log 2>&1
+#exec >> log/install-configure-satellite.log 2>&1
 
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/satellite-6.2.9-rhel-7-x86_64-dvd.iso
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/rhel-server-7.3-x86_64-dvd.iso
