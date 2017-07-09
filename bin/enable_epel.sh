@@ -5,7 +5,7 @@ cd "${BASH_SOURCE%/*}"
 source ../etc/enable_epel.cfg
 #source ../etc/install-configure-satellite.cfg
 
-exec >> ../log/enable_epel.log 2>&1
+#exec >> ../log/enable_epel.log 2>&1
 
 # Setup EPEL
 hammer product create \
