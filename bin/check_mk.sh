@@ -7,16 +7,14 @@ source ../etc/check_mk.cfg
 
 #exec >> ../log/check_mk.log 2>&1
 
-exit 1
-
 # Configure all the ${NAME} stuff in satellite
 hammer product create --organization redhat --name ${NAME}
 
 #chcon -t httpd_sys_content_t apps/check_mk/check-mk-raw-1.4.0p7-el7-54.x86_64.rpm # change selinux context on the repo
-hammer repository create --name='${NAME}' --organization=redhat --product='${NAME}' --content-type='yum' --publish-via-http=true --url=http://10.0.0.1/ks/apps/check_mk
+hammer repository create --name="${NAME}" --organization=redhat --product='${NAME}' --content-type='yum' --publish-via-http=true --url=http://10.0.0.1/ks/apps/check_mk
 
 #Create a content view for ${NAME}:
-hammer content-view create --name='CV_${NAME}' --organization=redhat
+hammer content-view create --name="CV_${NAME}" --organization=redhat
 for i in $(hammer --csv repository list --organization=redhat | grep "${NAME}" | awk -F, {'print $1'} | grep -vi '^ID')
     do hammer content-view add-repository --name='CV_${NAME}' --organization=redhat --repository-id=${i}
 done
