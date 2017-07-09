@@ -8,7 +8,7 @@ source ../etc/install-configure-satellite.cfg
 #exec >> ../log/enable_epel.log 2>&1
 
 # Setup EPEL
-hammer product create --organization redhat --name ${NAME_EPEL7}
+hammer product create --organization ${ORG} --name EPEL7
 
 hammer repository create --name=EPEL7 --organization=redhat --product=EPEL7 --content-type='yum' --publish-via-http=true --url=${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/custom/EPEL7/EPEL_7_-_x86_64/
 # Then we can sync all repositories that we've enable
