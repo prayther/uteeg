@@ -4,4 +4,5 @@ wget
 vim
 bind-utils
 deltarpm
+nfs-utils
 #ansible
