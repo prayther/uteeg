@@ -7,8 +7,8 @@ source etc/register_cdn.cfg
 
 #exec >> log/install-configure-satellite.log 2>&1
 
-cd /root && wget --no-clobber http://${SERVER}/ks/iso/satellite-6.2.9-rhel-7-x86_64-dvd.iso
-cd /root && wget --no-clobber http://${SERVER}/ks/iso/rhel-server-7.3-x86_64-dvd.iso
+cd /root && wget --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
+cd /root && wget --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
@@ -21,9 +21,9 @@ gpgcheck=1
 EOF
 
 mkdir /mnt/rhel
-mount -o loop /root/rhel-server-7.3-x86_64-dvd.iso /mnt/rhel
+mount -o loop /root/${RHEL_ISO} /mnt/rhel
 mkdir /mnt/sat
-mount -o loop /root/satellite-6.2.9-rhel-7-x86_64-dvd.iso /mnt/sat
+mount -o loop /root/${SATELLITE_ISO} /mnt/sat
 cd /mnt/sat
 ./install_packages
 cd /tmp
