@@ -30,8 +30,8 @@ cd /tmp
 
 # After initial install using local media.
 # Turn off the local repos and patch from CDN.
-mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
+#mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
+#mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
