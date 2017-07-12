@@ -19,3 +19,4 @@ source etc/register_cdn.cfg
 /usr/bin/yum -y update
 /usr/bin/yum -y install nfs-utils
 
+/sbin/reboot
