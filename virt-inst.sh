@@ -115,6 +115,8 @@ exec >> /root/virt-inst.log 2>&1
 
 #Copy over the main script for configuration
 cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
+uteeg/install-configure-satellite.sh
+/usr/bin/watch uteeg/log/install-configure-satellite.log
 
 mkdir /root/.ssh
 chmod 700 /root/.ssh
@@ -195,6 +197,7 @@ virt-install \
    --vcpus=${VCPUS} --ram=${RAM} \
    --location=/var/lib/libvirt/images/rhel-server-${OSVERSION}-x86_64-dvd.iso \
    --os-type=linux \
+   --noautoconsole --wait -1 \
    --os-variant=rhel${OSVERSION} \
    --network network=${NETWORK} \
    --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
