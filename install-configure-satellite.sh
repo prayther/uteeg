@@ -35,16 +35,16 @@ cd /tmp
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
-/usr/sbin/subscription-manager unregister
-/usr/sbin/subscription-manager --username="${RHN_USERNAME}" --password="${RHN_PASSWD}" register
-/usr/sbin/subscription-manager attach --pool="${RHN_POOL}"	#8a85f9873f77744e013f8944ab87680b
-/usr/sbin/subscription-manager repos '--disable=*'
-/usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
-/usr/bin/yum repolist
-/usr/bin/yum clean all
-/usr/bin/yum -y update
-/usr/bin/yum -y install nfs-utils
-
+#/usr/sbin/subscription-manager unregister
+#/usr/sbin/subscription-manager --username="${RHN_USERNAME}" --password="${RHN_PASSWD}" register
+#/usr/sbin/subscription-manager attach --pool="${RHN_POOL}"	#8a85f9873f77744e013f8944ab87680b
+#/usr/sbin/subscription-manager repos '--disable=*'
+#/usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
+#/usr/bin/yum repolist
+#/usr/bin/yum clean all
+#/usr/bin/yum -y update
+#/usr/bin/yum -y install nfs-utils
+#
 /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
@@ -66,16 +66,16 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 --capsule-puppet false
 
 #Might use this if you install from DVD and then stuff happens ?!$%
-/usr/sbin/satellite-installer --scenario satellite --upgrade
+#/usr/sbin/satellite-installer --scenario satellite --upgrade
 
-/usr/sbin/satellite-installer --scenario satellite \
---foreman-initial-organization "${ORG}" \
---foreman-initial-location "${LOC}" \
---foreman-admin-username admin \
---foreman-admin-password password \
---foreman-proxy-tftp true \
---foreman-proxy-tftp-servername $(hostname) \
---capsule-puppet false
+#/usr/sbin/satellite-installer --scenario satellite \
+#--foreman-initial-organization "${ORG}" \
+#--foreman-initial-location "${LOC}" \
+#--foreman-admin-username admin \
+#--foreman-admin-password password \
+#--foreman-proxy-tftp true \
+#--foreman-proxy-tftp-servername $(hostname) \
+#--capsule-puppet false
 
 mkdir  ~/.hammer
 cat << EOF > ~/.hammer/cli_config.yml
@@ -90,13 +90,15 @@ EOF
 #hammer organization create --name=${ORG} --label=${ORG}
 #hammer organization add-user --user=admin --name=${ORG}
 #Upload our manifest.zip (created in RH Portal) to our org and list our products:
-hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
+
+#hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
+
 #hammer product list --organization redhat
 #List all repositories included in a previous imported product:
 #hammer repository-set list --organization=redhat --product 'Red Hat Enterprise Linux Server'
 
 # timeout for testing.
-hammer settings set --name idle_timeout --value 99999999
+#hammer settings set --name idle_timeout --value 99999999
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
 
