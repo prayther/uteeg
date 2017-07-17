@@ -56,7 +56,7 @@ exec >> log/satellite-update.log 2>&1
 # --add-port="5647/tcp" \
 # --add-port="8000/tcp" --add-port="8140/tcp"
 
-/bin/bash ./register.sh
+#/bin/bash ./register.sh
 
 /usr/sbin/satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
