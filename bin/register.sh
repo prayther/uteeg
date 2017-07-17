@@ -8,7 +8,12 @@ source ../etc/register_cdn.cfg
 cd /root && wget --no-clobber http://${SERVER}/passwd
 cd /root && wget --no-clobber http://${SERVER}/rhn-acct
 
-#exec >> log/update.log 2>&1
+#exec >> log/register.log 2>&1
+
+# After initial install using local media.
+# Turn off the local repos and patch from CDN.
+mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
+mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
@@ -22,4 +27,6 @@ cd /root && wget --no-clobber http://${SERVER}/rhn-acct
 /usr/bin/yum -y update
 /usr/bin/yum -y install nfs-utils
 
-/sbin/reboot
+#/sbin/reboot
+
+/bin/bash satellite-update.sh

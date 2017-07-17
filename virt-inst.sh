@@ -115,7 +115,7 @@ exec >> /root/virt-inst.log 2>&1
 
 #Copy over the main script for configuration
 cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
-uteeg/install-configure-satellite.sh
+uteeg/satellite-install.sh
 
 mkdir /root/.ssh
 chmod 700 /root/.ssh
