@@ -103,7 +103,7 @@ hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 hammer settings set --name idle_timeout --value 99999999
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
-/bin/bash enable_rhel.sh
+/bin/bash ~/uteeg/bin/enable_rhel.sh
 
 #hammer organization update --name redhat --redhat-repository-url http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
 #hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
