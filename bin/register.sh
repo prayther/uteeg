@@ -30,3 +30,13 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 #/sbin/reboot
 
 #/bin/bash ~/uteeg/bin/satellite-update.sh
+
+cat << EOH > /etc/rc.d/rc.local
+/bin/bash /root/uteeg/satellite-install.sh
+# step 2 put the orig rc.local in place and reboot
+cp /tmp/rc.local.orig /etc/rc.local
+/sbin/reboot
+EOH
+
+chmod 0755 /etc/rc.local.ks.sh
+chmod 0755 /etc/rc.local
