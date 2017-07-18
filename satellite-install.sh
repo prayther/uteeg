@@ -86,7 +86,8 @@ cat << EOF > ~/.hammer/cli_config.yml
        :organization: ${ORG}
 EOF
 
-#/bin/bash ~/uteeg/bin/register.sh
+/bin/bash ~/uteeg/bin/satellite-update.sh
+
 #Create an organization
 #hammer organization create --name=${ORG} --label=${ORG}
 #hammer organization add-user --user=admin --name=${ORG}
