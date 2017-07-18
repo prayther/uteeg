@@ -25,8 +25,8 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 /usr/bin/yum repolist
 /usr/bin/yum clean all
 /usr/bin/yum -y update
-/usr/bin/yum -y install nfs-utils
+#/usr/bin/yum -y install nfs-utils
 
 #/sbin/reboot
 
-/bin/bash ~/uteeg/bin/satellite-update.sh
+#/bin/bash ~/uteeg/bin/satellite-update.sh

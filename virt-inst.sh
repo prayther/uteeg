@@ -172,7 +172,7 @@ EOFKS
 
 chmod 0755 /etc/rc.local.ks.sh
 chmod 0755 /etc/rc.local
-/sbin/reboot
+#/sbin/reboot
 
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
