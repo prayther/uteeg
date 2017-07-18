@@ -1,9 +1,9 @@
 #!/bin/bash -x
 
 cd "${BASH_SOURCE%/*}"
-source ..etc/install-configure-satellite.cfg
-source ..etc/virt-inst.cfg
-source ..etc/register_cdn.cfg
+source ../etc/install-configure-satellite.cfg
+source ../etc/virt-inst.cfg
+source ../etc/register_cdn.cfg
 
 exec >> log/satellite-update.log 2>&1
 

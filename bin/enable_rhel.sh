@@ -5,7 +5,7 @@ source ../etc/virt-inst.cfg
 source ../etc/enable_rhel.cfg
 source ../etc/install-configure-satellite.cfg
 
-#exec >> ../log/enable_rhel.log 2>&1
+exec >> ../log/enable_rhel.log 2>&1
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
 hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
