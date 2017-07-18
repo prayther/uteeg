@@ -115,7 +115,6 @@ exec >> /root/virt-inst.log 2>&1
 
 #Copy over the main script for configuration
 cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
-uteeg/satellite-install.sh
 
 mkdir /root/.ssh
 chmod 700 /root/.ssh
@@ -161,6 +160,10 @@ cat <<'ID_RSAPUB' > /root/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKzWzOv7dZGlh1VWuP68Hng374ZemSPT50tdSwXBXU9krkeNbFwCi9iiJb7qIqMFf9kBWC5JfLUGrzkuTDklFoRM8TZj1C1aj2BjoTE6xFoHsldPrzROj8MqYFykNXYuK0ugWPU5NFH2jPc1Srd7wKt9OYB/2qz24ajJf+u3zo5kk1Zitdsefgo5sYn7UBdUGyXHw1/Dhs8tHbgVA7wlrSyEh6gmuqm1dTZkpi++pFaLeoX8OqNlVJwPMBeeYhSmPqXJyLDw8r1z74b6ZmKqQLjyGiQM1WDZCJ0y0Kvx4VPYYlpIugJS6lzzduBcncsfDeeqmDumYSTtUQ9OAgEyxz root@sat.laptop.prayther
 ID_RSAPUB
 chmod 644 /root/.ssh/id_rsa.pub
+
+#uteeg/satellite-install.sh
+# register script comes from uteeg git project cloned above
+/bin/bash /root/uteeg/bin/register.sh
 
 # step 2 put the orig rc.local in place and reboot
 cp /tmp/rc.local.orig /etc/rc.local
