@@ -170,7 +170,7 @@ cp /tmp/rc.local.orig /etc/rc.local
 #/sbin/reboot
 EOFKS
 
-chmod 0755 /etc/rc.local.ks.sh
+#chmod 0755 /etc/rc.local.ks.sh
 chmod 0755 /etc/rc.local
 #/sbin/reboot
 
