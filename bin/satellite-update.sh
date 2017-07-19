@@ -61,14 +61,14 @@ exec >> ../log/satellite-update.log 2>&1
 #Might use this if you install from DVD and then stuff happens ?!$%
 /usr/sbin/satellite-installer --scenario satellite --upgrade
 
-#/usr/sbin/satellite-installer --scenario satellite \
-#--foreman-initial-organization "${ORG}" \
-#--foreman-initial-location "${LOC}" \
-#--foreman-admin-username admin \
-#--foreman-admin-password password \
-#--foreman-proxy-tftp true \
-#--foreman-proxy-tftp-servername $(hostname) \
-#--capsule-puppet false
+/usr/sbin/satellite-installer --scenario satellite \
+--foreman-initial-organization "${ORG}" \
+--foreman-initial-location "${LOC}" \
+--foreman-admin-username admin \
+--foreman-admin-password password \
+--foreman-proxy-tftp true \
+--foreman-proxy-tftp-servername $(hostname) \
+--capsule-puppet false
 
 #Might use this if you install from DVD and then stuff happens ?!$%
 #/usr/sbin/satellite-installer --scenario satellite --upgrade
