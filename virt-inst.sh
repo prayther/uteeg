@@ -105,7 +105,7 @@ curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 
 %post
 # Backup the original rc.local file... empty
-cp /etc/rc.local /tmp/rc.local.orig
+cp /etc/rc.local /root/rc.local.orig
 
 # step one creat a file to run by rc.local at next boot
 cat <<'EOFKS' > /tmp/ks_post.sh
@@ -163,10 +163,10 @@ chmod 644 /root/.ssh/id_rsa.pub
 
 #uteeg/satellite-install.sh
 # register script comes from uteeg git project cloned above
-/bin/bash /root/uteeg/bin/register.sh
+/bin/bash ~/uteeg/bin/register.sh
 
 # step 2 put the orig rc.local in place and reboot
-cp /tmp/rc.local.orig /etc/rc.local
+cp /root/rc.local.orig /etc/rc.local
 #/sbin/reboot
 EOFKS
 
