@@ -89,9 +89,10 @@ EOF
 mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
 mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
+/usr/bin/yum clean all
 /usr/bin/yum -y update
 
-/bin/bash ~/uteeg/bin/satellite-update.sh
+/bin/bash /root/uteeg/bin/satellite-update.sh
 
 #Create an organization
 #hammer organization create --name=${ORG} --label=${ORG}

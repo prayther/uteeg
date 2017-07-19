@@ -29,7 +29,7 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 
 #/sbin/reboot
 
-#/bin/bash ~/uteeg/bin/satellite-update.sh
+#/bin/bash /root/uteeg/bin/satellite-update.sh
 
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
