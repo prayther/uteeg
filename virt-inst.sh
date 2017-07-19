@@ -176,6 +176,7 @@ chmod 0755 /etc/rc.local
 
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
+
 bash /tmp/ks_post.sh
 EOH
 %end
