@@ -96,14 +96,14 @@ exec >> ../log/satellite-update.log 2>&1
 #hammer organization add-user --user=admin --name=${ORG}
 #Upload our manifest.zip (created in RH Portal) to our org and list our products:
 
-hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
+/usr/bin/hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 
 #hammer product list --organization redhat
 #List all repositories included in a previous imported product:
 #hammer repository-set list --organization=redhat --product 'Red Hat Enterprise Linux Server'
 
 # timeout for testing.
-hammer settings set --name idle_timeout --value 99999999
+/usr/bin/hammer settings set --name idle_timeout --value 99999999
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
 /bin/bash ~/uteeg/bin/enable_rhel.sh
