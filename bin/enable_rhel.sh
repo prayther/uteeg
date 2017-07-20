@@ -99,3 +99,4 @@ for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODU
 #  --content-type='yum' \
 #  --publish-via-http=true \
 #  --url=http://${GATEWAY}/ks/apps/check_mk
+exit 0

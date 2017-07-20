@@ -59,16 +59,16 @@ exec >> ../log/satellite-update.log 2>&1
 #/bin/bash ./register.sh
 
 #Might use this if you install from DVD and then stuff happens ?!$%
-/usr/sbin/satellite-installer --scenario satellite --upgrade
+#/usr/sbin/satellite-installer --scenario satellite --upgrade
 
-/usr/sbin/satellite-installer --scenario satellite \
---foreman-initial-organization "${ORG}" \
---foreman-initial-location "${LOC}" \
---foreman-admin-username admin \
---foreman-admin-password password \
---foreman-proxy-tftp true \
---foreman-proxy-tftp-servername $(hostname) \
---capsule-puppet false
+#/usr/sbin/satellite-installer --scenario satellite \
+#--foreman-initial-organization "${ORG}" \
+#--foreman-initial-location "${LOC}" \
+#--foreman-admin-username admin \
+#--foreman-admin-password password \
+#--foreman-proxy-tftp true \
+#--foreman-proxy-tftp-servername $(hostname) \
+#--capsule-puppet false
 
 #Might use this if you install from DVD and then stuff happens ?!$%
 /usr/sbin/satellite-installer --scenario satellite --upgrade
@@ -106,7 +106,7 @@ exec >> ../log/satellite-update.log 2>&1
 /usr/bin/hammer settings set --name idle_timeout --value 99999999
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
-/bin/bash /root/uteeg/bin/enable_rhel.sh
+#/bin/bash /root/uteeg/bin/enable_rhel.sh
 
 #hammer organization update --name redhat --redhat-repository-url http://10.0.0.1/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
 #hammer repository-set enable --organization redhat --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
@@ -289,3 +289,4 @@ exec >> ../log/satellite-update.log 2>&1
 #cp /root/rc.local.orig /etc/rc.d/rc.local
 #chmod u-x /etc/rc.d/rc.local
 #systemctl disable rc-local
+exit 0

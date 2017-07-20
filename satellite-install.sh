@@ -92,7 +92,7 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.o
 /usr/bin/yum clean all
 /usr/bin/yum -y update
 
-/bin/bash /root/uteeg/bin/satellite-update.sh
+#/bin/bash /root/uteeg/bin/satellite-update.sh
 
 #Create an organization
 #hammer organization create --name=${ORG} --label=${ORG}
@@ -291,3 +291,4 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.o
 #cp /root/rc.local.orig /etc/rc.d/rc.local
 #chmod u-x /etc/rc.d/rc.local
 #systemctl disable rc-local
+exit 0

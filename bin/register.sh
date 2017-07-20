@@ -33,7 +33,9 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
-/bin/bash ~/uteeg/satellite-install.sh
+
+# run commands together so they don't run at the same time.
+/bin/bash /root/uteeg/satellite-install.sh && /bin/bash /root/uteeg/bin/satellite-update.sh && /bin/bash /root/uteeg/bin/enable_rhel.sh
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local
 EOH
