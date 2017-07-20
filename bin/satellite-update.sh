@@ -1,4 +1,8 @@
-#!/bin/bash -c
+#!/bin/bash -x
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+
 
 cd "${BASH_SOURCE%/*}"
 source ../etc/install-configure-satellite.cfg
