@@ -42,7 +42,7 @@ hammer content-view publish --name="CV_RHEL7_Core" --organization="${ORG}" #--as
 #for i in $(hammer --csv repository list --organization="${ORG}" | grep "Linux 7 " | grep Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Extras' --organization="${ORG}" --repository-id=${i}; done
 
 #Publish the content views to Library:
-hammer content-view publish --name="CV_RHEL7_Extras" --organization="${ORG}" #--async
+#hammer content-view publish --name="CV_RHEL7_Extras" --organization="${ORG}" #--async
 
 #Create a content view for RHEL 7 Optional server x86_64:
 #hammer content-view create --name='CV_RHEL7_Optional' --organization="${ORG}"
