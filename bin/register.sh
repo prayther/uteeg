@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash -c
 
 cd "${BASH_SOURCE%/*}"
 source ../etc/install-configure-satellite.cfg
