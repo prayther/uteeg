@@ -14,7 +14,14 @@ cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
 
 # run commands together so they don't run at the same time.
-/bin/bash /root/uteeg/1 && /bin/bash /root/uteeg/bin/2 && /bin/bash /root/uteeg/bin/3 && /bin/bash /root/uteeg/bin/4 && /bin/bash /root/uteeg/bin/5 && /bin/bash /root/uteeg/bin/6 && /bin/bash /root/uteeg/bin/7 && /bin/bash /root/uteeg/bin/8
+/bin/bash /root/uteeg/1 && \
+/bin/bash /root/uteeg/bin/2 && \
+/bin/bash /root/uteeg/bin/3 && \
+/bin/bash /root/uteeg/bin/4 && \
+/bin/bash /root/uteeg/bin/5 && \
+/bin/bash /root/uteeg/bin/6 && \
+/bin/bash /root/uteeg/bin/7 && \
+/bin/bash /root/uteeg/bin/8
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local
 EOH
