@@ -28,20 +28,17 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 /usr/bin/yum repolist
 /usr/bin/yum clean all
 /usr/bin/yum -y update
-#/usr/bin/yum -y install nfs-utils
 
+/bin/bash /root/uteeg/bin/rc.local.rewrite.sh
+
+#cat << EOH > /etc/rc.d/rc.local
+##!/bin/bash
+#
+## run commands together so they don't run at the same time.
+#/bin/bash /root/uteeg/satellite-install.sh && /bin/bash /root/uteeg/bin/satellite-update.sh && /bin/bash /root/uteeg/bin/enable_rhel.sh
+## step 2 put the orig rc.local in place and reboot
+#cp /root/rc.local.orig /etc/rc.local
+#EOH
+#
+#chmod 0755 /etc/rc.local
 #/sbin/reboot
-
-#/bin/bash /root/uteeg/bin/satellite-update.sh
-
-cat << EOH > /etc/rc.d/rc.local
-#!/bin/bash
-
-# run commands together so they don't run at the same time.
-/bin/bash /root/uteeg/satellite-install.sh && /bin/bash /root/uteeg/bin/satellite-update.sh && /bin/bash /root/uteeg/bin/enable_rhel.sh
-# step 2 put the orig rc.local in place and reboot
-cp /root/rc.local.orig /etc/rc.local
-EOH
-
-chmod 0755 /etc/rc.local
-/sbin/reboot
