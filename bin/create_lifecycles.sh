@@ -15,12 +15,12 @@ exec >> ../log/create_lifecycles.log 2>&1
 #    Public_Website -> Dev -> Test -> Prod
 #    App -> Dev -> Test -> UAT -> Prod -> Legacy
 
-hammer lifecycle-environment create --name='Infra_Dev' --prior='Library' --organization="${ORG}"
-hammer lifecycle-environment create --name='Infra_Test' --prior='Infra_Dev' --organization="${ORG}"
-hammer lifecycle-environment create --name='Infra_Prod' --prior='Infra_Test' --organization="${ORG}"
+hammer lifecycle-environment create --name='1_Infra_Dev' --prior='Library' --organization="${ORG}"
+hammer lifecycle-environment create --name='2_Infra_Test' --prior='1_Infra_Dev' --organization="${ORG}"
+hammer lifecycle-environment create --name='3_Infra_Prod' --prior='2_Infra_Test' --organization="${ORG}"
 
-hammer lifecycle-environment create --name='App_Dev' --prior='Library' --organization="${ORG}"
-hammer lifecycle-environment create --name='App_Test' --prior='App_Dev' --organization="${ORG}"
-hammer lifecycle-environment create --name='App_UAT' --prior='App_Test' --organization="${ORG}"
-hammer lifecycle-environment create --name='App_Prod' --prior='App_UAT' --organization="${ORG}"
+hammer lifecycle-environment create --name='1_App_Dev' --prior='Library' --organization="${ORG}"
+hammer lifecycle-environment create --name='2_App_Test' --prior='1_App_Dev' --organization="${ORG}"
+hammer lifecycle-environment create --name='3_App_UAT' --prior='2_App_Test' --organization="${ORG}"
+hammer lifecycle-environment create --name='4_App_Prod' --prior='3_App_UAT' --organization="${ORG}"
 
