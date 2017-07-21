@@ -1,7 +1,15 @@
 #!/bin/bash -x
 
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+
 cd "${BASH_SOURCE%/*}"
-source ../etc/ak_create.cfg 
+source ../etc/install-configure-satellite.cfg
+source ../etc/virt-inst.cfg
+source ../etc/register_cdn.cfg
+source ../etc/ak_create.cfg
+
+exec >> ../log/satellite-update.log 2>&1
 
 # Create Activation Keys.
 # This script will run after cv create, lifecycle create, cv_promote.sh
@@ -21,7 +29,7 @@ source ../etc/ak_create.cfg
 #  for LE in $(hammer --csv lifecycle-environment list --organization redhat | awk -F"," '{print $2}' | grep -v "Library" | grep -v "Name");do
 for CCV in ${CCV_var};do
   for LE in ${LE_var};do
-    hammer activation-key create --name "AK_${LE}_${CCV}" --organization=redhat --lifecycle-environment ${LE} --content-view CCV_${CCV}
-    hammer activation-key add-host-collection --name "AK_${LE}_${CCV}" --organization=redhat --host-collection HC_${LE}_${CCV}
+    hammer activation-key create --name "AK_${LE}_${CCV}" --organization=${ORG} --lifecycle-environment ${LE} --content-view CCV_${CCV}
+    hammer activation-key add-host-collection --name "AK_${LE}_${CCV}" --organization=${ORG} --host-collection HC_${LE}_${CCV}
   done
 done
