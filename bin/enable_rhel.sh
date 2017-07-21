@@ -66,11 +66,11 @@ for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODU
 #hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Forge'
 #hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='EPEL7'
 
-#COMP_RHEL7=$(hammer content-view version list  --organization="${ORG}"  --content-view CV_RHEL7_Core | awk '/CV_RHEL7_Core/ {print $1}')
+COMP_RHEL7=$(hammer content-view version list  --organization="${ORG}"  --content-view CV_RHEL7_Core | awk '/CV_RHEL7_Core/ {print $1}')
 #COMP_Check_MK=$(hammer content-view version list  --organization="${ORG}"  --content-view CV_Check_MK | awk '/CV_Check_MK/ {print $1}')
 # CCVs would contain the RHEL 7 Core Server.
-#hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Server" --composite  --component-ids="${COMP_RHEL7}" --description="Combines RHEL 7 with Basic Core Server"
-#hammer content-view publish --name="CCV_RHEL7_Server" --organization="${ORG}" --async
+hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Server" --composite  --component-ids="${COMP_RHEL7}" --description="Combines RHEL 7 with Basic Core Server"
+hammer content-view publish --name="CCV_RHEL7_Server" --organization="${ORG}" --async
 
 # then run cv_promote.sh
 
