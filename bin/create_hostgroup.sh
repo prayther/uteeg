@@ -37,14 +37,15 @@ NET_var='10.0.0.0/24' # could be an array
 MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
 PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
 OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
+# can't find --conent-source-id with a hammer command
 
 for LOC in ${LOC_var};do
   for ORG in ${ORG_var};do
     for CCV in ${CCV_var};do
       for LE in ${LE_var};do
 	for NET in ${NET_var};do
-          hammer hostgroup create --architecture="x86_64" --organization "${ORG}" --locations "${LOC}" --lifecycle-environment ${LE} --content-view CCV_${CCV} --content-source-id 9 --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_${CCV}_${ORG}_${LOC}" --subnet="${NET}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
-          #hammer organization add-hostgroup --name ${ORG} --hostgroup "HG_${LE}_${CCV}"
+          hammer hostgroup create --architecture="x86_64" --organization "${ORG}" --locations "${LOC}" --lifecycle-environment ${LE} --content-view CCV_${CCV} --content-source-id 1 --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_${CCV}_${ORG}_${LOC}" --subnet="${NET}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
+	  #hammer organization add-hostgroup --name ${ORG} --hostgroup "HG_${LE}_${CCV}"vascript:void(0)
         done
       done
     done
