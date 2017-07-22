@@ -1,6 +1,6 @@
 virt-install (libvirt/KVM) Kickstart
 
-virt-inst.sh is the main script. Modify the script to reflect the directroy, /var/www/html/ks and web server.
+virt-inst.sh is the main script. There is config files in etc. Take a look and modify accordingly.
 This script creates a uniq ks.cfg file each time it runs and point KVM/libvirt virt-install program to use the ks.cfs file.
 
 ./virt-install <name> <disc MB> <mem> <vcpu>
@@ -18,3 +18,6 @@ They are setup in kickstart with %include statements and are put on the VM being
 The heavy lifting is then done with <name>.sh that is copied to /root dir to be run manually. Did this instead of messing with rc.local and fighting $ in variables from getting mucked up.
 
 Turn this into automated provisioning with a real config management tool. Ansible, puppet.
+
+Requirements:
+You need a libvirt/KVM machine (I use a laptop or single box at home), it will serve as a Kickstart server. It helps speed up the process if you supply a Red Hat Satellite dvd as well as a RHEL dvd.
