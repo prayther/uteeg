@@ -10,4 +10,7 @@ source ../etc/register_cdn.cfg
 
 #exec >> ../log/compute_resource.log 2>&1
 
-hammer compute-resource create --description 'LibVirt Compute Resource' --locations 'Default Location' --name Libvirt_CR --organizations "$ORG" --url 'qemu+tcp://192.168.126.1/system/' --provider libvirt --set-console-password 0
+hammer compute-resource create --description 'LibVirt Compute Resource' --locations 'Default Location' --name Libvirt_CR --organizations "$ORG" --url 'qemu+tcp://${IP}/system/' --provider libvirt --set-console-password 0
+
+firewall-cmd --add-port=5910-5930/tcp
+firewall-cmd --add-port=5910-5930/tcp --permanent
