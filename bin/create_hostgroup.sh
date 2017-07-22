@@ -17,7 +17,7 @@ MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
 # think this is puppet. not using puppet
 #ENVID=$(hammer --csv environment list | grep  ANZ_Openshift_Apps_Dev_CCV_Openshift2_1_RHEL6_5_Infra | cut -d, -f1) ; echo $ENVID
 PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
-OSID=$(hammer --csv os list | grep ''RedHat 7.3 | cut -d, -f1)
+OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
 #CAID=1
 #PROXYID=1
 #hammer hostgroup create --architecture="x86_64" --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${CCV}" --subnet="${NETNAME}" --ptable-id="${PARTID}" --operatingsystem-id="${OSID}" --puppet-ca-proxy-id="${CAID}" --puppet-proxy-id="${PROXYID}"
@@ -27,7 +27,7 @@ for CCV in ${CCV_var};do
   for LE in ${LE_var};do
     #hammer activation-key create --name "AK_${LE}_${CCV}" --organization=${ORG} --lifecycle-environment ${LE} --content-view CCV_${CCV}
     #hammer activation-key add-host-collection --name "AK_${LE}_${CCV}" --organization=${ORG} --host-collection HC_${LE}_${CCV}
-    hammer hostgroup create --architecture="x86_64" --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_${CCV}" --subnet="${NETNAME}" --ptable-id="${PARTID}" --operatingsystem-id="${OSID}"
+    hammer hostgroup create --architecture="x86_64" --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_${CCV}" --subnet="${NETNAME}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
   done
 done
 
