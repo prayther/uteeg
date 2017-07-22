@@ -15,3 +15,7 @@ hammer compute-resource create --description 'LibVirt Compute Resource' --locati
 
 firewall-cmd --add-port=5910-5930/tcp
 firewall-cmd --add-port=5910-5930/tcp --permanent
+
+su - foreman -s /bin/bash
+ssh-keygen
+ssh-copy-id root@${GATEWAY}
