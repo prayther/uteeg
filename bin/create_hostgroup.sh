@@ -10,8 +10,8 @@ source ../etc/register_cdn.cfg
 source ../etc/ak_create.cfg
 
 #exec >> ../log/create_hostgroup.log 2>&1
-HGNAME="HG_Openshift_Hosts_Infra_Dev"
-NETNAME='10.64.30.0/24'
+#HGNAME="HG_Openshift_Hosts_Infra_Dev"
+NETNAME='10.0.0.0/24'
 # multiple versions of rhel will require whatever u want. latest or multiple
 MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
 # think this is puppet. not using puppet
