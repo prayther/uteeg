@@ -21,5 +21,7 @@ hammer host create \
             provision=true, \
             ip=${vmip}" \
 --organization redhat \
+--subnet "10.0.0.0/24" \
+--compute-attributes start=true
 --location laptop \
 --ask-root-password no 
