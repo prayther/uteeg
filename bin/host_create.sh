@@ -12,6 +12,7 @@ source ../etc/ak_create.cfg
 #exec >> ../log/host_create.log 2>&1
 
 #hammer compute-resource list
+#--volume="capacity=10G,format_type=qcow2"
 
 vmname="test01"
 vmip="10.0.0.10"
@@ -28,5 +29,5 @@ hammer host create \
 --location laptop \
 --compute-resource Libvirt_CR \
 --domain laptop.prayther \
---volume="capacity=10G,format_type=qcow2"
+--compute-profile "Libvirt_CR (Libvirt)" \
 --ask-root-password no
