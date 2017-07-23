@@ -28,4 +28,5 @@ hammer host create \
 --location laptop \
 --compute-resource Libvirt_CR \
 --domain laptop.prayther \
+--volume="capacity=10G,format_type=qcow2"
 --ask-root-password no
