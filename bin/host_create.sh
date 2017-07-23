@@ -53,7 +53,7 @@ cat << EOH > /root/cdrom.txt
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
 EOH
-ssh ${GATEWAY} "sed '/</disk>/r /root/cdrom.txt' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "sed '/\<\/disk\>/r /root/cdrom.txt' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
 
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 sleep 3
