@@ -34,6 +34,6 @@ hammer host create \
 --hostgroup HG_Infra_1_Dev_CCV_RHEL7_Server_ORG_redhat_LOC_laptop \
 --organization redhat \
 --location laptop \
---interface="compute_network=laptoplab,compute_model=virtio" \
+--interface="primary=true,compute_type=network,compute_network=laptoplab" \
 --volume="capacity=10G,format_type=qcow2" \
 --compute-resource Libvirt_CR
