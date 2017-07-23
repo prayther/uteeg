@@ -38,5 +38,22 @@ hammer host create \
 --location laptop \
 --interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
 --subnet "10.0.0.0/24" \
+--volume="capacity=0,format_type=raw" \
 --volume="capacity=10G,format_type=qcow2" \
 --compute-resource Libvirt_CR
+
+#[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
+#root@fedora /v/w/h/u/etc# virsh edit test01.laptop.prayther
+#  <os>
+#    <type arch='x86_64' machine='pc-i440fx-2.9'>hvm</type>
+#    <boot dev='cdrom'/>
+#    <boot dev='network'/>
+#    <boot dev='hd'/>
+#  </os>
+
+#Successfully downloaded host disk image to test01.laptop.prayther.iso
+#[root@sat uteeg]# scp test01.laptop.prayther.iso 10.0.0.1:/var/lib/libvirt/images/
+#test01.laptop.prayther.iso
+#libvirt_host> virsh attach-disk test01.laptop.prayther /var/lib/libvirt/images/test01.laptop.prayther.iso hda --type cdrom --mode readonly
+#Disk attached successfully
+
