@@ -41,11 +41,11 @@ hammer host create \
 --volume="capacity=10G,format_type=qcow2" \
 --compute-resource Libvirt_CR
 
-hammer bootdisk host --host "${vmname}"
-scp "${vmname}" "${GATEWAY}":/var/lib/libvirt/images/
-ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /etc/libvirt/qemu/${vmname}.xml"
-ssh ${GATEWAY} "/bin/virsh start ${vmname}"
-ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname} /var/lib/libvirt/images/${vmname}.iso hda --type cdrom --mode readonly"
+hammer bootdisk host --host ${vmname}.${DOMAIN}
+scp ${vmname}.${DOMAIN} ${GATEWAY}:/var/lib/libvirt/images/
+ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
+ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
 
 #[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
 # xmlstarlet ??? edit xml from cli
