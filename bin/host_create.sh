@@ -44,6 +44,17 @@ hammer host create \
 hammer bootdisk host --host ${vmname}.${DOMAIN}
 scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
+# search for </disk> and insert
+cat << EOH > /root/cdrom.txt
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <target dev='hda' bus='ide'/>
+      <readonly/>
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+    </disk>
+EOH
+ssh ${GATEWAY} "sed '/</disk>/r /root/cdrom.txt' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
+
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 sleep 3
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
