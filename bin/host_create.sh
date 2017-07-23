@@ -27,6 +27,6 @@ hammer host create \
 --compute-attributes start=true \
 --location laptop \
 --compute-resource Libvirt_CR \
---compute-profile 1-Small \
+--compute-profile-id 1 \
 --domain laptop.prayther \
 --ask-root-password no
