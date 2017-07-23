@@ -37,5 +37,6 @@ hammer host create \
 --organization redhat \
 --location laptop \
 --interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
+--subnet "10.0.0.0/24" \
 --volume="capacity=10G,format_type=qcow2" \
 --compute-resource Libvirt_CR
