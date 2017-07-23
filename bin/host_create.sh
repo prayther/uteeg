@@ -20,6 +20,7 @@ source ../etc/ak_create.cfg
 #--compute-attributes="start=true" \
 #--subnet "10.0.0.0/24" \
 #--compute-profile="1-Small" \
+#--ask-root-password no
 #--volume="capacity=10G,format_type=qcow2"
 
 vmname="test01"
@@ -31,5 +32,4 @@ hammer host create \
 --organization redhat \
 --location laptop \
 --compute-resource Libvirt_CR \
---compute-profile-id="1" \
---ask-root-password no
+--compute-profile-id="1"
