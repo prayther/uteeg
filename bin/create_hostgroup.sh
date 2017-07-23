@@ -44,7 +44,7 @@ for LOC in ${LOC_var};do
     for CCV in ${CCV_var};do
       for LE in ${LE_var};do
 	for NET in ${NET_var};do
-          hammer hostgroup create --architecture="x86_64" --organization "${ORG}" --locations "${LOC}" --lifecycle-environment ${LE} --content-view CCV_${CCV} --content-source-id 1 --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_CCV_${CCV}_ORG_${ORG}_LOC_${LOC}" --subnet="${NET}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
+          hammer hostgroup create --root-pass ${PASSWD} --architecture="x86_64" --organization "${ORG}" --locations "${LOC}" --lifecycle-environment ${LE} --content-view CCV_${CCV} --content-source-id 1 --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_CCV_${CCV}_ORG_${ORG}_LOC_${LOC}" --subnet="${NET}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
 	  hammer hostgroup set-parameter --hostgroup "HG_${LE}_CCV_${CCV}_ORG_${ORG}_LOC_${LOC}" --value AK_${LE}_${CCV} --name "kt_activation_keys"
         done
       done
