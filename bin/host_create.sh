@@ -23,6 +23,7 @@ source ../etc/ak_create.cfg
 #--ask-root-password no
 #--compute-profile-id="1"
 #--volume="capacity=10G,format_type=qcow2"
+#--compute-attributes="start=1,image_id=/var/lib/libvirt/images/test01.laptop.prayther.iso" \
 
 vmname="test01"
 vmip="10.0.0.10"
@@ -34,5 +35,4 @@ hammer host create \
 --location laptop \
 --interface="compute_type=network,compute_network=laptoplab,compute_model=virtio" \
 --volume="capacity=10G,format_type=qcow2" \
---compute-attributes="start=1,image_id=/var/lib/libvirt/images/test01.laptop.prayther.iso" \
 --compute-resource Libvirt_CR
