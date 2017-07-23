@@ -42,9 +42,10 @@ hammer host create \
 --compute-resource Libvirt_CR
 
 hammer bootdisk host --host ${vmname}.${DOMAIN}
-scp ${vmname}.${DOMAIN} ${GATEWAY}:/var/lib/libvirt/images/
+scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
+sleep 3
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
 
 #[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
