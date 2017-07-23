@@ -54,7 +54,8 @@ cat << EOH > /root/cdrom.txt
     </disk>
 EOH
 ssh ${GATEWAY} "sed '/\<\/disk\>/r /root/cdrom.txt' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
-
+ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
+ssh ${GATEWAY} "/bin/virsh stop ${vmname}.${DOMAIN}"
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 sleep 3
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
