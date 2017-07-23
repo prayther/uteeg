@@ -39,4 +39,5 @@ hammer host create \
 --interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
 --subnet "10.0.0.0/24" \
 --volume="capacity=10G,format_type=qcow2" \
+--compute-attributes="start=1,image_id=/var/lib/libvirt/images/test01.laptop.prayther.iso" \
 --compute-resource Libvirt_CR
