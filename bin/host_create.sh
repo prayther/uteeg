@@ -11,6 +11,8 @@ source ../etc/ak_create.cfg
 
 #exec >> ../log/host_create.log 2>&1
 
+#hammer compute-resource list
+
 vmname="test01"
 vmip="10.0.0.10"
 
@@ -24,6 +26,7 @@ hammer host create \
 --subnet "10.0.0.0/24" \
 --compute-attributes start=true \
 --location laptop \
---compute-resource 1-Small \
+--compute-resource Libvirt_CR \
+--compute-profile 1-Small \
 --domain laptop.prayther \
 --ask-root-password no
