@@ -54,7 +54,7 @@ cat << EOH > /root/cdrom.txt
     </disk>
 EOH
 scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
-ssh ${GATEWAY} "sed -i '/\<\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "sed -iE '/\<\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 #sleep 3
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
