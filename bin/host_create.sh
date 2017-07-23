@@ -12,6 +12,8 @@ source ../etc/ak_create.cfg
 #exec >> ../log/host_create.log 2>&1
 
 #hammer compute-resource list
+#hammer bootdisk host --host test01.laptop.prayther
+
 #--provision-method build \
 #--interface="primary=true, \
 #            provision=true, \
