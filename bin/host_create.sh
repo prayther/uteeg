@@ -38,11 +38,17 @@ hammer host create \
 --location laptop \
 --interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
 --subnet "10.0.0.0/24" \
---volume="capacity=0,format_type=raw" \
 --volume="capacity=10G,format_type=qcow2" \
 --compute-resource Libvirt_CR
 
+hammer bootdisk host --host "${vmname}"
+scp "${vmname}" "${GATEWAY}":/var/lib/libvirt/images/
+ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /etc/libvirt/qemu/${vmname}.xml"
+ssh ${GATEWAY} "/bin/virsh start ${vmname}"
+ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname} /var/lib/libvirt/images/${vmname}.iso hda --type cdrom --mode readonly"
+
 #[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
+# xmlstarlet ??? edit xml from cli
 #root@fedora /v/w/h/u/etc# virsh edit test01.laptop.prayther
 #  <os>
 #    <type arch='x86_64' machine='pc-i440fx-2.9'>hvm</type>
