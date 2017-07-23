@@ -19,6 +19,7 @@ source ../etc/ak_create.cfg
 #--domain laptop.prayther \
 #--compute-attributes="start=true" \
 #--subnet "10.0.0.0/24" \
+#--compute-profile="1-Small" \
 #--volume="capacity=10G,format_type=qcow2"
 
 vmname="test01"
@@ -30,5 +31,5 @@ hammer host create \
 --organization redhat \
 --location laptop \
 --compute-resource Libvirt_CR \
---compute-profile="1-Small" \
+--compute-profile-id="1" \
 --ask-root-password no
