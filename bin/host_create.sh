@@ -13,6 +13,9 @@ source ../etc/ak_create.cfg
 
 #hammer compute-resource list
 #--provision-method build \
+#--interface="primary=true, \
+#            provision=true, \
+#            ip=${vmip}" \
 #--volume="capacity=10G,format_type=qcow2"
 
 vmname="test01"
@@ -21,9 +24,6 @@ vmip="10.0.0.10"
 hammer host create \
 --name "${vmname}" \
 --hostgroup HG_Infra_1_Dev_CCV_RHEL7_Server_ORG_redhat_LOC_laptop \
---interface="primary=true, \
-            provision=true, \
-            ip=${vmip}" \
 --organization redhat \
 --subnet "10.0.0.0/24" \
 --compute-attributes="start=true" \
