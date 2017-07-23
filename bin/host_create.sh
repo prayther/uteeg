@@ -31,4 +31,5 @@ hammer host create \
 --domain laptop.prayther \
 --compute-profile "1-Small" \
 --volume="capacity=10G,format_type=qcow2" \
+--provision-method build \
 --ask-root-password no
