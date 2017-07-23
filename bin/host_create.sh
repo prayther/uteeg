@@ -24,6 +24,7 @@ source ../etc/ak_create.cfg
 #--compute-profile-id="1"
 #--volume="capacity=10G,format_type=qcow2"
 #--compute-attributes="start=1,image_id=/var/lib/libvirt/images/test01.laptop.prayther.iso" \
+#--interface="compute_type=network,compute_network=laptoplab,compute_model=virtio" \
 
 vmname="test01"
 vmip="10.0.0.10"
@@ -33,6 +34,6 @@ hammer host create \
 --hostgroup HG_Infra_1_Dev_CCV_RHEL7_Server_ORG_redhat_LOC_laptop \
 --organization redhat \
 --location laptop \
---interface="compute_type=network,compute_network=laptoplab,compute_model=virtio" \
+--interface="compute_network=laptoplab,compute_model=virtio" \
 --volume="capacity=10G,format_type=qcow2" \
 --compute-resource Libvirt_CR
