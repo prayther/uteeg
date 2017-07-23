@@ -24,4 +24,5 @@ hammer host create \
 --subnet "10.0.0.0/24" \
 --compute-attributes start=true \
 --location laptop \
+--compute-resource-id=1 \
 --ask-root-password yes
