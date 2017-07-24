@@ -60,8 +60,10 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5eW45aqVmsRqJisU4+/DBzdHPW74mYUeiKXUtDUT1
 EOF
 chmod 0644
 chown foreman.foreman -R /usr/share/foreman/.ssh
-
+# copy ssh id
 ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
+# create known_hosts without ansering yes
+ssh -l foreman -o StrictHostKeyChecking=no root@${GATEWAY} exit
 
 # import crt for libvirt vm console on your workstation/laptop browser
 #http://10.0.0.8/pub/katello-server-ca.crt
