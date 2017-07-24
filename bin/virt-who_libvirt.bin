@@ -11,5 +11,5 @@ source ../etc/ak_create.cfg
 
 #exec >> ../log/virt-who_libvirt.log 2>&1
 
-ssh ${GATEWAY} "/bin/dnf install -y virt-who
+ssh ${GATEWAY} "/bin/dnf install -y virt-who"
 
