@@ -11,7 +11,27 @@ source ../etc/ak_create.cfg
 
 #exec >> ../log/virt-who_libvirt.log 2>&1
 
-/usr/bin/yum install -y virt-who
+# Install virt-who if it's not already
+rpm -q virt-who || /usr/bin/yum install -y virt-who
 
+cat << EOF > /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf
+[sat.laptop.prayther]
+type=libvirt
+#server=sat.laptop.prayther
+server=${GATEWAY}
+#username=root
+#password=password
+#encrypted_password=
+owner=${ORG}
+env=Library
+hypervisor_id=hostname
+EOF
 
+# /etc/sysconfig/virt-who
+grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
+
+/usr/bin/systemctl enable virt-who
+/usr/bin/systemctl start virt-who
+#journalctl -u virt-who -f
+exit 0
 
