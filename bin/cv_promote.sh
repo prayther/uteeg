@@ -1,5 +1,16 @@
 #!/bin/bash -x
 
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+
+cd "${BASH_SOURCE%/*}"
+source ../etc/install-configure-satellite.cfg
+source ../etc/virt-inst.cfg
+source ../etc/register_cdn.cfg
+source ../etc/ak_create.cfg
+
+#exec >> ../log/cv_create.log 2>&1
+
 # This is working with ID numbers, so just get the number of CV's (Content View) and LE (Lifecycle Env).
 # List it and remove any extraneous lines that you don't want.
 # Lifecycles need to be in sequence. If you just create them once I don't see a problem. If you delete and add and get numbers out of seq.
