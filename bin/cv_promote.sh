@@ -22,10 +22,11 @@ source ../etc/ak_create.cfg
 # The inner loop. LEC_FROM (--from-lifecycle-environment-id), LEC_TO (--to-lifecycle-environment-id).
 # When LEC_FROM reaches <= $LE_Count-1 (the last number of hammer --csv lifecycle-environment list) stop.
 
-CV_Count=$(hammer --csv content-view list --organization=redhat | sort -n | grep -vi "Content View ID,Name,Label,Composite,Repository IDs" | wc -l)
+#CV_Count=$(hammer --csv content-view list --organization=redhat | sort -n | grep -vi "Content View ID,Name,Label,Composite,Repository IDs" | wc -l)
+CV_Count=$(hammer --csv content-view list --organization=redhat | sort -n | grep -vi "Content View ID,Name,Label,Composite,Repository IDs" | awk -F"," '{print $1}')
 LE_Count=$(hammer --csv lifecycle-environment list --organization=redhat | sort -n | grep -vi "ID,Name,Prior" | wc -l)
 
-for CV in $(seq 2 $CV_Count);do
+for CV in $($CV_Count | tr ' ' ',');do
   for (( LEC_FROM=1, LEC_TO=LEC_FROM+1; LEC_FROM <= $LE_Count-1; LEC_FROM++, LEC_TO=LEC_TO+1 ));do
     hammer content-view version promote --organization=redhat --from-lifecycle-environment-id=${LEC_FROM} --to-lifecycle-environment-id=${LEC_TO} --content-view-id=${CV}
   done
