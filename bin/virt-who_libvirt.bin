@@ -46,6 +46,6 @@ SUBS_var=$(hammer --csv subscription list --organization redhat | awk -F"," '{pr
 
 for SUBS in ${SUBS_var}; do
   hammer host subscription attach --host ${VIRT_HOST} --subscription-id ${SUBS}
-
+done
 exit 0
 
