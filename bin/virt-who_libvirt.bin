@@ -15,6 +15,7 @@ source ../etc/ak_create.cfg
 rpm -q virt-who || /usr/bin/yum install -y virt-who
 
 # configure virt-who
+if [ ! -f /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf ];then
 cat << EOF > /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf
 [sat.laptop.prayther]
 type=libvirt
@@ -27,6 +28,7 @@ owner=${ORG}
 env=Library
 hypervisor_id=hostname
 EOF
+fi
 
 # config satellite 6 if not already
 grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
