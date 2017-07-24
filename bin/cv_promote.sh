@@ -37,7 +37,7 @@ LE_Count=$(hammer --csv lifecycle-environment list --organization=redhat | sort 
 
 for CV in $CV_Count;do
   for (( LEC_FROM=1, LEC_TO=LEC_FROM+1; LEC_FROM <= $LE_Count-1; LEC_FROM++, LEC_TO=LEC_TO+1 ));do
-    echo "hammer content-view version promote --organization=redhat --from-lifecycle-environment-id=${LEC_FROM} --to-lifecycle-environment-id=${LEC_TO} --content-view-id=${CV}"
+    hammer content-view version promote --organization=redhat --from-lifecycle-environment-id=${LEC_FROM} --to-lifecycle-environment-id=${LEC_TO} --content-view-id=${CV}
   done
 done
 
