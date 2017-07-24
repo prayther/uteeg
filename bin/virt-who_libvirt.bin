@@ -14,6 +14,7 @@ source ../etc/ak_create.cfg
 # Install virt-who if it's not already
 rpm -q virt-who || /usr/bin/yum install -y virt-who
 
+# configure virt-who
 cat << EOF > /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf
 [sat.laptop.prayther]
 type=libvirt
@@ -27,11 +28,22 @@ env=Library
 hypervisor_id=hostname
 EOF
 
-# /etc/sysconfig/virt-who
+# config satellite 6 if not already
 grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
 
 /usr/bin/systemctl enable virt-who
 /usr/bin/systemctl start virt-who
 #journalctl -u virt-who -f
+
+# find virt-who host
+# this is only set to work with "1" host for testing.
+VIRT_HOST=$(hammer --csv host list | grep virt-who | awk -F"," '{print $2}')
+# list all subs
+#hammer --csv subscription list --organization redhat
+SUBS_var=$(hammer --csv subscription list --organization redhat | awk -F"," '{print $1}'| sort -n | grep -v ID)
+
+for SUBS in ${SUBS_var}; do
+  hammer host subscription attach --host ${VIRT_HOST} --subscription-id ${SUBS}
+
 exit 0
 
