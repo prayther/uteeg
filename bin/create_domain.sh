@@ -10,7 +10,7 @@ source ../etc/register_cdn.cfg
 
 #exec >> ../log/create_domain.log 2>&1
 
-hammer domain create --name="${DOMAIN}"
-hammer organization add-domain --domain="${DOMAIN}" --name="${ORG}"
+hammer domain create --locations=${LOC} --organizations=${ORG} --name="${DOMAIN}"
+#hammer organization add-domain --domain="${DOMAIN}" --name="${ORG}"
 #hammer location add-domain --domain-id=1 --name='BNE.ANZLAB'
 
