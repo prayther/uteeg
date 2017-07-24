@@ -30,6 +30,7 @@ source ../etc/ak_create.cfg
 for CCV in ${CCV_var};do
   for LE in ${LE_var};do
     hammer activation-key create --name "AK_${LE}_${CCV}" --organization=${ORG} --lifecycle-environment ${LE} --content-view CCV_${CCV}
+    hammer activation-key update --release-version "7Server" --name "AK_${LE}_${CCV}" --organization=${ORG}
     hammer activation-key add-host-collection --name "AK_${LE}_${CCV}" --organization=${ORG} --host-collection HC_${LE}_${CCV}
   done
 done

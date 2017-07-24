@@ -12,6 +12,7 @@ source ../etc/install-configure-satellite.cfg
 
 # Operating Systems are automatically added as the kickstart repos are synchronised.
 # Associate the operating systems hosted on this server with the specified organisation and location.
+# this is only acting on one Location and Organization.
 for i in $(hammer --csv medium list | grep $(hostname) | cut -d, -f1)
 do
    hammer organization add-medium --name ${ORG} --medium-id ${i}
