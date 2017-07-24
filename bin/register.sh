@@ -38,12 +38,12 @@ cat << EOH > /etc/rc.d/rc.local
 /bin/bash /root/uteeg/satellite-install.sh
 /bin/bash /root/uteeg/bin/satellite-update.sh
 /bin/bash /root/uteeg/bin/enable_rhel.sh
-/bin/bash /root/uteeg/bin/5
-/bin/bash /root/uteeg/bin/6
-/bin/bash /root/uteeg/bin/7
-/bin/bash /root/uteeg/bin/8
-/bin/bash /root/uteeg/bin/9
-/bin/bash /root/uteeg/bin/10
+#/bin/bash /root/uteeg/bin/5
+#/bin/bash /root/uteeg/bin/6
+#/bin/bash /root/uteeg/bin/7
+#/bin/bash /root/uteeg/bin/8
+#/bin/bash /root/uteeg/bin/9
+#/bin/bash /root/uteeg/bin/10
 
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local
