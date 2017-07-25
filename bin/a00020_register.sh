@@ -34,16 +34,20 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
 
-# run commands together so they don't run at the same time.
-/bin/bash /root/uteeg/satellite-install.sh
-/bin/bash /root/uteeg/bin/satellite-update.sh
-/bin/bash /root/uteeg/bin/enable_rhel.sh
-#/bin/bash /root/uteeg/bin/5
-#/bin/bash /root/uteeg/bin/6
-#/bin/bash /root/uteeg/bin/7
-#/bin/bash /root/uteeg/bin/8
-#/bin/bash /root/uteeg/bin/9
-#/bin/bash /root/uteeg/bin/10
+/root/uteeg/a00010_satellite-install.sh
+/root/uteeg/bin/b00010_satellite-update.sh
+/root/uteeg/bin/b00020_create_Lifecycle_Environments.sh
+/root/uteeg/bin/b00030_create_Domain.sh
+/root/uteeg/bin/b00040_create_Subnet.sh
+/root/uteeg/bin/b00050_create_Host_Collections.sh
+/root/uteeg/bin/b00060_create_Compute_Resource.sh
+#/root/uteeg/bin/c00010_enable_Product_RHEL.sh
+#/root/uteeg/bin/c00020_create_Content_Views_RHEL.sh
+#/root/uteeg/bin/d00010_create_Composite_Content_Views.sh
+#/root/uteeg/bin/e00010_promote_Content_Views.sh
+#/root/uteeg/bin/f00010_create_Activation_Keys.sh
+#/root/uteeg/bin/f00020_add_Media.sh
+#/root/uteeg/bin/g00010_create_Host_Groups.sh
 
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local

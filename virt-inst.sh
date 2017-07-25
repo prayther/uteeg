@@ -163,7 +163,7 @@ chmod 644 /root/.ssh/id_rsa.pub
 
 #uteeg/satellite-install.sh
 # register script comes from uteeg git project cloned above
-/bin/bash ~/uteeg/bin/register.sh
+/bin/bash ~/uteeg/bin/a00020_register.sh
 
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local
