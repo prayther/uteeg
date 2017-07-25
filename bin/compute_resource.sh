@@ -63,7 +63,7 @@ chown foreman.foreman -R /usr/share/foreman/.ssh
 # copy ssh id
 ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
 # create known_hosts without ansering yes
-ssh -l foreman -o StrictHostKeyChecking=no root@${GATEWAY} exit
+/bin/su -s /bin/bash -c "ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit" foreman
 
 # import crt for libvirt vm console on your workstation/laptop browser
 #http://10.0.0.8/pub/katello-server-ca.crt
