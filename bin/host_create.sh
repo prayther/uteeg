@@ -57,7 +57,7 @@ cat << EOH > /root/cdrom.txt
     </disk>
 EOH
 scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
-ssh ${GATEWAY} "sed -iE '/\<\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
 #ssh ${GATEWAY} "systemctl restart libvirtd"
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
