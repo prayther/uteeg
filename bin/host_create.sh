@@ -47,7 +47,7 @@ scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 # this is how to inline edit a libvirt vm to add cdrom
 ssh ${GATEWAY} "virsh dumpxml ${vmname}.${DOMAIN} > /tmp/${vmname}.${DOMAIN}.xml"
 #ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "sed -i '/dev=\'network\'/a <boot dev=\'cdrom\'\ >' /tmp/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ >' /tmp/${vmname}.${DOMAIN}.xml"
 # search for </disk> and insert
 cat << EOH > /root/cdrom.txt
     <disk type='file' device='cdrom'>
