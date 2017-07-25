@@ -10,6 +10,7 @@ source ../etc/virt-inst.cfg
 
 #hammer --cvs location list | awk -F"," '{print $2}'
 #exec >> ../log/compute_resource.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
 
 hammer compute-resource create --description 'LibVirt Compute Resource' --locations ${LOC} --name Libvirt_CR --organizations "$ORG" --url "qemu+ssh://root@${GATEWAY}/system/" --provider libvirt --set-console-password 0
 

@@ -10,6 +10,8 @@ source ../etc/virt-inst.cfg
 #source ../etc/ak_create.cfg
 
 #exec >> ../log/create_hostgroup.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
+
 #HGNAME="HG_Openshift_Hosts_Infra_Dev"
 #NETNAME='10.0.0.0/24'
 # multiple versions of rhel will require whatever u want. latest or multiple

@@ -10,6 +10,7 @@ source ../etc/virt-inst.cfg
 #source ../etc/ak_create.cfg
 
 #exec >> ../log/cv_create.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
 
 # This is working with ID numbers, so just get the number of CV's (Content View) and LE (Lifecycle Env).
 # List it and remove any extraneous lines that you don't want.

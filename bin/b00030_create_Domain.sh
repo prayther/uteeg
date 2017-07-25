@@ -9,6 +9,7 @@ source ../etc/virt-inst.cfg
 #source ../etc/register_cdn.cfg
 
 #exec >> ../log/create_domain.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
 
 hammer domain create --locations=${LOC} --organizations=${ORG} --name="${DOMAIN}"
 #hammer organization add-domain --domain="${DOMAIN}" --name="${ORG}"

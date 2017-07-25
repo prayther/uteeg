@@ -10,6 +10,7 @@ source ../etc/virt-inst.cfg
 #source ../etc/ak_create.cfg
 
 #exec >> ../log/sat_self_subscribe.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
 
 /usr/sbin/subscription-manager unregister
 rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm

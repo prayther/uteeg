@@ -9,6 +9,7 @@ source ../etc/virt-inst.cfg
 #source ../etc/install-configure-satellite.cfg
 
 #exec >> ../log/media.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
 
 # Operating Systems are automatically added as the kickstart repos are synchronised.
 # Associate the operating systems hosted on this server with the specified organisation and location.

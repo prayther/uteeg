@@ -10,6 +10,7 @@ source ../etc/virt-inst.cfg
 #source ../etc/ak_create.cfg
 
 #exec >> ../log/hc_create.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
 
 # Create Host Collections
 # RHEL

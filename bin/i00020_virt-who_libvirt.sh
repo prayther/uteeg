@@ -10,6 +10,7 @@ source ../etc/virt-inst.cfg
 #source ../etc/ak_create.cfg
 
 #exec >> ../log/virt-who_libvirt.log 2>&1
+exec >> ../log/virt_inst.log 2>&1
 
 # Install virt-who if it's not already
 rpm -q virt-who || /usr/bin/yum install -y virt-who
