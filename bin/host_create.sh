@@ -46,7 +46,8 @@ hammer bootdisk host --host=${vmname}.${DOMAIN}
 scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 # this is how to inline edit a libvirt vm to add cdrom
 ssh ${GATEWAY} "virsh dumpxml ${vmname}.${DOMAIN} > /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /tmp/${vmname}.${DOMAIN}.xml"
+#ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /tmp/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "sed -i '/dev=\'network\'/a <boot dev=\'cdrom\'\ >' /tmp/${vmname}.${DOMAIN}.xml"
 # search for </disk> and insert
 cat << EOH > /root/cdrom.txt
     <disk type='file' device='cdrom'>
@@ -59,11 +60,8 @@ EOH
 scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
 ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
-#ssh ${GATEWAY} "systemctl restart libvirtd"
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
-ssh ${GATEWAY} "/bin/virsh destroy ${vmname}.${DOMAIN}"
-ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 
 #[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
 # xmlstarlet ??? edit xml from cli
