@@ -32,16 +32,17 @@ vmname="test01"
 vmip="10.0.0.10"
 
 hammer host create \
---name "${vmname}" \
---hostgroup HG_Infra_1_Dev_CCV_RHEL7_Server_ORG_redhat_LOC_laptop \
---organization redhat \
---location laptop \
+--name="${vmname}" \
+--hostgroup=HG_Infra_1_Dev_CCV_RHEL7_Server_ORG_redhat_LOC_laptop \
+--organization=redhat \
+--location=laptop \
 --interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
---subnet "10.0.0.0/24" \
+--subnet="10.0.0.0/24" \
 --volume="capacity=10G,format_type=qcow2" \
---compute-resource Libvirt_CR
+--compute-resource=Libvirt_CR
 
-hammer bootdisk host --host ${vmname}.${DOMAIN}
+# bootdisk host pulls down the boot media from satellite
+hammer bootdisk host --host=${vmname}.${DOMAIN}
 scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 ssh ${GATEWAY} "sed -i 's/dev=\'network\'/dev=\'cdrom\'/g' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
 # search for </disk> and insert
@@ -55,7 +56,8 @@ cat << EOH > /root/cdrom.txt
 EOH
 scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
 ssh ${GATEWAY} "sed -E -i '/\<\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "/bin/virsh define /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
+#ssh ${GATEWAY} "/bin/virsh define /etc/libvirt/qemu/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "systemctl restart libvirtd"
 sleep 3
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 sleep 3
