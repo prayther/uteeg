@@ -61,8 +61,9 @@ ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${v
 ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
 #ssh ${GATEWAY} "systemctl restart libvirtd"
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
-ssh ${GATEWAY} "/bin/virsh suspend ${vmname}.${DOMAIN}"
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
+ssh ${GATEWAY} "/bin/virsh destroy ${vmname}.${DOMAIN}"
+ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 
 #[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
 # xmlstarlet ??? edit xml from cli
