@@ -61,7 +61,6 @@ ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${v
 ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
 #ssh ${GATEWAY} "systemctl restart libvirtd"
 ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
-sleep 3
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
 
 #[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
