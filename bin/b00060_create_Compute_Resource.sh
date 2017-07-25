@@ -4,9 +4,9 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-source ../etc/install-configure-satellite.cfg
+#source ../etc/install-configure-satellite.cfg
 source ../etc/virt-inst.cfg
-source ../etc/register_cdn.cfg
+#source ../etc/register_cdn.cfg
 
 #hammer --cvs location list | awk -F"," '{print $2}'
 #exec >> ../log/compute_resource.log 2>&1

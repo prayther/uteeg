@@ -4,9 +4,9 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-source ../etc/install-configure-satellite.cfg
+#source ../etc/install-configure-satellite.cfg
 source ../etc/virt-inst.cfg
-source ../etc/register_cdn.cfg
+#source ../etc/register_cdn.cfg
 
 cd /root && wget --no-clobber http://${SERVER}/passwd
 cd /root && wget --no-clobber http://${SERVER}/rhn-acct

@@ -6,7 +6,7 @@ export HOME=/root
 cd "${BASH_SOURCE%/*}"
 source ../etc/virt-inst.cfg
 #source ../etc/enable_rhel.cfg
-source ../etc/install-configure-satellite.cfg
+#source ../etc/install-configure-satellite.cfg
 
 exec >> ../log/enable_rhel.log 2>&1
 
