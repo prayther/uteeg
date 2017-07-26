@@ -8,8 +8,9 @@ cd "${BASH_SOURCE%/*}"
 source ../etc/virt-inst.cfg
 #source ../etc/register_cdn.cfg
 
-#exec >> ../log/create_lifecycles.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 #Create 3 lifecycle environment paths
 #    Openshift Apps -> Dev -> Prod

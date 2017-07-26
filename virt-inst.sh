@@ -20,6 +20,7 @@ if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   exit 1
 fi
 
+# replace vars if they change for same vm name
 if [ -n "${VMNAME}" ]; [ -n "${DISC_SIZE}" ];then
       /bin/sed -i /VMNAME=/d etc/virt-inst.cfg
       /bin/sed -i /DISC_SIZE=/d etc/virt-inst.cfg
@@ -43,8 +44,7 @@ RAM=${4} && echo "RAM=${4}" >> etc/virt-inst.cfg
 
 source etc/virt-inst.cfg
 
-#exit 1
-
+# this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
 # System authorization information
 reboot
@@ -108,10 +108,16 @@ curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 cp /etc/rc.local /root/rc.local.orig
 
 # step one creat a file to run by rc.local at next boot
-cat <<'EOFKS' > /tmp/ks_post.sh
+cat <<'EOFKS' > /tmp/ks_virt_inst.sh
 #!/bin/bash -x
 
-exec >> /root/virt-inst.log 2>&1
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+
+cd "${BASH_SOURCE%/*}"
+
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ks_virt_inst.log; done; }
+exec 2> >(LOG_)
 
 #Copy over the main script for configuration
 cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
@@ -161,38 +167,40 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKzWzOv7dZGlh1VWuP68Hng374ZemSPT50tdSwXBXU
 ID_RSAPUB
 chmod 644 /root/.ssh/id_rsa.pub
 
-#uteeg/satellite-install.sh
 # register script comes from uteeg git project cloned above
 /bin/bash ~/uteeg/bin/a00020_register.sh
 
-# step 2 put the orig rc.local in place and reboot
+# step 2 put the orig rc.local in place
 cp /root/rc.local.orig /etc/rc.local
-#/sbin/reboot
+# get known_hosts added for the libvirt host without answering yes.
+ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit
 EOFKS
 
-#chmod 0755 /etc/rc.local.ks.sh
 chmod 0755 /etc/rc.local
-#/sbin/reboot
 
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
 
-bash /tmp/ks_post.sh
+bash /tmp/ks_virt_inst.sh
 EOH
 %end
 
 EOF
-ansible sat.laptop.prayther --timeout=5 -a "/usr/sbin/subscription-manager unregister"
+#ansible sat.laptop.prayther --timeout=5 -a "/usr/sbin/subscription-manager unregister"
+ansible "${NAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
-virsh destroy sat
-virsh undefine sat
-rm -rf /var/lib/libvirt/images/sat.qcow2
+#virsh destroy sat
+#virsh undefine sat
+#rm -rf /var/lib/libvirt/images/sat.qcow2
+virsh destroy "${NAME}"
+virsh undefine "${NAME}"
+rm -rf /var/lib/libvirt/images/"${NAME}".qcow2
 
 virsh net-destroy ${NETWORK}
 virsh net-start ${NETWORK}
 
 /bin/sed -i /${VMNAME}/d /root/.ssh/known_hosts
-/bin/sed -i /${VMNAME}/d /home/apraythe/.ssh/known_hosts
+/bin/sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 virt-install \
    --name=${VMNAME} \

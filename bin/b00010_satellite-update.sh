@@ -8,8 +8,9 @@ cd "${BASH_SOURCE%/*}"
 source ../etc/virt-inst.cfg
 #source ../etc/register_cdn.cfg
 
-#exec >> ../log/satellite-update.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 #cd /root && wget --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
 #cd /root && wget --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}

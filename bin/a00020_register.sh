@@ -11,8 +11,9 @@ source ../etc/virt-inst.cfg
 cd /root && wget --no-clobber http://${SERVER}/passwd
 cd /root && wget --no-clobber http://${SERVER}/rhn-acct
 
-#exec >> ../log/register.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 # After initial install using local media.
 # Turn off the local repos and patch from CDN.

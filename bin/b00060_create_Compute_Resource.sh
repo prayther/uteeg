@@ -4,14 +4,13 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-#source ../etc/install-configure-satellite.cfg
 source ../etc/virt-inst.cfg
-#source ../etc/register_cdn.cfg
+
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 #hammer --cvs location list | awk -F"," '{print $2}'
-#exec >> ../log/compute_resource.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
-
 hammer compute-resource create --description 'LibVirt Compute Resource' --locations ${LOC} --name Libvirt_CR --organizations "$ORG" --url "qemu+ssh://root@${GATEWAY}/system/" --provider libvirt --set-console-password 0
 
 firewall-cmd --add-port=5910-5930/tcp

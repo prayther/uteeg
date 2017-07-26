@@ -4,13 +4,11 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-#source ../etc/install-configure-satellite.cfg
 source ../etc/virt-inst.cfg
-#source ../etc/register_cdn.cfg
-#source ../etc/ak_create.cfg
 
-#exec >> ../log/create_hostgroup.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 #HGNAME="HG_Openshift_Hosts_Infra_Dev"
 #NETNAME='10.0.0.0/24'

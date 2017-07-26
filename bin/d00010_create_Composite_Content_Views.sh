@@ -4,13 +4,11 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-#source ../etc/install-configure-satellite.cfg
 source ../etc/virt-inst.cfg
-#source ../etc/register_cdn.cfg
-#source ../etc/ak_create.cfg
 
-#exec >> ../log/create_ccv.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 COMP_RHEL7=$(hammer content-view version list  --organization="${ORG}"  --content-view CV_RHEL7_Core | awk '/CV_RHEL7_Core/ {print $1}')
 #COMP_Check_MK=$(hammer content-view version list  --organization="${ORG}"  --content-view CV_Check_MK | awk '/CV_Check_MK/ {print $1}')

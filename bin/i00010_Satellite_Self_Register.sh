@@ -4,13 +4,11 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-#source ../etc/install-configure-satellite.cfg
 source ../etc/virt-inst.cfg
-#source ../etc/register_cdn.cfg
-#source ../etc/ak_create.cfg
 
-#exec >> ../log/sat_self_subscribe.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 /usr/sbin/subscription-manager unregister
 rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm

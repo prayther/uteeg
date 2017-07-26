@@ -5,11 +5,10 @@ export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
 source ../etc/virt-inst.cfg
-#source ../etc/enable_rhel.cfg
-#source ../etc/install-configure-satellite.cfg
 
-#exec >> ../log/enable_rhel.log 2>&1
-exec >> ../log/virt_inst.log 2>&1
+#exec >> ../log/virt_inst.log 2>&1
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
 
 ## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
 /usr/bin/hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
