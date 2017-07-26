@@ -3,12 +3,12 @@
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
-cd "${BASH_SOURCE%/*}"
-source etc/virt-inst.cfg
-
 #exec >> log/virt-inst.log 2>&1
 LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> log/virt-inst.log; done; }
 exec 2> >(LOG_)
+
+cd "${BASH_SOURCE%/*}"
+source etc/virt-inst.cfg
 
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}

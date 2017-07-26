@@ -1,6 +1,23 @@
 virt-install (libvirt/KVM) Kickstart
 
-virt-inst.sh is the main script. There is config files in etc. Take a look and modify accordingly.
+Purpose:
+Rapidly deploy Satellite and other things on a libvirt test bed. Mine is a laptop.
+Using dnf install virt-install virt-manager. Deploy Satellite 6.2.x fully configured in ~45 minutes.
+Save time by using local media to install RHEL and Satellite. The first time you pull repositories from cdn.redhat.com, export them to your same httpd server used for kickstart.
+
+Run virt-inst.sh <vmname> <disc in GB> <vcpus> <mem> (virt-inst.sh satellite 300 4 6144).
+1 Creates a libvirt vm.
+2 Registers to CDN.
+3 Installs Satellite from DVD.
+4 Patches the RHEL and Satellite.
+5 Configures Satellite.
+6 Enables and imports repositories from local repo on httpd.
+7 Switches CDN URL back to https://cdn.redhat.com and pulls in deltas.
+8 Creates, Domain, Subnet, Lifecycles, Content Hosts, Content Views, Promote Content Views, Activation Keys, Host Groups, Sync Plan, Compute Resource, virt-who configured to libvirt.
+9 Script to export repositories to local httpd.
+10 Script to Create New Host with Satellite using boot media.
+
+virt-inst.sh is the main script. There is a config file in etc. Take a look and modify accordingly.
 This script creates a uniq ks.cfg file each time it runs and point KVM/libvirt virt-install program to use the ks.cfs file.
 
 ./virt-install <name> <disc MB> <mem> <vcpu>
