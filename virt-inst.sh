@@ -192,9 +192,9 @@ ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unr
 #virsh destroy sat
 #virsh undefine sat
 #rm -rf /var/lib/libvirt/images/sat.qcow2
-virsh destroy "${NAME}"
-virsh undefine "${NAME}"
-rm -rf /var/lib/libvirt/images/"${NAME}".qcow2
+virsh destroy "${VMNAME}"
+virsh undefine "${VMNAME}"
+rm -rf /var/lib/libvirt/images/"${VMNAME}".qcow2
 
 virsh net-destroy ${NETWORK}
 virsh net-start ${NETWORK}
