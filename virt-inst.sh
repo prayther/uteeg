@@ -2,7 +2,6 @@
 
 cd "${BASH_SOURCE%/*}"
 source etc/virt-inst.cfg
-source etc/register_cdn.cfg
 
 if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   echo ""
@@ -41,8 +40,6 @@ VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
 DISC_SIZE=${2} && echo "DISC_SIZE=${2}" >> etc/virt-inst.cfg
 VCPUS=${3} && echo "VCPUS=${3}" >> etc/virt-inst.cfg
 RAM=${4} && echo "RAM=${4}" >> etc/virt-inst.cfg
-
-source etc/virt-inst.cfg
 
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
