@@ -8,7 +8,7 @@ source etc/install-configure-satellite.cfg
 source etc/virt-inst.cfg
 source etc/register_cdn.cfg
 
-exec >> log/satellite-install.log 2>&1
+exec >> log/virt-inst.log 2>&1
 
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
