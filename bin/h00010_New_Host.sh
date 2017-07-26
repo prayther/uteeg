@@ -39,6 +39,7 @@ hammer host create \
 --interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
 --subnet="10.0.0.0/24" \
 --volume="capacity=10G,format_type=qcow2" \
+--compute-attributes="memory=1024" \
 --compute-resource=Libvirt_CR
 
 # bootdisk host pulls down the boot media from satellite
