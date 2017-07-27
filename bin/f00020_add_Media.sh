@@ -2,13 +2,12 @@
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
-
 cd "${BASH_SOURCE%/*}"
-source ../etc/virt-inst.cfg
-
-#exec >> ../log/virt_inst.log 2>&1
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+LogFile="../log/virt-inst.log"
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
 exec 2> >(LOG_)
+
+source ../etc/virt-inst.cfg
 
 # Operating Systems are automatically added as the kickstart repos are synchronised.
 # Associate the operating systems hosted on this server with the specified organisation and location.

@@ -3,7 +3,6 @@
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
-
 LogFile="../log/virt-inst.log"
 LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
 exec 2> >(LOG_)
@@ -25,26 +24,26 @@ hammer host create \
 --compute-resource=Libvirt_CR
 
 # bootdisk host pulls down the boot media from satellite
-#hammer bootdisk host --host=${vmname}.${DOMAIN}
-#scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
-## this is how to inline edit a libvirt vm to add cdrom
-#ssh ${GATEWAY} "virsh dumpxml ${vmname}.${DOMAIN} > /tmp/${vmname}.${DOMAIN}.xml"
-#ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/>' /tmp/${vmname}.${DOMAIN}.xml"
-## search for </disk> and insert
-#cat << EOH > /root/cdrom.txt
-#    <disk type='file' device='cdrom'>
-#      <driver name='qemu' type='raw'/>
-#      <target dev='hda' bus='ide'/>
-#      <readonly/>
-#      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
-#    </disk>
-#EOH
-#scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
-#ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
-#ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
-#ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
-#ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
-#ssh ${GATEWAY} "/bin/virsh reset ${vmname}.${DOMAIN}"
+hammer bootdisk host --host=${vmname}.${DOMAIN}
+scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
+# this is how to inline edit a libvirt vm to add cdrom
+ssh ${GATEWAY} "virsh dumpxml ${vmname}.${DOMAIN} > /tmp/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/>' /tmp/${vmname}.${DOMAIN}.xml"
+# search for </disk> and insert
+cat << EOH > /root/cdrom.txt
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <target dev='hda' bus='ide'/>
+      <readonly/>
+      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+    </disk>
+EOH
+scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
+ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
+ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
+ssh ${GATEWAY} "/bin/virsh reset ${vmname}.${DOMAIN}"
 
 
 

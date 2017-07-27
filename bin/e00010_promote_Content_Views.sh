@@ -2,13 +2,12 @@
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
-
 cd "${BASH_SOURCE%/*}"
-source ../etc/virt-inst.cfg
-
-#exec >> ../log/virt_inst.log 2>&1
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+LogFile="../log/virt-inst.log"
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
 exec 2> >(LOG_)
+
+source ../etc/virt-inst.cfg
 
 # This is working with ID numbers, so just get the number of CV's (Content View) and LE (Lifecycle Env).
 # List it and remove any extraneous lines that you don't want.

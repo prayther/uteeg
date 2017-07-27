@@ -2,11 +2,11 @@
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
-
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+cd "${BASH_SOURCE%/*}"
+LogFile="../log/virt-inst.log"
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
 exec 2> >(LOG_)
 
-cd "${BASH_SOURCE%/*}"
 source ../etc/virt-inst.cfg
 
 cd /root && wget --no-clobber http://${SERVER}/passwd
