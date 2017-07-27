@@ -11,7 +11,7 @@ source etc/virt-inst.cfg
 
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
 cd /root && wget --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
-cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
+#cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
 cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
@@ -22,6 +22,7 @@ enabled=1
 gpgcheck=1
 EOF
 
+# If you a disconnected from internet and also for speed
 mkdir /mnt/rhel
 mount -o loop /root/${RHEL_ISO} /mnt/rhel
 mkdir /mnt/sat
@@ -30,23 +31,6 @@ cd /mnt/sat
 ./install_packages
 cd /tmp
 
-# After initial install using local media.
-# Turn off the local repos and patch from CDN.
-#mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-#mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
-
-# Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
-# Register.
-#/usr/sbin/subscription-manager unregister
-#/usr/sbin/subscription-manager --username="${RHN_USERNAME}" --password="${RHN_PASSWD}" register
-#/usr/sbin/subscription-manager attach --pool="${RHN_POOL}"	#8a85f9873f77744e013f8944ab87680b
-#/usr/sbin/subscription-manager repos '--disable=*'
-#/usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
-#/usr/bin/yum repolist
-#/usr/bin/yum clean all
-#/usr/bin/yum -y update
-#/usr/bin/yum -y install nfs-utils
-#
 /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
@@ -58,6 +42,8 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
 
+# if you are disconnected you are installing from RHEL/Satellite DVD's
+# if you are connected the *register*.sh script will have subscribed and updated everything already
 /usr/sbin/satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
