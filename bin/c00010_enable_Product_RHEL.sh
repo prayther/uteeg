@@ -9,19 +9,14 @@ exec 2> >(LOG_)
 
 source ../etc/virt-inst.cfg
 
-## RHEL 7 basic repos from local for speed, then again changing to internet sources to get updated.
+## RHEL 7 basic repos from local for speed, then again later, changing to internet sources to get updated.
 /usr/bin/hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
-#hammer organization update --name ${ORG} --redhat-repository-url https://cdn.redhat.com
 /usr/bin/hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 /usr/bin/hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
 /usr/bin/hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
-#hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
 
-###########################
-#cleanup and add to epel, check_mk
-###########################
 # Then we can sync all repositories that we've enable
 for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
 
@@ -29,33 +24,6 @@ for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODU
 /usr/bin/hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
 
-#Create a content view for RHEL 7 Core server x86_64:
-#hammer content-view create --name='CV_RHEL7_Core' --organization="${ORG}"
-#for i in $(hammer --csv repository list --organization="${ORG}" | grep "Linux 7 " | grep -v Optional | grep -v Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Core' --organization="${ORG}" --repository-id=${i}; done
-
-#Publish the content views to Library:
-#hammer content-view publish --name="CV_RHEL7_Core" --organization="${ORG}" #--async
-
-#Create a content view for RHEL 7 Extras server x86_64:
-#hammer content-view create --name='CV_RHEL7_Extras' --organization="${ORG}"
-#for i in $(hammer --csv repository list --organization="${ORG}" | grep "Linux 7 " | grep Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Extras' --organization="${ORG}" --repository-id=${i}; done
-
-#Publish the content views to Library:
-#hammer content-view publish --name="CV_RHEL7_Extras" --organization="${ORG}" #--async
-
-#Create a content view for RHEL 7 Optional server x86_64:
-#hammer content-view create --name='CV_RHEL7_Optional' --organization="${ORG}"
-#for i in $(hammer --csv repository list --organization="${ORG}" | grep "Linux 7 " | grep Optional | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Optional' --organization="${ORG}" --repository-id=${i}; done
-
-#Publish the content views to Library:
-#hammer content-view publish --name="CV_RHEL7_Optional" --organization="${ORG}" #--async
-
-
-###########################
-#cleanup and add to epel, check_mk
-
-
-###########################
 #Create a daily sync plan:
 /usr/bin/hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
 /usr/bin/hammer sync-plan list --organization="${ORG}"

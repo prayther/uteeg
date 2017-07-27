@@ -10,6 +10,3 @@ exec 2> >(LOG_)
 source ../etc/virt-inst.cfg
 
 hammer domain create --locations=${LOC} --organizations=${ORG} --name="${DOMAIN}"
-#hammer organization add-domain --domain="${DOMAIN}" --name="${ORG}"
-#hammer location add-domain --domain-id=1 --name='BNE.ANZLAB'
-

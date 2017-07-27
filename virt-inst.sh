@@ -1,6 +1,12 @@
 #!/bin/bash -x
 
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
 cd "${BASH_SOURCE%/*}"
+LogFile="log/virt-inst.log"
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
+exec 2> >(LOG_)
+
 source etc/virt-inst.cfg
 
 if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
@@ -21,10 +27,10 @@ fi
 
 # replace vars if they change for same vm name
 if [ -n "${VMNAME}" ]; [ -n "${DISC_SIZE}" ];then
-      /bin/sed -i /VMNAME=/d etc/virt-inst.cfg
-      /bin/sed -i /DISC_SIZE=/d etc/virt-inst.cfg
-      /bin/sed -i /VCPUS=/d etc/virt-inst.cfg
-      /bin/sed -i /RAM=/d etc/virt-inst.cfg
+      sed -i /VMNAME=/d etc/virt-inst.cfg
+      sed -i /DISC_SIZE=/d etc/virt-inst.cfg
+      sed -i /VCPUS=/d etc/virt-inst.cfg
+      sed -i /RAM=/d etc/virt-inst.cfg
 fi
 
 
@@ -185,21 +191,28 @@ EOH
 %end
 
 EOF
-#ansible sat.laptop.prayther --timeout=5 -a "/usr/sbin/subscription-manager unregister"
+#this is very much setup for testing over and over... the same vm.
+#so be very careful with the next few commands that destroy anything existing without confirmation.
+
+#configure ansible
+rpm -q ansible || /usr/bin/yum install -y ansible
+grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo ["${VMNAME}"] >> /etc/ansible/hosts && echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
+#unregister so you don't make a mess on cdn
 ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
-#virsh destroy sat
-#virsh undefine sat
-#rm -rf /var/lib/libvirt/images/sat.qcow2
 virsh destroy "${VMNAME}"
 virsh undefine "${VMNAME}"
 rm -rf /var/lib/libvirt/images/"${VMNAME}".qcow2
 
+#if the ip does not exist make a hosts entry into libvirt (dnsmasq) host so that the vm will resolve. important for satellite
+grep -i "${IP}" /etc/hosts || echo "${IP}	${VMNAME}.${DOMAIN}" >> /etc/hosts
+
 virsh net-destroy ${NETWORK}
 virsh net-start ${NETWORK}
 
-/bin/sed -i /${VMNAME}/d /root/.ssh/known_hosts
-/bin/sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
+# just remove so ssh won't fail. ks/boot scripts put it back for a new vm later
+sed -i /${VMNAME}/d /root/.ssh/known_hosts
+sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 virt-install \
    --name=${VMNAME} \

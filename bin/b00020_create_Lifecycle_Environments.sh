@@ -9,15 +9,12 @@ exec 2> >(LOG_)
 
 source ../etc/virt-inst.cfg
 
-#Create 3 lifecycle environment paths
-#    Openshift Apps -> Dev -> Prod
-#    Public_Website -> Dev -> Test -> Prod
-#    App -> Dev -> Test -> UAT -> Prod -> Legacy
-
+#Create 2 lifecycle environment paths
+#Standard Infr stuff
 hammer lifecycle-environment create --name='Infra_1_Dev' --prior='Library' --organization="${ORG}"
 hammer lifecycle-environment create --name='Infra_2_Test' --prior='Infra_1_Dev' --organization="${ORG}"
 hammer lifecycle-environment create --name='Infra_3_Prod' --prior='Infra_2_Test' --organization="${ORG}"
-
+#After Infra stuff goes through release process it's ready for App
 hammer lifecycle-environment create --name='App_1_Dev' --prior='Library' --organization="${ORG}"
 hammer lifecycle-environment create --name='App_2_Test' --prior='App_1_Dev' --organization="${ORG}"
 hammer lifecycle-environment create --name='App_3_UAT' --prior='App_2_Test' --organization="${ORG}"
