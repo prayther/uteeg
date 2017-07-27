@@ -39,12 +39,12 @@ OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
 # can't find --content-source-id with a hammer command
 
 for LOC in $(echo "${LOC_var}");do
-  for ORG in $(echo "${ORG_var}");do
+  for ORG_local in $(echo "${ORG_var}");do
     for CCV in $(echo "${CCV_var}");do
       for LE in $(echo "${LE_var}");do
         for NET in $(echo "${NET_var}");do
-          hammer hostgroup create --root-pass ${PASSWD} --architecture="x86_64" --organization "${ORG}" --locations "${LOC}" --lifecycle-environment ${LE} --content-view CCV_${CCV} --content-source-id 1 --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_CCV_${CCV}_ORG_${ORG}_LOC_${LOC}" --subnet="${NET}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
-	  hammer hostgroup set-parameter --hostgroup "HG_${LE}_CCV_${CCV}_ORG_${ORG}_LOC_${LOC}" --value AK_${LE}_${CCV} --name "kt_activation_keys"
+          hammer hostgroup create --root-pass ${PASSWD} --architecture="x86_64" --organization "${ORG_local}" --locations "${LOC}" --lifecycle-environment ${LE} --content-view CCV_${CCV} --content-source-id 1 --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_CCV_${CCV}_ORG_${ORG_local}_LOC_${LOC}" --subnet="${NET}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
+	  hammer hostgroup set-parameter --hostgroup "HG_${LE}_CCV_${CCV}_ORG_${ORG_local}_LOC_${LOC}" --value AK_${LE}_${CCV} --name "kt_activation_keys"
         done
       done
     done
