@@ -26,11 +26,11 @@ if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
 fi
 
 # replace vars if they change for same vm name
-if [ -n "${VMNAME}" ]; [ -n "${DISC_SIZE}" ];then
+if [ -n "${VMNAME}" ];then
       sed -i /VMNAME=/d etc/virt-inst.cfg
-      sed -i /DISC_SIZE=/d etc/virt-inst.cfg
-      sed -i /VCPUS=/d etc/virt-inst.cfg
-      sed -i /RAM=/d etc/virt-inst.cfg
+      sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
+      sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
+      sed -i /${1}_RAM=/d etc/virt-inst.cfg
 fi
 
 
@@ -43,9 +43,9 @@ if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
 fi
 
 VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
-"${VMNAME}"_DISC_SIZE=${2} && echo "${VMNAME}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
-"${VMNAME}"_VCPUS=${3} && echo "${VMNAME}_VCPUS=${3}" >> etc/virt-inst.cfg
-"${VMNAME}"_RAM=${4} && echo "${VMNAME}_RAM=${4}" >> etc/virt-inst.cfg
+export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
+export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg
+export RAM=${4} && echo "${1}_RAM=${4}" >> etc/virt-inst.cfg
 
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
@@ -215,12 +215,12 @@ sed -i /${VMNAME}/d /root/.ssh/known_hosts
 sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 virt-install \
-   --name=${VMNAME} \
-   --disk path=/var/lib/libvirt/images/${VMNAME}.qcow2,size=${DISC_SIZE},sparse=false,format=qcow2,cache=none \
-   --vcpus=${VCPUS} --ram=${RAM} \
-   --location=/var/lib/libvirt/images/rhel-server-${OSVERSION}-x86_64-dvd.iso \
+   --name="${VMNAME}" \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
+   --vcpus="${VCPUS}" --ram="${RAM}" \
+   --location=/var/lib/libvirt/images/rhel-server-"${OSVERSION}"-x86_64-dvd.iso \
    --os-type=linux \
    --noautoconsole --wait -1 \
-   --os-variant=rhel${OSVERSION} \
-   --network network=${NETWORK} \
+   --os-variant=rhel"${OSVERSION}" \
+   --network network="${NETWORK}" \
    --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
