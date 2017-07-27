@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+#will get back to this and change the name appropriately to fit with the rest
+
 cd "${BASH_SOURCE%/*}"
 source ../etc/virt-inst.cfg
 #source ../etc/install-configure-satellite.cfg

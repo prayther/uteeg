@@ -45,5 +45,3 @@ SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| awk -F"," '{p
 for SUBS in ${SUBS_var}; do
   hammer host subscription attach --host ${VIRT_HOST} --subscription-id ${SUBS}
 done
-exit 0
-

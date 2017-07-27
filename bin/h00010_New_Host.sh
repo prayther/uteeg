@@ -1,5 +1,11 @@
 #!/bin/bash -x
 
+# this script broke at last fedora 26 update of qemu* packages
+# did some trouble shooting, removing all but the 'hammer host create'
+# and then adding the cdrom manually and it still just flickers on the boot screen
+# created a vm manually in virt-manager and set the mac on the host for satellite and that worked
+# it made me think it was how satellite is interacting with libvirt compute resource
+# hope this will just start magically working again.
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
