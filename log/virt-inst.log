@@ -2221,3 +2221,91 @@ Thu Jul 27 16:15:51 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
 Thu Jul 27 16:15:51 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
 Thu Jul 27 16:15:51 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
 Thu Jul 27 16:15:51 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=300,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks__1501186546.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ DISC=vda
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ OS=rhel
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ OSVER=7
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ date +%s
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ UNIQ=_1501190293
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ sort -n
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ grep -iv name
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ grep -v Library
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ LE_var=
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ grep true
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ CCV_var=
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ VMNAME=sat
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + '[' -z sat ']'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + '[' -n sat ']'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + sed -i /VMNAME=/d etc/virt-inst.cfg
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + sed -i /sat_DISC_SIZE=/d etc/virt-inst.cfg
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + sed -i /sat_VCPUS=/d etc/virt-inst.cfg
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + sed -i /sat_RAM=/d etc/virt-inst.cfg
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + '[' -z redhat ']'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + '[' -z 10.0.0.1 ']'
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + VMNAME=sat
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + echo VMNAME=sat
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + export DISC_SIZE=300
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + DISC_SIZE=300
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + echo sat_DISC_SIZE=300
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + export VCPUS=4
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + VCPUS=4
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + echo sat_VCPUS=4
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + export RAM=6144
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + RAM=6144
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + echo sat_RAM=6144
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + cat
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ cat /proc/cmdline
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ date
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh ++ hostname
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + rpm -q ansible
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + echo sat.laptop.prayther
+Thu Jul 27 17:18:13 EDT 2017-./virt-inst.sh + ansible sat.laptop.prayther --timeout=5 -a '/usr/sbin/subscription-manager unregister'
+Thu Jul 27 17:18:25 EDT 2017-./virt-inst.sh + virsh destroy sat
+Thu Jul 27 17:18:26 EDT 2017-./virt-inst.sh + virsh undefine sat
+Thu Jul 27 17:18:26 EDT 2017-./virt-inst.sh + rm -rf /var/lib/libvirt/images/sat.qcow2
+Thu Jul 27 17:18:27 EDT 2017-./virt-inst.sh + grep -i 10.0.0.8 /etc/hosts
+Thu Jul 27 17:18:27 EDT 2017-./virt-inst.sh + virsh net-destroy laptoplab
+Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
+Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
+Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
+Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=300,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks__1501190293.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'
