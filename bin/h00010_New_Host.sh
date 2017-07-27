@@ -3,11 +3,11 @@
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2>&1 >(LOG_)
+
 cd "${BASH_SOURCE%/*}"
 source ../etc/virt-inst.cfg
-
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
-exec 2> >(LOG_)
 
 #hammer compute-resource list
 #hammer bootdisk host --host test01.laptop.prayther
@@ -26,8 +26,8 @@ exec 2> >(LOG_)
 #--compute-attributes="start=1,image_id=/var/lib/libvirt/images/test01.laptop.prayther.iso" \
 #--interface="compute_type=network,compute_network=laptoplab,compute_model=virtio" \
 
-vmname="test01"
-vmip="10.0.0.10"
+vmname="test02"
+vmip="10.0.0.11"
 
 hammer host create \
 --name="${vmname}" \

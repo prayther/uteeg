@@ -3,17 +3,14 @@
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
+exec 2> >(LOG_)
+
 cd "${BASH_SOURCE%/*}"
-#source ../etc/install-configure-satellite.cfg
 source ../etc/virt-inst.cfg
-#source ../etc/register_cdn.cfg
 
 cd /root && wget --no-clobber http://${SERVER}/passwd
 cd /root && wget --no-clobber http://${SERVER}/rhn-acct
-
-#exec >> ../log/virt_inst.log 2>&1
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ../log/virt-inst.log; done; }
-exec 2> >(LOG_)
 
 # After initial install using local media.
 # Turn off the local repos and patch from CDN.
