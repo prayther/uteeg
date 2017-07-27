@@ -170,15 +170,14 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKzWzOv7dZGlh1VWuP68Hng374ZemSPT50tdSwXBXU
 ID_RSAPUB
 chmod 644 /root/.ssh/id_rsa.pub
 
-ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit
+# setup known_hosts in both directions for libvirt host and vm
+ssh -o StrictHostKeyChecking=no root@${GATEWAY} ssh -o StrictHostKeyChecking=no root@$(hostname) exit
 
 # register script comes from uteeg git project cloned above
 /bin/bash ~/uteeg/bin/a00020_register.sh
 
 # step 2 put the orig rc.local in place
 cp /root/rc.local.orig /etc/rc.local
-# get known_hosts added for the libvirt host without answering yes.
-#ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit
 EOFKS
 
 chmod 0755 /etc/rc.local
