@@ -29,20 +29,20 @@ source ../etc/virt-inst.cfg
 #  done
 #done
 
-#hammer --csv subnet list
-LOC_var="laptop" # could be an array
-ORG_var="redhat" # could be an array
-NET_var='10.0.0.0/24' # could be an array
+#LE_var and CCV_var are sourced in virt-inst.cfg because they are used in at least 2 scripts
+LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
+ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
+NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
 MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
 PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
 OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
-# can't find --conent-source-id with a hammer command
+# can't find --content-source-id with a hammer command
 
-for LOC in ${LOC_var};do
-  for ORG in ${ORG_var};do
-    for CCV in ${CCV_var};do
-      for LE in ${LE_var};do
-	for NET in ${NET_var};do
+for LOC in $(echo "${LOC_var}");do
+  for ORG in $(echo "${ORG_var}");do
+    for CCV in $(echo "${CCV_var}");do
+      for LE in $(echo "${LE_var}");do
+        for NET in $(echo "${NET_var}");do
           hammer hostgroup create --root-pass ${PASSWD} --architecture="x86_64" --organization "${ORG}" --locations "${LOC}" --lifecycle-environment ${LE} --content-view CCV_${CCV} --content-source-id 1 --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_CCV_${CCV}_ORG_${ORG}_LOC_${LOC}" --subnet="${NET}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
 	  hammer hostgroup set-parameter --hostgroup "HG_${LE}_CCV_${CCV}_ORG_${ORG}_LOC_${LOC}" --value AK_${LE}_${CCV} --name "kt_activation_keys"
         done

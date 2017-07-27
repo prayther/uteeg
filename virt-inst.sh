@@ -43,9 +43,9 @@ if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
 fi
 
 VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
-DISC_SIZE=${2} && echo "DISC_SIZE=${2}" >> etc/virt-inst.cfg
-VCPUS=${3} && echo "VCPUS=${3}" >> etc/virt-inst.cfg
-RAM=${4} && echo "RAM=${4}" >> etc/virt-inst.cfg
+"${VMNAME}"_DISC_SIZE=${2} && echo "${VMNAME}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
+"${VMNAME}"_VCPUS=${3} && echo "${VMNAME}_VCPUS=${3}" >> etc/virt-inst.cfg
+"${VMNAME}"_RAM=${4} && echo "${VMNAME}_RAM=${4}" >> etc/virt-inst.cfg
 
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF

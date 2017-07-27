@@ -17,4 +17,3 @@ do
    hammer organization add-medium --name ${ORG} --medium-id ${i}
    hammer location add-medium --name ${LOC} --medium-id ${i}
 done
-

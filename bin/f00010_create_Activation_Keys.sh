@@ -17,11 +17,11 @@ source ../etc/virt-inst.cfg
 
 # What I did... for now.
 # Add a AK for each CCV in each lifecycle. Seems like a good idea.
-LIFECYCLE=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
-COMPOSITECONTENTVIEW=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
+LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
+CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
 
-for CCV in "${COMPOSITECONTENTVIEW}";do
-  for LE in $(echo "${LIFECYCLE}");do
+for CCV in $(echo "${CCV_var}");do
+  for LE in $(echo "${LE_var}");do
     hammer activation-key create --name="AK_${LE}_${CCV}" --organization="${ORG}" --lifecycle-environment="${LE}" --content-view="${CCV}"
     hammer activation-key update --release-version="7Server" --name="AK_${LE}_${CCV}" --organization="${ORG}"
     hammer activation-key add-host-collection --name="AK_${LE}_${CCV}" --organization="${ORG}" --host-collection=HC_"${LE}"_"${CCV}"
