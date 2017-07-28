@@ -1,4 +1,16 @@
 #!/bin/bash -x
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+cd "${BASH_SOURCE%/*}"
+LogFile="../log/virt-inst.log"
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
+exec 2> >(LOG_)
+
+source ../etc/virt-inst.cfg
+
+#ssh ${GATEWAY}
+
 #Export latest so next time local is used it's more up-to-date
 mkdir /mnt/share
 echo "10.0.0.1:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
