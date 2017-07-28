@@ -18,16 +18,15 @@ ssh ${GATEWAY} "rpm -q nfs-utils || dnf install -y nfs-utils"
 # open firewall to all for nfs if not already
 ssh ${GATEWAY} "firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=nfs"
 # Add entry in exports so export of katello content-views are possible in one step for maintaining local CDN
-ssh ${GATEWAY} "grep "/var/www/html/uteeg" /etc/exports || echo "/var/www/html/uteeg     *(rw,no_acl)" >> /etc/exports"
+ssh ${GATEWAY} grep "/var/www/html/uteeg" /etc/exports || echo "/var/www/html/uteeg     *(rw,no_acl)" >> /etc/exports
 
 #Export latest so next time local is used it's more up-to-date
 mkdir /mnt/share
 echo "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
 rmdir /var/lib/pulp/katello-export
 /usr/bin/mount -a
-cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
-exit 1
+mount | grep "${GATEWAY}:/var/www/html/uteeg" && cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
 #hammer content-view version export --id 1
 for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
-  do hammer repository export --organization="${ORG}" --product-id "${product}"
+  do hammer repository export --organization="${ORG}" --id "${product}"
 done
