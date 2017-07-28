@@ -44,6 +44,7 @@ if [[ -n "${VMNAME}" ]];then
       sed -i /${1}_RAM=/d etc/virt-inst.cfg
 fi
 
+UNIQ=${VMNAME}_$(date '+%s')
 
 if [[ -z "${ORG}" ]]; [[ -z "${SERVER}" ]];then
   echo ""
