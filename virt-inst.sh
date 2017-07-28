@@ -1,5 +1,16 @@
 #!/bin/bash -x
 
+# virt-inst.sh uses a libvirt host as a Kickstart server, NFS host, Satellite/RHEL DVD repository and local CDN.
+# It utilizes local media, RHEL & Satellite DVD media to install satellite. If available it also connects to
+# Red Hat CDN with a valid account and pool id.
+# Setup:
+# cd /var/www/html && git clone https://github.com/prayther/uteeg.git
+# ln -s uteeg ks
+# cp ~/Downloads/rhel-server-7.3-x86_64-dvd.iso /var/www/html/ks/iso/
+# cp ~/Downloads/satellite-6.2.10-rhel-7-x86_64-dvd.iso /var/www/html/ks/iso/
+# cp ~/Downloads/manifest.zip /var/www/html/ks/manifest/
+# ./virt-inst.sh testvm 10 2 2048
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
@@ -26,7 +37,7 @@ if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
 fi
 
 # replace vars if they change for same vm name
-if [ -n "${VMNAME}" ];then
+if [[ -n "${VMNAME}" ]];then
       sed -i /VMNAME=/d etc/virt-inst.cfg
       sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
       sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
@@ -34,7 +45,7 @@ if [ -n "${VMNAME}" ];then
 fi
 
 
-if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
+if [[ -z "${ORG}" ]]; [[ -z "${SERVER}" ]];then
   echo ""
   echo "You must set default values/arrays in ../etc/virt-inst.cfg"
   echo ""
@@ -42,6 +53,20 @@ if [ -z "${ORG}" ]; [ -z "${SERVER}" ];then
   exit 1
 fi
 
+# make sure your your libvirt host has sw needed for virt-inst.sh
+for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
+  do
+    if [[ $(rpm -q "${sw}") ]];then
+      echo ""${sw}" installed"
+    else
+      echo ""${sw}" not installed..."
+      echo "yum install -y "${sw}" # run this and try again"
+      exit 1
+    fi
+done
+
+# This is just saving the info in virt-inst.cfg. You have to use all 4 parameters each time
+# You will have a history of the last values for each uniq vmname you have used saved in virt-inst.cfg
 VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
 export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
 export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg

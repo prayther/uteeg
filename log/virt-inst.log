@@ -2309,3 +2309,315 @@ Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
 Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
 Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
 Thu Jul 27 17:18:28 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=300,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks__1501190293.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ DISC=vda
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ OS=rhel
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ OSVER=7
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ date +%s
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ UNIQ=_1501256925
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ sort -n
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ grep -iv name
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ grep -v Library
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ LE_var=
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ grep true
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ CCV_var=
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ VMNAME=sat
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + '[' -z sata ']'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + [[ -n sat ]]
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + sed -i /VMNAME=/d etc/virt-inst.cfg
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + sed -i /sata_DISC_SIZE=/d etc/virt-inst.cfg
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + sed -i /sata_VCPUS=/d etc/virt-inst.cfg
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + sed -i /sata_RAM=/d etc/virt-inst.cfg
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ./virt-inst.sh: line 45: unexpected EOF while looking for matching `)'
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ./virt-inst.sh: line 239: unexpected token `ÿ' in conditional command
+Fri Jul 28 11:48:45 EDT 2017-./virt-inst.sh ./virt-inst.sh: line 239: syntax error: unexpected end of file
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ DISC=vda
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ OS=rhel
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ OSVER=7
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ date +%s
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ UNIQ=_1501257090
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ grep -iv name
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ grep -v Library
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ sort -n
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ LE_var=
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ grep true
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ CCV_var=
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + '[' -z sata ']'
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + [[ -n '' ]]
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + echo success
+Fri Jul 28 11:51:30 EDT 2017-./virt-inst.sh + exit 1
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ DISC=vda
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ OS=rhel
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ OSVER=7
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ date +%s
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ UNIQ=_1501257144
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ sort -n
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ grep -iv name
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ grep -v Library
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ LE_var=
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh +++ grep true
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ CCV_var=
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + '[' -z sata ']'
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + [[ -n '' ]]
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + echo success
+Fri Jul 28 11:52:24 EDT 2017-./virt-inst.sh + exit 1
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ DISC=vda
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ OS=rhel
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ OSVER=7
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ date +%s
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ UNIQ=_1501257261
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ sort -n
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ grep -iv name
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ grep -v Library
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh ++ LE_var=
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Fri Jul 28 11:54:21 EDT 2017-./virt-inst.sh +++ grep true
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ CCV_var=
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + '[' -z sata ']'
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + [[ -n '' ]]
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + echo success
+Fri Jul 28 11:54:22 EDT 2017-./virt-inst.sh + exit
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ DISC=vda
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ OS=rhel
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ OSVER=7
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ date +%s
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ UNIQ=_1501257751
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ sort -n
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ grep -iv name
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ grep -v Library
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ LE_var=
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ grep true
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ CCV_var=
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + '[' -z sata ']'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -n '' ]]
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + echo 'ansible installed'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ rpm -q virt-manager
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -n virt-manager-1.4.1-2.fc26.noarch ]]
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + echo 'virt-manager installed'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ rpm -q virt-install
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -n virt-install-1.4.1-2.fc26.noarch ]]
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + echo 'virt-install installed'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
+Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + exit 0
