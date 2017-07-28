@@ -10,14 +10,19 @@ exec 2> >(LOG_)
 source ../etc/virt-inst.cfg
 
 ## RHEL 7 basic repos from local for speed, then again later, changing to internet sources to get updated.
-curl -f http://"${GATEWAY}"/ks/katello-export && hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
-hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
-hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
+curl -f http://"${GATEWAY}"/ks/katello-export/ && hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
+#hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
+#hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server RPMs x86_64 7.3'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
-hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
+#hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
+hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Software Collections (RPMs)'
+hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux Satellite 6.2 (RPMs)'
+
+Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server x86_64 7.3
+Red Hat Satellite 6.2 for RHEL 7 Server RPMs x86_64
 
 # Then we can sync all repositories that we've enable
 for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
@@ -33,6 +38,17 @@ for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODU
 #And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
 hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
 
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Fastrack (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - RH Common (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional Fastrack (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Supplementary (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'RHN Tools for Red Hat Enterprise Linux 7 Server (RPMs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (ISOs)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
+# hammer repository-set enable --organization fite.cat.lab --product 'Oracle Java for RHEL Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Oracle Java (RPMs)'
 #hammer repository list --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' | grep "7 Server" | grep -vi source | grep -vi iso | grep -vi debug | less
 #3  | Red Hat Satellite Tools 6.2 for RHEL 7 Server RPMs x86_64 | Red Hat Enterprise Linux Server | yum          | https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/sat-tools/6....
 #2  | Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server     | Red Hat Enterprise Linux Server | yum          | https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/os
@@ -69,3 +85,4 @@ hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Re
 #2476 | yum       | Red Hat Enterprise Linux 7 Server - Supplementary (RPMs)
 #4455 | yum       | Red Hat Ceph Storage Tools 1.3 for Red Hat Enterprise Linux 7 Server (RPMs)
 #3331 | yum       | RHN Tools for Red Hat Enterprise Linux 7 Server Beta (RPMs)
+

@@ -30,8 +30,3 @@ mount | grep "${GATEWAY}:/var/www/html/uteeg" && cd /var/lib/pulp && /usr/bin/ln
 for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
   do hammer repository export --organization="${ORG}" --id "${product}"
 done
-
-# Can you make nicer names to deal with ?
-#for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
-#  do
-#done
