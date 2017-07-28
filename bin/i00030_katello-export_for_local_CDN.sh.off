@@ -1,0 +1,33 @@
+#!/bin/bash -x
+
+# This script is set to "off" so as not to run automatically when configuring Satellite.
+# This script exports all repositories base on hammer --csv repository list --organization="${ORG}"
+# This is dependent on having your Kick Start server httpd setup with an NFS connection to export to /var/www/html/ks/katello-exports
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+cd "${BASH_SOURCE%/*}"
+LogFile="../log/virt-inst.log"
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
+exec 2> >(LOG_)
+
+source ../etc/virt-inst.cfg
+
+# Install nfs-utils if not already
+ssh ${GATEWAY} "rpm -q nfs-utils || dnf install -y nfs-utils"
+# open firewall to all for nfs if not already
+ssh ${GATEWAY} "firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=nfs"
+# Add entry in exports so export of katello content-views are possible in one step for maintaining local CDN
+ssh ${GATEWAY} "grep "/var/www/html/uteeg" /etc/exports || echo "/var/www/html/uteeg     *(rw,no_acl)" >> /etc/exports"
+
+#Export latest so next time local is used it's more up-to-date
+mkdir /mnt/share
+echo "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
+rmdir /var/lib/pulp/katello-export
+/usr/bin/mount -a
+cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
+exit 1
+#hammer content-view version export --id 1
+for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
+  do hammer repository export --organization="${ORG}" --product-id "${product}"
+done

@@ -27,8 +27,8 @@ hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
 
 #Create a daily sync plan:
-hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
-hammer sync-plan list --organization="${ORG}"
+#hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
+#hammer sync-plan list --organization="${ORG}"
 
 #And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
 hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Enterprise Linux Server'

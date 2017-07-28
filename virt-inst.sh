@@ -47,6 +47,11 @@ export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
 export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg
 export RAM=${4} && echo "${1}_RAM=${4}" >> etc/virt-inst.cfg
 
+# Install httpd for ks, iso, manifest.zip
+rpm -q httpd || dnf -y install httpd
+# open httpd to all if not already
+firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=httpd
+
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
 # System authorization information
