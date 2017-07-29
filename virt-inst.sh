@@ -236,7 +236,8 @@ EOF
 
 #configure ansible
 #rpm -q ansible || /usr/bin/yum install -y ansible
-grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo ["${VMNAME}"] >> /etc/ansible/hosts && echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
+grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo ["${VMNAME}"] >> /etc/ansible/hosts
+grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
 #unregister so you don't make a mess on cdn
 ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
