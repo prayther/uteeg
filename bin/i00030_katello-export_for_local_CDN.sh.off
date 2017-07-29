@@ -26,7 +26,8 @@ echo "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context="syst
 rmdir /var/lib/pulp/katello-export
 /usr/bin/mount -a
 mount | grep "${GATEWAY}:/var/www/html/uteeg" && cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
-#hammer content-view version export --id 1
-for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
-  do hammer repository export --organization="${ORG}" --id "${product}"
-done
+hammer content-view version export --id 1
+# this will do each, but each is it's own yum repo, not a consolidated CDN
+#for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
+#  do hammer repository export --organization="${ORG}" --id "${product}"
+#done
