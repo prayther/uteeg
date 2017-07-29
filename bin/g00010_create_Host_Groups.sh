@@ -29,7 +29,8 @@ source ../etc/virt-inst.cfg
 #  done
 #done
 
-#LE_var and CCV_var are sourced in virt-inst.cfg because they are used in at least 2 scripts
+LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
+CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
 LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
 ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
 NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
