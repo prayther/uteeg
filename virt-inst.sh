@@ -212,7 +212,7 @@ chmod 644 /root/.ssh/id_rsa.pub
 
 # setup known_hosts in both directions for libvirt host and vm
 # GATEWAY is the libvirt host. hostname will be the vm in question because hostname evaluates before sending the command
-ssh -o StrictHostKeyChecking=no root@${GATEWAY} ssh -o StrictHostKeyChecking=no root@$(hostname) exit
+ssh -o StrictHostKeyChecking=no root@${GATEWAY} ssh -o StrictHostKeyChecking=no root@"${VMNAME}"."${DOMAIN}" exit
 
 # register script comes from uteeg git project cloned above
 /bin/bash ~/uteeg/bin/a00020_register.sh
