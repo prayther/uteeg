@@ -251,12 +251,11 @@ chmod 0755 /etc/rc.local
 #reboot
 EOFKS
 
-#chmod 0755 /etc/rc.local
-
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
 
 bash /tmp/ks_virt-inst.sh
+chmod 0755 /etc/rc.local
 reboot
 EOH
 %end
