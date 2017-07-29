@@ -24,6 +24,7 @@ This script creates a uniq ks.cfg file each time it runs and point KVM/libvirt v
 
 This directory needs to be in an httpd DocumentRoot suggest default /var/www/html/ks.
 The whole directory is important. /var/www/html/ks/[iso,manifest,post,partitions,packages,network]
+Create a /var/www/html/[passwd,rhn-acct] files with your Red Hat CDN credentials. If you want to have them auto entered when registering.
 
 The kickstart file is embedded in virt-inst.sh and is written to a temp name_date.cfg file for the actual kickstart.
 
