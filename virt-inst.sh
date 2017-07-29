@@ -238,13 +238,13 @@ chmod 0755 /etc/rc.local
 cat << EOH1 > /etc/rc.d/rc.local
 #!/bin/bash
 
-chmod 0755 /etc/rc.local
-
 bash /tmp/ks_virt-inst1.sh
 EOH1
 
+chmod 0755 /etc/rc.local
+
 # register script comes from uteeg git project cloned above
-/bin/bash ~/uteeg/bin/a00005_register.sh.off
+/bin/bash ~/uteeg/bin/a00005_register.sh
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
