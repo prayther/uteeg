@@ -159,7 +159,7 @@ export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
 
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> ks_virt_inst.log; done; }
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt_inst.log; done; }
 exec 2> >(LOG_)
 
 #Copy over the main script for configuration
