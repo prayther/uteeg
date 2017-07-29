@@ -248,17 +248,17 @@ EOH1
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
-reboot
+#reboot
 EOFKS
 
 #chmod 0755 /etc/rc.local
 
-#cat << EOH > /etc/rc.d/rc.local
-##!/bin/bash
+cat << EOH > /etc/rc.d/rc.local
+#!/bin/bash
 
 bash /tmp/ks_virt-inst.sh
-#reboot
-#EOH
+reboot
+EOH
 %end
 
 EOF
