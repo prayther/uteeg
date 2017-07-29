@@ -151,14 +151,14 @@ curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 cp /etc/rc.local /root/rc.local.orig
 
 # step one creat a file to run by rc.local at next boot
-cat <<'EOFKS' > /tmp/ks_virt_inst.sh
+cat <<'EOFKS' > /tmp/ks_virt-inst.sh
 #!/bin/bash -x
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt_inst.log; done; }
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt-inst.log; done; }
 exec 2> >(LOG_)
 
 #Copy over the main script for configuration
@@ -227,7 +227,7 @@ chmod 0755 /etc/rc.local
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
 
-bash /tmp/ks_virt_inst.sh
+bash /tmp/ks_virt-inst.sh
 EOH
 %end
 
