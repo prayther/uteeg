@@ -365,3 +365,417 @@ Sat Jul 29 15:03:44 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
 Sat Jul 29 15:03:44 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
 Sat Jul 29 15:03:44 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
 Sat Jul 29 15:03:44 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=300,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=8192 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks_sat_1501354844.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ DISC=vda
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ OS=rhel
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ OSVER=7
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab3a67ed
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + '[' -z sat ']'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + '[' -z 100 ']'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo 'ansible installed'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ rpm -q virt-manager
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -n virt-manager-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo 'virt-manager installed'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ rpm -q virt-install
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -n virt-install-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo 'virt-install installed'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ rpm -q nfs-utils
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -n nfs-utils-2.1.1-5.rc4.fc26.x86_64 ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo 'nfs-utils installed'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ rpm -q httpd
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -n httpd-2.4.27-2.fc26.x86_64 ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo 'httpd installed'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + VMNAME=sat
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo VMNAME=sat
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + export DISC_SIZE=100
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + DISC_SIZE=100
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo sat_DISC_SIZE=100
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + export VCPUS=4
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + VCPUS=4
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo sat_VCPUS=4
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + export RAM=6144
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + RAM=6144
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo sat_RAM=6144
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -n sat ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + sed -i /VMNAME=/d etc/virt-inst.cfg
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + sed -i /sat_DISC_SIZE=/d etc/virt-inst.cfg
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + sed -i /sat_VCPUS=/d etc/virt-inst.cfg
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + sed -i /sat_RAM=/d etc/virt-inst.cfg
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh ++ date +%s
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + UNIQ=sat_1501356053
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + [[ -f ks/network/sat.network ]]
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + echo 'Kickstart config files in place.... OK'
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + firewall-cmd --list-all
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + grep -i services
+Sat Jul 29 15:20:53 EDT 2017-./virt-inst.sh + grep nfs
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh + cat
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh ++ cat /proc/cmdline
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh ++ find /root/uteeg/bin -type f
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh ++ sort -n
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh ++ grep -vi .off
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh find: ‘/root/uteeg/bin’: No such file or directory
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:20:54 EDT 2017-./virt-inst.sh + ansible sat.laptop.prayther --timeout=5 -a '/usr/sbin/subscription-manager unregister'
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + virsh destroy sat
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + virsh undefine sat
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + rm -rf /var/lib/libvirt/images/sat.qcow2
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + grep -i 10.0.0.8 /etc/hosts
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + virsh net-destroy laptoplab
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
+Sat Jul 29 15:20:56 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=100,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks_sat_1501356053.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ DISC=vda
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ OS=rhel
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ OSVER=7
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab3a67ed
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + '[' -z sat ']'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + '[' -z 100 ']'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo 'ansible installed'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ rpm -q virt-manager
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -n virt-manager-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo 'virt-manager installed'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ rpm -q virt-install
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -n virt-install-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo 'virt-install installed'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ rpm -q nfs-utils
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -n nfs-utils-2.1.1-5.rc4.fc26.x86_64 ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo 'nfs-utils installed'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ rpm -q httpd
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -n httpd-2.4.27-2.fc26.x86_64 ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo 'httpd installed'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + VMNAME=sat
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo VMNAME=sat
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + export DISC_SIZE=100
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + DISC_SIZE=100
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo sat_DISC_SIZE=100
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + export VCPUS=4
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + VCPUS=4
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo sat_VCPUS=4
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + export RAM=6144
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + RAM=6144
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo sat_RAM=6144
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -n sat ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + sed -i /VMNAME=/d etc/virt-inst.cfg
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + sed -i /sat_DISC_SIZE=/d etc/virt-inst.cfg
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + sed -i /sat_VCPUS=/d etc/virt-inst.cfg
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + sed -i /sat_RAM=/d etc/virt-inst.cfg
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ date +%s
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + UNIQ=sat_1501356671
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + [[ -f ks/network/sat.network ]]
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + echo 'Kickstart config files in place.... OK'
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + firewall-cmd --list-all
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + grep -i services
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + grep nfs
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + cat
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ cat /proc/cmdline
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ find /root/uteeg/bin -type f
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ sort -n
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh ++ grep -vi .off
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh find: ‘/root/uteeg/bin’: No such file or directory
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:31:11 EDT 2017-./virt-inst.sh + ansible sat.laptop.prayther --timeout=5 -a '/usr/sbin/subscription-manager unregister'
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + virsh destroy sat
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + virsh undefine sat
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + rm -rf /var/lib/libvirt/images/sat.qcow2
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + grep -i 10.0.0.8 /etc/hosts
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + virsh net-destroy laptoplab
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
+Sat Jul 29 15:31:12 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=100,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks_sat_1501356671.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ DISC=vda
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ OS=rhel
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ OSVER=7
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab3a67ed
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + '[' -z sat ']'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + '[' -z 100 ']'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo 'ansible installed'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ rpm -q virt-manager
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -n virt-manager-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo 'virt-manager installed'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ rpm -q virt-install
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -n virt-install-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo 'virt-install installed'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ rpm -q nfs-utils
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -n nfs-utils-2.1.1-5.rc4.fc26.x86_64 ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo 'nfs-utils installed'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ rpm -q httpd
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -n httpd-2.4.27-2.fc26.x86_64 ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo 'httpd installed'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + VMNAME=sat
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo VMNAME=sat
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + export DISC_SIZE=100
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + DISC_SIZE=100
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo sat_DISC_SIZE=100
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + export VCPUS=4
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + VCPUS=4
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo sat_VCPUS=4
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + export RAM=6144
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + RAM=6144
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo sat_RAM=6144
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -n sat ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + sed -i /VMNAME=/d etc/virt-inst.cfg
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + sed -i /sat_DISC_SIZE=/d etc/virt-inst.cfg
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + sed -i /sat_VCPUS=/d etc/virt-inst.cfg
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + sed -i /sat_RAM=/d etc/virt-inst.cfg
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ date +%s
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + UNIQ=sat_1501356989
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + [[ -f ks/network/sat.network ]]
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + echo 'Kickstart config files in place.... OK'
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + firewall-cmd --list-all
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + grep -i services
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + grep nfs
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + cat
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ cat /proc/cmdline
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ find /root/uteeg/bin -type f
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ sort -n
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh ++ grep -vi .off
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh find: ‘/root/uteeg/bin’: No such file or directory
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:36:29 EDT 2017-./virt-inst.sh + ansible sat.laptop.prayther --timeout=5 -a '/usr/sbin/subscription-manager unregister'
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh + virsh destroy sat
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh error: Failed to destroy domain sat
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh error: Requested operation is not valid: domain is not running
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh + virsh undefine sat
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh + rm -rf /var/lib/libvirt/images/sat.qcow2
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh + grep -i 10.0.0.8 /etc/hosts
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh + virsh net-destroy laptoplab
+Sat Jul 29 15:36:33 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
+Sat Jul 29 15:36:34 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
+Sat Jul 29 15:36:34 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
+Sat Jul 29 15:36:34 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=100,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks_sat_1501356989.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ DISC=vda
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ OS=rhel
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ OSVER=7
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab3a67ed
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + '[' -z sat ']'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo 'ansible installed'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ rpm -q virt-manager
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -n virt-manager-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo 'virt-manager installed'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ rpm -q virt-install
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -n virt-install-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo 'virt-install installed'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ rpm -q nfs-utils
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -n nfs-utils-2.1.1-5.rc4.fc26.x86_64 ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo 'nfs-utils installed'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ rpm -q httpd
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -n httpd-2.4.27-2.fc26.x86_64 ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo 'httpd installed'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + VMNAME=sat
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo VMNAME=sat
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + export DISC_SIZE=300
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + DISC_SIZE=300
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo sat_DISC_SIZE=300
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + export VCPUS=4
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + VCPUS=4
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo sat_VCPUS=4
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + export RAM=6144
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + RAM=6144
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo sat_RAM=6144
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -n sat ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + sed -i /VMNAME=/d etc/virt-inst.cfg
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + sed -i /sat_DISC_SIZE=/d etc/virt-inst.cfg
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + sed -i /sat_VCPUS=/d etc/virt-inst.cfg
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + sed -i /sat_RAM=/d etc/virt-inst.cfg
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ date +%s
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + UNIQ=sat_1501357044
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + [[ -f ks/network/sat.network ]]
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + echo 'Kickstart config files in place.... OK'
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + firewall-cmd --list-all
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + grep -i services
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + grep nfs
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + cat
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ cat /proc/cmdline
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ sort -n
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ find /root/uteeg/bin -type f
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh ++ grep -vi .off
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh find: ‘/root/uteeg/bin’: No such file or directory
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + grep -i sat.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 15:37:24 EDT 2017-./virt-inst.sh + ansible sat.laptop.prayther --timeout=5 -a '/usr/sbin/subscription-manager unregister'
+Sat Jul 29 15:37:25 EDT 2017-./virt-inst.sh + virsh destroy sat
+Sat Jul 29 15:37:25 EDT 2017-./virt-inst.sh + virsh undefine sat
+Sat Jul 29 15:37:25 EDT 2017-./virt-inst.sh + rm -rf /var/lib/libvirt/images/sat.qcow2
+Sat Jul 29 15:37:25 EDT 2017-./virt-inst.sh + grep -i 10.0.0.8 /etc/hosts
+Sat Jul 29 15:37:25 EDT 2017-./virt-inst.sh + virsh net-destroy laptoplab
+Sat Jul 29 15:37:25 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
+Sat Jul 29 15:37:26 EDT 2017-./virt-inst.sh + sed -i /sat/d /root/.ssh/known_hosts
+Sat Jul 29 15:37:26 EDT 2017-./virt-inst.sh + sed -i /sat/d /home/apraythe/.ssh/known_hosts
+Sat Jul 29 15:37:26 EDT 2017-./virt-inst.sh + virt-install --name=sat --disk path=/var/lib/libvirt/images/sat.qcow2,size=300,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks_sat_1501357044.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sat.laptop.prayther:eth0:none'

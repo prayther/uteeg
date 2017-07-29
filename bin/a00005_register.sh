@@ -20,7 +20,8 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 /usr/sbin/subscription-manager unregister
-/usr/sbin/subscription-manager --username=$(cat rhn-acct) --password=$(cat passwd) register || echo "subscription-manager register failed" && exit 2
+#/usr/sbin/subscription-manager --username=$(cat rhn-acct) --password=$(cat passwd) register || echo "subscription-manager register failed" && exit 2
+/usr/sbin/subscription-manager --username=$(cat rhn-acct) --password=$(cat passwd) register
 /usr/sbin/subscription-manager attach --pool="${RHN_POOL}" || echo "subscription-manager attach --pool failed" && exit 3
 /usr/sbin/subscription-manager repos '--disable=*' || echo "subscription-manager repos --disable=* failed" && exit 4
 /usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms || echo "subscription-manager repos --enable failed" && exit 5
