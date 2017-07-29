@@ -215,7 +215,7 @@ chmod 644 /root/.ssh/id_rsa.pub
 ssh -o StrictHostKeyChecking=no root@${GATEWAY} ssh -o StrictHostKeyChecking=no root@"${VMNAME}"."${DOMAIN}" exit
 
 # register script comes from uteeg git project cloned above
-/bin/bash ~/uteeg/bin/a00020_register.sh
+/bin/bash ~/uteeg/bin/a00005_register.sh.off
 
 # step 2 put the orig rc.local in place
 cp /root/rc.local.orig /etc/rc.local
