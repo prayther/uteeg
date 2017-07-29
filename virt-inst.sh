@@ -158,7 +158,6 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 
 cd "${BASH_SOURCE%/*}"
-
 LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt_inst.log; done; }
 exec 2> >(LOG_)
 
@@ -212,7 +211,7 @@ chmod 644 /root/.ssh/id_rsa.pub
 
 # setup known_hosts in both directions for libvirt host and vm
 # GATEWAY is the libvirt host. hostname will be the vm in question because hostname evaluates before sending the command
-ssh -o StrictHostKeyChecking=no root@${GATEWAY} ssh -o StrictHostKeyChecking=no root@"${VMNAME}"."${DOMAIN}" exit
+ssh -o StrictHostKeyChecking=no root@${GATEWAY} "ssh -o StrictHostKeyChecking=no root@${VMNAME}.${DOMAIN} exit"
 
 # register script comes from uteeg git project cloned above
 /bin/bash ~/uteeg/bin/a00005_register.sh.off
