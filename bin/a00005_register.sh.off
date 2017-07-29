@@ -36,13 +36,13 @@ cat << EOH > /etc/rc.d/rc.local
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
-LogFile="../log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt-inst.log; done; }
 exec 2> >(LOG_)
 
 source ../etc/virt-inst.cfg
 
-for run in "$(ls /root/uteeg/bin/ | grep -vi .off)"; do cd ~uteeg/bin && ./"${run}" || echo "Something went wrong." && exit 1;done
+SCRIPTS=$(ls /root/uteeg/bin/ | grep -vi .off)
+for run in "${SCRIPTS}"; do cd ~uteeg/bin && ./"${run}" || echo "Something went wrong." && exit 1;done
 
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local
