@@ -2621,3 +2621,254 @@ Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
 Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
 Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
 Fri Jul 28 12:02:31 EDT 2017-./virt-inst.sh + exit 0
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ DISC=vda
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ OS=rhel
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ OSVER=7
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ sort -n
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ grep -iv name
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ grep -v Library
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ LE_var=
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ grep true
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ CCV_var=
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + '[' -z sata ']'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -n '' ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ date +%s
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + UNIQ=_1501321391
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo 'ansible installed'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ rpm -q virt-manager
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -n virt-manager-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo 'virt-manager installed'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ rpm -q virt-install
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -n virt-install-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo 'virt-install installed'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ rpm -q nfs-utils
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -n nfs-utils-2.1.1-5.rc4.fc26.x86_64 ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo 'nfs-utils installed'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh ++ rpm -q httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + [[ -n httpd-2.4.27-2.fc26.x86_64 ]]
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo 'httpd installed'
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + VMNAME=sata
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo VMNAME=sata
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + export DISC_SIZE=300
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + DISC_SIZE=300
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo sata_DISC_SIZE=300
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + export VCPUS=4
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + VCPUS=4
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo sata_VCPUS=4
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + export RAM=6144
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + RAM=6144
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + echo sata_RAM=6144
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + rpm -q httpd
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + firewall-cmd --list-all
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + grep -i services
+Sat Jul 29 05:43:11 EDT 2017-./virt-inst.sh + grep nfs
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh + cat
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh ++ cat /proc/cmdline
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh ++ hostname
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh + rpm -q ansible
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh + grep -i sata.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh + echo '[sata]'
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh + echo sata.laptop.prayther
+Sat Jul 29 05:43:12 EDT 2017-./virt-inst.sh + ansible sata.laptop.prayther --timeout=5 -a '/usr/sbin/subscription-manager unregister'
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh + virsh destroy sata
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh error: failed to get domain 'sata'
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh error: Domain not found: no domain with matching name 'sata'
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh + virsh undefine sata
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh error: failed to get domain 'sata'
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh error: Domain not found: no domain with matching name 'sata'
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh + rm -rf /var/lib/libvirt/images/sata.qcow2
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh + grep -i 10.0.0.8 /etc/hosts
+Sat Jul 29 05:43:14 EDT 2017-./virt-inst.sh + virsh net-destroy laptoplab
+Sat Jul 29 05:43:15 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
+Sat Jul 29 05:43:15 EDT 2017-./virt-inst.sh + sed -i /sata/d /root/.ssh/known_hosts
+Sat Jul 29 05:43:15 EDT 2017-./virt-inst.sh + sed -i /sata/d /home/apraythe/.ssh/known_hosts
+Sat Jul 29 05:43:15 EDT 2017-./virt-inst.sh + virt-install --name=sata --disk path=/var/lib/libvirt/images/sata.qcow2,size=300,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks__1501321391.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sata.laptop.prayther:eth0:none'
+Sat Jul 29 05:43:18 EDT 2017-./virt-inst.sh ERROR    internal error: process exited while connecting to monitor: 2017-07-29T09:43:18.075724Z qemu-system-x86_64: -chardev pty,id=charserial0: char device redirected to /dev/pts/8 (label charserial0)
+Sat Jul 29 05:43:18 EDT 2017-./virt-inst.sh 2017-07-29T09:43:18.108169Z qemu-system-x86_64: cannot set up guest memory 'pc.ram': Cannot allocate memory
+Sat Jul 29 05:43:18 EDT 2017-./virt-inst.sh Domain installation does not appear to have been successful.
+Sat Jul 29 05:43:18 EDT 2017-./virt-inst.sh If it was, you can restart your domain by running:
+Sat Jul 29 05:43:18 EDT 2017-./virt-inst.sh   virsh --connect qemu:///system start sata
+Sat Jul 29 05:43:18 EDT 2017-./virt-inst.sh otherwise, please restart your installation.
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + source etc/virt-inst.cfg
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ DOMAIN=laptop.prayther
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ SERVER=10.0.0.1
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ URL=http://10.0.0.1/ks
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ NETWORK=laptoplab
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ NET=10.0.0.0
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ NAME=10.0.0.0/24
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ IP=10.0.0.8
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ MASK=255.255.255.0
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ GATEWAY=10.0.0.1
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ NIC=eth0
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ AUTOCONF=none
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ DISC=vda
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ OS=rhel
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ OSVER=7
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ OSVERSION=7.3
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ VIRTHOSTUSER=apraythe
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ ADMIN=admin
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ PASSWD=password
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ ORG=redhat
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ LOC=laptop
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ PROMOTEALL=no
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ hammer --csv lifecycle-environment list --organization=redhat
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ sort -n
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 33: hammer: command not found
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ grep -v Library
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ grep -iv name
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ LE_var=
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ hammer --csv content-view list --organization=redhat
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ grep -v 'Content View ID,Name,Label,Composite,Repository IDs'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh etc/virt-inst.cfg: line 34: hammer: command not found
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ grep true
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh +++ awk -F, '{print $2}'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ CCV_var=
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ CDN_URL=https://cdn.redhat.com
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ RHEL_ISO=rhel-server-7.3-x86_64-dvd.iso
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ SATELLITE_ISO=satellite-6.2.10-rhel-7-x86_64-dvd.iso
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ RHN_POOL=8a85f9873f77744e013f8944ab87680b
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ NAME_EPEL=EPEL_7_-_x86_64
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ URL_EPEL=http://dl.fedoraproject.org/pub/epel/7/x86_64/
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ NAME=Check_MK
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ sat_DISC_SIZE=300
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ sat_VCPUS=4
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ sat_RAM=6144
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ VMNAME=sata
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ sata_DISC_SIZE=300
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ sata_VCPUS=4
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ sata_RAM=6144
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + '[' -z sata ']'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + '[' -z 300 ']'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + '[' -z 4 ']'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + '[' -z 6144 ']'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -n sata ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + sed -i /VMNAME=/d etc/virt-inst.cfg
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + sed -i /sata_DISC_SIZE=/d etc/virt-inst.cfg
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + sed -i /sata_VCPUS=/d etc/virt-inst.cfg
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + sed -i /sata_RAM=/d etc/virt-inst.cfg
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ date +%s
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + UNIQ=sata_1501321558
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -z redhat ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -z 10.0.0.1 ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ rpm -q ansible
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -n ansible-2.3.1.0-1.fc26.noarch ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo 'ansible installed'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ rpm -q virt-manager
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -n virt-manager-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo 'virt-manager installed'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ rpm -q virt-install
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -n virt-install-1.4.1-2.fc26.noarch ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo 'virt-install installed'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ rpm -q virt-viewer
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -n virt-viewer-5.0-2.fc26.x86_64 ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo 'virt-viewer installed'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ rpm -q nfs-utils
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -n nfs-utils-2.1.1-5.rc4.fc26.x86_64 ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo 'nfs-utils installed'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh ++ rpm -q httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + [[ -n httpd-2.4.27-2.fc26.x86_64 ]]
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo 'httpd installed'
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + VMNAME=sata
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo VMNAME=sata
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + export DISC_SIZE=300
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + DISC_SIZE=300
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo sata_DISC_SIZE=300
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + export VCPUS=4
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + VCPUS=4
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo sata_VCPUS=4
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + export RAM=6144
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + RAM=6144
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + echo sata_RAM=6144
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + rpm -q httpd
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + firewall-cmd --list-all
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + grep -i services
+Sat Jul 29 05:45:58 EDT 2017-./virt-inst.sh + grep nfs
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh + cat
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh ++ cat /proc/cmdline
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh ++ date
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh ++ hostname
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh + rpm -q ansible
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh + grep -i sata.laptop.prayther /etc/ansible/hosts
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh + echo sata.laptop.prayther
+Sat Jul 29 05:45:59 EDT 2017-./virt-inst.sh + ansible sata.laptop.prayther --timeout=5 -a '/usr/sbin/subscription-manager unregister'
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + virsh destroy sata
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh error: failed to get domain 'sata'
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh error: Domain not found: no domain with matching name 'sata'
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + virsh undefine sata
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh error: failed to get domain 'sata'
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh error: Domain not found: no domain with matching name 'sata'
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + rm -rf /var/lib/libvirt/images/sata.qcow2
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + grep -i 10.0.0.8 /etc/hosts
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + virsh net-destroy laptoplab
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + virsh net-start laptoplab
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + sed -i /sata/d /root/.ssh/known_hosts
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + sed -i /sata/d /home/apraythe/.ssh/known_hosts
+Sat Jul 29 05:46:00 EDT 2017-./virt-inst.sh + virt-install --name=sata --disk path=/var/lib/libvirt/images/sata.qcow2,size=300,sparse=false,format=qcow2,cache=none --vcpus=4 --ram=6144 --location=/var/lib/libvirt/images/rhel-server-7.3-x86_64-dvd.iso --os-type=linux --noautoconsole --wait -1 --os-variant=rhel7.3 --network network=laptoplab --extra-args 'ks=http://10.0.0.1/ks/ks_sata_1501321558.cfg ip=10.0.0.8::10.0.0.1:255.255.255.0:sata.laptop.prayther:eth0:none'
+Sat Jul 29 05:46:03 EDT 2017-./virt-inst.sh ERROR    internal error: process exited while connecting to monitor: 2017-07-29T09:46:02.961380Z qemu-system-x86_64: -chardev pty,id=charserial0: char device redirected to /dev/pts/6 (label charserial0)
+Sat Jul 29 05:46:03 EDT 2017-./virt-inst.sh 2017-07-29T09:46:02.975843Z qemu-system-x86_64: cannot set up guest memory 'pc.ram': Cannot allocate memory
+Sat Jul 29 05:46:03 EDT 2017-./virt-inst.sh Domain installation does not appear to have been successful.
+Sat Jul 29 05:46:03 EDT 2017-./virt-inst.sh If it was, you can restart your domain by running:
+Sat Jul 29 05:46:03 EDT 2017-./virt-inst.sh   virsh --connect qemu:///system start sata
+Sat Jul 29 05:46:03 EDT 2017-./virt-inst.sh otherwise, please restart your installation.

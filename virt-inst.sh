@@ -15,8 +15,8 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
 LogFile="log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
-exec 2> >(LOG_)
+#LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
+#exec 2> >(LOG_)
 
 source etc/virt-inst.cfg
 
@@ -31,24 +31,6 @@ if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
   echo "starting and stopping the network"
   echo ""
   echo "All the starting and stopping is to get dhcp leases straight"
-  echo ""
-  echo ""
-  exit 1
-fi
-
-# replace vars if they change for same vm name
-if [[ -n "${VMNAME}" ]];then
-      sed -i /VMNAME=/d etc/virt-inst.cfg
-      sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
-      sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
-      sed -i /${1}_RAM=/d etc/virt-inst.cfg
-fi
-
-UNIQ=${VMNAME}_$(date '+%s')
-
-if [[ -z "${ORG}" ]]; [[ -z "${SERVER}" ]];then
-  echo ""
-  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
   echo ""
   echo ""
   exit 1
@@ -73,8 +55,35 @@ export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
 export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg
 export RAM=${4} && echo "${1}_RAM=${4}" >> etc/virt-inst.cfg
 
+# replace vars if they change for same vm name
+if [[ -n "${VMNAME}" ]];then
+      sed -i /VMNAME=/d etc/virt-inst.cfg
+      sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
+      sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
+      sed -i /${1}_RAM=/d etc/virt-inst.cfg
+fi
+
+UNIQ=${VMNAME}_$(date '+%s')
+
+if [[ -z "${ORG}" ]]; [[ -z "${SERVER}" ]];then
+  echo ""
+  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
+  echo ""
+  echo ""
+  exit 1
+fi
+
+if [[ -f ks/network/"${VMNAME}".network ]];then
+  echo "Kickstart config files in place.... OK"
+  else
+    echo "Kickstart config files are missing."
+    echo "You must create files for %include."
+    echo "Look in the uteeg/ks/* for examples on network, partitions, packages and post"
+    exit 1
+fi
+
 # Install httpd for ks, iso, manifest.zip
-rpm -q httpd || dnf -y install httpd
+#rpm -q httpd || dnf -y install httpd
 # open httpd to all if not already
 firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=httpd
 
@@ -204,7 +213,6 @@ chmod 644 /root/.ssh/id_rsa.pub
 # setup known_hosts in both directions for libvirt host and vm
 # GATEWAY is the libvirt host. hostname will be the vm in question because hostname evaluates before sending the command
 ssh -o StrictHostKeyChecking=no root@${GATEWAY} ssh -o StrictHostKeyChecking=no root@$(hostname) exit
-ssh -o StrictHostKeyChecking=no root@10.0.0.1 "ssh -o StrictHostKeyChecking=no root@sat exit"
 
 # register script comes from uteeg git project cloned above
 /bin/bash ~/uteeg/bin/a00020_register.sh
@@ -227,7 +235,7 @@ EOF
 #so be very careful with the next few commands that destroy anything existing without confirmation.
 
 #configure ansible
-rpm -q ansible || /usr/bin/yum install -y ansible
+#rpm -q ansible || /usr/bin/yum install -y ansible
 grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo ["${VMNAME}"] >> /etc/ansible/hosts && echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
 #unregister so you don't make a mess on cdn
 ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
