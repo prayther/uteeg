@@ -29,7 +29,7 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 
 #/bin/bash /root/uteeg/bin/rc.local.rewrite.sh
 
-#cat << EOH > /etc/rc.d/rc.local
+#cat << EOH1 > /etc/rc.d/rc.local
 ##!/bin/bash -x
 #
 #export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
@@ -45,7 +45,7 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 #
 ## step 2 put the orig rc.local in place and reboot
 #cp /root/rc.local.orig /etc/rc.local
-#EOH
+#EOH1
 #
 #chmod 0755 /etc/rc.local
 #/sbin/reboot

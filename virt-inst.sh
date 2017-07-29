@@ -215,11 +215,38 @@ chmod 644 /root/.ssh/id_rsa.pub
 # GATEWAY is the libvirt host. hostname will be the vm in question because hostname evaluates before sending the command
 ssh -o StrictHostKeyChecking=no root@${GATEWAY} "ssh -o StrictHostKeyChecking=no root@${VMNAME}.${DOMAIN} exit"
 
+cat << EOFKS1 > /tmp/ks_virt-inst1.sh
+#!/bin/bash -x
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+cd "${BASH_SOURCE%/*}"
+LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt-inst.log; done; }
+exec 2> >(LOG_)
+
+source ../etc/virt-inst.cfg
+
+# run all the install/cfg scripts in sequence. the names determine order.
+cd /root/uteeg/bin && $(find /root/uteeg/bin -type f | sort -n | grep -vi .off)
+
+# step 2 put the orig rc.local in place and reboot
+cp /root/rc.local.orig /etc/rc.local
+EOFKS1
+
+chmod 0755 /etc/rc.local
+
+cat << EOH1 > /etc/rc.d/rc.local
+#!/bin/bash
+
+bash /tmp/ks_virt-inst.sh
+EOH1
+
 # register script comes from uteeg git project cloned above
 /bin/bash ~/uteeg/bin/a00005_register.sh.off
 
 # step 2 put the orig rc.local in place
 cp /root/rc.local.orig /etc/rc.local
+reboot
 EOFKS
 
 chmod 0755 /etc/rc.local
