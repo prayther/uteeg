@@ -230,7 +230,7 @@ source ../etc/virt-inst.cfg
 cd /root/uteeg/bin && $(find /root/uteeg/bin -type f | sort -n | grep -vi .off)
 
 # step 2 put the orig rc.local in place and reboot
-cp /root/rc.local.orig /etc/rc.local
+#cp /root/rc.local.orig /etc/rc.local
 EOFKS1
 
 chmod 0755 /etc/rc.local
@@ -247,7 +247,7 @@ EOH1
 /bin/bash ~/uteeg/bin/a00005_register.sh.off
 
 # step 2 put the orig rc.local in place
-cp /root/rc.local.orig /etc/rc.local
+#cp /root/rc.local.orig /etc/rc.local
 reboot
 EOFKS
 
