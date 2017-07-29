@@ -230,7 +230,7 @@ source ../etc/virt-inst.cfg
 cd /root/uteeg/bin && $(find /root/uteeg/bin -type f | sort -n | grep -vi .off)
 
 # step 2 put the orig rc.local in place and reboot
-#cp /root/rc.local.orig /etc/rc.local
+cp /root/rc.local.orig /etc/rc.local
 EOFKS1
 
 chmod 0755 /etc/rc.local
@@ -240,7 +240,6 @@ cat << EOH1 > /etc/rc.d/rc.local
 
 bash /tmp/ks_virt-inst1.sh
 EOH1
-
 chmod 0755 /etc/rc.local
 
 # register script comes from uteeg git project cloned above
@@ -248,16 +247,15 @@ chmod 0755 /etc/rc.local
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
-#reboot
+reboot
 EOFKS
 
 cat << EOH > /etc/rc.d/rc.local
 #!/bin/bash
 
 bash /tmp/ks_virt-inst.sh
-chmod 0755 /etc/rc.local
-reboot
 EOH
+chmod 0755 /etc/rc.local
 %end
 
 EOF
