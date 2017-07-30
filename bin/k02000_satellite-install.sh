@@ -47,13 +47,15 @@ doit wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 #cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
-doit cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
+dvd_repo () { cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
 [rhel]
 name=RHEL local
 baseurl=file:///mnt/rhel
 enabled=1
 gpgcheck=1
 EOF
+}
+doit dvd_repo
 
 # If you a disconnected from internet and also for speed
 doit mkdir /mnt/rhel
@@ -84,7 +86,8 @@ doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 --foreman-proxy-tftp-servername $(hostname) \
 --capsule-puppet false
 
-doit echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
+VMNAME="$(hostname) | awk -F"." '{print $1}'"
+doit grep "${VMNAME} ../etc/virt-inst.cfg || doit "echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
 doit mkdir  ~/.hammer
 hammer_cli_config () { cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
