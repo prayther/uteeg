@@ -1,31 +1,60 @@
 #!/bin/bash -x
 
-export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
-export HOME=/root
-cd "${BASH_SOURCE%/*}"
-LogFile="../log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
-exec 2> >(LOG_)
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes 
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
+logfile=$(basename $0 .sh).log
+donefile=$(basename $0 .sh).done
+touch $logfile
+touch $donefile
+
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0"
+echo "###INFO: $(date)"
+
+# read configuration (needs to be adopted!)
+#. ./satenv.sh
 source ../etc/virt-inst.cfg
 
-cd /root && wget --no-clobber http://${SERVER}/passwd
-cd /root && wget --no-clobber http://${SERVER}/rhn-acct
+
+doit() {
+	echo "INFO: doit: $@" >&2
+	cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+	grep -q "$cmd2grep" $donefile
+	if [ $? -eq 0 ] ; then
+		echo "INFO: doit: found cmd in donefile - skipping" >&2
+	else
+		"$@" 2>&1 || {
+			echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+			exit 1
+		}
+		echo "$cmd2grep" >> $donefile
+		echo "INFO: doit: cmd finished successfull" >&2
+	fi
+}
+
+
+doit cd /root && wget --no-clobber http://${SERVER}/passwd
+doit cd /root && wget --no-clobber http://${SERVER}/rhn-acct
 
 # After initial install using local media.
 # Turn off the local repos and patch from CDN.
-mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
+#mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
+#mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
-/usr/sbin/subscription-manager unregister
-/usr/sbin/subscription-manager --username=$(cat rhn-acct) --password=$(cat passwd) register
-/usr/sbin/subscription-manager attach --pool="${RHN_POOL}"
-/usr/sbin/subscription-manager repos '--disable=*'
-/usr/sbin/subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
-/usr/bin/yum clean all
-/usr/bin/yum -y update
+doit /usr/sbin/subscription-manager unregister
+doit /usr/sbin/subscription-manager --username=$(cat rhn-acct) --password=$(cat passwd) register
+doit /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+doit /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
+doit /usr/bin/yum clean all
+doit /usr/bin/yum -y update
 
 #/bin/bash /root/uteeg/bin/rc.local.rewrite.sh
 
@@ -49,4 +78,4 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
 #
 #chmod 0755 /etc/rc.local
 #/sbin/reboot
-exit 0
+#exit 0
