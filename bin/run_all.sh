@@ -42,7 +42,7 @@ doit() {
 }
 
 run () { for run_all in $(find . -type f -name "??????_*" | grep -v off)
-  do "${run_all}"
+  do time "${run_all}"
 done
 }
 doit run

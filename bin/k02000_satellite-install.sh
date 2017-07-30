@@ -86,13 +86,15 @@ doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 
 doit echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
 doit mkdir  ~/.hammer
-doit cat << EOF > ~/.hammer/cli_config.yml
+hammer_cli_config () { cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
        :host: https://${VMNAME}.${DOMAIN}
        :username: ${ADMIN}
        :password: ${PASSWD}
        :organization: ${ORG}
 EOF
+}
+doit hammer_cli_config
 
 doit mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
 doit mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
