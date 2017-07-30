@@ -1,20 +1,53 @@
 #!/bin/bash -x
 
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
-LogFile="../log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
-exec 2> >(LOG_)
 
+logfile="../log/$(basename $0 .sh).log"
+donefile="../log/$(basename $0 .sh).done"
+touch $logfile
+touch $donefile
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0"
+echo "###INFO: $(date)"
+
+# read configuration (needs to be adopted!)
+#. ./satenv.sh
 source ../etc/virt-inst.cfg
 
-cd /root && wget --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
-cd /root && wget --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
+
+doit() {
+        echo "INFO: doit: $@" >&2
+        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+        grep -q "$cmd2grep" $donefile
+        if [ $? -eq 0 ] ; then
+                echo "INFO: doit: found cmd in donefile - skipping" >&2
+        else
+                "$@" 2>&1 || {
+                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+                        exit 1
+                }
+                echo "$cmd2grep" >> $donefile
+                echo "INFO: doit: cmd finished successfull" >&2
+        fi
+}
+
+
+doit wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
+doit wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 #cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
-cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
+doit cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
 [rhel]
 name=RHEL local
 baseurl=file:///mnt/rhel
@@ -23,20 +56,19 @@ gpgcheck=1
 EOF
 
 # If you a disconnected from internet and also for speed
-mkdir /mnt/rhel
-mount -o loop /root/${RHEL_ISO} /mnt/rhel
-mkdir /mnt/sat
-mount -o loop /root/${SATELLITE_ISO} /mnt/sat
-cd /mnt/sat
-./install_packages
-cd /tmp
+doit mkdir /mnt/rhel
+doit mount -o loop /root/${RHEL_ISO} /mnt/rhel
+doit mkdir /mnt/sat
+doit mount -o loop /root/${SATELLITE_ISO} /mnt/sat
+doit cd /mnt/sat
+doit ./install_packages
 
-/usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
+doit /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
-firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
+doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
@@ -53,8 +85,8 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 --foreman-proxy-tftp-servername $(hostname) \
 --capsule-puppet false
 
-mkdir  ~/.hammer
-cat << EOF > ~/.hammer/cli_config.yml
+doit mkdir  ~/.hammer
+doit cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
        :host: https://${VMNAME}.${DOMAIN}
        :username: ${ADMIN}
@@ -62,8 +94,8 @@ cat << EOF > ~/.hammer/cli_config.yml
        :organization: ${ORG}
 EOF
 
-mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
+doit mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
+doit mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
-/usr/bin/yum clean all
-/usr/bin/yum -y update
+doit /usr/bin/yum clean all
+doit /usr/bin/yum -y update
