@@ -10,11 +10,10 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
 
-logfile=../log/$(basename $0 .sh).log
-donefile=../log/$(basename $0 .sh).done
+logfile="uteeg/log/$(basename $0 .sh).log"
+donefile="uteeg/log/$(basename $0 .sh).done"
 touch $logfile
 touch $donefile
-
 
 exec > >(tee -a "$logfile") 2>&1
 
