@@ -55,15 +55,18 @@ doit hammer repository-set enable --organization "$ORG" --product 'Red Hat Softw
 doit hammer repository-set enable --organization "$ORG" --product 'Red Hat Satellite Capsule' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Satellite Capsule 6.2 (for RHEL 7 Server) (RPMs)'
 
 # Then we can sync all repositories that we've enable
-doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
+repolist () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
   do hammer repository synchronize --id ${i} --organization=${ORG}
 done
+}
+doit repolist
 
 # Put CDN back to redhat and sync latest
 doit hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
-doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
-  do hammer repository synchronize --id ${i} --organization=${ORG}
-done
+#doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
+#  do hammer repository synchronize --id ${i} --organization=${ORG}
+#done
+doit repolist
 
 #Create a daily sync plan:
 #hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
