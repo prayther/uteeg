@@ -43,7 +43,7 @@ doit() {
 
 #Create a content view for RHEL 7 Core server x86_64:
 doit hammer content-view create --name='CV_RHEL7_Satellite' --organization="${ORG}"
-repolist () {  for i in $(hammer --csv repository list --organization="${ORG}" | grep "7 Server" | grep Satellite | grep -v Tools)
+repolist () {  for i in $(hammer --csv repository list --organization="${ORG}" | grep "7 Server" | grep Satellite | grep -v Tools | awk -F"," '{print $1}')
   do hammer content-view add-repository --name='CV_RHEL7_Satellite' --organization="${ORG}" --repository-id=${i}
 done
 }
