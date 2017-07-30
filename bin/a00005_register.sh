@@ -42,8 +42,8 @@ doit() {
 }
 
 
-doit cd /root && wget --no-clobber http://${SERVER}/passwd
-doit cd /root && wget --no-clobber http://${SERVER}/rhn-acct
+doit wget -P /root/ --no-clobber http://${SERVER}/passwd
+doit wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
 # After initial install using local media.
 # Turn off the local repos and patch from CDN.
