@@ -227,7 +227,7 @@ exec 2> >(LOG_)
 source ../etc/virt-inst.cfg
 
 # run all the install/cfg scripts in sequence. the names determine order.
-cd /root/uteeg/bin && $(find /root/uteeg/bin -type f | sort -n | grep -vi .off)
+/root/uteeg/bin/run_all.sh
 
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local
@@ -243,7 +243,7 @@ EOH1
 chmod 0755 /etc/rc.local
 
 # register script comes from uteeg git project cloned above
-/bin/bash ~/uteeg/bin/a00005_register.sh
+/bin/bash ~/uteeg/bin/*register.sh
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
