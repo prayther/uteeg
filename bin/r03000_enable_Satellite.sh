@@ -74,9 +74,9 @@ doit repolist
 
 #And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
 #hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
-doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Software Collections for RHEL Server'
-doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite'
-doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite Capsule'
+#doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Software Collections for RHEL Server'
+#doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite'
+#doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite Capsule'
 
 #[root@sat pulp]# hammer product list --organization-id 1 | grep atellite
 #12 | Red Hat Satellite Capsule                                                        |             | redhat       | 1            |

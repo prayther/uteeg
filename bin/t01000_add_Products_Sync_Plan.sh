@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-sync_plan () { for products in $(hammer --csv product list --organization redhat --enabled 1 | awk -F"," '{print $1}')
+sync_plan () { for products in $(hammer --csv product list --organization redhat --enabled 1 | grep -vi id | awk -F"," '{print $1}')
   do hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --id="${products}" 
 done
 }

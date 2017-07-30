@@ -52,22 +52,26 @@ doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Ent
 doit hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
 
 # Then we can sync all repositories that we've enable
-doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
+repolist () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
   do hammer repository synchronize --id ${i} --organization=${ORG}
 done
+}
+doit repolist
 
 # Put CDN back to redhat and sync latest
 doit hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
-doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
-  do hammer repository synchronize --id ${i} --organization=${ORG}
-done
+#repolist () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
+#  do hammer repository synchronize --id ${i} --organization=${ORG}
+#done
+#}
+doit repolist
 
 #Create a daily sync plan:
 #hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
 #hammer sync-plan list --organization="${ORG}"
 
 #And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
-doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
+#doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
 
 #hammer repository list --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' | grep "7 Server" | grep -vi source | grep -vi iso | grep -vi debug | less
 #3  | Red Hat Satellite Tools 6.2 for RHEL 7 Server RPMs x86_64 | Red Hat Enterprise Linux Server | yum          | https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/sat-tools/6....

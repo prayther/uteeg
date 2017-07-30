@@ -75,8 +75,8 @@ doit repolist
 #hammer sync-plan list --organization="${ORG}"
 
 #And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
-doit SYNC_DAILY_ID=$(hammer --csv sync-plan list --organization redhat | grep -i daily | awk -F"," '{print $1}')
-doit hammer product set-sync-plan --sync-plan-id="${SYNC_DAILY_ID}" --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
+#doit SYNC_DAILY_ID=$(hammer --csv sync-plan list --organization redhat | grep -i daily | awk -F"," '{print $1}')
+#doit hammer product set-sync-plan --sync-plan-id="${SYNC_DAILY_ID}" --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
 
 #hammer repository list --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' | grep "7 Server" | grep -vi source | grep -vi iso | grep -vi debug | less
 #3  | Red Hat Satellite Tools 6.2 for RHEL 7 Server RPMs x86_64 | Red Hat Enterprise Linux Server | yum          | https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/sat-tools/6....
