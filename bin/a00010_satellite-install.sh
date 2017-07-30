@@ -60,8 +60,7 @@ doit mkdir /mnt/rhel
 doit mount -o loop /root/${RHEL_ISO} /mnt/rhel
 doit mkdir /mnt/sat
 doit mount -o loop /root/${SATELLITE_ISO} /mnt/sat
-doit cd /mnt/sat
-doit ./install_packages
+doit /mnt/sat/install_packages
 
 doit /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
