@@ -42,22 +42,13 @@ doit() {
 }
 
 
-doit wget -P /root/ --no-clobber http://${SERVER}/passwd
-doit wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
-
-# After initial install using local media.
-# Turn off the local repos and patch from CDN.
-#mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-#mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
-
-# Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
-# Register.
-/usr/sbin/subscription-manager unregister
-doit /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
-/usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
-doit /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
-#doit /usr/bin/yum clean all
-#doit /usr/bin/yum -y update
+doit /usr/bin/yum clean all
+doit /usr/bin/yum -y update
+# - name: update system
+#    yum: name=* state=latest
+#    notify:
+#     - Restart server
+#     - Wait for server to restart
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
