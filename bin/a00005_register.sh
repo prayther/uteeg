@@ -54,7 +54,7 @@ doit cd /root && wget --no-clobber http://${SERVER}/rhn-acct
 # Register.
 /usr/sbin/subscription-manager unregister
 doit /usr/sbin/subscription-manager --username=$(cat rhn-acct) --password=$(cat passwd) register
-doit /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+/usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
 doit /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
 doit /usr/bin/yum clean all
 doit /usr/bin/yum -y update
