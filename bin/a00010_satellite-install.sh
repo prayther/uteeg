@@ -84,6 +84,7 @@ doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 --foreman-proxy-tftp-servername $(hostname) \
 --capsule-puppet false
 
+doit echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
 doit mkdir  ~/.hammer
 doit cat << EOF > ~/.hammer/cli_config.yml
    :foreman:

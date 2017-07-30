@@ -43,7 +43,9 @@ doit() {
 
 #Create a content view for RHEL 7 Core server x86_64:
 doit hammer content-view create --name='CV_RHEL7_Core' --organization="${ORG}"
-doit for i in $(hammer --csv repository list --organization="${ORG}" | grep "7 Server" | grep -v Optional | grep -v Extras | awk -F, {'print $1'} | grep -vi '^ID'); do hammer content-view add-repository --name='CV_RHEL7_Core' --organization="${ORG}" --repository-id=${i}; done
+doit for i in $(hammer --csv repository list --organization="${ORG}" | grep "7 Server" | grep -v Optional | grep -v Extras | awk -F, {'print $1'} | grep -vi '^ID')
+  do hammer content-view add-repository --name='CV_RHEL7_Core' --organization="${ORG}" --repository-id=${i}
+done
 
 #Publish the content views to Library:
 doit hammer content-view publish --name="CV_RHEL7_Core" --organization="${ORG}" #--async
