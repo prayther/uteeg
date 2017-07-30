@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-run () { for run_all in $(find ./ -type f -name ??????_* | grep -v off)
+run () { for run_all in $(find . -type f -name "??????_*" | grep -v off)
   do "${run_all}"
 done
 }
