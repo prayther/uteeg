@@ -52,7 +52,7 @@ doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Ent
 #hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
 
 # Then we can sync all repositories that we've enable
-repolist () {for i in $(hammer --csv repository list --organization=${ORG} | grep -i "7 Server" | grep -i optional | awk -F, {'print $1'} | grep -vi '^ID')
+repolist () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "7 Server" | grep -i optional | awk -F, {'print $1'} | grep -vi '^ID')
   do hammer repository synchronize --id ${i} --organization=${ORG}
 done
 }
