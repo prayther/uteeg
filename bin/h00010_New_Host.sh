@@ -6,19 +6,51 @@
 # created a vm manually in virt-manager and set the mac on the host for satellite and that worked
 # it made me think it was how satellite is interacting with libvirt compute resource
 # hope this will just start magically working again.
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
-LogFile="../log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
-exec 2> >(LOG_)
 
+logfile="../log/$(basename $0 .sh).log"
+donefile="../log/$(basename $0 .sh).done"
+touch $logfile
+touch $donefile
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0"
+echo "###INFO: $(date)"
+
+# read configuration (needs to be adopted!)
+#. ./satenv.sh
 source ../etc/virt-inst.cfg
 
-vmname="test02"
-vmip="10.0.0.11"
 
-hammer host create \
+doit() {
+        echo "INFO: doit: $@" >&2
+        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+        grep -q "$cmd2grep" $donefile
+        if [ $? -eq 0 ] ; then
+                echo "INFO: doit: found cmd in donefile - skipping" >&2
+        else
+                "$@" 2>&1 || {
+                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+                        exit 1
+                }
+                echo "$cmd2grep" >> $donefile
+                echo "INFO: doit: cmd finished successfull" >&2
+        fi
+}
+
+doit vmname="test02"
+doit vmip="10.0.0.11"
+
+doit hammer host create \
 --name="${vmname}" \
 --hostgroup=HG_Infra_1_Dev_CCV_RHEL7_Server_ORG_redhat_LOC_laptop \
 --organization=redhat \
@@ -30,13 +62,13 @@ hammer host create \
 --compute-resource=Libvirt_CR
 
 # bootdisk host pulls down the boot media from satellite
-hammer bootdisk host --host=${vmname}.${DOMAIN}
-scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
+doit hammer bootdisk host --host=${vmname}.${DOMAIN}
+doit scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 # this is how to inline edit a libvirt vm to add cdrom
-ssh ${GATEWAY} "virsh dumpxml ${vmname}.${DOMAIN} > /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/>' /tmp/${vmname}.${DOMAIN}.xml"
+doit ssh ${GATEWAY} "virsh dumpxml ${vmname}.${DOMAIN} > /tmp/${vmname}.${DOMAIN}.xml"
+doit ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/>' /tmp/${vmname}.${DOMAIN}.xml"
 # search for </disk> and insert
-cat << EOH > /root/cdrom.txt
+doit cat << EOH > /root/cdrom.txt
     <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw'/>
       <target dev='hda' bus='ide'/>
@@ -44,12 +76,12 @@ cat << EOH > /root/cdrom.txt
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
 EOH
-scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
-ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
-ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
-ssh ${GATEWAY} "/bin/virsh reset ${vmname}.${DOMAIN}"
+doit scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
+doit ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
+doit ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
+doit ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
+doit ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
+doit ssh ${GATEWAY} "/bin/virsh reset ${vmname}.${DOMAIN}"
 
 
 

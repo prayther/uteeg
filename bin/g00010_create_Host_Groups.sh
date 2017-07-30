@@ -1,13 +1,45 @@
 #!/bin/bash -x
 
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
-LogFile="../log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
-exec 2> >(LOG_)
 
+logfile="../log/$(basename $0 .sh).log"
+donefile="../log/$(basename $0 .sh).done"
+touch $logfile
+touch $donefile
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0"
+echo "###INFO: $(date)"
+
+# read configuration (needs to be adopted!)
+#. ./satenv.sh
 source ../etc/virt-inst.cfg
+
+
+doit() {
+        echo "INFO: doit: $@" >&2
+        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+        grep -q "$cmd2grep" $donefile
+        if [ $? -eq 0 ] ; then
+                echo "INFO: doit: found cmd in donefile - skipping" >&2
+        else
+                "$@" 2>&1 || {
+                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+                        exit 1
+                }
+                echo "$cmd2grep" >> $donefile
+                echo "INFO: doit: cmd finished successfull" >&2
+        fi
+}
 
 #HGNAME="HG_Openshift_Hosts_Infra_Dev"
 #NETNAME='10.0.0.0/24'
@@ -29,17 +61,17 @@ source ../etc/virt-inst.cfg
 #  done
 #done
 
-LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
-CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
-LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
-ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
-NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
-MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
-PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
-OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
+doit LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
+doit CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
+doit LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
+doit ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
+doit NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
+doit MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
+doit PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
+doit OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
 # can't find --content-source-id with a hammer command
 
-for LOC in $(echo "${LOC_var}");do
+hostgroup_create () { for LOC in $(echo "${LOC_var}");do
   for ORG_local in $(echo "${ORG_var}");do
     for CCV in $(echo "${CCV_var}");do
       for LE in $(echo "${LE_var}");do
@@ -51,3 +83,5 @@ for LOC in $(echo "${LOC_var}");do
     done
   done
 done
+}
+doit hostgroup_create
