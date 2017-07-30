@@ -6,8 +6,12 @@
 # setting up  a satellite for demo purposes 
 # mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
-logfile=$(basename $0 .sh).log
-donefile=$(basename $0 .sh).done
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+export HOME=/root
+cd "${BASH_SOURCE%/*}"
+
+logfile=../log/$(basename $0 .sh).log
+donefile=../log/$(basename $0 .sh).done
 touch $logfile
 touch $donefile
 
@@ -49,12 +53,15 @@ doit cd /root && wget --no-clobber http://${SERVER}/rhn-acct
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
-doit /usr/sbin/subscription-manager unregister
+/usr/sbin/subscription-manager unregister
 doit /usr/sbin/subscription-manager --username=$(cat rhn-acct) --password=$(cat passwd) register
 doit /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
 doit /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
 doit /usr/bin/yum clean all
 doit /usr/bin/yum -y update
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"
 
 #/bin/bash /root/uteeg/bin/rc.local.rewrite.sh
 
