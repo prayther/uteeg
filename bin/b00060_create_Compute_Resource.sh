@@ -1,29 +1,61 @@
 #!/bin/bash -x
 
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
-LogFile="../log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
-exec 2> >(LOG_)
 
+logfile="../log/$(basename $0 .sh).log"
+donefile="../log/$(basename $0 .sh).done"
+touch $logfile
+touch $donefile
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0"
+echo "###INFO: $(date)"
+
+# read configuration (needs to be adopted!)
+#. ./satenv.sh
 source ../etc/virt-inst.cfg
 
-#hammer --cvs location list | awk -F"," '{print $2}'
-hammer compute-resource create --description 'LibVirt Compute Resource' --locations ${LOC} --name Libvirt_CR --organizations "$ORG" --url "qemu+ssh://root@${GATEWAY}/system/" --provider libvirt --set-console-password 0
 
-firewall-cmd --add-port=5910-5930/tcp
-firewall-cmd --add-port=5910-5930/tcp --permanent
+doit() {
+        echo "INFO: doit: $@" >&2
+        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+        grep -q "$cmd2grep" $donefile
+        if [ $? -eq 0 ] ; then
+                echo "INFO: doit: found cmd in donefile - skipping" >&2
+        else
+                "$@" 2>&1 || {
+                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+                        exit 1
+                }
+                echo "$cmd2grep" >> $donefile
+                echo "INFO: doit: cmd finished successfull" >&2
+        fi
+}
+
+#hammer --cvs location list | awk -F"," '{print $2}'
+doit hammer compute-resource create --description 'LibVirt Compute Resource' --locations ${LOC} --name Libvirt_CR --organizations "$ORG" --url "qemu+ssh://root@${GATEWAY}/system/" --provider libvirt --set-console-password 0
+
+doit firewall-cmd --add-port=5910-5930/tcp
+doit firewall-cmd --add-port=5910-5930/tcp --permanent
 
 # setup for compute resource with libvirt
 #su - foreman -s /bin/bash
 #ssh-keygen
 #ssh-copy-id root@${GATEWAY}
 
-mkdir /usr/share/foreman/.ssh
-chmod 0700 /usr/share/foreman/.ssh
+doit mkdir /usr/share/foreman/.ssh
+doit chmod 0700 /usr/share/foreman/.ssh
 
-cat << EOH > /usr/share/foreman/.ssh/id_rsa
+doit cat << EOH > /usr/share/foreman/.ssh/id_rsa
 -----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAuXluOWqlZrEaiYrFOPvwwc3Rz1u+JmFHoil1LQ1E9RmBr4/N
 tKZJLxmEDzUrrDskPp8CjJm9t0CMQo5QaKNos1hlbhpcZ81ipZBvbkdi+ICANuYo
@@ -52,17 +84,17 @@ TCb7A74Fdrcmaua9l/tFE2ftFQMVHgJmkEjTnG9LEZPZUzMO1JD2tZIpJ79dT1WA
 gtVv8TALfkcC6897a0HNXqb+7jdIzRYX6QPoshy80DdikxSfxikM
 -----END RSA PRIVATE KEY-----
 EOH
-chmod 0600 /usr/share/foreman/.ssh/id_rsa
+doit chmod 0600 /usr/share/foreman/.ssh/id_rsa
 
-cat << EOF > /usr/share/foreman/.ssh/id_rsa.pub
+doit cat << EOF > /usr/share/foreman/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5eW45aqVmsRqJisU4+/DBzdHPW74mYUeiKXUtDUT1GYGvj820pkkvGYQPNSusOyQ+nwKMmb23QIxCjlBoo2izWGVuGlxnzWKlkG9uR2L4gIA25igVFp1OQDWWFIHYhyyvbh1dAldoJiiehUgJ4aMx8dkoGJuUZoqmub8WmEp8P1MrdJqbjKVa15vSI9pkHG3AfEl01b5GBdvMk5xGJOFJ3tfYe3V+QfX+MHo2XTfaT+oISGJ36zaJxwZxzN9EsmZ4QUMWr5mi6Jb3j5IIIV78CSLtj1EGVPafJzPzi9wCd/PbKZ/WS1mmTu1ejmi5aQA+AMQkA9YqE5XA5dOn/Gqz foreman@sat.laptop.prayther
 EOF
-chmod 0644
-chown foreman.foreman -R /usr/share/foreman/.ssh
+doit chmod 0644
+doit chown foreman.foreman -R /usr/share/foreman/.ssh
 # copy ssh id
-ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
+doit ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
 # create known_hosts without ansering yes
-/bin/su -s /bin/bash -c "ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit" foreman
+doit /bin/su -s /bin/bash -c "ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit" foreman
 
 # import crt for libvirt vm console on your workstation/laptop browser
 #http://10.0.0.8/pub/katello-server-ca.crt

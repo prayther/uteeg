@@ -1,16 +1,48 @@
 #!/bin/bash -x
 
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
-LogFile="../log/virt-inst.log"
-LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> "${LogFile}"; done; }
-exec 2> >(LOG_)
 
+logfile="../log/$(basename $0 .sh).log"
+donefile="../log/$(basename $0 .sh).done"
+touch $logfile
+touch $donefile
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0"
+echo "###INFO: $(date)"
+
+# read configuration (needs to be adopted!)
+#. ./satenv.sh
 source ../etc/virt-inst.cfg
 
+
+doit() {
+        echo "INFO: doit: $@" >&2
+        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+        grep -q "$cmd2grep" $donefile
+        if [ $? -eq 0 ] ; then
+                echo "INFO: doit: found cmd in donefile - skipping" >&2
+        else
+                "$@" 2>&1 || {
+                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+                        exit 1
+                }
+                echo "$cmd2grep" >> $donefile
+                echo "INFO: doit: cmd finished successfull" >&2
+        fi
+}
+
 ## RHEL 7 basic repos from local for speed, then again later, changing to internet sources to get updated.
-curl -f http://"${GATEWAY}"/ks/katello-export/ && hammer organization update --name ${ORG} --redhat-repository-url http://"${GATEWAY}"/ks/katello-export/
+doit curl -f http://"${GATEWAY}"/ks/katello-export/ && hammer organization update --name ${ORG} --redhat-repository-url http://"${GATEWAY}"/ks/katello-export/
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server RPMs x86_64 7.3'
@@ -18,16 +50,16 @@ curl -f http://"${GATEWAY}"/ks/katello-export/ && hammer organization update --n
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
 #hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
-hammer repository-set enable --organization "$ORG" --product 'Red Hat Satellite' --basearch='x86_64' --name 'Red Hat Satellite 6.2 (for RHEL 7 Server) (RPMs)'
-hammer repository-set enable --organization "$ORG" --product 'Red Hat Software Collections for RHEL Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server'
-hammer repository-set enable --organization "$ORG" --product 'Red Hat Satellite Capsule' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Satellite Capsule 6.2 (for RHEL 7 Server) (RPMs)'
+doit hammer repository-set enable --organization "$ORG" --product 'Red Hat Satellite' --basearch='x86_64' --name 'Red Hat Satellite 6.2 (for RHEL 7 Server) (RPMs)'
+doit hammer repository-set enable --organization "$ORG" --product 'Red Hat Software Collections for RHEL Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server'
+doit hammer repository-set enable --organization "$ORG" --product 'Red Hat Satellite Capsule' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Satellite Capsule 6.2 (for RHEL 7 Server) (RPMs)'
 
 # Then we can sync all repositories that we've enable
-for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
+doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
 
 # Put CDN back to redhat and sync latest
-hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
-for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
+doit hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
+doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID'); do hammer repository synchronize --id ${i} --organization=${ORG}; done
 
 #Create a daily sync plan:
 #hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
@@ -35,9 +67,9 @@ for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODU
 
 #And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
 #hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
-hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Software Collections for RHEL Server'
-hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite'
-hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite Capsule'
+doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Software Collections for RHEL Server'
+doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite'
+doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Satellite Capsule'
 
 #[root@sat pulp]# hammer product list --organization-id 1 | grep atellite
 #12 | Red Hat Satellite Capsule                                                        |             | redhat       | 1            |
