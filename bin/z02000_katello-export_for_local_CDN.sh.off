@@ -58,6 +58,7 @@ doit echo "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context=
 doit rmdir /var/lib/pulp/katello-export
 doit /usr/bin/mount -a
 doit mount | grep "${GATEWAY}:/var/www/html/uteeg" && cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
+#hammer content-view version export --since "$(date "+%FT%T.%X %Z")" --id 1
 doit hammer content-view version export --id 1
 # this will do each, but each is it's own yum repo, not a consolidated CDN
 #for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
