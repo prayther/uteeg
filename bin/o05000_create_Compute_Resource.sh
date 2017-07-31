@@ -89,7 +89,7 @@ doit chmod 0600 /usr/share/foreman/.ssh/id_rsa
 doit cat << EOF > /usr/share/foreman/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5eW45aqVmsRqJisU4+/DBzdHPW74mYUeiKXUtDUT1GYGvj820pkkvGYQPNSusOyQ+nwKMmb23QIxCjlBoo2izWGVuGlxnzWKlkG9uR2L4gIA25igVFp1OQDWWFIHYhyyvbh1dAldoJiiehUgJ4aMx8dkoGJuUZoqmub8WmEp8P1MrdJqbjKVa15vSI9pkHG3AfEl01b5GBdvMk5xGJOFJ3tfYe3V+QfX+MHo2XTfaT+oISGJ36zaJxwZxzN9EsmZ4QUMWr5mi6Jb3j5IIIV78CSLtj1EGVPafJzPzi9wCd/PbKZ/WS1mmTu1ejmi5aQA+AMQkA9YqE5XA5dOn/Gqz foreman@sat.laptop.prayther
 EOF
-doit chmod 0644
+doit chmod 0644 /usr/share/foreman/.ssh
 doit chown foreman.foreman -R /usr/share/foreman/.ssh
 # copy ssh id
 doit ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
