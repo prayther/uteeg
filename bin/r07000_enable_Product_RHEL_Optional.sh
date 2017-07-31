@@ -56,13 +56,14 @@ repolist () { for i in $(hammer --csv repository list --organization=${ORG} | gr
   do hammer repository synchronize --id ${i} --organization=${ORG}
 done
 }
-doit repolist
+repolist
 
 # Put CDN back to redhat and sync latest
 hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 #doit for i in $(hammer --csv repository list --organization=${ORG} | grep -i "7 Server" | grep -i optional | awk -F, {'print $1'} | grep -vi '^ID')
 #  do hammer repository synchronize --id ${i} --organization=${ORG}
 #done
+repolist
 
 #Create a daily sync plan:
 #hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1

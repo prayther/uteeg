@@ -50,11 +50,11 @@ repolist () { for i in $(hammer --csv repository list --organization=${ORG} | gr
   do hammer repository synchronize --id ${i} --organization=${ORG}
 done
 }
-doit repolist
+repolist
 
 # Put pulic mirror back to sync latest
 hammer repository update --url ${URL_EPEL} --organization "${ORG}" --product="RHEL7_EPEL7"
 #for i in $(hammer --csv repository list --organization=${ORG} | grep -i "RHEL7_EPEL" | awk -F, {'print $1'} | grep -vi '^ID')
 #  do hammer repository synchronize --id ${i} --organization=${ORG}
 #done
-doit repolist
+repolist

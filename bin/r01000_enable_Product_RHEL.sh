@@ -65,6 +65,7 @@ hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 #  do hammer repository synchronize --id ${i} --organization=${ORG}
 #done
 #}
+repolist
 
 #Create a daily sync plan:
 #hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
