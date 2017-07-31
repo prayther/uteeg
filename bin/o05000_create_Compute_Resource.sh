@@ -95,7 +95,7 @@ EOF
 }
 doit id_rsa_pub
 
-doit chmod 0644 /usr/share/foreman/.ssh
+doit chmod 0700 /usr/share/foreman/.ssh
 doit chown foreman.foreman -R /usr/share/foreman/.ssh
 # copy ssh id
 ssh_copy_id () { ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
