@@ -77,7 +77,7 @@ doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 
 # if you are disconnected you are installing from RHEL/Satellite DVD's
 # if you are connected the *register*.sh script will have subscribed and updated everything already
-/usr/sbin/satellite-installer --scenario satellite \
+doit /usr/sbin/satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
