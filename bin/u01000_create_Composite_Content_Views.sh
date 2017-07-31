@@ -41,10 +41,24 @@ doit() {
         fi
 }
 
-RHEL7_Core=$(hammer --csv content-view version list  --organization="${ORG}"  --content-view CV_RHEL7_Core | awk '/CV_RHEL7_Core/ {print $1}')
-doit hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Server" --composite  --component-ids="${RHEL7_Core}" --description="Combines RHEL 7 with Basic Core Server"
+#CCV_ALL="CCV_RHEL7_Core CCV_RHEL7_EPEL CCV_RHEL7_Satellite CCV_RHEL7_Extras_Optional"
+#[root@sat pulp]# hammer --csv content-view version list  --organization="${ORG}" | sort -t, -k2 | awk -F"," '{print}' | grep Library
+#9,CV_RHEL7_Core 2.0,2.0,Library
+#16,CV_RHEL7_EPEL 1.0,1.0,Library
+#12,CV_RHEL7_Extras 1.0,1.0,Library
+#7,CV_RHEL7_Optional 1.0,1.0,Library
+#8,CV_RHEL7_Satellite 3.0,3.0,Library
+#1,Default Organization View 1.0,1.0,Library
+#hammer --csv content-view version list | awk -F"," '/Extras/,/Optional/ {print $1}' | tr '\n' ' ' | awk '{OFS=","}{print $1, $2}'
+
+hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Core" --composite  --component-ids=$(hammer --csv content-view version list | awk -F"," '/RHEL7_Core/ {print $1}') --description="Combines RHEL 7 with Core Server"
 doit hammer content-view publish --name="CCV_RHEL7_Server" --organization="${ORG}" --async
 
-doit RHEL7_EPEL=$(hammer --csv content-view version list  --organization="${ORG}"  --content-view="CV_RHEL7_EPEL" | awk '/CV_RHEL7_Core/ {print $1}')
-doit hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_EPEL" --composite  --component-ids="${RHEL7_EPEL}" --description="Combines RHEL 7 with EPEL"
+hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Satellite" --composite  --component-ids=$(hammer --csv content-view version list | awk -F"," '/Satellite/ {print $1}') --description="Combines RHEL 7 with Satellite Server"
+doit hammer content-view publish --name="CCV_RHEL7_Satellite" --organization="${ORG}" --async
+
+doit hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Extras_Optional" --composite  --component-ids=$(hammer --csv content-view version list | awk -F"," '/Extras/,/Optional/ {print $1}' | tr '\n' ' ' | awk '{OFS=","}{print $1, $2}') --description="Combines RHEL 7 with Extras Optional Server"
+doit hammer content-view publish --name="CCV_RHEL7_Extras_Optional" --organization="${ORG}" --async
+
+hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_EPEL" --composite  --component-ids=$(hammer --csv content-view version list | awk -F"," '/RHEL7_EPEL/ {print $1}') --description="Combines RHEL 7 with EPEL Server"
 doit hammer content-view publish --name="CCV_RHEL7_EPEL" --organization="${ORG}" --async
