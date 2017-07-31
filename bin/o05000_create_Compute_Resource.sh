@@ -52,7 +52,7 @@ doit firewall-cmd --add-port=5910-5930/tcp --permanent
 #ssh-keygen
 #ssh-copy-id root@${GATEWAY}
 
-doit mkdir /usr/share/foreman/.ssh
+doit ls /usr/share/foreman/.ssh || doit mkdir /usr/share/foreman/.ssh
 doit chmod 0700 /usr/share/foreman/.ssh
 
 doit cat << EOH > /usr/share/foreman/.ssh/id_rsa
