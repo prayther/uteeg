@@ -55,7 +55,7 @@ doit firewall-cmd --add-port=5910-5930/tcp --permanent
 doit ls /usr/share/foreman/.ssh || doit mkdir /usr/share/foreman/.ssh
 doit chmod 0700 /usr/share/foreman/.ssh
 
-doit cat << EOH > /usr/share/foreman/.ssh/id_rsa
+id_rsa () { cat << EOH > /usr/share/foreman/.ssh/id_rsa
 -----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAuXluOWqlZrEaiYrFOPvwwc3Rz1u+JmFHoil1LQ1E9RmBr4/N
 tKZJLxmEDzUrrDskPp8CjJm9t0CMQo5QaKNos1hlbhpcZ81ipZBvbkdi+ICANuYo
@@ -84,15 +84,24 @@ TCb7A74Fdrcmaua9l/tFE2ftFQMVHgJmkEjTnG9LEZPZUzMO1JD2tZIpJ79dT1WA
 gtVv8TALfkcC6897a0HNXqb+7jdIzRYX6QPoshy80DdikxSfxikM
 -----END RSA PRIVATE KEY-----
 EOH
+}
+doit id_rsa
+
 doit chmod 0600 /usr/share/foreman/.ssh/id_rsa
 
-doit cat << EOF > /usr/share/foreman/.ssh/id_rsa.pub
+id_rsa_pub () { cat << EOF > /usr/share/foreman/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5eW45aqVmsRqJisU4+/DBzdHPW74mYUeiKXUtDUT1GYGvj820pkkvGYQPNSusOyQ+nwKMmb23QIxCjlBoo2izWGVuGlxnzWKlkG9uR2L4gIA25igVFp1OQDWWFIHYhyyvbh1dAldoJiiehUgJ4aMx8dkoGJuUZoqmub8WmEp8P1MrdJqbjKVa15vSI9pkHG3AfEl01b5GBdvMk5xGJOFJ3tfYe3V+QfX+MHo2XTfaT+oISGJ36zaJxwZxzN9EsmZ4QUMWr5mi6Jb3j5IIIV78CSLtj1EGVPafJzPzi9wCd/PbKZ/WS1mmTu1ejmi5aQA+AMQkA9YqE5XA5dOn/Gqz foreman@sat.laptop.prayther
 EOF
+}
+doit id_rsa_pub
+
 doit chmod 0644 /usr/share/foreman/.ssh
 doit chown foreman.foreman -R /usr/share/foreman/.ssh
 # copy ssh id
-doit ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
+ssh_copy_id () { ssh-copy-id -i /usr/share/foreman/.ssh/id_rsa.pub root@${GATEWAY}
+}
+doit ssh_copy_id
+
 # create known_hosts without ansering yes
 doit /bin/su -s /bin/bash -c "ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit" foreman
 
