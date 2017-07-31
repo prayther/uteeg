@@ -41,8 +41,9 @@ doit() {
         fi
 }
 
-## RHEL 7 basic repos from local for speed, then again later, changing to internet sources to get updated.
-curl -f http://"${GATEWAY}"/ks/katello-export && hammer organization info --id 1 | grep "${GATEWAY}" && hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
+# RHEL 7 basic repos from local for speed, then again later, changing to internet sources to get updated.
+# curl to see if the local CDN even has the directory && check to see if sat is already configged with local || then change if need be
+curl -f http://"${GATEWAY}"/ks/katello-export && hammer organization info --id 1 | grep "${GATEWAY}" || hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/
 doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server RPMs x86_64 7.3'
