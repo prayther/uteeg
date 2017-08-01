@@ -52,7 +52,7 @@ doit() {
 #hammer --csv content-view version list | awk -F"," '/Extras/,/Optional/ {print $1}' | tr '\n' ' ' | awk '{OFS=","}{print $1, $2}'
 
 doit hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Core" --composite  --component-ids=$(hammer --csv content-view version list | awk -F"," '/RHEL7_Core/ {print $1}') --description="Combines RHEL 7 with Core Server"
-doit hammer content-view publish --name="CCV_RHEL7_Server" --organization="${ORG}" --async
+doit hammer content-view publish --name="CCV_RHEL7_Core" --organization="${ORG}" --async
 
 doit hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Satellite" --composite  --component-ids=$(hammer --csv content-view version list | awk -F"," '/Satellite/ {print $1}') --description="Combines RHEL 7 with Satellite Server"
 doit hammer content-view publish --name="CCV_RHEL7_Satellite" --organization="${ORG}" --async
