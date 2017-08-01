@@ -61,14 +61,14 @@ doit() {
 #  done
 #done
 
-doit LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
-doit CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
-doit LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
-doit ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
-doit NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
-doit MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
-doit PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
-doit OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
+LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
+CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
+LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
+ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
+NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
+MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
+PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
+OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
 # can't find --content-source-id with a hammer command
 
 hostgroup_create () { for LOC in $(echo "${LOC_var}");do
