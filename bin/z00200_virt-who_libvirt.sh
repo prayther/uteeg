@@ -42,7 +42,7 @@ doit() {
 }
 
 # Install virt-who if it's not already
-doit rpm -q virt-who || doit /usr/bin/yum install -y virt-who
+rpm -q virt-who || doit /usr/bin/yum install -y virt-who
 
 # configure virt-who
 create_virt-who.conf () { if [ ! -f /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf ];then
@@ -60,7 +60,7 @@ hypervisor_id=hostname
 EOF
 fi
 }
-doit create_virt-who.conf
+create_virt-who.conf
 
 # config satellite 6 if not already
 grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
