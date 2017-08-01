@@ -64,7 +64,7 @@ fi
 grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
 
 /usr/bin/systemctl enable virt-who
-/usr/bin/systemctl start virt-who
+/usr/bin/systemctl restart virt-who
 #journalctl -u virt-who -f
 
 # find virt-who host
