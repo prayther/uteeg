@@ -45,7 +45,7 @@ doit() {
 rpm -q virt-who || doit /usr/bin/yum install -y virt-who
 
 # configure virt-who
-create_virt-who.conf () { if [ ! -f /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf ];then
+if [ ! -f /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf ];then
 cat << EOF > /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf
 [sat.laptop.prayther]
 type=libvirt
@@ -59,8 +59,6 @@ env=Library
 hypervisor_id=hostname
 EOF
 fi
-}
-create_virt-who.conf
 
 # config satellite 6 if not already
 grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
