@@ -55,7 +55,7 @@ enabled=1
 gpgcheck=1
 EOF
 }
-doit dvd_repo
+dvd_repo
 
 # If you a disconnected from internet and also for speed
 mkdir /mnt/rhel
@@ -87,7 +87,7 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 --capsule-puppet false
 
 export VMNAME=$(echo "$(hostname)" | awk -F"." '{print $1}')
-grep "${VMNAME}" ../etc/virt-inst.cfg || doit echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
+grep "${VMNAME}" ../etc/virt-inst.cfg || echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
 mkdir  ~/.hammer
 hammer_cli_config () { cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
