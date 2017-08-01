@@ -63,18 +63,18 @@ fi
 doit create_virt-who.conf
 
 # config satellite 6 if not already
-doit grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || doit echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
+grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
 
-doit /usr/bin/systemctl enable virt-who
-doit /usr/bin/systemctl start virt-who
+/usr/bin/systemctl enable virt-who
+/usr/bin/systemctl start virt-who
 #journalctl -u virt-who -f
 
 # find virt-who host
 # this is only set to work with "1" host for testing.
-doit VIRT_HOST=$(hammer --csv host list | grep virt-who | awk -F"," '{print $2}')
+VIRT_HOST=$(hammer --csv host list | grep virt-who | awk -F"," '{print $2}')
 # list all subs
 #hammer --csv subscription list --organization redhat
-doit SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| awk -F"," '{print $1}'| sort -n | grep -v ID)
+SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| awk -F"," '{print $1}'| sort -n | grep -v ID)
 
 add_subs () { for SUBS in ${SUBS_var}; do
   hammer host subscription attach --host ${VIRT_HOST} --subscription-id ${SUBS}
