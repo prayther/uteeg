@@ -42,10 +42,10 @@ doit() {
 }
 
 # This seems to work as a 'safety net' and upgrades after installing from media
-doit satellite-installer --scenario satellite --upgrade
+satellite-installer --scenario satellite --upgrade
 
 # Notice adding of tftp for provisioning from capsules and the removal of Puppet
-doit /usr/sbin/satellite-installer --scenario satellite \
+/usr/sbin/satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
@@ -55,8 +55,8 @@ doit /usr/sbin/satellite-installer --scenario satellite \
 --capsule-puppet false
 
 #Upload our manifest.zip (created in RH Portal)
-doit wget -P /root/ --no-clobber http://${SERVER}/ks/manifest/manifest.zip
-doit hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
+wget -P /root/ --no-clobber http://${SERVER}/ks/manifest/manifest.zip
+hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 
 # timeout for testing.
-doit hammer settings set --name idle_timeout --value 99999999
+hammer settings set --name idle_timeout --value 99999999
