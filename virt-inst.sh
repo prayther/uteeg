@@ -126,7 +126,7 @@ reboot
 auth --enableshadow --passalgo=sha512
 # Use CDROM installation media
 #cdrom
-url --url ${URL}/${OS}${OSVERSION}
+url --url ${URL}/${OS}
 # Use graphical install
 text
 # Run the Setup Agent on first boot

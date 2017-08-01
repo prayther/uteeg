@@ -42,8 +42,8 @@ doit() {
 }
 
 
-doit wget -P /root/ --no-clobber http://${SERVER}/passwd
-doit wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
+wget -P /root/ --no-clobber http://${SERVER}/passwd
+wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
 # After initial install using local media.
 # Turn off the local repos and patch from CDN.
@@ -56,8 +56,8 @@ doit wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 doit /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
 /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
 doit /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
-#doit /usr/bin/yum clean all
-#doit /usr/bin/yum -y update
+doit /usr/bin/yum clean all
+doit /usr/bin/yum -y update
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
