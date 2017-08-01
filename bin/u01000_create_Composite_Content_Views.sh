@@ -6,6 +6,8 @@
 # setting up  a satellite for demo purposes
 # mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
+# this script only works with 1.0 version of CV/CCV.
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
