@@ -42,8 +42,8 @@ doit() {
 }
 
 
-doit wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
-doit wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
+wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
+wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 #cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
@@ -58,18 +58,18 @@ EOF
 doit dvd_repo
 
 # If you a disconnected from internet and also for speed
-doit mkdir /mnt/rhel
-doit mount -o loop /root/${RHEL_ISO} /mnt/rhel
-doit mkdir /mnt/sat
-doit mount -o loop /root/${SATELLITE_ISO} /mnt/sat
-doit /mnt/sat/install_packages
+mkdir /mnt/rhel
+mount -o loop /root/${RHEL_ISO} /mnt/rhel
+mkdir /mnt/sat
+mount -o loop /root/${SATELLITE_ISO} /mnt/sat
+/mnt/sat/install_packages
 
-doit /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
+/usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
-doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
+firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
@@ -77,7 +77,7 @@ doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
 
 # if you are disconnected you are installing from RHEL/Satellite DVD's
 # if you are connected the *register*.sh script will have subscribed and updated everything already
-doit /usr/sbin/satellite-installer --scenario satellite \
+/usr/sbin/satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
@@ -86,9 +86,9 @@ doit /usr/sbin/satellite-installer --scenario satellite \
 --foreman-proxy-tftp-servername $(hostname) \
 --capsule-puppet false
 
-doit export VMNAME=$(echo "$(hostname)" | awk -F"." '{print $1}')
-doit grep "${VMNAME}" ../etc/virt-inst.cfg || doit echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
-doit mkdir  ~/.hammer
+export VMNAME=$(echo "$(hostname)" | awk -F"." '{print $1}')
+grep "${VMNAME}" ../etc/virt-inst.cfg || doit echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
+mkdir  ~/.hammer
 hammer_cli_config () { cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
        :host: https://${VMNAME}.${DOMAIN}
@@ -97,10 +97,10 @@ hammer_cli_config () { cat << EOF > ~/.hammer/cli_config.yml
        :organization: ${ORG}
 EOF
 }
-doit hammer_cli_config
+hammer_cli_config
 
-doit mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-doit mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
+mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
+mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
-doit /usr/bin/yum clean all
-doit /usr/bin/yum -y update
+/usr/bin/yum clean all
+/usr/bin/yum -y update
