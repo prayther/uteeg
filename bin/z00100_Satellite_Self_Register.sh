@@ -44,4 +44,5 @@ doit() {
 subscription-manager unregister
 doit rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
 # add a activation key once i get satellite repos in my test bed.
-#/usr/sbin/subscription-manager --username=admin --password=password register --activationkey=
+Sat_AK=$(hammer --csv activation-key list --organization redhat | grep Infra | awk -F"," '/Satellite/ {print $1}')
+doit /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register --activationkey="${Sat_AK}"
