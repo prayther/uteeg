@@ -6,6 +6,8 @@
 # setting up  a satellite for demo purposes
 # mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
+# AK creation below is still acting on all envs. not just dev. so you see a bunch of errors if you are only working on dev
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
