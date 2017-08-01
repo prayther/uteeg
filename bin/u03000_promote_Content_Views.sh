@@ -57,15 +57,15 @@ promote_cv () { if [ "${PROMOTEALL}" != "no" ];then
   done
 fi
 }
-doit promote_cv
+#doit promote_cv
 
 # just promote Dev CV's
-doit CV_Count=$(hammer --csv content-view list --organization="${ORG}" | sort -n | grep -vi "Content View ID,Name,Label,Composite,Repository IDs" | awk -F"," '{print $1}')
+CV_Count=$(hammer --csv content-view list --organization="${ORG}" | sort -n | grep -vi "Content View ID,Name,Label,Composite,Repository IDs" | awk -F"," '{print $1}')
 # the "grep -i dev," is important to just get the Dev lifecycle, from-lifecycle-environment-id="Library" --to-lifecycle-environment-id="Dev"
 # if you leave the comman out you will promote everthing to the next lifecycle "Test".
-doit LE_Count_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | grep -vi "ID,Name,Prior" | grep -i dev, | awk -F"," '{print $1}')
-doit LE_Count=$(echo "${LE_Count_var}" | tr '\n' ' ')
-doit LEC_FROM=1
+LE_Count_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | grep -vi "ID,Name,Prior" | grep -i dev, | awk -F"," '{print $1}')
+LE_Count=$(echo "${LE_Count_var}" | tr '\n' ' ')
+LEC_FROM=1
 
 promote_dev_cv () { for CV in $CV_Count;do
   for LEC_TO in $(echo ${LE_Count});do
