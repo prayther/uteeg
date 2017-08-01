@@ -46,21 +46,22 @@ doit() {
 }
 
 # Install nfs-utils if not already
-doit ssh ${GATEWAY} "rpm -q nfs-utils || dnf install -y nfs-utils"
+ssh ${GATEWAY} "rpm -q nfs-utils || dnf install -y nfs-utils"
 # open firewall to all for nfs if not already
-doit ssh ${GATEWAY} "firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=nfs"
+ssh ${GATEWAY} "firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=nfs"
 # Add entry in exports so export of katello content-views are possible in one step for maintaining local CDN
-doit ssh ${GATEWAY} grep "/var/www/html/uteeg" /etc/exports || echo "/var/www/html/uteeg     *(rw,no_acl)" >> /etc/exports
+ssh ${GATEWAY} grep "/var/www/html/uteeg" /etc/exports || echo "/var/www/html/uteeg     *(rw,no_acl)" >> /etc/exports
 
 #Export latest so next time local is used it's more up-to-date
-doit mkdir /mnt/share
-doit echo "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
-doit rmdir /var/lib/pulp/katello-export
-doit /usr/bin/mount -a
-doit mount | grep "${GATEWAY}:/var/www/html/uteeg" && cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
+mkdir /mnt/share
+grep "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context=" /etc/fstab || echo "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
+rmdir /var/lib/pulp/katello-export
+/usr/bin/mount -a
+mount | grep "${GATEWAY}:/var/www/html/uteeg" && cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
 #hammer content-view version export --since "$(date "+%FT%T.%X %Z")" --id 1
+# needs logic echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
 hammer content-view version export --since="${EXPORTIME}" --id 1
-grep EXPORTIME ../etc/virt-inst.cfg || echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
+# needs logic || echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
 # this will do each, but each is it's own yum repo, not a consolidated CDN
 #for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
 #  do hammer repository export --organization="${ORG}" --id "${product}"
