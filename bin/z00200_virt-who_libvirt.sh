@@ -77,7 +77,7 @@ VIRT_HOST=$(hammer --csv host list | grep virt-who | awk -F"," '{print $2}')
 SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| awk -F"," '{print $1}'| sort -n | grep -v ID)
 
 add_subs () { for SUBS in ${SUBS_var}; do
-  hammer host subscription attach --host ${VIRT_HOST} --subscription-id ${SUBS}
+  hammer host subscription attach --host ${VIRT_HOST} --subscription-id ${SUBS_var}
 done
 }
 doit add_subs
