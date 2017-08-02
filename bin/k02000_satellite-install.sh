@@ -107,3 +107,6 @@ mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.o
 
 #/usr/bin/yum clean all
 #/usr/bin/yum -y update
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"
