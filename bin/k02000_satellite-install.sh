@@ -42,8 +42,8 @@ doit() {
 }
 
 
-wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
-wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
+#wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
+#wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 #cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
@@ -58,11 +58,11 @@ EOF
 dvd_repo
 
 # If you a disconnected from internet and also for speed
-mkdir /mnt/rhel
-mount -o loop /root/${RHEL_ISO} /mnt/rhel
-mkdir /mnt/sat
-mount -o loop /root/${SATELLITE_ISO} /mnt/sat
-/mnt/sat/install_packages
+#mkdir /mnt/rhel
+#mount -o loop /root/${RHEL_ISO} /mnt/rhel
+#mkdir /mnt/sat
+#mount -o loop /root/${SATELLITE_ISO} /mnt/sat
+#/mnt/sat/install_packages
 
 /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
@@ -74,6 +74,9 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
+
+/usr/bin/yum clean all
+/usr/bin/yum -y update
 
 # if you are disconnected you are installing from RHEL/Satellite DVD's
 # if you are connected the *register*.sh script will have subscribed and updated everything already
@@ -102,5 +105,5 @@ hammer_cli_config
 mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
 mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
-/usr/bin/yum clean all
-/usr/bin/yum -y update
+#/usr/bin/yum clean all
+#/usr/bin/yum -y update
