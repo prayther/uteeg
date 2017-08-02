@@ -83,14 +83,25 @@ yum -y install satellite
 
 # if you are disconnected you are installing from RHEL/Satellite DVD's
 # if you are connected the *register*.sh script will have subscribed and updated everything already
-/usr/sbin/satellite-installer --scenario satellite \
+#/usr/sbin/satellite-installer --scenario satellite \
+#--foreman-initial-organization "${ORG}" \
+#--foreman-initial-location "${LOC}" \
+#--foreman-admin-username admin \
+#--foreman-admin-password password \
+#--foreman-proxy-tftp true \
+#--foreman-proxy-tftp-servername $(hostname) \
+#--capsule-puppet false
+
+satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
 --foreman-proxy-tftp-servername $(hostname) \
---capsule-puppet false
+--capsule-puppet false \
+--foreman-proxy-dns-managed=false \
+--foreman-proxy-dhcp-managed=false
 
 export VMNAME=$(echo "$(hostname)" | awk -F"." '{print $1}')
 grep "${VMNAME}" ../etc/virt-inst.cfg || echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
