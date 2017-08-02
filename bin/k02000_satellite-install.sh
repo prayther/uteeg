@@ -47,15 +47,15 @@ doit() {
 #cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 
 # Create Repository for Local install
-dvd_repo () { cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
-[rhel]
-name=RHEL local
-baseurl=file:///mnt/rhel
-enabled=1
-gpgcheck=1
-EOF
-}
-dvd_repo
+#dvd_repo () { cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
+#[rhel]
+#name=RHEL local
+#baseurl=file:///mnt/rhel
+#enabled=1
+#gpgcheck=1
+#EOF
+#}
+#dvd_repo
 
 # If you a disconnected from internet and also for speed
 #mkdir /mnt/rhel
