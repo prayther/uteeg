@@ -60,9 +60,9 @@ wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
 # If you a disconnected from internet and also for speed
 #mkdir /mnt/rhel
 #mount -o loop /root/${RHEL_ISO} /mnt/rhel
-#mkdir /mnt/sat
-#mount -o loop /root/${SATELLITE_ISO} /mnt/sat
-#/mnt/sat/install_packages
+mkdir /mnt/sat
+mount -o loop /root/${SATELLITE_ISO} /mnt/sat
+/mnt/sat/install_packages
 
 /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
@@ -75,10 +75,10 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
 
-/usr/bin/yum clean all
-/var/cache/yum
-yum -y install satellite
-/usr/bin/yum -y update
+#/usr/bin/yum clean all
+#/var/cache/yum
+#yum -y install satellite
+#/usr/bin/yum -y update
 #doit reboot
 
 # if you are disconnected you are installing from RHEL/Satellite DVD's

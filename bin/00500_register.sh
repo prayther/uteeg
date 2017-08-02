@@ -6,6 +6,8 @@
 # setting up  a satellite for demo purposes 
 # mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
+# The first time this runs is from rc.local and a reboot direclty after
+
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
@@ -53,11 +55,13 @@ wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 /usr/sbin/subscription-manager unregister
-doit /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+/usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
 /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
-doit /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
-#doit /usr/bin/yum clean all
-#doit /usr/bin/yum -y update
+/usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
+
+/usr/bin/yum clean all
+/var/cache/yum
+/usr/bin/yum -y update
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
