@@ -42,9 +42,11 @@ doit() {
 }
 
 # Setup EPEL
+wget -P /root/ --no-clobber https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7Server
+doit hammer gpg create --organization "$ORG" --name 'GPG-EPEL7' --key RPM-GPG-KEY-EPEL-7Server
 doit hammer product create --organization ${ORG} --name=RHEL7_EPEL
 
-doit hammer repository create --name=RHEL7_EPEL --organization=${ORG} --product=RHEL7_EPEL --content-type='yum' --publish-via-http=true --url=http://${GATEWAY}/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/custom/
+doit hammer repository create --name=RHEL7_EPEL --organization=${ORG} --gpg-key='GPG-EPEL7' --product=RHEL7_EPEL --content-type='yum' --publish-via-http=true --url=http://${GATEWAY}/ks/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/custom/
 # Then we can sync all repositories that we've enable
 repolist () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "RHEL7_EPEL" | awk -F, {'print $1'} | grep -vi '^ID')
   do hammer repository synchronize --id ${i} --organization=${ORG}
