@@ -104,7 +104,7 @@ satellite-installer --scenario satellite \
 --foreman-proxy-dhcp-managed=false
 
 export VMNAME=$(echo "$(hostname)" | awk -F"." '{print $1}')
-grep "${VMNAME}" ../etc/virt-inst.cfg || echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
+grep "^${VMNAME}" ../etc/virt-inst.cfg || echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
 mkdir  ~/.hammer
 hammer_cli_config () { cat << EOF > ~/.hammer/cli_config.yml
    :foreman:
