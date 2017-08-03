@@ -58,7 +58,7 @@ mkdir /mnt/share
 grep "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context=" /etc/fstab || echo "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context="system_u:object_r:httpd_sys_rw_content_t:s0" 0 0" >> /etc/fstab
 rmdir /var/lib/pulp/katello-export
 /usr/bin/mount -a
-mount | grep "${GATEWAY}:/var/www/html/uteeg" && cd /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export .
+mount | grep "${GATEWAY}:/var/www/html/uteeg" && /var/lib/pulp && /usr/bin/ln -s /mnt/share/katello-export /var/lib/pulp/
 # If there is not EXPORTIME var in ../etc/virt-inst.cfg then this has not run before and this will be the first date
 grep ^EXPORTIME= ../etc/virt-inst.cfg || echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
 # put the new EXPORTIME each run and then you have since
