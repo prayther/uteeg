@@ -52,7 +52,7 @@ vmip="10.0.0.11"
 
 hammer host create \
 --name="${vmname}" \
---hostgroup=HG_Infra_1_Dev_CCV_RHEL7_Server_ORG_redhat_LOC_laptop \
+--hostgroup=HG_Infra_1_Dev_CCV_RHEL7_Core_ORG_redhat_LOC_laptop \
 --organization=redhat \
 --location=laptop \
 --interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
