@@ -42,7 +42,7 @@ doit() {
 }
 
 ## RHEL 7 basic repos from local for speed, then again later, changing to internet sources to get updated.
-curl -f http://"${GATEWAY}"/ks/katello-export && if [[ $(hammer organization info --id 1 | grep "${GATEWAY}" | awk -F"/" '{print $3}') != "${GATEWAY}" ]];then hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/;fi
+#curl -f http://"${GATEWAY}"/ks/katello-export && if [[ $(hammer organization info --id 1 | grep "${GATEWAY}" | awk -F"/" '{print $3}') != "${GATEWAY}" ]];then hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/;fi
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
 #hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server RPMs x86_64 7.3'
@@ -64,11 +64,11 @@ done
 repolist
 
 # Put CDN back to redhat and sync latest
-hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
+#hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 #doit for i in $(hammer --csv repository list --organization=${ORG} | grep Extras | awk -F"," '{print $1}')
 #  do hammer repository synchronize --id ${i} --organization=${ORG}
 #done
-repolist
+#repolist
 #Create a daily sync plan:
 #hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
 #hammer sync-plan list --organization="${ORG}"
