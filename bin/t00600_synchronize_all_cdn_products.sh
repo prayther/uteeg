@@ -41,13 +41,13 @@ doit() {
         fi
 }
 
-hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
+#hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 # Synchronize all Products
-#synchronize_all () { for i in $(hammer --csv repository list --organization=${ORG} | grep -vi EPEL | awk -F, {'print $1'} | grep -vi '^ID' | sort -n)
-#  do hammer repository synchronize --id ${i} --organization=${ORG}
-#done
-#}
-#doit synchronize_all
+synchronize_all () { for i in $(hammer --csv repository list --organization=${ORG} | grep -vi EPEL | awk -F, {'print $1'} | grep -vi '^ID' | sort -n)
+  do hammer repository synchronize --id ${i} --organization=${ORG}
+done
+}
+doit synchronize_all
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
