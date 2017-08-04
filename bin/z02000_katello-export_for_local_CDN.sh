@@ -64,7 +64,6 @@ grep ^EXPORTIME= ../etc/virt-inst.cfg || echo EXPORTIME=\"$(date "+%FT%T.%X %Z")
 # put the new EXPORTIME each run and then you have since
 hammer content-view version export --since="${EXPORTIME}" --id 1
 echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
-# this will do each, but each is it's own yum repo, not a consolidated CDN
-#for product in $(hammer --csv repository list --organization="${ORG}" | awk -F"," '{print $1}' | grep -v Id | sort -n)
-#  do hammer repository export --organization="${ORG}" --id "${product}"
-#done
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

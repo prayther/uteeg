@@ -60,3 +60,6 @@ hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 
 # timeout for testing.
 hammer settings set --name idle_timeout --value 99999999
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

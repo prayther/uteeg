@@ -41,15 +41,9 @@ doit() {
         fi
 }
 
-# RHEL 7 basic repos from local for speed, then again later, changing to internet sources to get updated.
-# curl to see if the local CDN even has the directory && check to see if sat is already configged with local || then change if need be
-#curl -f http://"${GATEWAY}"/ks/katello-export && if [[ $(hammer organization info --id 1 | grep "${GATEWAY}" | awk -F"/" '{print $3}') != "${GATEWAY}" ]];then hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/;fi
+# Enable RHEl core
 doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.4' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
-#hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.3' --name 'Red Hat Enterprise Linux 7 Server RPMs x86_64 7.3'
-#hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
-#hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
-#hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
 doit hammer repository-set enable --organization "$ORG" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
 
 # Then we can sync all repositories that we've enable
@@ -59,24 +53,10 @@ done
 }
 repo_sync
 
-# Put CDN back to redhat and sync latest
-#hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
-#repolist () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
-#  do hammer repository synchronize --id ${i} --organization=${ORG}
-#done
-#}
-#repolist
-
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
 
-#Create a daily sync plan:
-#hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
-#hammer sync-plan list --organization="${ORG}"
-
-#And associate this plan to our products, it must be done by sync-plan-id, not name otherwise hammer doesn't work:
-#doit hammer product set-sync-plan --sync-plan-id=1 --organization="${ORG}" --name='Red Hat Enterprise Linux Server'
-
+# Command notes
 #hammer repository list --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' | grep "7 Server" | grep -vi source | grep -vi iso | grep -vi debug | less
 #3  | Red Hat Satellite Tools 6.2 for RHEL 7 Server RPMs x86_64 | Red Hat Enterprise Linux Server | yum          | https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/sat-tools/6....
 #2  | Red Hat Enterprise Linux 7 Server RPMs x86_64 7Server     | Red Hat Enterprise Linux Server | yum          | https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/os

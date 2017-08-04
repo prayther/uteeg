@@ -51,3 +51,6 @@ doit hammer lifecycle-environment create --name='App_1_Dev' --prior='Library' --
 doit hammer lifecycle-environment create --name='App_2_Test' --prior='App_1_Dev' --organization="${ORG}"
 doit hammer lifecycle-environment create --name='App_3_UAT' --prior='App_2_Test' --organization="${ORG}"
 doit hammer lifecycle-environment create --name='App_4_Prod' --prior='App_3_UAT' --organization="${ORG}"
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

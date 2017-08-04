@@ -79,3 +79,6 @@ add_subs () { for SUBS in ${SUBS_var}; do
 done
 }
 doit add_subs
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

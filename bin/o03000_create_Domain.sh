@@ -42,3 +42,6 @@ doit() {
 }
 
 doit hammer domain create --locations=${LOC} --organizations=${ORG} --name="${DOMAIN}"
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

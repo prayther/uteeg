@@ -46,3 +46,6 @@ sync_plan () { for products in $(hammer --csv product list --organization redhat
 done
 }
 doit sync_plan
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

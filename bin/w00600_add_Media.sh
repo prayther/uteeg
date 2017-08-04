@@ -51,3 +51,6 @@ do
 done
 }
 doit associate_med
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

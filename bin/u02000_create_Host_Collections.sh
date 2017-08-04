@@ -51,3 +51,6 @@ cv_lifecycle () { for CV in $(hammer --csv content-view list --organization ${OR
 done
 }
 doit cv_lifecycle
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

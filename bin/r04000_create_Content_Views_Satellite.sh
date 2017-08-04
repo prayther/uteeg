@@ -51,3 +51,6 @@ doit repolist
 
 #Publish the content views to Library:
 doit hammer content-view publish --name="CV_RHEL7_Satellite" --organization="${ORG}" #--async
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

@@ -63,3 +63,6 @@ ak_create () { for CCV in $(echo "${CCV_var}");do
 done
 }
 doit ak_create
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

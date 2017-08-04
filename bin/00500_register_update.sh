@@ -47,11 +47,6 @@ doit() {
 wget -P /root/ --no-clobber http://${SERVER}/passwd
 wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
-# After initial install using local media.
-# Turn off the local repos and patch from CDN.
-#mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-#mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.
-
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 subscribe_update () {
@@ -60,6 +55,7 @@ subscribe_update () {
   /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
 
+  #Clean, update
   /usr/bin/yum clean all
   /var/cache/yum
   /usr/bin/yum -y update
@@ -68,27 +64,3 @@ time subscribe_update
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
-
-#/bin/bash /root/uteeg/bin/rc.local.rewrite.sh
-
-#cat << EOH1 > /etc/rc.d/rc.local
-##!/bin/bash -x
-#
-#export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
-#export HOME=/root
-#cd "${BASH_SOURCE%/*}"
-#LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt-inst.log; done; }
-#exec 2> >(LOG_)
-#
-#source ../etc/virt-inst.cfg
-#
-## run all the install/cfg scripts in sequence. the names determine order.
-#cd /root/uteeg/bin && $(find /root/uteeg/bin -type f | sort -n | grep -vi .off)
-#
-## step 2 put the orig rc.local in place and reboot
-#cp /root/rc.local.orig /etc/rc.local
-#EOH1
-#
-#chmod 0755 /etc/rc.local
-#/sbin/reboot
-#exit 0

@@ -46,3 +46,6 @@ doit rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
 # add a activation key once i get satellite repos in my test bed.
 Sat_AK=$(hammer --csv activation-key list --organization redhat | grep Infra | awk -F"," '/Satellite/ {print $2}')
 doit /usr/sbin/subscription-manager --org="${ORG}" register --activationkey="${Sat_AK}"
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

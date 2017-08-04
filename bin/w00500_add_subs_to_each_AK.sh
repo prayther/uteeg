@@ -55,6 +55,10 @@ done
 }
 doit add_subs
 
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"
+
+# Command notes
 #[root@sat log]# hammer activation-key list --organization redhat
 #---|------------------------------------------|----------------|-----------------------|--------------------------
 #ID | NAME                                     | HOST LIMIT     | LIFECYCLE ENVIRONMENT | CONTENT VIEW

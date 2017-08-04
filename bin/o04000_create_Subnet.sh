@@ -45,3 +45,6 @@ doit() {
 doit hammer subnet create --locations=${LOC} --organizations=${ORG} --domains="${DOMAIN}" --gateway='10.0.0.1' --mask='255.255.255.0' --name='10.0.0.0/24'  --tftp-id=1 --network='10.0.0.0' --boot-mode="Static" --ipam="None" --dns-primary="${GATEWAY}"
 # add the subnet to the org
 doit hammer organization add-subnet --subnet="${NAME}" --name="${ORG}"
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

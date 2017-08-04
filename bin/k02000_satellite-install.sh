@@ -43,23 +43,22 @@ doit() {
 
 
 wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
-#wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
-#cd /root && wget --no-clobber http://${SERVER}/ks/manifest/manifest.zip
+wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 
 # Create Repository for Local install
-#dvd_repo () { cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
-#[rhel]
-#name=RHEL local
-#baseurl=file:///mnt/rhel
-#enabled=1
-#gpgcheck=1
-#EOF
-#}
-#dvd_repo
+dvd_repo () { cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
+[rhel]
+name=RHEL local
+baseurl=file:///mnt/rhel
+enabled=1
+gpgcheck=1
+EOF
+}
+doit dvd_repo
 
 # If you a disconnected from internet and also for speed
-#mkdir /mnt/rhel
-#mount -o loop /root/${RHEL_ISO} /mnt/rhel
+mkdir /mnt/rhel
+mount -o loop /root/${RHEL_ISO} /mnt/rhel
 mkdir /mnt/sat
 mount -o loop /root/${SATELLITE_ISO} /mnt/sat
 /mnt/sat/install_packages
@@ -74,23 +73,6 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
-
-#/usr/bin/yum clean all
-#/var/cache/yum
-#yum -y install satellite
-#/usr/bin/yum -y update
-#doit reboot
-
-# if you are disconnected you are installing from RHEL/Satellite DVD's
-# if you are connected the *register*.sh script will have subscribed and updated everything already
-#/usr/sbin/satellite-installer --scenario satellite \
-#--foreman-initial-organization "${ORG}" \
-#--foreman-initial-location "${LOC}" \
-#--foreman-admin-username admin \
-#--foreman-admin-password password \
-#--foreman-proxy-tftp true \
-#--foreman-proxy-tftp-servername $(hostname) \
-#--capsule-puppet false
 
 satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
@@ -118,9 +100,6 @@ hammer_cli_config
 
 mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
 mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
-
-#/usr/bin/yum clean all
-#/usr/bin/yum -y update
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

@@ -42,26 +42,6 @@ doit() {
         fi
 }
 
-#HGNAME="HG_Openshift_Hosts_Infra_Dev"
-#NETNAME='10.0.0.0/24'
-# multiple versions of rhel will require whatever u want. latest or multiple
-#MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
-# think this is puppet. not using puppet
-#ENVID=$(hammer --csv environment list | grep  ANZ_Openshift_Apps_Dev_CCV_Openshift2_1_RHEL6_5_Infra | cut -d, -f1) ; echo $ENVID
-#PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
-#OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
-#CAID=1
-#PROXYID=1
-#hammer hostgroup create --architecture="x86_64" --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${CCV}" --subnet="${NETNAME}" --ptable-id="${PARTID}" --operatingsystem-id="${OSID}" --puppet-ca-proxy-id="${CAID}" --puppet-proxy-id="${PROXYID}"
-#hammer location add-hostgroup --name SA.Demo.ANZ --hostgroup $HGNAME
-
-#for CCV in ${CCV_var};do
-#  for LE in ${LE_var};do
-#    hammer hostgroup create --architecture="x86_64" --domain="${DOMAIN}" --medium-id="${MEDID}" --name="HG_${LE}_${CCV}" --subnet="${NETNAME}" --partition-table-id="${PARTID}" --operatingsystem-id="${OSID}"
-#    hammer organization add-hostgroup --name ${ORG} --hostgroup "HG_${LE}_${CCV}"
-#  done
-#done
-
 LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
 CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
 LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
@@ -86,3 +66,6 @@ hostgroup_create () { for LOC in $(echo "${LOC_var}");do
 done
 }
 doit hostgroup_create
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

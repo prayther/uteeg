@@ -43,16 +43,6 @@ doit() {
         fi
 }
 
-#CCV_ALL="CCV_RHEL7_Core CCV_RHEL7_EPEL CCV_RHEL7_Satellite CCV_RHEL7_Extras_Optional"
-#[root@sat pulp]# hammer --csv content-view version list  --organization="${ORG}" | sort -t, -k2 | awk -F"," '{print}' | grep Library
-#9,CV_RHEL7_Core 2.0,2.0,Library
-#16,CV_RHEL7_EPEL 1.0,1.0,Library
-#12,CV_RHEL7_Extras 1.0,1.0,Library
-#7,CV_RHEL7_Optional 1.0,1.0,Library
-#8,CV_RHEL7_Satellite 3.0,3.0,Library
-#1,Default Organization View 1.0,1.0,Library
-#hammer --csv content-view version list | awk -F"," '/Extras/,/Optional/ {print $1}' | tr '\n' ' ' | awk '{OFS=","}{print $1, $2}'
-
 doit hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_Core" --composite  --component-ids=$(hammer --csv content-view version list | awk -F"," '/RHEL7_Core/ {print $1}') --description="Combines RHEL 7 with Core Server"
 doit hammer content-view publish --name="CCV_RHEL7_Core" --organization="${ORG}" --async
 
@@ -64,3 +54,17 @@ doit hammer content-view publish --name="CCV_RHEL7_Extras_Optional" --organizati
 
 doit hammer content-view create --organization="${ORG}" --name="CCV_RHEL7_EPEL" --composite  --component-ids=$(hammer --csv content-view version list | grep -vi CCV | awk -F"," '/RHEL7_EPEL/ {print $1}') --description="Combines RHEL 7 with EPEL Server"
 doit hammer content-view publish --name="CCV_RHEL7_EPEL" --organization="${ORG}" --async
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"
+
+# Command notes
+#CCV_ALL="CCV_RHEL7_Core CCV_RHEL7_EPEL CCV_RHEL7_Satellite CCV_RHEL7_Extras_Optional"
+#[root@sat pulp]# hammer --csv content-view version list  --organization="${ORG}" | sort -t, -k2 | awk -F"," '{print}' | grep Library
+#9,CV_RHEL7_Core 2.0,2.0,Library
+#16,CV_RHEL7_EPEL 1.0,1.0,Library
+#12,CV_RHEL7_Extras 1.0,1.0,Library
+#7,CV_RHEL7_Optional 1.0,1.0,Library
+#8,CV_RHEL7_Satellite 3.0,3.0,Library
+#1,Default Organization View 1.0,1.0,Library
+#hammer --csv content-view version list | awk -F"," '/Extras/,/Optional/ {print $1}' | tr '\n' ' ' | awk '{OFS=","}{print $1, $2}'

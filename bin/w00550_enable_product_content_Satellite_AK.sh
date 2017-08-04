@@ -41,20 +41,6 @@ doit() {
         fi
 }
 
-# list all subs
-#hammer --csv subscription list --organization redhat
-#SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| awk -F"," '{print $1}'| sort -n | grep -v ID)
-#AK_var=$(hammer --csv activation-key list --organization="${ORG}" | awk -F"," '!/ID/{print $1}' | sort -n)
-
-#add_subs () {
-#  for SUBS in ${SUBS_var}; do
-#    for AKS in ${AK_var}; do
-#      hammer activation-key add-subscription --id="${AKS}" --subscription-id="${SUBS}"
-# done
-#done
-#}
-#doit add_subs
-
 # Enable stuff for Satellite
 Satellite_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-6.2-rpms/{print $6}')
 AK_Id=$(hammer --csv activation-key list --organization="${ORG}" | awk -F"," '/AK_Infra_1_Dev_CCV_RHEL7_Satellite/{print $1}')
@@ -66,6 +52,10 @@ hammer activation-key content-override --content-label="${RHSCL_Label}" --id="${
 Tools_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-tools-6.2-rpms/{print $6}')
 hammer activation-key content-override --content-label="${Tools_Label}" --id="${AK_Id}" --value 1
 
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"
+
+# Command notes
 #[root@sat log]# hammer activation-key list --organization redhat
 #---|------------------------------------------|----------------|-----------------------|--------------------------
 #ID | NAME                                     | HOST LIMIT     | LIFECYCLE ENVIRONMENT | CONTENT VIEW

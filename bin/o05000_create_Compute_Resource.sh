@@ -47,11 +47,6 @@ doit hammer compute-resource create --description 'LibVirt Compute Resource' --l
 doit firewall-cmd --add-port=5910-5930/tcp
 doit firewall-cmd --add-port=5910-5930/tcp --permanent
 
-# setup for compute resource with libvirt
-#su - foreman -s /bin/bash
-#ssh-keygen
-#ssh-copy-id root@${GATEWAY}
-
 doit ls /usr/share/foreman/.ssh || doit mkdir /usr/share/foreman/.ssh
 doit chmod 0700 /usr/share/foreman/.ssh
 
@@ -107,3 +102,6 @@ doit /bin/su -s /bin/bash -c "ssh -o StrictHostKeyChecking=no root@${GATEWAY} ex
 
 # import crt for libvirt vm console on your workstation/laptop browser
 #http://10.0.0.8/pub/katello-server-ca.crt
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

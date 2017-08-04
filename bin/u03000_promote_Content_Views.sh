@@ -46,17 +46,18 @@ doit() {
 # The inner loop. LEC_FROM (--from-lifecycle-environment-id), LEC_TO (--to-lifecycle-environment-id).
 # When LEC_FROM reaches <= $LE_Count-1 (the last number of hammer --csv lifecycle-environment list) stop.
 
-promote_cv () { if [ "${PROMOTEALL}" != "no" ];then
-  CV_Count=$(hammer --csv content-view list --organization="${ORG}" | sort -n | grep -vi "Content View ID,Name,Label,Composite,Repository IDs" | awk -F"," '{print $1}')
-  LE_Count=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | grep -vi "ID,Name,Prior" | wc -l)
-
-  for CV in $CV_Count;do
-    for (( LEC_FROM=1, LEC_TO=LEC_FROM+1; LEC_FROM <= $LE_Count-1; LEC_FROM++, LEC_TO=LEC_TO+1 ));do
-      hammer content-view version promote --organization="${ORG}" --from-lifecycle-environment-id="${LEC_FROM}" --to-lifecycle-environment-id="${LEC_TO}" --content-view-id="${CV}"
-    done
-  done
-fi
-}
+# This function is turned off. only doing dev below
+#promote_cv () { if [ "${PROMOTEALL}" != "no" ];then
+#  CV_Count=$(hammer --csv content-view list --organization="${ORG}" | sort -n | grep -vi "Content View ID,Name,Label,Composite,Repository IDs" | awk -F"," '{print $1}')
+#  LE_Count=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | grep -vi "ID,Name,Prior" | wc -l)
+#
+#  for CV in $CV_Count;do
+#    for (( LEC_FROM=1, LEC_TO=LEC_FROM+1; LEC_FROM <= $LE_Count-1; LEC_FROM++, LEC_TO=LEC_TO+1 ));do
+#      hammer content-view version promote --organization="${ORG}" --from-lifecycle-environment-id="${LEC_FROM}" --to-lifecycle-environment-id="${LEC_TO}" --content-view-id="${CV}"
+#    done
+#  done
+#fi
+#}
 #doit promote_cv
 
 # just promote Dev CV's
@@ -74,3 +75,6 @@ promote_dev_cv () { for CV in $CV_Count;do
 done
 }
 doit promote_dev_cv
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

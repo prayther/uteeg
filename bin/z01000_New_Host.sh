@@ -83,48 +83,5 @@ ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
 ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
 ssh ${GATEWAY} "/bin/virsh reset ${vmname}.${DOMAIN}"
 
-
-
-
-
-
-
-
-#hammer compute-resource list
-#hammer bootdisk host --host test01.laptop.prayther
-
-#--provision-method build \
-#--interface="primary=true, \
-#            provision=true, \
-#            ip=${vmip}" \
-#--domain laptop.prayther \
-#--compute-attributes="start=true" \
-#--subnet "10.0.0.0/24" \
-#--compute-profile="1-Small" \
-#--ask-root-password no
-#--compute-profile-id="1"
-#--volume="capacity=10G,format_type=qcow2"
-#--compute-attributes="start=1,image_id=/var/lib/libvirt/images/test01.laptop.prayther.iso" \
-#--interface="compute_type=network,compute_network=laptoplab,compute_model=virtio" \
-
-
-
-
-
-
-#[root@sat uteeg]# hammer bootdisk host --host test01.laptop.prayther
-# xmlstarlet ??? edit xml from cli
-#root@fedora /v/w/h/u/etc# virsh edit test01.laptop.prayther
-#  <os>
-#    <type arch='x86_64' machine='pc-i440fx-2.9'>hvm</type>
-#    <boot dev='cdrom'/>
-#    <boot dev='network'/>
-#    <boot dev='hd'/>
-#  </os>
-
-#Successfully downloaded host disk image to test01.laptop.prayther.iso
-#[root@sat uteeg]# scp test01.laptop.prayther.iso 10.0.0.1:/var/lib/libvirt/images/
-#test01.laptop.prayther.iso
-#libvirt_host> virsh attach-disk test01.laptop.prayther /var/lib/libvirt/images/test01.laptop.prayther.iso hda --type cdrom --mode readonly
-#Disk attached successfully
-
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"

@@ -43,3 +43,6 @@ doit() {
 
 #Create a daily sync plan:
 doit hammer sync-plan create --interval=daily --name='Daily' --organization="${ORG}" --sync-date '2017-07-03 24:00:00' --enabled 1
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"
