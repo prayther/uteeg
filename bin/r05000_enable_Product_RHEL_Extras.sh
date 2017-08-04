@@ -57,11 +57,11 @@ doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Ent
 #done
 
 # Sync only the repos being enabled
-repolist () { for i in $(hammer --csv repository list --organization=${ORG} | grep Extras | awk -F"," '{print $1}')
+repo_sync () { for i in $(hammer --csv repository list --organization=${ORG} | grep Extras | awk -F"," '{print $1}')
   do hammer repository synchronize --id ${i} --organization=${ORG}
 done
 }
-repolist
+repo_syn
 
 # Put CDN back to redhat and sync latest
 #hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
