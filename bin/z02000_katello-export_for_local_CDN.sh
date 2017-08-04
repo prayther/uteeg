@@ -59,11 +59,13 @@ grep "${GATEWAY}:/var/www/html/uteeg /mnt/share   nfs rw,hard,intr,context=" /et
 rmdir /var/lib/pulp/katello-export
 /usr/bin/mount -a
 mount | grep "${GATEWAY}:/var/www/html/uteeg" && ln -s /mnt/share/katello-export/ /var/lib/pulp/
+# It's going to take more than this. When you export with a --since, it creates a delta dir structure. Combining that and doing createrepo will be interesting.
+# It's all local so I will just cron it at nite and do a clean export each time... for now
 # If there is not EXPORTIME var in ../etc/virt-inst.cfg then this has not run before and this will be the first date
-grep ^EXPORTIME= ../etc/virt-inst.cfg || echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
+#grep ^EXPORTIME= ../etc/virt-inst.cfg || echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
 # put the new EXPORTIME each run and then you have since
 hammer content-view version export --since="${EXPORTIME}" --id 1
-echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
+#echo EXPORTIME=\"$(date "+%FT%T.%X %Z")\" >> ../etc/virt-inst.cfg
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
