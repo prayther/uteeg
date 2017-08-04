@@ -116,8 +116,8 @@ EOF
 }
 hammer_cli_config
 
-#mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
-#mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
+mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
+mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
 #/usr/bin/yum clean all
 #/usr/bin/yum -y update
