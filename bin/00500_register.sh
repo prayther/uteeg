@@ -54,14 +54,17 @@ wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
-/usr/sbin/subscription-manager unregister
-/usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
-/usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
-/usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
+subscribe_update () {
+  /usr/sbin/subscription-manager unregister
+  /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
 
-/usr/bin/yum clean all
-/var/cache/yum
-/usr/bin/yum -y update
+  /usr/bin/yum clean all
+  /var/cache/yum
+  /usr/bin/yum -y update
+}
+time subscribe_update
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
