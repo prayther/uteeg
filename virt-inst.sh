@@ -275,7 +275,7 @@ EOH1
 chmod 0755 /etc/rc.local
 
 # register script comes from uteeg git project cloned above
-/bin/bash ~/uteeg/bin/*register.sh
+/bin/bash ~/uteeg/bin/*register*.sh
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
