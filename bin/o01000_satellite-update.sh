@@ -57,6 +57,7 @@ satellite-installer --scenario satellite --upgrade
 #Upload our manifest.zip (created in RH Portal)
 wget -P /root/ --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
+hammer subscription refresh-manifest --organization=${ORG}
 
 # timeout for testing.
 hammer settings set --name idle_timeout --value 99999999
