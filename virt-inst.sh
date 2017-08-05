@@ -259,7 +259,7 @@ exec 2> >(LOG_)
 source ../etc/virt-inst.cfg
 
 # run all the install/cfg scripts in sequence. the names determine order.
-#/root/uteeg/bin/run_all.sh
+/root/uteeg/bin/run_all.sh
 
 # step 2 put the orig rc.local in place and reboot
 cp /root/rc.local.orig /etc/rc.local

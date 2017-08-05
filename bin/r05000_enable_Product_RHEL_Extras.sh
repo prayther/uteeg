@@ -44,11 +44,11 @@ doit() {
 doit hammer repository-set enable --organization "${ORG}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
 
 # Sync only the repos being enabled
-repo_sync () { for i in $(hammer --csv repository list --organization=${ORG} | grep Extras | awk -F"," '{print $1}')
-  do hammer repository synchronize --id ${i} --organization=${ORG}
-done
-}
-repo_syn
+#repo_sync () { for i in $(hammer --csv repository list --organization=${ORG} | grep Extras | awk -F"," '{print $1}')
+#  do hammer repository synchronize --id ${i} --organization=${ORG}
+#done
+#}
+#repo_syn
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

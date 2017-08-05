@@ -47,11 +47,11 @@ doit hammer repository-set enable --organization="${ORG}" --new-name="${RHEL}" -
 doit hammer repository-set enable --organization="$ORG" --new-name="${TOOLS}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
 
 # Then we can sync all repositories that we've enable
-repo_sync () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
-  do hammer repository synchronize --id ${i} --organization=${ORG}
-done
-}
-repo_sync
+#repo_sync () { for i in $(hammer --csv repository list --organization=${ORG} | grep -i "${PRODUCT_VER}" | awk -F, {'print $1'} | grep -vi '^ID')
+#  do hammer repository synchronize --id ${i} --organization=${ORG}
+#done
+#}
+#repo_sync
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
