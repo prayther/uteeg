@@ -46,4 +46,4 @@ run () {
           do if [[ "${?}" -eq "0" ]];then time "${run_all}";fi
         done
 }
-doit run
+run
