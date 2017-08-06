@@ -43,7 +43,7 @@ doit() {
 
 run () { 
 	time for run_all in $(find . -type f -name "??????_*" | grep -v off)
-          do if [[ "${?}" -eq "0" ]];then time "${run_all}";fi
+          do if [[ "${?}" -eq "0" ]];then time "${run_all}";else exit 1;fi
         done
 }
 run
