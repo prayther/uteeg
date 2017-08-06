@@ -48,7 +48,7 @@ setup_slow_vars () {
 		    setup_slow_vars () {
                     AK_var=$(hammer --csv activation-key list --organization="${ORG}" | awk -F"," '!/ID/{print $1}' | sort -n)
 	    }
-doit setup_slow_vars
+setup_slow_vars
 
 add_subs () {
   for SUBS in ${SUBS_var}; do
