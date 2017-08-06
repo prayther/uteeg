@@ -57,7 +57,7 @@ add_subs () {
  done
 done
 }
-doit add_subs
+add_subs
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
