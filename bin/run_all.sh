@@ -41,8 +41,9 @@ doit() {
         fi
 }
 
-run () { time for run_all in $(find . -type f -name "??????_*" | grep -v off)
-  do time "${run_all}"
-done
+run () { 
+	time for run_all in $(find . -type f -name "??????_*" | grep -v off)
+          do if [[ "${?}" -eq "0" ]];then time "${run_all}";fi
+        done
 }
 doit run
