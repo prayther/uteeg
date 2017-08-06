@@ -57,18 +57,18 @@ EOF
 doit dvd_repo
 
 # If you a disconnected from internet and also for speed
-mkdir /mnt/rhel
+ls /mnt/rhel || mkdir /mnt/rhel
 mount -o loop /root/${RHEL_ISO} /mnt/rhel
-mkdir /mnt/sat
+ls /mnt/sat || mkdir /mnt/sat
 mount -o loop /root/${SATELLITE_ISO} /mnt/sat
-/mnt/sat/install_packages
+doit /mnt/sat/install_packages
 
-/usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
+doit /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
-firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
+doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
