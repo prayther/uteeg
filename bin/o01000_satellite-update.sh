@@ -45,7 +45,7 @@ doit() {
 satellite-installer --scenario satellite --upgrade
 
 # Notice adding of tftp for provisioning from capsules and the removal of Puppet
-doit /usr/sbin/satellite-installer --scenario satellite \
+if [[ $(katello-service status) -ne "0" ]];then satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
