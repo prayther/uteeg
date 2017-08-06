@@ -74,7 +74,7 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
 
-doit satellite-installer --scenario satellite \
+if [[ $(katello-service status) -ne "0" ]];then satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
@@ -84,6 +84,7 @@ doit satellite-installer --scenario satellite \
 --capsule-puppet false \
 --foreman-proxy-dns-managed=false \
 --foreman-proxy-dhcp-managed=false
+fi
 
 export VMNAME=$(echo "$(hostname)" | awk -F"." '{print $1}')
 grep "^${VMNAME}" ../etc/virt-inst.cfg || echo VMNAME=$(hostname) | awk -F"." '{print $1}' >> ../etc/virt-inst.cfg
