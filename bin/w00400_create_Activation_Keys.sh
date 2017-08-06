@@ -51,8 +51,11 @@ doit() {
 
 # What I did... for now.
 # Add a AK for each CCV in each lifecycle. Seems like a good idea.
-LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
-CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
+setup_slow_vars () {
+                    LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
+                    CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
+	    }
+doit setup_slow_vars
 
 ak_create () { for CCV in $(echo "${CCV_var}");do
   for LE in $(echo "${LE_var}");do

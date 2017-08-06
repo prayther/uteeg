@@ -42,17 +42,22 @@ doit() {
         fi
 }
 
-LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
-CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
-LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
-ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
-NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
-MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
-PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
-OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
+setup_slow_vars () {
+                    LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
+                    CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
+                    LOC_var=$(hammer --csv location list | grep -iv id,name | awk -F"," '{print $2}')
+                    ORG_var=$(hammer --csv organization list | grep -iv id,name | awk -F"," '{print $2}')
+                    NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
+                    MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
+                    PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
+                    OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
+	    }
+doit setup_slow_vars
+
 # can't find --content-source-id with a hammer command
 
-hostgroup_create () { for LOC in $(echo "${LOC_var}");do
+hostgroup_create () {
+for LOC in $(echo "${LOC_var}");do
   for ORG_local in $(echo "${ORG_var}");do
     for CCV in $(echo "${CCV_var}");do
       for LE in $(echo "${LE_var}");do

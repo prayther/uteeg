@@ -1,4 +1,4 @@
-#!/bin/bash -x
+!/bin/bash -x
 
 #https://github.com/prayther/uteeg
 #http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
@@ -41,7 +41,8 @@ doit() {
         fi
 }
 
-doit hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
+*_update_org_redhat_CDN.sh
+*_Synchronize_all_CDN_Products.sh
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

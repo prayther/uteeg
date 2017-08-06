@@ -41,10 +41,19 @@ doit() {
         fi
 }
 
-subscription-manager unregister
+# If avail. Satellite would be registered to Red Hat CDN, so unregister from there to self register
+unregister_from_RedHat () {
+                           if [[ $(subscription-manager status) -eq "0" ]];then subscription-manager unregister;fi
+		   }
+doit unregister_from_RedHat
+
 doit rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
 # add a activation key once i get satellite repos in my test bed.
-Sat_AK=$(hammer --csv activation-key list --organization redhat | grep Infra | awk -F"," '/Satellite/ {print $2}')
+setup_slow_var () {
+                   Sat_AK=$(hammer --csv activation-key list --organization redhat | grep Infra | grep -vi Capsule | awk -F"," '/Satellite/ {print $2}')
+	   }
+doit setup_slow_var
+
 doit /usr/sbin/subscription-manager --org="${ORG}" register --activationkey="${Sat_AK}"
 
 echo "###INFO: Finished $0"
