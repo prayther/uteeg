@@ -65,7 +65,7 @@ ak_create () { for CCV in $(echo "${CCV_var}");do
   done
 done
 }
-doit ak_create
+ak_create
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
