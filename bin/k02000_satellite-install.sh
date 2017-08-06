@@ -74,7 +74,7 @@ firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
 
-satellite-installer --scenario satellite \
+doit satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
