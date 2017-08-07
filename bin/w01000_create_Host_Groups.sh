@@ -42,6 +42,7 @@ doit() {
         fi
 }
 
+# This is setup for 'all' not just dev. so you get errors so turning off 'run once' with doit
 setup_slow_vars () {
                     LE_var=$(hammer --csv lifecycle-environment list --organization="${ORG}" | sort -n | awk -F"," '{print $2}' | grep -iv name | grep -v Library)
                     CCV_var=$(hammer --csv content-view list --organization="${ORG}" | grep -v "Content View ID,Name,Label,Composite,Repository IDs" | grep true | awk -F"," '{print $2}')
@@ -52,7 +53,7 @@ setup_slow_vars () {
                     PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
                     OSID=$(hammer --csv os list | awk -F"," '/RedHat ?.?/{print $1}')
 	    }
-doit setup_slow_vars
+setup_slow_vars
 
 # can't find --content-source-id with a hammer command
 
@@ -70,7 +71,7 @@ for LOC in $(echo "${LOC_var}");do
   done
 done
 }
-doit hostgroup_create
+hostgroup_create
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
