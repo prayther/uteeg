@@ -44,10 +44,18 @@ doit() {
 #hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 # Synchronize all Products
 synchronize_all () { for i in $(hammer --csv repository list --organization=${ORG} | grep -vi EPEL | awk -F, {'print $1'} | grep -vi '^ID' | sort -n)
-  do hammer repository synchronize --id ${i} --organization=${ORG}
+  do hammer repository synchronize --id ${i} --organization=${ORG} --async
 done
 }
 doit synchronize_all
+
+# async everything, but wait till all done
+wait_till_done () {
+	for repo_list in $(hammer --csv repository list --organization=${ORG}| awk -F"," '!/Id/{print $1}')
+	  do while [[ ! $(hammer repository  info --id="${repo_list}"| grep Status | grep Success) ]];do sleep 30; echo "repo ${repo_list} is still syncing";done
+        done
+}
+wait_till_done
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
