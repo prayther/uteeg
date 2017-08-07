@@ -50,7 +50,7 @@ setup_slow_vars () {
                     NET_var=$(hammer --csv subnet list | grep -vi id,name | awk -F"," '{print $2}')
                     MEDID=$(hammer --csv medium list | grep redhat | awk -F"," '{print $1}')
                     PARTID=$(hammer --csv partition-table list | grep 'Redhat' | cut -d, -f1)
-                    OSID=$(hammer --csv os list | grep 'RedHat 7.3' | cut -d, -f1)
+                    OSID=$(hammer --csv os list | awk -F"," '/RedHat ?.?/{print $1}')
 	    }
 doit setup_slow_vars
 
