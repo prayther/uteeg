@@ -45,7 +45,7 @@ doit() {
 unregister_from_RedHat () {
                            if [[ $(subscription-manager status) -eq "0" ]];then subscription-manager unregister;fi
 		   }
-doit unregister_from_RedHat
+unregister_from_RedHat
 
 rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
 # add a activation key once i get satellite repos in my test bed.
