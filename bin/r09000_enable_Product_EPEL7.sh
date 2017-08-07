@@ -52,12 +52,12 @@ repo_sync () { for i in $(hammer --csv repository list --organization=${ORG} | g
   do hammer repository synchronize --id ${i} --organization=${ORG}
 done
 }
-repo_sync
+doit repo_sync
 
 # Put pulic mirror back to sync latest
-hammer repository update --url ${URL_EPEL} --organization "${ORG}" --product="RHEL7_EPEL"
+doit hammer repository update --url ${URL_EPEL} --organization "${ORG}" --product="RHEL7_EPEL"
 
-repo_sync
+doit repo_sync
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
