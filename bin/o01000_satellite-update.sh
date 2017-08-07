@@ -60,6 +60,10 @@ wget -P /root/ --no-clobber http://${SERVER}/ks/manifest/manifest.zip
 hammer subscription upload --file /root/manifest.zip  --organization=${ORG}
 hammer subscription refresh-manifest --organization=${ORG}
 
+# Configuring Basic Authentication for Red Hat Access Insights in Satellite 6.1.1
+# Edit /etc/redhat_access/config.yml and change 'enable_telemetry_basic_auth' from false (default) to true. Example:
+# In the UI, navigate to Access Insights -> Manage. You'll now see an option under Access Insights Service Configuration to input a username/password.
+
 # timeout for testing.
 hammer settings set --name idle_timeout --value 99999999
 

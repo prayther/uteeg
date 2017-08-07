@@ -47,14 +47,14 @@ unregister_from_RedHat () {
 		   }
 doit unregister_from_RedHat
 
-doit rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
 # add a activation key once i get satellite repos in my test bed.
 setup_slow_var () {
                    Sat_AK=$(hammer --csv activation-key list --organization redhat | grep Infra | grep -vi Capsule | awk -F"," '/Satellite/ {print $2}')
 	   }
-doit setup_slow_var
+setup_slow_var
 
-doit /usr/sbin/subscription-manager --org="${ORG}" register --activationkey="${Sat_AK}"
+/usr/sbin/subscription-manager --org="${ORG}" register --activationkey="${Sat_AK}"
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
