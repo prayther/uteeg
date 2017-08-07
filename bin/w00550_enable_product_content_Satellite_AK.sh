@@ -46,22 +46,22 @@ setup_slow_vars () {
                     Satellite_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-6.2-rpms/{print $6}')
                     AK_Id=$(hammer --csv activation-key list --organization="${ORG}" | awk -F"," '/AK_Infra_1_Dev_CCV_RHEL7_Satellite/{print $1}')
 	    }
-doit setup_slow_vars
-doit hammer activation-key content-override --content-label="${Satellite_Label}" --id="${AK_Id}" --value 1
+setup_slow_vars
+hammer activation-key content-override --content-label="${Satellite_Label}" --id="${AK_Id}" --value 1
 
 # Enable stuff for rhscl
 setup_slow_vars1 () {
                      RHSCL_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-server-rhscl-7-rpms/{print $6}')
 	     }
-doit setup_slow_vars1
-doit hammer activation-key content-override --content-label="${RHSCL_Label}" --id="${AK_Id}" --value 1
+setup_slow_vars1
+hammer activation-key content-override --content-label="${RHSCL_Label}" --id="${AK_Id}" --value 1
 
 # Enable stuff for tools
 setup_slow_vars2 () {
                      Tools_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-tools-6.2-rpms/{print $6}')
 	     }
-doit setup_slow_vars2
-doit hammer activation-key content-override --content-label="${Tools_Label}" --id="${AK_Id}" --value 1
+setup_slow_vars2
+hammer activation-key content-override --content-label="${Tools_Label}" --id="${AK_Id}" --value 1
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
