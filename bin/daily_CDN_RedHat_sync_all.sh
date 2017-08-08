@@ -41,8 +41,8 @@ doit() {
         fi
 }
 
-*_update_org_redhat_CDN.sh
-*_Synchronize_all_CDN_Products.sh
+./*_update_org_redhat_CDN.sh
+./*_Synchronize_all_CDN_Products.sh
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
