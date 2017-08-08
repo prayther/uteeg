@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-doit hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
+hammer organization update --name redhat --redhat-repository-url ${CDN_URL}
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
