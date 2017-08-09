@@ -57,7 +57,7 @@ subscribe_update () {
 
   #Clean, update
   /usr/bin/yum clean all
-  /var/cache/yum
+  rm -rf /var/cache/yum
   /usr/bin/yum -y update
 }
 time subscribe_update
