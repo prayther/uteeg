@@ -50,10 +50,11 @@ done
 doit synchronize_all
 
 # async everything, but wait till all done
+	#for repo_list in $(hammer --csv repository list --organization=${ORG}| awk -F"," '!/Id/{print $1}')
+	#  do while [[ ! $(hammer repository  info --id="${repo_list}"| grep Status | grep Success) ]];do sleep 30; echo "repo ${repo_list} is still syncing";done
+        #done
 wait_till_done () {
-	for repo_list in $(hammer --csv repository list --organization=${ORG}| awk -F"," '!/Id/{print $1}')
-	  do while [[ ! $(hammer repository  info --id="${repo_list}"| grep Status | grep Success) ]];do sleep 30; echo "repo ${repo_list} is still syncing";done
-        done
+        while [[ $(hammer --csv task list | grep -v stopped | grep Synchronize) ]];do sleep 30; echo "Repo is still syncing";done
 }
 wait_till_done
 
