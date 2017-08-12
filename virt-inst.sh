@@ -306,10 +306,11 @@ virsh undefine "${VMNAME}"
 rm -rf /var/lib/libvirt/images/"${VMNAME}".qcow2
 
 #if the ip does not exist make a hosts entry into libvirt (dnsmasq) host so that the vm will resolve. important for satellite
+#need think about multiple vm's/ip's ???
 grep -i "${IP}" /etc/hosts || echo "${IP}	${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
 
-virsh net-destroy ${NETWORK}
-virsh net-start ${NETWORK}
+#virsh net-destroy ${NETWORK}
+#virsh net-start ${NETWORK}
 
 # just remove so ssh won't fail. ks/boot scripts put it back for a new vm later
 sed -i /${VMNAME}/d /root/.ssh/known_hosts
