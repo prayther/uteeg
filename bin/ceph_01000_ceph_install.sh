@@ -56,6 +56,7 @@ su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
 # get everyone talking for ansible
 for i in c d e
   do sshpass -p password ssh-copy-id -o StrictHostKeyChecking=no -i /home/ceph_ansible/.ssh/id_rsa.pub ceph_ansible@server"${i}"
+     ssh -o StrictHostKeyChecking=no ceph_ansible@server"${i}" exit
 done
 
 #/bin/su -s /bin/bash -c "ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit" foreman
@@ -72,14 +73,14 @@ EOF
 
 su -c "mkdir ~/ceph-ansible-keys" ceph_ansible
 ln -s /usr/share/ceph-ansible/group_vars /etc/ansible/group_vars
-cp /etc/ansible/group_vars/all.yml.sample /etc/ansible/group_vars/all.yml
-cp /etc/ansible/group_vars/mons.yml.sample /etc/ansible/group_vars/mons.yml
+#cp /etc/ansible/group_vars/all.yml.sample /etc/ansible/group_vars/all.yml
+#cp /etc/ansible/group_vars/mons.yml.sample /etc/ansible/group_vars/mons.yml
 
-cat << EOF1 > /etc/ansible/hosts
+cat << EOF1 > /usr/share/ceph-ansible/group_vars/all.yml
 ###########
 # GENERAL #
 ###########
-fetch_directory: /home/ceph_ansible/ceph-ansible-keys
+fetch_directory: /usr/share/ceph-ansible/group_vars/ceph-ansible-keys
 cluster: ceph # cluster name
 ###########
 # INSTALL #
@@ -130,11 +131,11 @@ ceph_conf_overrides:
     rbd_cache_writethrough_until_flush: "false"
 EOF1
 
-cat << EOF2 > /etc/ansible/hosts
+cat << EOF2 > /etc/ansible/group_vars/mons.yml
 ###########
 # GENERAL #
 ###########
-fetch_directory: /home/student/ceph-ansible-keys
+fetch_directory: /usr/share/ceph-ansible/group_vars/mons.yml
 
 mon_group_name: mons
 
