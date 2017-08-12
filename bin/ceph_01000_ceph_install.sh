@@ -87,7 +87,7 @@ cat << EOF1 > /usr/share/ceph-ansible/group_vars/all.yml
 # GENERAL #
 ###########
 
-fetch_directory: /home/ceph_ansible/eph-ansible-keys
+fetch_directory: /home/ceph_ansible/ceph-ansible-keys
 
 ###########
 # INSTALL #
