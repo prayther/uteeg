@@ -49,6 +49,8 @@ wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
 useradd ceph_ansible
 useradd apraythe
+echo "password" | passwd "ceph_ansible" --stdin
+echo "password" | passwd "apraythe" --stdin
 
 cat << EOF >/etc/sudoers.d/ceph_ansible
 ceph_ansible ALL = (root) NOPASSWD:ALL

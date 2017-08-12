@@ -65,7 +65,8 @@ yum -y install ceph-ansible
 
 su -c "mkdir ~/ceph-ansible-keys" ceph_ansible
 mv /etc/ansible /etc/ansible.off
-ln -s /usr/share/ceph-ansible/group_vars /etc/ansible/group_vars
+cp /usr/share/ceph_ansible/site.yml.sample /usr/share/ceph_ansible/site.yml
+ln -s /usr/share/ceph-ansible /etc/ansible
 #cp /usr/share/ceph_ansible/site.yml.sample /etc/ansible/site.yml
 #cp /etc/ansible/group_vars/all.yml.sample /etc/ansible/group_vars/all.yml
 #cp /etc/ansible/group_vars/mons.yml.sample /etc/ansible/group_vars/mons.yml
