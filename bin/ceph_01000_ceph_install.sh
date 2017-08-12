@@ -130,7 +130,7 @@ osd_objectstore: filestore
  ceph_conf_overrides:
    global:
          mon_initial_members: serverc,serverd,servere
-    mon_host: 172.25.250.12,172.25.250.13,172.25.250.14
+    mon_host: 10.0.0.4,10.0.0.5,10.0.0.6
     mon_osd_allow_primary_affinity: true
     osd_pool_default_size: 2
     osd_pool_default_min_size: 1
