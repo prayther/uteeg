@@ -47,6 +47,17 @@ doit() {
 wget -P /root/ --no-clobber http://${SERVER}/passwd
 wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
+useradd ceph_ansible
+useradd apraythe
+
+cat << EOF >/etc/sudoers.d/ceph_ansible
+ceph_ansible ALL = (root) NOPASSWD:ALL
+apraythe ALL = (root) NOPASSWD:ALL
+EOF
+
+chmod 0440 /etc/sudoers.d/ceph_ansible
+
+
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 subscribe_update () {

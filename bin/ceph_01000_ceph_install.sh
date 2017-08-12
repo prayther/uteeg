@@ -41,14 +41,14 @@ doit() {
         fi
 }
 
-useradd ceph_ansible
-echo "password" | passwd "ceph_ansible" --stdin
+#useradd ceph_ansible
+#echo "password" | passwd "ceph_ansible" --stdin
 
-cat << EOF >/etc/sudoers.d/ceph_ansible
-ceph_ansible ALL = (root) NOPASSWD:ALL
-EOF
+#cat << EOF >/etc/sudoers.d/ceph_ansible
+#ceph_ansible ALL = (root) NOPASSWD:ALL
+#EOF
 
-chmod 0440 /etc/sudoers.d/ceph_ansible
+#chmod 0440 /etc/sudoers.d/ceph_ansible
 
 # non interactive, emptly pass ""
 su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
@@ -63,6 +63,13 @@ done
 
 yum -y install ceph-ansible
 
+su -c "mkdir ~/ceph-ansible-keys" ceph_ansible
+mv /etc/ansible /etc/ansible.off
+ln -s /usr/share/ceph-ansible/group_vars /etc/ansible/group_vars
+#cp /usr/share/ceph_ansible/site.yml.sample /etc/ansible/site.yml
+#cp /etc/ansible/group_vars/all.yml.sample /etc/ansible/group_vars/all.yml
+#cp /etc/ansible/group_vars/mons.yml.sample /etc/ansible/group_vars/mons.yml
+
 cat << EOF > /etc/ansible/hosts
 [mons]
 server[c:e]
@@ -70,11 +77,6 @@ server[c:e]
 [osds]
 server[c:e]
 EOF
-
-su -c "mkdir ~/ceph-ansible-keys" ceph_ansible
-ln -s /usr/share/ceph-ansible/group_vars /etc/ansible/group_vars
-#cp /etc/ansible/group_vars/all.yml.sample /etc/ansible/group_vars/all.yml
-#cp /etc/ansible/group_vars/mons.yml.sample /etc/ansible/group_vars/mons.yml
 
 cat << EOF1 > /usr/share/ceph-ansible/group_vars/all.yml
 ---
@@ -154,6 +156,36 @@ monitor_secret: "{{ monitor_keyring.stdout }}"
 cephx: true
 EOF2
 
+cat << EOF3 > /etc/ansible/group_vars/osds.yml
+---
+###########
+# GENERAL #
+###########
+
+fetch_directory: /home/ceph_ansible/ceph-ansible-keys
+
+##############
+# CEPH OPTIONS
+##############
+# ACTIVATE THE FSID VARIABLE FOR NON-VAGRANT DEPLOYMENT
+fsid: "{{ cluster_uuid.stdout }}"
+cephx: true
+
+# Declare devices
+# All the scenario inherit from the following device declaration
+#
+devices:
+  - /dev/vdb
+#   - /dev/vdc
+#   - /dev/vdd
+
+# I. First scenario: journal and osd_data on the same device
+# Use 'true' to enable this scenario
+# This will collocate both journal and data on the same disk
+# creating a partition at the beginning of the device
+
+journal_collocation: true
+EOF3
 #wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
 #wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 
