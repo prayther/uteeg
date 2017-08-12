@@ -77,36 +77,42 @@ ln -s /usr/share/ceph-ansible/group_vars /etc/ansible/group_vars
 #cp /etc/ansible/group_vars/mons.yml.sample /etc/ansible/group_vars/mons.yml
 
 cat << EOF1 > /usr/share/ceph-ansible/group_vars/all.yml
+---
+# Variables here are applicable to all host groups NOT roles
+
 ###########
 # GENERAL #
 ###########
-fetch_directory: /usr/share/ceph-ansible/group_vars/ceph-ansible-keys
-cluster: ceph # cluster name
+
+fetch_directory: /home/ceph_ansible/eph-ansible-keys
+
 ###########
 # INSTALL #
 ###########
+
 mon_group_name: mons
 osd_group_name: osds
 rgw_group_name: rgws
 mds_group_name: mdss
 check_firewall: False
 
-ceph_stable_rh_storage: True
-ceph_stable_rh_storage_version: 2
-ceph_stable_rh_storage_cdn_install: True
+ceph_rhcs: "{{ ceph_stable_rh_storage | default(true) }}"
+ceph_rhcs_cdn_install: "{{ ceph_stable_rh_storage_cdn_install | default(true) }}" # assumes all the nodes can connect to cdn.redhat.com
 
+######################
+# CEPH CONFIGURATION #
+######################
 fsid: "{{ cluster_uuid.stdout }}"
 generate_fsid: true
 
-cephx: True
+cephx: true
 max_open_files: 131072
 
-## Monitor options
 monitor_interface: eth0
-mon_use_fqdn: False
+mon_use_fqdn: false # if set to true, the MON name used will be the fqdn in the ceph.conf
 
-## OSD Options
-journal_size: 1024
+## OSD options
+journal_size: 5120 # OSD journal size in MB
 public_network: 10.0.0.0/24
 cluster_network: "{{ public_network }}"
 osd_mkfs_type: xfs
@@ -114,10 +120,14 @@ osd_mkfs_options_xfs: -f -i size=2048
 osd_mount_options_xfs: noatime,largeio,inode64,swalloc
 osd_objectstore: filestore
 
-ceph_conf_overrides:
-  global:
-    mon_initial_members: serverc,serverd,servere
-    mon_host: 10.0.0.2,10.0.0.3,10.0.0.4
+###################
+# CONFIG OVERRIDE #
+###################
+
+ ceph_conf_overrides:
+   global:
+         mon_initial_members: serverc,serverd,servere
+    mon_host: 172.25.250.12,172.25.250.13,172.25.250.14
     mon_osd_allow_primary_affinity: true
     osd_pool_default_size: 2
     osd_pool_default_min_size: 1
