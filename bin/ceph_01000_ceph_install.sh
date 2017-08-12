@@ -54,7 +54,9 @@ chmod 0440 /etc/sudoers.d/ceph_ansible
 su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
 
 # get everyone talking for ansible
-/bin/su -c "for i in c d e;do ssh-copy-id ceph_ansible@server${i};done" ceph_ansible
+for i in c d e
+  do sshpass -p password ssh-copy-id -o StrictHostKeyChecking=no -i /home/ceph_ansible/.ssh/id_rsa.pub ceph_ansible@server"${i}"
+done
 
 #/bin/su -s /bin/bash -c "ssh -o StrictHostKeyChecking=no root@${GATEWAY} exit" foreman
 
