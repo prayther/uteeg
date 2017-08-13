@@ -63,7 +63,7 @@ ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 
 # get everyone talking for ansible
 for i in admin mon osd2
-  do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no -i /home/ceph_ansible/.ssh/id_rsa.pub ceph_ansible@"${i}"
+  do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${CEPH_USER}"@"${i}"
 done
 
 sudo yum -y install ceph-deploy
