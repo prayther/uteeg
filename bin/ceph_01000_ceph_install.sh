@@ -55,7 +55,7 @@ su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
 
 # get everyone talking for ansible
 for i in admin mon osd2
-  do sshpass -p password ssh-copy-id -o StrictHostKeyChecking=no -i /home/ceph_ansible/.ssh/id_rsa.pub ceph_ansible@server"${i}" && ssh -o StrictHostKeyChecking=no ceph_ansible@server"${i}" exit
+  do sshpass -p password ssh-copy-id -o StrictHostKeyChecking=no -i /home/ceph_ansible/.ssh/id_rsa.pub ceph_ansible@"${i}" && ssh -o StrictHostKeyChecking=no ceph_ansible@"${i}" exit
 done
 
 
