@@ -73,7 +73,7 @@ sudo yum -y install ceph-deploy
 sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 #Create a directory on your admin node node for maintaining the configuration files and keys that ceph-deploy generates for your cluster.
 cd ~/ceph_ansible && mkdir my-cluster
-cd ~/ceph_ansible/my-cluster && ceph-deploy new mon
+cd ~/ceph_ansible/my-cluster && ceph-deploy --overwrite-conf new mon
 #On your admin node from the directory you created for holding your configuration details, perform the following steps using ceph-deploy.
 ceph-deploy --overwrite-conf new mon
 ceph-deploy --overwrite-conf install admin mon osd2
@@ -83,10 +83,10 @@ ssh mon sudo ls /var/local/osd1 && ssh mon sudo rm -rf /var/local/osd1/*
 ssh mon sudo mkdir -p /var/local/osd1
 ssh osd2 sudo ls /var/local/osd1 && ssh osd2 sudo rm -rf /var/local/osd2/*
 ssh osd2 sudo mkdir -p /var/local/osd2
-ceph-deploy osd prepare mon:/var/local/osd1 osd2:/var/local/osd2
-ceph-deploy osd activate mon:/var/local/osd1 osd2:/var/local/osd2
+ceph-deploy --overwrite-conf osd prepare mon:/var/local/osd1 osd2:/var/local/osd2
+ceph-deploy --overwrite-conf osd activate mon:/var/local/osd1 osd2:/var/local/osd2
 #Use ceph-deploy to copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
-ceph-deploy admin admin mon osd2
+ceph-deploy --overwrite-conf admin admin mon osd2
 
 #Ensure that you have the correct permissions for the ceph.client.admin.keyring.
 sudo chmod +r /etc/ceph/ceph.client.admin.keyring
