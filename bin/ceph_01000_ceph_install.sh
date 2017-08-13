@@ -60,6 +60,7 @@ fi
 
 # non interactive, emptly pass ""
 #su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
+ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
 ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 
 # get everyone talking for ansible
