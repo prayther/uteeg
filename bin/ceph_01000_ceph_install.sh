@@ -54,11 +54,30 @@ doit() {
 su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
 
 # get everyone talking for ansible
-SSHPASS='password'
 for i in admin mon osd2
-  do sshpass -e ssh-copy-id -o StrictHostKeyChecking=no -i /home/ceph_ansible/.ssh/id_rsa.pub ceph_ansible@"${i}" && ssh -o StrictHostKeyChecking=no ceph_ansible@"${i}" exit
+  do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no -i /home/ceph_ansible/.ssh/id_rsa.pub ceph_ansible@"${i}"
 done
 
+yum -y install ceph-deploy
+firewall-cmd --zone=public --add-port=6789/tcp --permanent
+#Create a directory on your admin node node for maintaining the configuration files and keys that ceph-deploy generates for your cluster.
+cd ~/ceph_ansible && mkdir my-cluster
+cd ~/ceph_ansible/my-cluster && ceph-deploy new mon
+#On your admin node from the directory you created for holding your configuration details, perform the following steps using ceph-deploy.
+ceph-deploy new mon
+ceph-deploy install admin mon osd2
+ceph-deploy mon create-initial
+#Add two OSDs. For fast setup, this quick start uses a directory rather than an entire disk per Ceph OSD Daemon. See ceph-deploy osd for details on using separate disks/partitions for OSDs and journals. Login to the Ceph Nodes and create a directory for the Ceph OSD Daemon.
+ssh mon mkdir -p /var/local/osd1
+ssh osd2 mkdir -p /var/local/osd2
+ceph-deploy osd prepare mon:/var/local/osd1 osd2:/var/local/osd2
+ceph-deploy osd activate mon:/var/local/osd1 osd2:/var/local/osd2
+#Use ceph-deploy to copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
+ceph-deploy admin admin mon osd2
+
+#Ensure that you have the correct permissions for the ceph.client.admin.keyring.
+chmod +r /etc/ceph/ceph.client.admin.keyring
+ceph health
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
