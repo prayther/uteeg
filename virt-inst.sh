@@ -52,7 +52,8 @@ doit() {
         fi
 }
 
-if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
+#if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
+if [ -z "${1}" ];then
   echo ""
   echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
   echo ""
@@ -80,20 +81,37 @@ for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
     fi
 done
 
+inputfile=./etc/hosts
+VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")
+DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")
+VCPU=$(awk /"${1}"/'{print $3}' "${inputfile}")
+RAM=$(awk /"${1}"/'{print $4}' "${inputfile}")
+IP=$(awk /"${1}"/'{print $5}' "${inputfile}")
+
+#Pull vm info from hosts file
+#inputfile=./etc/hosts
+#while IFS=" " read -r VMNAME DISC_SIZE VCPU RAM IP; do
+#  VMNAME="$VMNAME"
+#  DISC_SIZE="$DISC_SIZE"
+#  VCPU="$VCPU"
+##  MEM="$RAM"
+#  IP="$IP"
+#done < "$inputfile" | grep $1
+
 # This is just saving the info in virt-inst.cfg. You have to use all 4 parameters each time
 # You will have a history of the last values for each uniq vmname you have used saved in virt-inst.cfg
-VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
-export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
-export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg
-export RAM=${4} && echo "${1}_RAM=${4}" >> etc/virt-inst.cfg
+#VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
+#export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
+#export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg
+#export RAM=${4} && echo "${1}_RAM=${4}" >> etc/virt-inst.cfg
 
 # replace vars if they change for same vm name
-if [[ -n "${VMNAME}" ]];then
-      sed -i /VMNAME=/d etc/virt-inst.cfg
-      sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
-      sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
-      sed -i /${1}_RAM=/d etc/virt-inst.cfg
-fi
+#if [[ -n "${VMNAME}" ]];then
+#      sed -i /VMNAME=/d etc/virt-inst.cfg
+#      sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
+#      sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
+#      sed -i /${1}_RAM=/d etc/virt-inst.cfg
+#fi
 
 UNIQ=${VMNAME}_$(date '+%s')
 

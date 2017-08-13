@@ -1,6 +1,6 @@
 #package 
-virt-who
 git
+mlocate
 wget
 vim
 bind-utils
