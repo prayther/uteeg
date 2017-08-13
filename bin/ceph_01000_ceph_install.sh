@@ -73,12 +73,12 @@ sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 cd ~/ceph_ansible && mkdir my-cluster
 cd ~/ceph_ansible/my-cluster && ceph-deploy new mon
 #On your admin node from the directory you created for holding your configuration details, perform the following steps using ceph-deploy.
-ceph-deploy new mon
-ceph-deploy install admin mon osd2
-ceph-deploy mon create-initial
+ceph-deploy --overwrite-conf new mon
+ceph-deploy --overwrite-conf install admin mon osd2
+ceph-deploy --overwrite-conf mon create-initial
 #Add two OSDs. For fast setup, this quick start uses a directory rather than an entire disk per Ceph OSD Daemon. See ceph-deploy osd for details on using separate disks/partitions for OSDs and journals. Login to the Ceph Nodes and create a directory for the Ceph OSD Daemon.
-sudo ssh mon mkdir -p /var/local/osd1
-sudo ssh osd2 mkdir -p /var/local/osd2
+ssh mon sudo mkdir -p /var/local/osd1
+ssh osd2 sudo mkdir -p /var/local/osd2
 ceph-deploy osd prepare mon:/var/local/osd1 osd2:/var/local/osd2
 ceph-deploy osd activate mon:/var/local/osd1 osd2:/var/local/osd2
 #Use ceph-deploy to copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
