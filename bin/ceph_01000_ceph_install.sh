@@ -41,6 +41,13 @@ doit() {
         fi
 }
 
+if [[ $(id -u) != "0" ]];then
+	echo "Don't run as root"
+	echo
+	echo "Run as Ceph User: $(ls /home | grep -i ceph)"
+	exit 1
+fi
+
 #useradd ceph_ansible
 #echo "password" | passwd "ceph_ansible" --stdin
 
