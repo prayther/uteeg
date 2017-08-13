@@ -213,6 +213,7 @@ exec 2> >(LOG_)
 
 #Copy over the main script for configuration
 cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
+cd ~/"${CEPH_USER}" && /usr/bin/git clone https://github.com/prayther/uteeg.git
 $ it gets extraneous stuff in there from my laptop.
 > /root/uteeg/log/virt-inst.log
 
