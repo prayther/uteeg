@@ -7,7 +7,7 @@
 # mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
-export HOME=/root
+export HOME=/home/"${CEPH_USER}"
 cd "${BASH_SOURCE%/*}"
 
 logfile="../log/$(basename $0 .sh).log"
