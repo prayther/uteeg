@@ -58,7 +58,8 @@ fi
 #chmod 0440 /etc/sudoers.d/ceph_ansible
 
 # non interactive, emptly pass ""
-su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
+#su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
+ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 
 # get everyone talking for ansible
 for i in admin mon osd2
