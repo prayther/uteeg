@@ -7,7 +7,7 @@
 # mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
-export HOME=/home/"${CEPH_USER}"
+#export HOME=/home/"${CEPH_USER}"
 cd "${BASH_SOURCE%/*}"
 
 logfile="../log/$(basename $0 .sh).log"
@@ -23,6 +23,7 @@ echo "###INFO: $(date)"
 # read configuration (needs to be adopted!)
 #. ./satenv.sh
 source ../etc/virt-inst.cfg
+export HOME=/home/"${CEPH_USER}"
 
 
 doit() {
