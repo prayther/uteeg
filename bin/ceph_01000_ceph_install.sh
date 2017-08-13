@@ -79,7 +79,9 @@ ceph-deploy --overwrite-conf new mon
 ceph-deploy --overwrite-conf install admin mon osd2
 ceph-deploy --overwrite-conf mon create-initial
 #Add two OSDs. For fast setup, this quick start uses a directory rather than an entire disk per Ceph OSD Daemon. See ceph-deploy osd for details on using separate disks/partitions for OSDs and journals. Login to the Ceph Nodes and create a directory for the Ceph OSD Daemon.
+ssh mon sudo ls /var/local/osd1 && ssh mon sudo rm -rf /var/local/osd1/*
 ssh mon sudo mkdir -p /var/local/osd1
+ssh osd2 sudo ls /var/local/osd1 && ssh osd2 sudo rm -rf /var/local/osd2/*
 ssh osd2 sudo mkdir -p /var/local/osd2
 ceph-deploy osd prepare mon:/var/local/osd1 osd2:/var/local/osd2
 ceph-deploy osd activate mon:/var/local/osd1 osd2:/var/local/osd2
