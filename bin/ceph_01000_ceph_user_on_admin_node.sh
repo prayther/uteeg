@@ -99,14 +99,14 @@ cd ~/my-cluster && ceph-deploy install node1 node2 node3
 cd ~/my-cluster && ceph-deploy mon create-initial
 cd ~/my-cluster && ceph-deploy admin node1 node2 node3
 ceph-deploy osd create node1:vdb node2:vdb node3:vdb
-ssh node1 sudo ceph health
-ssh node1 sudo ceph -s
+#ssh node1 sudo ceph health
+#ssh node1 sudo ceph -s
 
 #Expand cluster
 ceph-deploy mds create node1
 ceph-deploy mon add node2
 ceph-deploy mon add node3
-ssh node1 sudo ceph quorum_status --format json-pretty
+#ssh node1 sudo ceph quorum_status --format json-pretty
 
 
 #ssh node1 sudo mkdir -p /var/local/node1
