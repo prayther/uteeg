@@ -70,6 +70,11 @@ for i in admin mon osd2
   ssh "${CEPH_USER}"@"${i}" sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 done
 
+ceph-deploy uninstall mon osd2
+ceph-deploy purgedata mon osd2
+#think i need to add another vm. purging self is not going to work
+ceph-deploy uninstall admin
+ceph-deploy purgedata admin
 sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 #Clean up from previous run, destroying everything
 ssh mon sudo ls /var/local/osd1 && ssh mon sudo rm -rf /var/local/osd1/*
