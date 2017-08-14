@@ -49,7 +49,7 @@ if [[ $(id -u) -eq "0" ]];then
 	exit 1
 fi
 
-sudo setenforce 0
+#sudo setenforce 0
 #useradd ceph_ansible
 #echo "password" | passwd "ceph_ansible" --stdin
 
@@ -66,7 +66,7 @@ ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
 ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 
 # get everyone talking for ansible
-for i in admin mon osd2
+for i in node1 node2 node3
   do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${CEPH_USER}"@"${i}"
   ssh "${CEPH_USER}"@"${i}" sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 done
@@ -74,38 +74,55 @@ done
 #Clean up from previous run, destroying everything
 ceph-deploy uninstall node1 node2 node3
 ceph-deploy purgedata node1 node2 node3
-ceph-deploy forgetkeys node1 node2 node3
-ssh mon sudo ls /var/local/osd1 && ssh mon sudo rm -rf /var/local/osd1/*
-ssh osd2 sudo ls /var/local/osd1 && ssh osd2 sudo rm -rf /var/local/osd2/*
+#clear partition on vdb **danger**
+for i in node1 node2 node3
+  do echo "d
 
-#Create a directory on your admin node node for maintaining the configuration files and keys that ceph-deploy generates for your cluster.
-cd ~/ceph_ansible && mkdir my-cluster
-cd ~/ceph_ansible/my-cluster && ceph-deploy --overwrite-conf new mon
-#On your admin node from the directory you created for holding your configuration details, perform the following steps using ceph-deploy.
+d
 
+d
 
+w
 
-
-
-
-ceph-deploy --overwrite-conf new mon
-ceph-deploy --overwrite-conf install admin mon osd2
-ceph-deploy --overwrite-conf mon create-initial
-#Add two OSDs. For fast setup, this quick start uses a directory rather than an entire disk per Ceph OSD Daemon. See ceph-deploy osd for details on using separate disks/partitions for OSDs and journals. Login to the Ceph Nodes and create a directory for the Ceph OSD Daemon.
-ssh mon sudo mkdir -p /var/local/osd1
-ssh osd2 sudo mkdir -p /var/local/osd2
-ceph-deploy --overwrite-conf osd prepare mon:/var/local/osd1 osd2:/var/local/osd2
-ceph-deploy --overwrite-conf osd activate mon:/var/local/osd1 osd2:/var/local/osd2
-#Use ceph-deploy to copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the monitor address and ceph.client.admin.keyring each time you execute a command.
-ceph-deploy --overwrite-conf admin admin mon osd2
-
-#Ensure that you have the correct permissions for the ceph.client.admin.keyring.
-for i in admin mon osd2
-  do ssh "${i}" sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+"| ssh ${i} "sudo fdisk /dev/vdb"
 done
 
-sudo setenforce 1
-ceph health
+ceph-deploy forgetkeys
+cd ~/my-cluster && rm -f ceph*
+#ssh node1 sudo ls /var/local/osd1 && ssh node1 sudo rm -rf /var/local/osd1/*
+#ssh node2 sudo ls /var/local/osd1 && ssh node2 sudo rm -rf /var/local/node2/*
+
+#Create a directory on your admin node node for maintaining the configuration files and keys that ceph-deploy generates for your cluster.
+cd ~ && mkdir my-cluster
+cd ~/my-cluster && ceph-deploy new node1
+cd ~/my-cluster && ceph-deploy install node1 node2 node3
+cd ~/my-cluster && ceph-deploy mon create-initial
+cd ~/my-cluster && ceph-deploy admin node1 node2 node3
+ceph-deploy osd create node1:vdb node2:vdb node3:vdb
+ssh node1 sudo ceph health
+ssh node1 sudo ceph -s
+
+#Expand cluster
+ceph-deploy mds create node1
+ceph-deploy mon add node2
+ceph-deploy mon add node3
+ssh node1 sudo ceph quorum_status --format json-pretty
+
+
+#ssh node1 sudo mkdir -p /var/local/node1
+#ssh node2 sudo mkdir -p /var/local/node2
+#ssh node3 sudo mkdir -p /var/local/node3
+#ceph-deploy --overwrite-conf osd prepare node1:/var/local/node1 node2:/var/local/node2 node3:/var/local/node3
+#ceph-deploy --overwrite-conf osd activate node1:/var/local/osd1 node2:/var/local/node2 node3:/var/local/node3
+#Use ceph-deploy to copy the configuration file and admin key to your admin node and your Ceph Nodes so that you can use the ceph CLI without having to specify the node1itor address and ceph.client.admin.keyring each time you execute a command.
+
+#Ensure that you have the correct permissions for the ceph.client.admin.keyring.
+#for i in admin node1 node2
+#  do ssh "${i}" sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+#done
+
+#sudo setenforce 1
+#ceph health
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
