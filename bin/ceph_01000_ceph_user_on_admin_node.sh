@@ -71,21 +71,23 @@ for i in admin mon osd2
   ssh "${CEPH_USER}"@"${i}" sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 done
 
-ceph-deploy uninstall mon osd2
-ceph-deploy purgedata mon osd2
-#think i need to add another vm. purging self is not going to work
-ceph-deploy uninstall admin
-ceph-deploy purgedata admin
-
-#sudo yum -y install ceph-deploy sshpass
-
 #Clean up from previous run, destroying everything
+ceph-deploy uninstall node1 node2 node3
+ceph-deploy purgedata node1 node2 node3
+ceph-deploy forgetkeys node1 node2 node3
 ssh mon sudo ls /var/local/osd1 && ssh mon sudo rm -rf /var/local/osd1/*
 ssh osd2 sudo ls /var/local/osd1 && ssh osd2 sudo rm -rf /var/local/osd2/*
+
 #Create a directory on your admin node node for maintaining the configuration files and keys that ceph-deploy generates for your cluster.
 cd ~/ceph_ansible && mkdir my-cluster
 cd ~/ceph_ansible/my-cluster && ceph-deploy --overwrite-conf new mon
 #On your admin node from the directory you created for holding your configuration details, perform the following steps using ceph-deploy.
+
+
+
+
+
+
 ceph-deploy --overwrite-conf new mon
 ceph-deploy --overwrite-conf install admin mon osd2
 ceph-deploy --overwrite-conf mon create-initial
