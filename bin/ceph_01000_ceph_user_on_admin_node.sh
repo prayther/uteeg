@@ -57,6 +57,7 @@ fi
 #EOF
 
 #chmod 0440 /etc/sudoers.d/ceph_ansible
+sudo yum -y install ceph-deploy sshpass
 
 # non interactive, emptly pass ""
 #su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
@@ -69,7 +70,6 @@ for i in admin mon osd2
   ssh "${CEPH_USER}"@"${i}" sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 done
 
-sudo yum -y install ceph-deploy
 sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 #Create a directory on your admin node node for maintaining the configuration files and keys that ceph-deploy generates for your cluster.
 cd ~/ceph_ansible && mkdir my-cluster
@@ -89,7 +89,10 @@ ceph-deploy --overwrite-conf osd activate mon:/var/local/osd1 osd2:/var/local/os
 ceph-deploy --overwrite-conf admin admin mon osd2
 
 #Ensure that you have the correct permissions for the ceph.client.admin.keyring.
-sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+for i in admin mon osd2
+  do ssh "${i}" sudo chmod +r /etc/ceph/ceph.client.admin.keyring
+done
+
 ceph health
 
 echo "###INFO: Finished $0"
