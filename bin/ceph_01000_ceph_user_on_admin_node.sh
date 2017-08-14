@@ -49,6 +49,7 @@ if [[ $(id -u) -eq "0" ]];then
 	exit 1
 fi
 
+sudo setenforce 0
 #useradd ceph_ansible
 #echo "password" | passwd "ceph_ansible" --stdin
 
@@ -57,7 +58,7 @@ fi
 #EOF
 
 #chmod 0440 /etc/sudoers.d/ceph_ansible
-sudo yum -y install ceph-deploy sshpass
+sudo yum -y install ceph-deploy sshpass yum-plugin-priorities
 
 # non interactive, emptly pass ""
 #su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
@@ -75,7 +76,9 @@ ceph-deploy purgedata mon osd2
 #think i need to add another vm. purging self is not going to work
 ceph-deploy uninstall admin
 ceph-deploy purgedata admin
-sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
+
+#sudo yum -y install ceph-deploy sshpass
+
 #Clean up from previous run, destroying everything
 ssh mon sudo ls /var/local/osd1 && ssh mon sudo rm -rf /var/local/osd1/*
 ssh osd2 sudo ls /var/local/osd1 && ssh osd2 sudo rm -rf /var/local/osd2/*
@@ -99,6 +102,7 @@ for i in admin mon osd2
   do ssh "${i}" sudo chmod +r /etc/ceph/ceph.client.admin.keyring
 done
 
+sudo setenforce 1
 ceph health
 
 echo "###INFO: Finished $0"
