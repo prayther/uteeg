@@ -72,10 +72,9 @@ for i in node1 node2 node3
   ssh "${CEPH_USER}"@"${i}" sudo firewall-cmd --zone=public --add-port=6789/tcp --permanent
 done
 
-#Clean up from previous run, destroying everything
-ceph-deploy disk zap node1:vdb node2:vdb node3:vdb
-ceph-deploy uninstall node1 node2 node3
-ceph-deploy purgedata node1 node2 node3
+cd ~/my-cluster && ceph-deploy disk zap node1:vdb node2:vdb node3:vdb
+cd ~/my-cluster && ceph-deploy uninstall node1 node2 node3
+cd ~/my-cluster && ceph-deploy purgedata node1 node2 node3
 
 #clear partition on vdb **danger**
 #for i in node1 node2 node3
