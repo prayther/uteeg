@@ -87,6 +87,11 @@ DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")
 VCPU=$(awk /"${1}"/'{print $3}' "${inputfile}")
 RAM=$(awk /"${1}"/'{print $4}' "${inputfile}")
 IP=$(awk /"${1}"/'{print $5}' "${inputfile}")
+#vmname needs to have the structure:
+#sat_*
+#ceph_*
+#gfs_*
+PRODUCT=$(echo "${VMNAME}" | awk -F"_" '{print $1}')
 
 #Pull vm info from hosts file
 #inputfile=./etc/hosts
@@ -129,6 +134,8 @@ if [[ -f ks/network/"${VMNAME}".network ]];then
     echo "Kickstart config files are missing."
     echo "You must create files for %include."
     echo "Look in the uteeg/ks/* for examples on network, partitions, packages and post"
+    echo
+    echo "Also need uteeg/etc/hosts entry"
     exit 1
 fi
 
@@ -294,8 +301,7 @@ EOH1
 chmod 0755 /etc/rc.local
 
 # register script comes from uteeg git project cloned above
-#/bin/bash ~/uteeg/bin/*register*.sh
-/bin/bash ~/uteeg/bin/ceph*register*.sh
+/bin/bash ~/uteeg/bin/"${PRODUCT}"*register*.sh
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
