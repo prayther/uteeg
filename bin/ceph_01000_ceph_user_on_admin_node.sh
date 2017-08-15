@@ -93,11 +93,16 @@ cd ~/my-cluster && ceph-deploy forgetkeys
 cd ~/my-cluster && rm -f ceph*
 
 #Create a directory on your admin node node for maintaining the configuration files and keys that ceph-deploy generates for your cluster.
+#sleep a little. i get errors with ceph services not being able to contact others in cluster. fix by restarting. gonna see if this helps
 cd ~ && mkdir my-cluster
 cd ~/my-cluster && ceph-deploy new node1
+sleep 30
 cd ~/my-cluster && ceph-deploy install node1 node2 node3
+sleep 30
 cd ~/my-cluster && ceph-deploy mon create-initial
+sleep 30
 cd ~/my-cluster && ceph-deploy admin node1 node2 node3
+sleep 30
 cd ~/my-cluster && ceph-deploy osd create node1:vdb node2:vdb node3:vdb
 #ssh node1 sudo ceph health
 #ssh node1 sudo ceph -s
