@@ -52,18 +52,32 @@ fi
 yum -y install redhat-storage-server glusterfs-ganesha gstatus sshpass
 systemctl enable glusterd
 systemctl start glusterd
+#firewall-cmd --get-active-zones
 firewall-cmd --zone=public --add-service=glusterfs --permanent
+systemctl restart firewalld
 
-# non interactive, emptly pass ""
-#su -c "ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa" ceph_ansible
-ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
-ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
+#tuned-adm list
+#tuned-adm profile rhgs-random-io
+
+# admin node: non interactive, emptly pass ""
+if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+        ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
+        ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
+fi
 
 # from gfs_admin get everyone talking 
-for i in gfs_node1 gfs_node2 gfs_node3
-  do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
-done
+if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+        for i in gfs_node1 gfs_node2 gfs_node3
+          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
+        done
+fi
 
+#only run this on admin node gfs_admin, ceph_admin
+if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+        for i in gfs_node1 gfs_node2 gfs_node3
+          do gluster peer probe "${i}"
+        done
+fi
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
