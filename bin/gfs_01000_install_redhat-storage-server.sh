@@ -42,10 +42,9 @@ doit() {
         fi
 }
 
-if [[ $(id -u) -eq "0" ]];then
-	echo "Don't run as root"
+if [[ $(id -u) -eq "1" ]];then
+	echo "Must run as root"
 	echo
-	echo "Run as Ceph User: $(ls /home | grep -i ceph)"
 	exit 1
 fi
 
