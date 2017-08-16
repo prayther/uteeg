@@ -49,7 +49,8 @@ fi
 
 #Install this on gfs nodes: gfs_admin gfs_node1 gfs_node2 gfs_node3
 
-yum -y install redhat-storage-server glusterfs-ganesha gstatus sshpass
+#yum -y install redhat-storage-server glusterfs-ganesha gstatus sshpass
+yum -y install redhat-storage-server sshpass
 systemctl enable glusterd
 systemctl start glusterd
 #firewall-cmd --get-active-zones
