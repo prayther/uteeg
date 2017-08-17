@@ -49,9 +49,9 @@ fi
 
 #Install this on gfs nodes: gfs_admin gfs_node1 gfs_node2 gfs_node3
 
-for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
-  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
-done
+#for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
+#  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
+#done
 # yum groupinstall "Infiniband Support"
 
 #systemctl enable glusterd
@@ -75,6 +75,11 @@ if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
         done
 fi
+
+for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
+  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
+done
+
 
 #only run this on admin node gfs_admin, ceph_admin
 if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
