@@ -49,14 +49,16 @@ fi
 
 #Install this on gfs nodes: gfs_admin gfs_node1 gfs_node2 gfs_node3
 
-yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
+for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
+  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
+done
 # yum groupinstall "Infiniband Support"
 
-systemctl enable glusterd
-systemctl start glusterd
+#systemctl enable glusterd
+#systemctl start glusterd
 #firewall-cmd --get-active-zones
-firewall-cmd --zone=public --add-service=glusterfs --permanent
-systemctl restart firewalld
+#firewall-cmd --zone=public --add-service=glusterfs --permanent
+#systemctl restart firewalld
 
 #tuned-adm list
 #tuned-adm profile rhgs-random-io
