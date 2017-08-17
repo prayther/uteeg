@@ -83,8 +83,8 @@ fi
 
 #only run this on admin node gfs_admin, ceph_admin
 if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
-        for i in gfs_node1 gfs_node2 gfs_node3
-          do systemctl disable firewalld && systemctl stop firewalld && gluster peer probe "${i}"
+        for i in 10.0.0.10 10.0.0.11 10.0.0.12
+          do gluster peer probe "${i}"
         done
 fi
 
