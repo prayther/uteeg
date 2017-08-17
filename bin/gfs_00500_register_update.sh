@@ -57,7 +57,7 @@ subscribe_update () {
   # Ceph
   #/usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Ceph Storage/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
   /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Gluster Storage/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
-  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rh-gluster-3-for-rhel-7-server-rpms --enable=rh-gluster-3-samba-for-rhel-7-server-rpms --enable=rh-gluster-3-nfs-for-rhel-7-server-rpms
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rh-gluster-3-for-rhel-7-server-rpms --enable=rh-gluster-3-samba-for-rhel-7-server-rpms --enable=rh-gluster-3-nfs-for-rhel-7-server-rpms --enable=rh-gluster-3-nagios-for-rhel-7-server-rpms
 
   #Clean, update
   /usr/bin/yum clean all

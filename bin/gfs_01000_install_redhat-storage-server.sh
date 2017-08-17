@@ -49,8 +49,9 @@ fi
 
 #Install this on gfs nodes: gfs_admin gfs_node1 gfs_node2 gfs_node3
 
-#yum -y install redhat-storage-server glusterfs-ganesha gstatus sshpass
-yum -y install redhat-storage-server sshpass
+yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
+# yum groupinstall "Infiniband Support"
+
 systemctl enable glusterd
 systemctl start glusterd
 #firewall-cmd --get-active-zones
