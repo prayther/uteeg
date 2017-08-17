@@ -156,6 +156,8 @@ auth --enableshadow --passalgo=sha512
 # Use CDROM installation media
 #cdrom
 url --url ${URL}/${OS}
+#this repo is just rhel dvd. which makes it, special evidently. had to cd Packages: create_repo and point to that.
+repo --name=rhelbase --baseurl=http://"${SERVER}"/ks/rhel/Packages
 # Use graphical install
 text
 # Run the Setup Agent on first boot
@@ -184,7 +186,7 @@ clearpart --all --initlabel
 %include /tmp/${VMNAME}.partitions
 
 #repo --name=epel --baseurl=http://dl.fedoraproject.org/pub/epel/7/x86_64
-repo --name=rhel --baseurl=http://"${SERVER}"/ks/rhel
+#repo --name=rhel --baseurl=http://"${SERVER}"/ks/rhel
 
 %packages
 @core
