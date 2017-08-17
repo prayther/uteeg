@@ -183,7 +183,8 @@ clearpart --all --initlabel
 # Disk partitioning information
 %include /tmp/${VMNAME}.partitions
 
-repo --name=epel --baseurl=http://dl.fedoraproject.org/pub/epel/7/x86_64
+#repo --name=epel --baseurl=http://dl.fedoraproject.org/pub/epel/7/x86_64
+repo --name=rhel --baseurl=http://"${SERVER}"/ks/rhel
 
 %packages
 @core
@@ -351,7 +352,7 @@ virt-install \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=20,sparse=false,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
-   --location=/var/lib/libvirt/images/rhel-server-"${OSVERSION}"-x86_64-dvd.iso \
+   --location=/var/lib/libvirt/images/"${RHGS_ISO}" \
    --os-type=linux \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
