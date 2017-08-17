@@ -81,12 +81,16 @@ for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
     fi
 done
 
+#this set vars per vm from hosts file based on $1, vmname used to launch this script
 inputfile=./etc/hosts
 VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")
 DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")
 VCPU=$(awk /"${1}"/'{print $3}' "${inputfile}")
 RAM=$(awk /"${1}"/'{print $4}' "${inputfile}")
 IP=$(awk /"${1}"/'{print $5}' "${inputfile}")
+OS=$(awk /"${1}"/'{print $6}' "${inputfile}")
+RHVER=$(awk /"${1}"/'{print $7}' "${inputfile}")
+OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
 #vmname needs to have the structure:
 #sat_*
 #ceph_*
@@ -341,6 +345,7 @@ grep -i "${IP}" /etc/hosts || echo "${IP}	${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc
 sed -i /${VMNAME}/d /root/.ssh/known_hosts
 sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
+#list of os-variant: osinfo-query os
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
@@ -349,6 +354,6 @@ virt-install \
    --location=/var/lib/libvirt/images/rhel-server-"${OSVERSION}"-x86_64-dvd.iso \
    --os-type=linux \
    --noautoconsole --wait -1 \
-   --os-variant=rhel"${OSVERSION}" \
+   --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
    --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
