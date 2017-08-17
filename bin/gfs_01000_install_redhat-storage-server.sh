@@ -76,15 +76,15 @@ if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
         done
 fi
 
-for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
-  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
-done
+#for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
+#  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
+#done
 
 
 #only run this on admin node gfs_admin, ceph_admin
 if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
         for i in gfs_node1 gfs_node2 gfs_node3
-          do gluster peer probe "${i}"
+          do systemctl disable firewalld && systemctl stop firewalld && gluster peer probe "${i}"
         done
 fi
 

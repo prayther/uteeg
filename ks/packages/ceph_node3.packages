@@ -1,4 +1,16 @@
 #package 
+@^Default_Gluster_Storage_Server
+@RH-Gluster-Core
+@RH-Gluster-NFS-Ganesha
+@RH-Gluster-Samba-Server
+@RH-Gluster-Swift
+@RH-Gluster-Tools
+@base
+@core
+@scalable-file-systems
+chrony
+kexec-tools
+#added below non-standard
 git
 mlocate
 wget
