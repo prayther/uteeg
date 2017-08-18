@@ -97,13 +97,14 @@ echo y | gluster volume stop distdispvol
 gluster volume start distdispvol
 
 #Configure client to persistently mount
+#mount native client
 ssh gfs_client yum -y install glusterfs-fuse
 ssh gfs_client mkdir /mnt/labvol
 ssh gfs_client "echo gfs_node1:/labvol /mnt/labvol glusterfs defaults 0 0 >> /etc/fstab"
 ssh gfs_client "mount -a"
-
+#mount nfs
 ssh gfs_client mkdir /mnt/distdispvol
-ssh gfs_client "echo gfs_node2:/distdispvol /mnt/distdispvol glusterfs defaults 0 0 >> /etc/fstab"
+ssh gfs_client "echo gfs_node2:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
 ssh gfs_client "mount -a"
 
 
