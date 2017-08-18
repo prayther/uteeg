@@ -222,26 +222,31 @@ gluster volume info distreplvol
 #gluster volume stop distreplvol
 #gluster volume delete distreplvol
 #Create and start the distdispvol volume as outlined.
+
+#I had one extra machine so too many bricks for equation.
+#probably remove gfs_admin from this file
 rm -f /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-11/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-12/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-13/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-14/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-21/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-22/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-23/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-24/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-31/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-32/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-33/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-34/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-41/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-42/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-43/brick" >> /tmp/distdispbricks
-echo "gfs_admin:/bricks/brick-44/brick" >> /tmp/distdispbricks
+#echo "10.0.0.9:/bricks/brick-11/brick" >> /tmp/distdispbricks
+#echo "10.0.0.9:/bricks/brick-12/brick" >> /tmp/distdispbricks
+#echo "10.0.0.9:/bricks/brick-13/brick" >> /tmp/distdispbricks
+#echo "10.0.0.9:/bricks/brick-14/brick" >> /tmp/distdispbricks
+echo "10.0.0.10:/bricks/brick-21/brick" >> /tmp/distdispbricks
+echo "10.0.0.10:/bricks/brick-22/brick" >> /tmp/distdispbricks
+echo "10.0.0.10:/bricks/brick-23/brick" >> /tmp/distdispbricks
+echo "10.0.0.10:/bricks/brick-24/brick" >> /tmp/distdispbricks
+echo "10.0.0.11:/bricks/brick-31/brick" >> /tmp/distdispbricks
+echo "10.0.0.11:/bricks/brick-32/brick" >> /tmp/distdispbricks
+echo "10.0.0.11:/bricks/brick-33/brick" >> /tmp/distdispbricks
+echo "10.0.0.11:/bricks/brick-34/brick" >> /tmp/distdispbricks
+echo "10.0.0.12:/bricks/brick-41/brick" >> /tmp/distdispbricks
+echo "10.0.0.12:/bricks/brick-42/brick" >> /tmp/distdispbricks
+echo "10.0.0.12:/bricks/brick-43/brick" >> /tmp/distdispbricks
+echo "10.0.0.12:/bricks/brick-44/brick" >> /tmp/distdispbricks
 
 gluster volume create distdispvol \
 disperse-data 4 redundancy 2 $(</tmp/distdispbricks) force
 
+gluster volume start distdispvol
+gluster volume status distdispvol
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
