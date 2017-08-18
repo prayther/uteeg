@@ -337,6 +337,7 @@ ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unr
 virsh destroy "${VMNAME}"
 virsh undefine "${VMNAME}"
 rm -rf /var/lib/libvirt/images/"${VMNAME}".qcow2
+rm -rf /var/lib/libvirt/images/"${VMNAME}"data.qcow2
 
 #if the ip does not exist make a hosts entry into libvirt (dnsmasq) host so that the vm will resolve. important for satellite
 grep -i "${IP}" /etc/hosts || echo "${IP}	${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts

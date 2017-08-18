@@ -57,6 +57,11 @@ fi
 #systemctl enable glusterd
 #systemctl start glusterd
 #firewall-cmd --get-active-zones
+
+for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12
+  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
+	  ssh "${i}" systemctl restart firewalld
+done
 #firewall-cmd --zone=public --add-service=glusterfs --permanent
 #systemctl restart firewalld
 
@@ -88,5 +93,6 @@ if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
         done
 fi
 
+gluster peer status
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
