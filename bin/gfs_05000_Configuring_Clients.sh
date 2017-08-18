@@ -64,22 +64,47 @@ fi
 #  do grep -F '[gluster]' /etc/ansible/hosts || echo "[gluster]" >> /etc/ansible/hosts && \
 #	  grep "${i}" /etc/ansible/hosts || echo "${i}" >> /etc/ansible/hosts
 #  done
+
+#allow NFS traffic through the firewall.
 for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12
   do ssh "${i}" firewall-cmd --zone=public --add-service=rpc-bind --add-service=nfs --permanent && \
           ssh "${i}" systemctl restart firewalld
 done
 
-gluster volume set labvol nfs.disable on
-gluster volume set labvol auth.allow 10.0.0.0
+## admin node: non interactive, emptly pass ""
+#if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+#        ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
+#        ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
+#fi
+## from gfs_admin get everyone talking
+#if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+#        for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
+#          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
 
-gluster volume stop labvol
+#apply all relevant volume options
+gluster volume set labvol nfs.disable on
+gluster volume set labvol auth.allow '10.0.0.*'
+
+echo y | gluster volume stop labvol
 gluster volume start labvol
 
+#configure all relevant options
+gluster volume set distdispvol nfs.disable off
+gluster volume set distdispvol nfs.rpc-auth-allow '10.0.0.*'
+gluster volume set distdispvol nfs.rpc-auth-reject 172.25.250.254
 
-#if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "client" ]];then
-ssh gfs_client	yum -y install glusterfs-fuse
-#fi
+echo y | gluster volume stop distdispvol
+gluster volume start distdispvol
 
+#Configure client to persistently mount
+ssh gfs_client yum -y install glusterfs-fuse
+ssh gfs_client mkdir /mnt/labvol
+ssh gfs_client "echo gfs_node1:/labvol /mnt/labvol glusterfs defaults 0 0 >> /etc/fstab"
+ssh gfs_client "mount -a"
+
+ssh gfs_client mkdir /mnt/distdispvol
+ssh gfs_client "echo gfs_node2:/distdispvol /mnt/distdispvol glusterfs defaults 0 0 >> /etc/fstab"
+ssh gfs_client "mount -a"
 
 
 echo "###INFO: Finished $0"
