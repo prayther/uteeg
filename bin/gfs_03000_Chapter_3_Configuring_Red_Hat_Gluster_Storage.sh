@@ -51,7 +51,7 @@ fi
 for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
   do ssh "${i}" pvcreate /dev/vdb
           ssh "${i}" vgcreate rhs_vg /dev/vdb
-          ssh "${i}" lvcreate -L 10G -T rhs_vg/rhs_pool
+          ssh "${i}" lvcreate -L 19G -T rhs_vg/rhs_pool
 done
 #LV virtualsize
 ssh gfs_node1 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv1"
