@@ -56,10 +56,6 @@ fi
 
 #########################################################################################
 
-ssh gfs_backup adduser geouser
-ssh gfs_backup echo "password" | passwd "geouser" --stdin
-ssh gfs_backup groupadd geogroup
-
 #make sure only to do the following once. or keys will change
 # admin node: non interactive, emptly pass "
 #if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
@@ -74,6 +70,10 @@ if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
         done
 fi
 
+#geouser for unpriv geo user.
+ssh gfs_backup adduser geouser
+ssh gfs_backup echo "password" | passwd "geouser" --stdin
+ssh gfs_backup groupadd geogroup
 
 # VG, Thin pool, LV virtualsize
 ssh gfs_backup vgcreate backupvol_vg /dev/vdb && \
