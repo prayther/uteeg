@@ -76,6 +76,12 @@ ssh gfs_backup adduser geouser
 ssh gfs_backup echo "password" | passwd "geouser" --stdin
 ssh gfs_backup groupadd geogroup
 
+for i in 10.0.0.14
+  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
+          ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
+          ssh "${i}" systemctl restart firewalld
+done
+
 # VG, Thin pool, LV virtualsize
 ssh gfs_backup vgcreate backupvol_vg /dev/vdb && \
 ssh gfs_backup lvcreate -L 10G -T backupvol_vg/backupvol_pool
@@ -98,7 +104,7 @@ ssh gfs_backup semanage fcontext -a -t glusterd_brick_t /bricks/backup_lv1/brick
 ssh gfs_backup restorecon -Rv /bricks/backup_lv1
 #create/start gluster volume: backupvol
 ssh gfs_backup gluster volume create backupvol \
-        10.0.0.9:/bricks/backup_lv1/brick
+        10.0.0.14:/bricks/backup_lv1/brick force
 ssh gfs_backup gluster volume start backupvol
 ssh gfs_backup gluster volume status backupvol
 
@@ -125,27 +131,27 @@ ssh gfs_backup systemctl restart glusterd
 gluster system:: execute gsec_create
 #create and push the SSH keys that will be used for georeplication.
 gluster volume geo-replication labvol \
-	geouser@gfs_node1::backupvol create push-pem
+	geouser@10.0.0.14::backupvol create push-pem
 
 #copy the keys pushed in the previous step to the correct locations.
 ssh gfs_backup /usr/libexec/glusterfs/set_geo_rep_pem_keys.sh \
-	geouser datavol backupvol
+	geouser labvol backupvol
 
 #configure the georeplication link between labvol and backupvol to use shared storage for keeping track of changes, and more.
 gluster volume geo-replication labvol \
-	geouser@servere::backupvol config use_meta_volume true
+	geouser@10.0.0.14::backupvol config use_meta_volume true
 #Start georeplication between labvol and backupvol.
 gluster volume geo-replication labvol \
-	geouser@servere::backupvol start
+	geouser@10.0.0.14::backupvol start
 
 gluster volume geo-replication status
 
 #set the changelog.rollover-time setting for datavol to five seconds.
-gluster volume set datavol changelog.rollover-time 5
+gluster volume set labvol changelog.rollover-time 5
 
 #Configure the georeplication agreement to keep files deleted from labvol on backupvol.
 gluster volume geo-replication labvol \
-	geouser@servere::backupvol config ignore-deletes true
+	geouser@10.0.0.14::backupvol config ignore-deletes true
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

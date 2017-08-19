@@ -47,6 +47,20 @@ doit() {
 wget -P /root/ --no-clobber http://${SERVER}/passwd
 wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
+useradd geouser
+groupadd geogroup
+useradd apraythe
+echo "password" | passwd "geouser" --stdin
+echo "password" | passwd "apraythe" --stdin
+
+cat << EOF >/etc/sudoers.d/geouser
+geouser ALL = (root) NOPASSWD:ALL
+apraythe ALL = (root) NOPASSWD:ALL
+EOF
+
+chmod 0440 /etc/sudoers.d/geouser
+
+
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 subscribe_update () {

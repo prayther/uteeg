@@ -350,6 +350,7 @@ sed -i /${VMNAME}/d /root/.ssh/known_hosts
 sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 #list of os-variant: osinfo-query os
+if [[ "${OS}" -eq "rhgf" ]];then
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
@@ -361,3 +362,19 @@ virt-install \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
    --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+fi
+
+if [[ "${OS}" -eq "rhel" ]];then
+virt-install \
+   --name="${VMNAME}" \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
+   --vcpus="${VCPUS}" --ram="${RAM}" \
+   --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
+   --os-type=linux \
+   --noautoconsole --wait -1 \
+   --os-variant=rhel"${OSVARIANT}" \
+   --network network="${NETWORK}" \
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+fi
+
