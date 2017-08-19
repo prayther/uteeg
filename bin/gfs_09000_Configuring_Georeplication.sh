@@ -66,7 +66,8 @@ fi
 # from gfs_admin get everyone talking
 if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
         for i in gfs_backup
-          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no geouser@"${i}"
+          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no geouser@"${i}" && \
+		  sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
         done
 fi
 
