@@ -41,10 +41,17 @@ doit() {
         fi
 }
 
+if [[ $(hostname -s | awk -F"_" '{print $2}') -ne "admin" ]];then
+ echo ""
+ echo "Need to run this on the 'admin' node"
+ echo ""
+ exit 1
+fi
+
 if [[ $(id -u) -eq "1" ]];then
-	echo "Must run as root"
-	echo
-	exit 1
+        echo "Must run as root"
+        echo
+        exit 1
 fi
 
 #Install this on gfs nodes: gfs_admin gfs_node1 gfs_node2 gfs_node3
