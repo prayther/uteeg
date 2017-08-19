@@ -54,12 +54,7 @@ if [[ $(id -u) -eq "1" ]];then
         exit 1
 fi
 
-# VG, Thin pool, LV virtualsize
-for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
-  do ssh "${i}" pvcreate /dev/vdb && \
-          ssh "${i}" vgcreate rhs_vg /dev/vdb && \
-          ssh "${i}" lvcreate -L 19G -T rhs_vg/rhs_pool
-done
+######################################################################################################
 #LV virtualsize
 ssh gfs_node1 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv4"
 ssh gfs_node2 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv5"
@@ -105,11 +100,23 @@ gluster volume add-brick labvol replica 2 \
 	10.0.0.10:/bricks/rhs_lv4/brick \
 	10.0.0.11:/bricks/rhs_lv5/brick \
 	10.0.0.12:/bricks/rhs_lv6/brick
+#Rebalance operations can negatively impact performance on a volume.
+#lazy When set to lazy every node is only allowed to migrate one file at a time.
+#normal This is the default setting. This allows every node to migrate two files at once, or (NUMBER-OF-LOGICAL_CPUS - 4 ) / 2, whichever is greater. 
+#aggressive This allows every node to migrate four files at once, or (NUMBER-OF-LOGICAL_CPUS - 4 ) / 2, whichever is greater. 
+gluster volume set labvol cluster.rebal-throttle aggressive
 gluster volume rebalance labvol start
 gluster volume rebalance labvol status
 
 gluster volume status labvol
 gluster volume info labvol
+gluster volume rebalance labvol start
+gluster volume rebalance labvol status
+
+#Red Hat Gluster Storage volumes can be shrunk while online by removing one or more bricks. During removal, the replica count can be adjusted as well.
+gluster volume remove-brick labvol gfs_node1:/bricks/rhs_lv4/brick gfs_node1:/bricks/rhs_lv1/brick start
+gluster volume remove-brick labvol gfs_node1:/bricks/rhs_lv4/brick gfs_node1:/bricks/rhs_lv1/brick status
+echo y | gluster volume remove-brick labvol gfs_node1:/bricks/rhs_lv4/brick gfs_node1:/bricks/rhs_lv1/brick commit 
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
