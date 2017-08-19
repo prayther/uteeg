@@ -1,0 +1,131 @@
+#!/bin/bash -x
+
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
+
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+cd "${BASH_SOURCE%/*}"
+
+logfile="../log/$(basename $0 .sh).log
+donefile="../log/$(basename $0 .sh).done
+touch $logfile
+touch $donefile
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0
+echo "###INFO: $(date)
+
+# read configuration (needs to be adopted!)
+#. ./satenv.sh
+source ../etc/virt-inst.cfg
+export HOME=/root
+
+
+doit() {
+        echo "INFO: doit: $@" >&2
+        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+        grep -q "$cmd2grep" $donefile
+        if [ $? -eq 0 ] ; then
+                echo "INFO: doit: found cmd in donefile - skipping" >&2
+        else
+                "$@" 2>&1 || {
+                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+                        exit 1
+                }
+                echo "$cmd2grep" >> $donefile
+                echo "INFO: doit: cmd finished successfull" >&2
+        fi
+}
+
+if [[ $(hostname -s | awk -F"_" '{print $2}') -ne "admin" ]];then
+ echo ""
+ echo "Need to run this on the 'admin' node"
+ echo ""
+ exit 1
+fi
+
+if [[ $(id -u) -eq "1" ]];then
+        echo "Must run as root"
+        echo
+        exit 1
+fi
+
+#########################################################################################
+#think i need to run this and setup node3 as the backupvol box
+
+ssh gfs_node1 adduser geouser
+ssh gfs_node1 echo "password" | passwd "geouser" --stdin
+ssh gfs_node1 groupadd geogroup
+
+#make sure only to do the following once. or keys will change
+# admin node: non interactive, emptly pass "
+#if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+#        ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
+#        ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
+#fi
+
+# from gfs_admin get everyone talking
+if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+        for i in gfs_node1
+          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no geouser@"${i}"
+        done
+fi
+
+
+# VG, Thin pool, LV virtualsize
+vgcreate backupvol_vg /dev/vdb && \
+lvcreate -L 10G -T backupvol_vg/backupvol_pool
+#LV virtualsize
+lvcreate -V 2G -T backupvol_vg/backupvol_pool -n backup_lv1
+#mkfs
+mkfs -t xfs -i size=512 /dev/backupvol_vg/backup_lv1
+#mount dir
+ls /bricks/backup_lv1 || mkdir -p /bricks/backup_lv1
+#fstab entry
+grep backup_lv1 /etc/fstab || echo /dev/backupvol_vg/backup_lv1 /bricks/backup_lv1 xfs defaults 1 2 >> /etc/fstab
+#mount
+mkdir -p /bricks/backup_lv1
+mount /bricks/backup_lv1
+#mkdir selinux context
+ls /bricks/backup_lv1/brick || mkdir -p /bricks/backup_lv1/brick
+#semanage
+semanage fcontext -a -t glusterd_brick_t /bricks/backup_lv1/brick
+#restorecon
+restorecon -Rv /bricks/backup_lv1
+#create/start gluster volume: backupvol
+gluster volume create backupvol \
+        10.0.0.9:/bricks/backup_lv1/brick
+gluster volume start backupvol
+gluster volume status backupvol
+
+
+#Enable shared storage:
+gluster volume set all cluster.enable-shared-storage enable
+#/var/mountbroker-root. This directory must be created with permissions 0711
+mkdir -m 0711 /var/mountbroker-root
+semanage fcontext -a -e /home /var/mountbroker-root
+restorecon -Rv /var/mountbroker-root
+#Set the mountbroker-root directory to /var/mountbroker-root.
+gluster system:: execute mountbroker \
+	opt mountbroker-root /var/mountbroker-root
+#Set the mountbroker user for the backupvol volume to geouser.
+gluster system:: execute mountbroker \
+	user geouser backupvol
+#Set the geo-replication-log-group group to geogroup.
+gluster system:: execute mountbroker \
+	opt rpc-auth-allow-insecure on
+
+systemctl restart glusterd
+#create SSH key pairs for the georeplication daemon for each node.
+gluster system:: execute gsec_create
+#create and push the SSH keys that will be used for georeplication.
+gluster volume geo-replication backupvol \
+	geouser@gfs_node1::labvol create push-pem
+
+#
+echo "###INFO: Finished $0
+echo "###INFO: $(date)

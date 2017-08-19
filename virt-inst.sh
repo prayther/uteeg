@@ -353,7 +353,7 @@ sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=20,sparse=false,format=qcow2,cache=none \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
    --location=/var/lib/libvirt/images/"${RHGS_ISO}" \
    --os-type=linux \
