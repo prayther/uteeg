@@ -102,9 +102,11 @@ ssh gfs_node3 "restorecon -Rv /bricks/rhs_lv6"
 
 #Add the 3 new bricks to the labvol volume, and set the replica count to two.
 gluster volume add-brick labvol replica 2 \
-	gfs_node1:/bricks/rhs_lv4/brick
-	gfs_node2:/bricks/rhs_lv5/brick
-	gfs_node3:/bricks/rhs_lv6/brick
+	10.0.0.10:/bricks/rhs_lv4/brick \
+	10.0.0.11:/bricks/rhs_lv5/brick \
+	10.0.0.12:/bricks/rhs_lv6/brick
+gluster volume rebalance labvol start
+gluster volume rebalance labvol status
 
 gluster volume status labvol
 gluster volume info labvol
