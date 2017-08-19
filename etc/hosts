@@ -9,3 +9,4 @@ gfs_node1 50 2 1024 10.0.0.10 rhgf 7.4 7.3
 gfs_node2 50 2 1024 10.0.0.11 rhgf 7.4 7.3
 gfs_node3 50 2 1024 10.0.0.12 rhgf 7.4 7.3
 gfs_client 50 2 1024 10.0.0.13 rhel 7.4 7.3
+gfs_backup 50 2 1024 10.0.0.14 rhgf 7.4 7.3

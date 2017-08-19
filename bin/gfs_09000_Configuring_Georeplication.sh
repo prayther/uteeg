@@ -55,11 +55,10 @@ if [[ $(id -u) -eq "1" ]];then
 fi
 
 #########################################################################################
-#think i need to run this and setup node3 as the backupvol box
 
-ssh gfs_node1 adduser geouser
-ssh gfs_node1 echo "password" | passwd "geouser" --stdin
-ssh gfs_node1 groupadd geogroup
+ssh gfs_backup adduser geouser
+ssh gfs_backup echo "password" | passwd "geouser" --stdin
+ssh gfs_backup groupadd geogroup
 
 #make sure only to do the following once. or keys will change
 # admin node: non interactive, emptly pass "
@@ -70,62 +69,82 @@ ssh gfs_node1 groupadd geogroup
 
 # from gfs_admin get everyone talking
 if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
-        for i in gfs_node1
+        for i in gfs_backup
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no geouser@"${i}"
         done
 fi
 
 
 # VG, Thin pool, LV virtualsize
-vgcreate backupvol_vg /dev/vdb && \
-lvcreate -L 10G -T backupvol_vg/backupvol_pool
+ssh gfs_backup vgcreate backupvol_vg /dev/vdb && \
+ssh gfs_backup lvcreate -L 10G -T backupvol_vg/backupvol_pool
 #LV virtualsize
-lvcreate -V 2G -T backupvol_vg/backupvol_pool -n backup_lv1
+ssh gfs_backup lvcreate -V 2G -T backupvol_vg/backupvol_pool -n backup_lv1
 #mkfs
-mkfs -t xfs -i size=512 /dev/backupvol_vg/backup_lv1
+ssh gfs_backup mkfs -t xfs -i size=512 /dev/backupvol_vg/backup_lv1
 #mount dir
-ls /bricks/backup_lv1 || mkdir -p /bricks/backup_lv1
+ssh gfs_backup ls /bricks/backup_lv1 || mkdir -p /bricks/backup_lv1
 #fstab entry
-grep backup_lv1 /etc/fstab || echo /dev/backupvol_vg/backup_lv1 /bricks/backup_lv1 xfs defaults 1 2 >> /etc/fstab
+ssh gfs_backup grep backup_lv1 /etc/fstab || echo /dev/backupvol_vg/backup_lv1 /bricks/backup_lv1 xfs defaults 1 2 >> /etc/fstab
 #mount
-mkdir -p /bricks/backup_lv1
-mount /bricks/backup_lv1
+ssh gfs_backup mkdir -p /bricks/backup_lv1
+ssh gfs_backup mount /bricks/backup_lv1
 #mkdir selinux context
-ls /bricks/backup_lv1/brick || mkdir -p /bricks/backup_lv1/brick
+ssh gfs_backup ls /bricks/backup_lv1/brick || mkdir -p /bricks/backup_lv1/brick
 #semanage
-semanage fcontext -a -t glusterd_brick_t /bricks/backup_lv1/brick
+ssh gfs_backup semanage fcontext -a -t glusterd_brick_t /bricks/backup_lv1/brick
 #restorecon
-restorecon -Rv /bricks/backup_lv1
+ssh gfs_backup restorecon -Rv /bricks/backup_lv1
 #create/start gluster volume: backupvol
-gluster volume create backupvol \
+ssh gfs_backup gluster volume create backupvol \
         10.0.0.9:/bricks/backup_lv1/brick
-gluster volume start backupvol
-gluster volume status backupvol
+ssh gfs_backup gluster volume start backupvol
+ssh gfs_backup gluster volume status backupvol
 
 
 #Enable shared storage:
 gluster volume set all cluster.enable-shared-storage enable
 #/var/mountbroker-root. This directory must be created with permissions 0711
-mkdir -m 0711 /var/mountbroker-root
-semanage fcontext -a -e /home /var/mountbroker-root
-restorecon -Rv /var/mountbroker-root
+ssh gfs_backup mkdir -m 0711 /var/mountbroker-root
+ssh gfs_backup semanage fcontext -a -e /home /var/mountbroker-root
+ssh gfs_backup restorecon -Rv /var/mountbroker-root
 #Set the mountbroker-root directory to /var/mountbroker-root.
-gluster system:: execute mountbroker \
+ssh gfs_backup gluster system:: execute mountbroker \
 	opt mountbroker-root /var/mountbroker-root
 #Set the mountbroker user for the backupvol volume to geouser.
-gluster system:: execute mountbroker \
+ssh gfs_backup gluster system:: execute mountbroker \
 	user geouser backupvol
 #Set the geo-replication-log-group group to geogroup.
-gluster system:: execute mountbroker \
+ssh gfs_backup gluster system:: execute mountbroker \
 	opt rpc-auth-allow-insecure on
 
-systemctl restart glusterd
+ssh gfs_backup systemctl restart glusterd
+
 #create SSH key pairs for the georeplication daemon for each node.
 gluster system:: execute gsec_create
 #create and push the SSH keys that will be used for georeplication.
-gluster volume geo-replication backupvol \
-	geouser@gfs_node1::labvol create push-pem
+gluster volume geo-replication labvol \
+	geouser@gfs_node1::backupvol create push-pem
 
-#
-echo "###INFO: Finished $0
-echo "###INFO: $(date)
+#copy the keys pushed in the previous step to the correct locations.
+ssh gfs_backup /usr/libexec/glusterfs/set_geo_rep_pem_keys.sh \
+	geouser datavol backupvol
+
+#configure the georeplication link between labvol and backupvol to use shared storage for keeping track of changes, and more.
+gluster volume geo-replication labvol \
+	geouser@servere::backupvol config use_meta_volume true
+#Start georeplication between labvol and backupvol.
+gluster volume geo-replication labvol \
+	geouser@servere::backupvol start
+
+gluster volume geo-replication status
+
+#set the changelog.rollover-time setting for datavol to five seconds.
+gluster volume set datavol changelog.rollover-time 5
+
+#Configure the georeplication agreement to keep files deleted from labvol on backupvol.
+gluster volume geo-replication labvol \
+	geouser@servere::backupvol config ignore-deletes true
+
+echo "###INFO: Finished $0"
+echo "###INFO: $(date)"
