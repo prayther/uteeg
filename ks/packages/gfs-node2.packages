@@ -11,7 +11,7 @@
 chrony
 kexec-tools
 #added below for own purposes
-git
+#git
 mlocate
 wget
 vim
