@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-if [[ $(hostname -s | awk -F"_" '{print $2}') -ne "admin" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
  echo ""
  echo "Need to run this on the 'admin' node"
  echo ""
@@ -64,7 +64,7 @@ fi
 #fi
 
 # from gfs_admin get everyone talking
-if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         for i in gfs_backup
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no geouser@"${i}" && \
 		  sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"

@@ -1,1 +1,1 @@
-network --device=eth0 --bootproto=static --ip=10.0.0.14 --netmask=255.255.255.0 --gateway=10.0.0.1 --nameserver=10.0.0.1 --hostname=gfs_backup.laptop.prayther
+network --device=eth0 --bootproto=static --ip=10.0.0.14 --netmask=255.255.255.0 --gateway=10.0.0.1 --nameserver=10.0.0.1 --hostname=gfs-backup.prayther.org

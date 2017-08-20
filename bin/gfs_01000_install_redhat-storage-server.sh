@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-if [[ $(hostname -s | awk -F"_" '{print $2}') -ne "admin" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
  echo ""
  echo "Need to run this on the 'admin' node"
  echo ""
@@ -77,13 +77,13 @@ done
 #tuned-adm profile rhgs-random-io
 
 # admin node: non interactive, emptly pass ""
-if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
         ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 fi
 
 # from gfs_admin get everyone talking 
-if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
         done
@@ -95,7 +95,7 @@ fi
 
 
 #only run this on admin node gfs_admin, ceph_admin
-if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         for i in 10.0.0.10 10.0.0.11 10.0.0.12
           do gluster peer probe "${i}"
         done

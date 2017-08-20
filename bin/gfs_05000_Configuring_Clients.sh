@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-if [[ $(hostname -s | awk -F"_" '{print $2}') -ne "admin" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
  echo ""
  echo "Need to run this on the 'admin' node"
  echo ""

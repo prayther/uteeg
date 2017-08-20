@@ -92,10 +92,10 @@ OS=$(awk /"${1}"/'{print $6}' "${inputfile}")
 RHVER=$(awk /"${1}"/'{print $7}' "${inputfile}")
 OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
 #vmname needs to have the structure:
-#sat_*
-#ceph_*
-#gfs_*
-PRODUCT=$(echo "${VMNAME}" | awk -F"_" '{print $1}')
+#sat-*
+#ceph-*
+#gfs-*
+PRODUCT=$(echo "${VMNAME}" | awk -F"-" '{print $1}')
 
 #Pull vm info from hosts file
 #inputfile=./etc/hosts
@@ -350,13 +350,13 @@ sed -i /${VMNAME}/d /root/.ssh/known_hosts
 sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 #list of os-variant: osinfo-query os
-if [[ "${OS}" -eq "rhgf" ]];then
+if [[ "${OS}" = "rhel" ]];then
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
-   --location=/var/lib/libvirt/images/"${RHGS_ISO}" \
+   --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
    --os-type=linux \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
@@ -364,13 +364,13 @@ virt-install \
    --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
 fi
 
-if [[ "${OS}" -eq "rhel" ]];then
+if [[ "${OS}" = "rhgf" ]];then
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
-   --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
+   --location=/var/lib/libvirt/images/"${RHGS_ISO}" \
    --os-type=linux \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
