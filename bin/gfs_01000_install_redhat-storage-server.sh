@@ -65,11 +65,6 @@ fi
 #systemctl start glusterd
 #firewall-cmd --get-active-zones
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12
-  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
-	  ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
-	  ssh "${i}" systemctl restart firewalld
-done
 #firewall-cmd --zone=public --add-service=glusterfs --permanent
 #systemctl restart firewalld
 
@@ -88,6 +83,12 @@ if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
         done
 fi
+
+for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12
+  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
+          ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
+          ssh "${i}" systemctl restart firewalld
+done
 
 #for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
 #  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
