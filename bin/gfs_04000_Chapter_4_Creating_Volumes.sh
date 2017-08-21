@@ -218,7 +218,7 @@ gluster volume create distreplvol replica 2 \
         10.0.0.12:/bricks/brick-41/brick \
         10.0.0.12:/bricks/brick-42/brick \
         10.0.0.12:/bricks/brick-43/brick \
-        10.0.0.12:/bricks/brick-44/brick
+        10.0.0.12:/bricks/brick-44/brick force
 
 #gluster volume create distreplvol replica 2 \
 #	10.0.0.9:/bricks/brick-11/brick \
