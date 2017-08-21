@@ -318,7 +318,7 @@ chmod 0755 /etc/rc.local
 
 # register script comes from uteeg git project cloned above
 PRODUCT=$( hostname -s | awk -F"-" '{print $1}')
-if [[ "${PRODUCT}" -ne "" ]];then
+if [[ "${PRODUCT}" != "" ]];then
   /bin/bash ~/uteeg/bin/"${PRODUCT}"*register*.sh
 else
   /bin/bash ~/uteeg/bin/rhel*register*.sh
