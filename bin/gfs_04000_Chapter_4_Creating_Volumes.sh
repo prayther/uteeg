@@ -55,156 +55,156 @@ if [[ $(id -u) -eq "1" ]];then
 fi
 
 # VG, Thin pool, LV virtualsize
-#for i in gfs_node1 gfs_node2 gfs_node3
+#for i in gfs-node1 gfs-node2 gfs-node3
 #  do ssh "${i}" pvcreate /dev/vdb
 #          ssh "${i}" vgcreate rhs_vg /dev/vdb
 #          ssh "${i}" lvcreate -L 10G -T rhs_vg/rhs_pool
 #done
-for i in gfs_admin gfs_node1 gfs_node2 gfs_node3
+for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
   do grep -F '[gluster]' /etc/ansible/hosts || echo "[gluster]" >> /etc/ansible/hosts && \
 	  grep "${i}" /etc/ansible/hosts || echo "${i}" >> /etc/ansible/hosts
   done
 
 #LV virtualsize
-#ansible gfs_admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-11"
-#ansible gfs_admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-12"
-#ansible gfs_admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-13"
-#ansible gfs_admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-14"
-#ssh gfs_admin for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-1${i};done
-ansible gfs_node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-21"
-ansible gfs_node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-22"
-ansible gfs_node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-23"
-ansible gfs_node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-24"
-#ssh gfs_node1 for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-2${i};done
-ansible gfs_node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-31"
-ansible gfs_node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-32"
-ansible gfs_node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-33"
-ansible gfs_node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-34"
-#ssh gfs_node2 for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-3${i};done
-ansible gfs_node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-41"
-ansible gfs_node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-42"
-ansible gfs_node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-43"
-ansible gfs_node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-44"
-#ssh gfs_node3 for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-4${i};done
+#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-11"
+#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-12"
+#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-13"
+#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-14"
+#ssh gfs-admin for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-1${i};done
+ansible gfs-node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-21"
+ansible gfs-node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-22"
+ansible gfs-node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-23"
+ansible gfs-node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-24"
+#ssh gfs-node1 for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-2${i};done
+ansible gfs-node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-31"
+ansible gfs-node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-32"
+ansible gfs-node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-33"
+ansible gfs-node2 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-34"
+#ssh gfs-node2 for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-3${i};done
+ansible gfs-node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-41"
+ansible gfs-node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-42"
+ansible gfs-node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-43"
+ansible gfs-node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-44"
+#ssh gfs-node3 for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-4${i};done
 #mkfs
-#ansible gfs_admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-11"
-#ansible gfs_admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-12"
-#ansible gfs_admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-13"
-#ansible gfs_admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-14"
-#ssh gfs_admin for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-1${i};done
-ansible gfs_node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-21"
-ansible gfs_node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-22"
-ansible gfs_node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-23"
-ansible gfs_node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-24"
-#ssh gfs_node1 for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-2${i};done
-ansible gfs_node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-31"
-ansible gfs_node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-32"
-ansible gfs_node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-33"
-ansible gfs_node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-34"
-#ssh gfs_node2 for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-3${i};done
-ansible gfs_node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-41"
-ansible gfs_node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-42"
-ansible gfs_node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-43"
-ansible gfs_node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-44"
-#ssh gfs_node3 for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-4${i};done
+#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-11"
+#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-12"
+#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-13"
+#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-14"
+#ssh gfs-admin for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-1${i};done
+ansible gfs-node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-21"
+ansible gfs-node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-22"
+ansible gfs-node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-23"
+ansible gfs-node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-24"
+#ssh gfs-node1 for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-2${i};done
+ansible gfs-node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-31"
+ansible gfs-node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-32"
+ansible gfs-node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-33"
+ansible gfs-node2 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-34"
+#ssh gfs-node2 for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-3${i};done
+ansible gfs-node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-41"
+ansible gfs-node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-42"
+ansible gfs-node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-43"
+ansible gfs-node3 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-44"
+#ssh gfs-node3 for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-4${i};done
 #mount dir
 #for i in {1..4}
-#  do ssh gfs_admin mkdir -p /bricks/brick-1"${i}"
+#  do ssh gfs-admin mkdir -p /bricks/brick-1"${i}"
 #done
 for i in {1..4}
-  do ssh gfs_node1 mkdir -p /bricks/brick-2"${i}"
+  do ssh gfs-node1 mkdir -p /bricks/brick-2"${i}"
 done
 for i in {1..4}
-  do ssh gfs_node2 mkdir -p /bricks/brick-3"${i}"
+  do ssh gfs-node2 mkdir -p /bricks/brick-3"${i}"
 done
 for i in {1..4}
-  do ssh gfs_node3 mkdir -p /bricks/brick-4"${i}"
+  do ssh gfs-node3 mkdir -p /bricks/brick-4"${i}"
 done
 #fstab entry
-#ssh gfs_admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-11 /bricks/brick-11 xfs defaults 1 2 >> /etc/fstab"
-#ssh gfs_admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-12 /bricks/brick-12 xfs defaults 1 2 >> /etc/fstab"
-#ssh gfs_admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-13 /bricks/brick-13 xfs defaults 1 2 >> /etc/fstab"
-#ssh gfs_admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-14 /bricks/brick-14 xfs defaults 1 2 >> /etc/fstab"
+#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-11 /bricks/brick-11 xfs defaults 1 2 >> /etc/fstab"
+#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-12 /bricks/brick-12 xfs defaults 1 2 >> /etc/fstab"
+#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-13 /bricks/brick-13 xfs defaults 1 2 >> /etc/fstab"
+#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-14 /bricks/brick-14 xfs defaults 1 2 >> /etc/fstab"
 
-ssh gfs_node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-21 /bricks/brick-21 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-22 /bricks/brick-22 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-23 /bricks/brick-23 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-24 /bricks/brick-24 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-21 /bricks/brick-21 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-22 /bricks/brick-22 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-23 /bricks/brick-23 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-24 /bricks/brick-24 xfs defaults 1 2 >> /etc/fstab"
 
-ssh gfs_node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-31 /bricks/brick-31 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-32 /bricks/brick-32 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-33 /bricks/brick-33 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-34 /bricks/brick-34 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-31 /bricks/brick-31 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-32 /bricks/brick-32 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-33 /bricks/brick-33 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node2 "grep brick-3 /etc/fstab || echo /dev/rhs_vg/brick-34 /bricks/brick-34 xfs defaults 1 2 >> /etc/fstab"
 
-ssh gfs_node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-41 /bricks/brick-41 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-42 /bricks/brick-42 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-43 /bricks/brick-43 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs_node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-44 /bricks/brick-44 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-41 /bricks/brick-41 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-42 /bricks/brick-42 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-43 /bricks/brick-43 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-44 /bricks/brick-44 xfs defaults 1 2 >> /etc/fstab"
 #mount
-#ssh gfs_admin "mount -a"
-ssh gfs_node1 "mount -a"
-ssh gfs_node2 "mount -a"
-ssh gfs_node3 "mount -a"
+#ssh gfs-admin "mount -a"
+ssh gfs-node1 "mount -a"
+ssh gfs-node2 "mount -a"
+ssh gfs-node3 "mount -a"
 #mkdir selinux context
-#ssh gfs_admin "ls /bricks/brick-11/brick || mkdir -p /bricks/brick-11/brick"
-#ssh gfs_admin "ls /bricks/brick-12/brick || mkdir -p /bricks/brick-12/brick"
-#ssh gfs_admin "ls /bricks/brick-13/brick || mkdir -p /bricks/brick-13/brick"
-#ssh gfs_admin "ls /bricks/brick-14/brick || mkdir -p /bricks/brick-14/brick"
+#ssh gfs-admin "ls /bricks/brick-11/brick || mkdir -p /bricks/brick-11/brick"
+#ssh gfs-admin "ls /bricks/brick-12/brick || mkdir -p /bricks/brick-12/brick"
+#ssh gfs-admin "ls /bricks/brick-13/brick || mkdir -p /bricks/brick-13/brick"
+#ssh gfs-admin "ls /bricks/brick-14/brick || mkdir -p /bricks/brick-14/brick"
 
-ssh gfs_node1 "ls /bricks/brick-21/brick || mkdir -p /bricks/brick-21/brick"
-ssh gfs_node1 "ls /bricks/brick-22/brick || mkdir -p /bricks/brick-22/brick"
-ssh gfs_node1 "ls /bricks/brick-23/brick || mkdir -p /bricks/brick-23/brick"
-ssh gfs_node1 "ls /bricks/brick-24/brick || mkdir -p /bricks/brick-24/brick"
+ssh gfs-node1 "ls /bricks/brick-21/brick || mkdir -p /bricks/brick-21/brick"
+ssh gfs-node1 "ls /bricks/brick-22/brick || mkdir -p /bricks/brick-22/brick"
+ssh gfs-node1 "ls /bricks/brick-23/brick || mkdir -p /bricks/brick-23/brick"
+ssh gfs-node1 "ls /bricks/brick-24/brick || mkdir -p /bricks/brick-24/brick"
 
-ssh gfs_node2 "ls /bricks/brick-31/brick || mkdir -p /bricks/brick-31/brick"
-ssh gfs_node2 "ls /bricks/brick-32/brick || mkdir -p /bricks/brick-32/brick"
-ssh gfs_node2 "ls /bricks/brick-33/brick || mkdir -p /bricks/brick-33/brick"
-ssh gfs_node2 "ls /bricks/brick-34/brick || mkdir -p /bricks/brick-34/brick"
+ssh gfs-node2 "ls /bricks/brick-31/brick || mkdir -p /bricks/brick-31/brick"
+ssh gfs-node2 "ls /bricks/brick-32/brick || mkdir -p /bricks/brick-32/brick"
+ssh gfs-node2 "ls /bricks/brick-33/brick || mkdir -p /bricks/brick-33/brick"
+ssh gfs-node2 "ls /bricks/brick-34/brick || mkdir -p /bricks/brick-34/brick"
 
-ssh gfs_node3 "ls /bricks/brick-41/brick || mkdir -p /bricks/brick-41/brick"
-ssh gfs_node3 "ls /bricks/brick-42/brick || mkdir -p /bricks/brick-42/brick"
-ssh gfs_node3 "ls /bricks/brick-43/brick || mkdir -p /bricks/brick-43/brick"
-ssh gfs_node3 "ls /bricks/brick-44/brick || mkdir -p /bricks/brick-44/brick"
+ssh gfs-node3 "ls /bricks/brick-41/brick || mkdir -p /bricks/brick-41/brick"
+ssh gfs-node3 "ls /bricks/brick-42/brick || mkdir -p /bricks/brick-42/brick"
+ssh gfs-node3 "ls /bricks/brick-43/brick || mkdir -p /bricks/brick-43/brick"
+ssh gfs-node3 "ls /bricks/brick-44/brick || mkdir -p /bricks/brick-44/brick"
 #semanage
-#ssh gfs_admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-11/brick"
-#ssh gfs_admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-12/brick"
-#ssh gfs_admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-13/brick"
-#ssh gfs_admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-14/brick"
+#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-11/brick"
+#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-12/brick"
+#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-13/brick"
+#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-14/brick"
 
-ssh gfs_node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-21/brick"
-ssh gfs_node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-22/brick"
-ssh gfs_node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-23/brick"
-ssh gfs_node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-24/brick"
+ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-21/brick"
+ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-22/brick"
+ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-23/brick"
+ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-24/brick"
 
-ssh gfs_node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-31/brick"
-ssh gfs_node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-32/brick"
-ssh gfs_node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-33/brick"
-ssh gfs_node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-34/brick"
+ssh gfs-node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-31/brick"
+ssh gfs-node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-32/brick"
+ssh gfs-node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-33/brick"
+ssh gfs-node2 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-34/brick"
 
-ssh gfs_node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-41/brick"
-ssh gfs_node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-42/brick"
-ssh gfs_node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-43/brick"
-ssh gfs_node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-44/brick"
+ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-41/brick"
+ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-42/brick"
+ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-43/brick"
+ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-44/brick"
 #restorecon
-#ssh gfs_admin "restorecon -Rv /bricks/brick-11"
-#ssh gfs_admin "restorecon -Rv /bricks/brick-12"
-#ssh gfs_admin "restorecon -Rv /bricks/brick-13"
-#ssh gfs_admin "restorecon -Rv /bricks/brick-14"
+#ssh gfs-admin "restorecon -Rv /bricks/brick-11"
+#ssh gfs-admin "restorecon -Rv /bricks/brick-12"
+#ssh gfs-admin "restorecon -Rv /bricks/brick-13"
+#ssh gfs-admin "restorecon -Rv /bricks/brick-14"
 
-ssh gfs_node1 "restorecon -Rv /bricks/brick-21"
-ssh gfs_node1 "restorecon -Rv /bricks/brick-22"
-ssh gfs_node1 "restorecon -Rv /bricks/brick-23"
-ssh gfs_node1 "restorecon -Rv /bricks/brick-24"
+ssh gfs-node1 "restorecon -Rv /bricks/brick-21"
+ssh gfs-node1 "restorecon -Rv /bricks/brick-22"
+ssh gfs-node1 "restorecon -Rv /bricks/brick-23"
+ssh gfs-node1 "restorecon -Rv /bricks/brick-24"
 
-ssh gfs_node2 "restorecon -Rv /bricks/brick-31"
-ssh gfs_node2 "restorecon -Rv /bricks/brick-32"
-ssh gfs_node2 "restorecon -Rv /bricks/brick-33"
-ssh gfs_node2 "restorecon -Rv /bricks/brick-34"
+ssh gfs-node2 "restorecon -Rv /bricks/brick-31"
+ssh gfs-node2 "restorecon -Rv /bricks/brick-32"
+ssh gfs-node2 "restorecon -Rv /bricks/brick-33"
+ssh gfs-node2 "restorecon -Rv /bricks/brick-34"
 
-ssh gfs_node3 "restorecon -Rv /bricks/brick-41"
-ssh gfs_node3 "restorecon -Rv /bricks/brick-42"
-ssh gfs_node3 "restorecon -Rv /bricks/brick-43"
-ssh gfs_node3 "restorecon -Rv /bricks/brick-44"
+ssh gfs-node3 "restorecon -Rv /bricks/brick-41"
+ssh gfs-node3 "restorecon -Rv /bricks/brick-42"
+ssh gfs-node3 "restorecon -Rv /bricks/brick-43"
+ssh gfs-node3 "restorecon -Rv /bricks/brick-44"
 #gluster volume create distreplvol replica 2
 gluster volume create distreplvol replica 2 \
         10.0.0.10:/bricks/brick-21/brick \
@@ -245,7 +245,7 @@ gluster volume info distreplvol
 #Create and start the distdispvol volume as outlined.
 
 #I had one extra machine so too many bricks for equation.
-#probably remove gfs_admin from this file
+#probably remove gfs-admin from this file
 rm -f /tmp/distdispbricks
 #echo "10.0.0.9:/bricks/brick-11/brick" >> /tmp/distdispbricks
 #echo "10.0.0.9:/bricks/brick-12/brick" >> /tmp/distdispbricks
