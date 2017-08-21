@@ -95,7 +95,7 @@ OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
 #sat-*
 #ceph-*
 #gfs-*
-PRODUCT=$(echo "${VMNAME}" | awk -F"-" '{print $1}')
+#PRODUCT=$(echo "${VMNAME}" | awk -F"-" '{print $1}')
 
 #Pull vm info from hosts file
 #inputfile=./etc/hosts
@@ -317,7 +317,12 @@ EOH1
 chmod 0755 /etc/rc.local
 
 # register script comes from uteeg git project cloned above
-/bin/bash ~/uteeg/bin/"${PRODUCT}"*register*.sh
+PRODUCT=$( hostname -s | awk -F"-" '{print $1}')
+if [[ "${PRODUCT}" -ne "" ]];then
+  /bin/bash ~/uteeg/bin/"${PRODUCT}"*register*.sh
+else
+  /bin/bash ~/uteeg/bin/rhel*register*.sh
+fi
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local

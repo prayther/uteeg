@@ -47,16 +47,29 @@ doit() {
 wget -P /root/ --no-clobber http://${SERVER}/passwd
 wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
+useradd ceph_ansible
+useradd apraythe
+echo "password" | passwd "ceph_ansible" --stdin
+echo "password" | passwd "apraythe" --stdin
+
+cat << EOF >/etc/sudoers.d/ceph_ansible
+ceph_ansible ALL = (root) NOPASSWD:ALL
+apraythe ALL = (root) NOPASSWD:ALL
+EOF
+
+chmod 0440 /etc/sudoers.d/ceph_ansible
+
+
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 subscribe_update () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
   # Satellite
-  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+  #/usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
   # Ceph
-  #/usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Ceph Storage/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
-  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Ceph Storage/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rpms --enable=rhel-7-server-rhceph-2-mon-rpms --enable=rhel-7-server-rhceph-2-osd-rpms --enable=rhel-7-server-rhceph-2-tools-rpms --enable=rhel-7-server-rhscon-2-agent-rpms --enable=rhel-7-server-rhscon-2-installer-rpms
 
   #Clean, update
   /usr/bin/yum clean all
