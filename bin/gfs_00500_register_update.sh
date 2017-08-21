@@ -76,7 +76,7 @@ subscribe_update () {
   #Clean, update
   /usr/bin/yum clean all
   rm -rf /var/cache/yum
-  /usr/bin/yum -y update && yum -y install git
+  /usr/bin/yum -y update
 }
 time subscribe_update
 

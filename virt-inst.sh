@@ -143,6 +143,8 @@ if [[ -f ks/network/"${VMNAME}".network ]];then
     exit 1
 fi
 
+curl -s --head http://"${SERVER}"/ks/rhel/Packages/repodata/ | grep "200 OK" || echo "have to run cd /var/www/html/uteeg/rhel/Packages && createrepo_c ." ||  exit 1
+
 # Install httpd for ks, iso, manifest.zip
 #rpm -q httpd || dnf -y install httpd
 # open httpd to all if not already
@@ -157,9 +159,11 @@ auth --enableshadow --passalgo=sha512
 #cdrom
 url --url ${URL}/${OS}
 #this repo is just rhel dvd. which makes it, special evidently. had to cd Packages: create_repo and point to that.
-repo --name=rhelbase --baseurl=http://"${SERVER}"/ks/rhel/Packages
+#this messes up the versions of packages and breaks gluster, thus the entire kickstart. kickstart console Ctrl-Alt 2 less G /tmp/packages
+#repo --name=rhelbase --baseurl=http://"${SERVER}"/ks/rhel/Packages/
 # Use graphical install
-text
+#text
+cmdline
 # Run the Setup Agent on first boot
 firstboot --disable
 ignoredisk --only-use=$DISC
@@ -225,7 +229,12 @@ cd "${BASH_SOURCE%/*}"
 LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_virt-inst.log; done; }
 exec 2> >(LOG_)
 
-#Copy over the main script for configuration
+#jump through hoops to get git (not on the gluster dvd) so that we can pull down the git repo to config with
+yum-config-manager --add-repo http://"${SERVER}"/ks/rhel/Packages
+rpm --import http://"${SERVER}"/ks/rhel/RPM-GPG-KEY-redhat-release
+yum -y install git
+rm -f /etc/yum.repos.d/"${SERVER}"*.repo
+
 cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
 cd /usr/local && /usr/bin/git clone https://github.com/prayther/uteeg.git
 $ it gets extraneous stuff in there from my laptop.
