@@ -80,7 +80,7 @@ fi
 # from gfs-admin get everyone talking 
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
-          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
+          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
         done
 fi
 
