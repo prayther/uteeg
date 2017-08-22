@@ -316,19 +316,9 @@ bash /tmp/ks_virt-inst1.sh
 EOH1
 chmod 0755 /etc/rc.local
 
-#this does not want to work even though we have 'EOF' which is suppposed to stop things from expanding, but it's not.
 # adding logic to the register scripts themselves
 # register script comes from uteeg git project cloned above
-register_me () {
-  PRODUCT=$(cat /etc/hostname | awk -F"-" '{print $1}')
-  if [[ "${PRODUCT}" != "" ]];then
-    /bin/bash ~/uteeg/bin/"${PRODUCT}"*register*.sh
-  else
-    /bin/bash ~/uteeg/bin/rhel*register*.sh
-  fi
-}
-register_me
-#for i in $(ls ~/uteeg/bin/*register*.sh);do $i;done
+/bin/bash ~/uteeg/bin/00500_register_update.sh
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
