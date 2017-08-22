@@ -121,10 +121,10 @@ for i in {1..4}
   do ssh gfs-node3 mkdir -p /bricks/brick-4"${i}"
 done
 #fstab entry
-#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-11 /bricks/brick-11 xfs defaults 1 2 >> /etc/fstab"
-#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-12 /bricks/brick-12 xfs defaults 1 2 >> /etc/fstab"
-#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-13 /bricks/brick-13 xfs defaults 1 2 >> /etc/fstab"
-#ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-14 /bricks/brick-14 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-11 /bricks/brick-11 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-12 /bricks/brick-12 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-13 /bricks/brick-13 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-14 /bricks/brick-14 xfs defaults 1 2 >> /etc/fstab"
 
 ssh gfs-node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-21 /bricks/brick-21 xfs defaults 1 2 >> /etc/fstab"
 ssh gfs-node1 "grep brick-2 /etc/fstab || echo /dev/rhs_vg/brick-22 /bricks/brick-22 xfs defaults 1 2 >> /etc/fstab"
@@ -141,15 +141,15 @@ ssh gfs-node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-42 /bricks/bric
 ssh gfs-node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-43 /bricks/brick-43 xfs defaults 1 2 >> /etc/fstab"
 ssh gfs-node3 "grep brick-4 /etc/fstab || echo /dev/rhs_vg/brick-44 /bricks/brick-44 xfs defaults 1 2 >> /etc/fstab"
 #mount
-#ssh gfs-admin "mount -a"
+ssh gfs-admin "mount -a"
 ssh gfs-node1 "mount -a"
 ssh gfs-node2 "mount -a"
 ssh gfs-node3 "mount -a"
 #mkdir selinux context
-#ssh gfs-admin "ls /bricks/brick-11/brick || mkdir -p /bricks/brick-11/brick"
-#ssh gfs-admin "ls /bricks/brick-12/brick || mkdir -p /bricks/brick-12/brick"
-#ssh gfs-admin "ls /bricks/brick-13/brick || mkdir -p /bricks/brick-13/brick"
-#ssh gfs-admin "ls /bricks/brick-14/brick || mkdir -p /bricks/brick-14/brick"
+ssh gfs-admin "ls /bricks/brick-11/brick || mkdir -p /bricks/brick-11/brick"
+ssh gfs-admin "ls /bricks/brick-12/brick || mkdir -p /bricks/brick-12/brick"
+ssh gfs-admin "ls /bricks/brick-13/brick || mkdir -p /bricks/brick-13/brick"
+ssh gfs-admin "ls /bricks/brick-14/brick || mkdir -p /bricks/brick-14/brick"
 
 ssh gfs-node1 "ls /bricks/brick-21/brick || mkdir -p /bricks/brick-21/brick"
 ssh gfs-node1 "ls /bricks/brick-22/brick || mkdir -p /bricks/brick-22/brick"
@@ -166,10 +166,10 @@ ssh gfs-node3 "ls /bricks/brick-42/brick || mkdir -p /bricks/brick-42/brick"
 ssh gfs-node3 "ls /bricks/brick-43/brick || mkdir -p /bricks/brick-43/brick"
 ssh gfs-node3 "ls /bricks/brick-44/brick || mkdir -p /bricks/brick-44/brick"
 #semanage
-#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-11/brick"
-#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-12/brick"
-#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-13/brick"
-#ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-14/brick"
+ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-11/brick"
+ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-12/brick"
+ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-13/brick"
+ssh gfs-admin "semanage fcontext -a -t glusterd_brick_t /bricks/brick-14/brick"
 
 ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-21/brick"
 ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-22/brick"
@@ -186,10 +186,10 @@ ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-42/brick"
 ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-43/brick"
 ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/brick-44/brick"
 #restorecon
-#ssh gfs-admin "restorecon -Rv /bricks/brick-11"
-#ssh gfs-admin "restorecon -Rv /bricks/brick-12"
-#ssh gfs-admin "restorecon -Rv /bricks/brick-13"
-#ssh gfs-admin "restorecon -Rv /bricks/brick-14"
+ssh gfs-admin "restorecon -Rv /bricks/brick-11"
+ssh gfs-admin "restorecon -Rv /bricks/brick-12"
+ssh gfs-admin "restorecon -Rv /bricks/brick-13"
+ssh gfs-admin "restorecon -Rv /bricks/brick-14"
 
 ssh gfs-node1 "restorecon -Rv /bricks/brick-21"
 ssh gfs-node1 "restorecon -Rv /bricks/brick-22"
@@ -205,20 +205,12 @@ ssh gfs-node3 "restorecon -Rv /bricks/brick-41"
 ssh gfs-node3 "restorecon -Rv /bricks/brick-42"
 ssh gfs-node3 "restorecon -Rv /bricks/brick-43"
 ssh gfs-node3 "restorecon -Rv /bricks/brick-44"
-#gluster volume create distreplvol replica 2
-gluster volume create distreplvol replica 2 \
+#Distributed-Replicated
+gluster volume create replvol replica 2 \
+	10.0.0.9:/bricks/brick-11/brick \
         10.0.0.10:/bricks/brick-21/brick \
-        10.0.0.10:/bricks/brick-22/brick \
-        10.0.0.10:/bricks/brick-23/brick \
-        10.0.0.10:/bricks/brick-24/brick \
         10.0.0.11:/bricks/brick-31/brick \
-        10.0.0.11:/bricks/brick-32/brick \
-        10.0.0.11:/bricks/brick-33/brick \
-        10.0.0.11:/bricks/brick-34/brick \
-        10.0.0.12:/bricks/brick-41/brick \
-        10.0.0.12:/bricks/brick-42/brick \
-        10.0.0.12:/bricks/brick-43/brick \
-        10.0.0.12:/bricks/brick-44/brick force
+        10.0.0.12:/bricks/brick-41/brick force
 
 #gluster volume create distreplvol replica 2 \
 #	10.0.0.9:/bricks/brick-11/brick \
@@ -248,23 +240,24 @@ gluster volume info distreplvol
 #probably remove gfs-admin from this file
 rm -f /tmp/distdispbricks
 #echo "10.0.0.9:/bricks/brick-11/brick" >> /tmp/distdispbricks
-#echo "10.0.0.9:/bricks/brick-12/brick" >> /tmp/distdispbricks
-#echo "10.0.0.9:/bricks/brick-13/brick" >> /tmp/distdispbricks
-#echo "10.0.0.9:/bricks/brick-14/brick" >> /tmp/distdispbricks
-echo "10.0.0.10:/bricks/brick-21/brick" >> /tmp/distdispbricks
+echo "10.0.0.9:/bricks/brick-12/brick" >> /tmp/distdispbricks
+echo "10.0.0.9:/bricks/brick-13/brick" >> /tmp/distdispbricks
+echo "10.0.0.9:/bricks/brick-14/brick" >> /tmp/distdispbricks
+#echo "10.0.0.10:/bricks/brick-21/brick" >> /tmp/distdispbricks
 echo "10.0.0.10:/bricks/brick-22/brick" >> /tmp/distdispbricks
 echo "10.0.0.10:/bricks/brick-23/brick" >> /tmp/distdispbricks
 echo "10.0.0.10:/bricks/brick-24/brick" >> /tmp/distdispbricks
-echo "10.0.0.11:/bricks/brick-31/brick" >> /tmp/distdispbricks
+#echo "10.0.0.11:/bricks/brick-31/brick" >> /tmp/distdispbricks
 echo "10.0.0.11:/bricks/brick-32/brick" >> /tmp/distdispbricks
 echo "10.0.0.11:/bricks/brick-33/brick" >> /tmp/distdispbricks
 echo "10.0.0.11:/bricks/brick-34/brick" >> /tmp/distdispbricks
-echo "10.0.0.12:/bricks/brick-41/brick" >> /tmp/distdispbricks
+#echo "10.0.0.12:/bricks/brick-41/brick" >> /tmp/distdispbricks
 echo "10.0.0.12:/bricks/brick-42/brick" >> /tmp/distdispbricks
 echo "10.0.0.12:/bricks/brick-43/brick" >> /tmp/distdispbricks
 echo "10.0.0.12:/bricks/brick-44/brick" >> /tmp/distdispbricks
 
-gluster volume create distdispvol \
+#Distributed-Dispersed
+gluster volume create dispvol \
 disperse-data 4 redundancy 2 $(</tmp/distdispbricks) force
 
 gluster volume start distdispvol
