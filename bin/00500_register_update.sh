@@ -117,16 +117,16 @@ subscribe_gfs () {
   /usr/bin/yum -y update
 }
 
-if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "rhel" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
   subscribe_rhel
 fi
-if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "sat" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $1}') = "sat" ]];then
   subscribe_sat
 fi
-if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "ceph" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $1}') = "ceph" ]];then
   subscribe_ceph
 fi
-if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "gfs" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $1}') = "gfs" ]];then
   subscribe_gfs
 fi
 
