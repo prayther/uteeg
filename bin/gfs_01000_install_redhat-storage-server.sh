@@ -92,7 +92,7 @@ if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         done
 fi
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12
+for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.13 10.0.0.14
   do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
           ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
           ssh "${i}" systemctl restart firewalld

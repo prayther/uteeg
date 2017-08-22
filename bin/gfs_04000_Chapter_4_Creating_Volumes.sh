@@ -214,7 +214,7 @@ ssh gfs-node3 "restorecon -Rv /bricks/brick-42"
 ssh gfs-node3 "restorecon -Rv /bricks/brick-43"
 ssh gfs-node3 "restorecon -Rv /bricks/brick-44"
 #Distributed-Replicated
-gluster volume create replvol replica 2 \
+gluster volume create distreplvol replica 2 \
 	10.0.0.9:/bricks/brick-11/brick \
         10.0.0.10:/bricks/brick-21/brick \
         10.0.0.11:/bricks/brick-31/brick \
@@ -265,7 +265,7 @@ echo "10.0.0.12:/bricks/brick-43/brick" >> /tmp/distdispbricks
 echo "10.0.0.12:/bricks/brick-44/brick" >> /tmp/distdispbricks
 
 #Distributed-Dispersed
-gluster volume create dispvol \
+gluster volume create distdispvol \
 disperse-data 4 redundancy 2 $(</tmp/distdispbricks) force
 
 gluster volume start distdispvol
