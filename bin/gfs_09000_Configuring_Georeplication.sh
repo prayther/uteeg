@@ -41,6 +41,14 @@ doit() {
         fi
 }
 
+#runs or not based on hostname; ceph-?? gfs-??? sat-???
+if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "gfs" ]];then
+ echo ""
+ echo "Need to run this on the 'gfs' node"
+ echo ""
+ exit 1
+fi
+
 if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
  echo ""
  echo "Need to run this on the 'admin' node"
@@ -48,7 +56,7 @@ if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
  exit 1
 fi
 
-if [[ $(id -u) -eq "1" ]];then
+if [[ $(id -u) != "0" ]];then
         echo "Must run as root"
         echo
         exit 1

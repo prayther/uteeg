@@ -43,6 +43,26 @@ doit() {
 	fi
 }
 
+#runs or not based on hostname; ceph-?? gfs-??? sat-???
+if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "sat" ]];then
+ echo ""
+ echo "Need to run this on the 'sat' node"
+ echo ""
+ exit 1
+fi
+
+#if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
+# echo ""
+# echo "Need to run this on the 'admin' node"
+# echo ""
+# exit 1
+#fi
+
+if [[ $(id -u) != "0" ]];then
+        echo "Must run as root"
+        echo
+        exit 1
+fi
 
 wget -P /root/ --no-clobber http://${SERVER}/passwd
 wget -P /root/ --no-clobber http://${SERVER}/rhn-acct

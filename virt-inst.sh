@@ -219,7 +219,7 @@ curl ${URL}/ks/packages/${VMNAME}.packages > /tmp/${VMNAME}.packages
 cp /etc/rc.local /root/rc.local.orig
 
 # step one creat a file to run by rc.local at next boot
-cat <<'EOFKS' > /tmp/ks_virt-inst.sh
+cat << 'EOFKS' > /tmp/ks_virt-inst.sh
 #!/bin/bash -x
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
@@ -244,12 +244,12 @@ mkdir /root/.ssh
 chmod 700 /root/.ssh
 
 # Use different keys
-cat <<'ROOTSSHKEY' > /root/.ssh/authorized_keys
+cat << 'ROOTSSHKEY' > /root/.ssh/authorized_keys
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqzz0IIJsnncRvTqrK8QM4y3Gt2I/c/GnW1pqFXst/uZGU14MxJSZsuFK5Xs7/GwpKPoDv9mwzUTs6Q4l5Pj8dHlwiJLjbFPi89Ri1kmV225+Tu+KgVO7q300kI5IknT4qpUKdlScAdSPm0mwJ6pb01hdc5iNKmGK8sEOkty+3nj7lbcXX1lR6NF2FmNaOn02c9ZKgun7uejJ2mplrIk/KR4AzMk9y0kuLhPpk1LDtitBKD2wpUTCh75C7j6GSe8BRGigvlcCBESZp7rCCoiAklhR9LcO0u9SaxHMnQpKmnQfLe3GMx7zJdJd0aD9XrvgG0aueZV0O7c9pAv+FETDD root@fedora.prayther.laptop
 ROOTSSHKEY
 chmod 400 /root/.ssh/authorized_keys
 
-cat <<'ID_RSA' > /root/.ssh/id_rsa
+cat << 'ID_RSA' > /root/.ssh/id_rsa
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAys1szr+3WRpYdVVrj+vB54N++GXpkj0+dLXUsFwV1PZK5HjW
 xcAovYoiW+6iKjBX/ZAVguSXy1Bq85Lkw5JRaETPE2Y9QtWo9gY6ExOsRaB7JXT6
@@ -280,7 +280,7 @@ jJmTpxI+UaDnZ3FGcjXuwZtQIaYAOpj1aXJMeoMsW0aeVaaU9thhfA==
 ID_RSA
 chmod 600 /root/.ssh/id_rsa
 
-cat <<'ID_RSAPUB' > /root/.ssh/id_rsa.pub
+cat << 'ID_RSAPUB' > /root/.ssh/id_rsa.pub
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDKzWzOv7dZGlh1VWuP68Hng374ZemSPT50tdSwXBXU9krkeNbFwCi9iiJb7qIqMFf9kBWC5JfLUGrzkuTDklFoRM8TZj1C1aj2BjoTE6xFoHsldPrzROj8MqYFykNXYuK0ugWPU5NFH2jPc1Srd7wKt9OYB/2qz24ajJf+u3zo5kk1Zitdsefgo5sYn7UBdUGyXHw1/Dhs8tHbgVA7wlrSyEh6gmuqm1dTZkpi++pFaLeoX8OqNlVJwPMBeeYhSmPqXJyLDw8r1z74b6ZmKqQLjyGiQM1WDZCJ0y0Kvx4VPYYlpIugJS6lzzduBcncsfDeeqmDumYSTtUQ9OAgEyxz root@sat.laptop.prayther
 ID_RSAPUB
 chmod 644 /root/.ssh/id_rsa.pub
@@ -289,7 +289,7 @@ chmod 644 /root/.ssh/id_rsa.pub
 # GATEWAY is the libvirt host. hostname will be the vm in question because hostname evaluates before sending the command
 ssh -o StrictHostKeyChecking=no root@${GATEWAY} "ssh -o StrictHostKeyChecking=no root@${VMNAME}.${DOMAIN} exit"
 
-cat << EOFKS1 > /tmp/ks_virt-inst1.sh
+cat << 'EOFKS1' > /tmp/ks_virt-inst1.sh
 #!/bin/bash -x
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
@@ -309,27 +309,30 @@ EOFKS1
 
 chmod 0755 /etc/rc.local
 
-cat << EOH1 > /etc/rc.d/rc.local
+cat << 'EOH1' > /etc/rc.d/rc.local
 #!/bin/bash
 
 bash /tmp/ks_virt-inst1.sh
 EOH1
 chmod 0755 /etc/rc.local
 
+#this does not want to work even though we have 'EOF' which is suppposed to stop things from expanding, but it's not.
+# adding logic to the register scripts themselves
 # register script comes from uteeg git project cloned above
-PRODUCT=$( hostname -s | awk -F"-" '{print $1}')
-if [[ "${PRODUCT}" != "" ]];then
-  /bin/bash ~/uteeg/bin/"${PRODUCT}"*register*.sh
-else
-  /bin/bash ~/uteeg/bin/rhel*register*.sh
-fi
+#PRODUCT=$(cat /etc/hostname | awk -F"-" '{print $1}')
+#if [[ "${PRODUCT}" != "" ]];then
+#  /bin/bash ~/uteeg/bin/"${PRODUCT}"*register*.sh
+#else
+#  /bin/bash ~/uteeg/bin/rhel*register*.sh
+#fi
+for i in $(ls ~/uteeg/bin/*register*.sh);do echo $i;done
 
 # step 2 put the orig rc.local in place
 #cp /root/rc.local.orig /etc/rc.local
 reboot
 EOFKS
 
-cat << EOH > /etc/rc.d/rc.local
+cat << 'EOH' > /etc/rc.d/rc.local
 #!/bin/bash
 
 bash /tmp/ks_virt-inst.sh

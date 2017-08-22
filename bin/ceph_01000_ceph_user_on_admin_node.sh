@@ -42,11 +42,26 @@ doit() {
         fi
 }
 
-if [[ $(id -u) -eq "0" ]];then
-	echo "Don't run as root"
-	echo
-	echo "Run as Ceph User: $(ls /home | grep -i ceph)"
-	exit 1
+#runs or not based on hostname; ceph-?? gfs-??? sat-???
+if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "ceph" ]];then
+ echo ""
+ echo "Need to run this on the 'ceph' node"
+ echo ""
+ exit 1
+fi
+
+# script just runs on admin ceph-node
+if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
+ echo ""
+ echo "Need to run this on the 'admin' node"
+ echo ""
+ exit 1
+fi
+
+if [[ $(id -u) != "0" ]];then
+        echo "Must run as root"
+        echo
+        exit 1
 fi
 
 #sudo setenforce 0
