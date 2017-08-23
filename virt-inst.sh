@@ -358,6 +358,8 @@ grep -i "${IP}    ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts || echo "${IP}	${VMN
 # just remove so ssh won't fail. ks/boot scripts put it back for a new vm later
 sed -i /${VMNAME}/d /root/.ssh/known_hosts
 sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
+sed -i /${IP}/d /root/.ssh/known_hosts
+sed -i /${IP}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 #list of os-variant: osinfo-query os
 if [[ "${OS}" = "rhel" ]];then
