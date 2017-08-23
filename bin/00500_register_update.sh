@@ -67,12 +67,25 @@ fi
 wget -P /root/ --no-clobber http://${SERVER}/passwd
 wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
+useradd geouser
+groupadd geogroup
+useradd apraythe
+echo "password" | passwd "geouser" --stdin
+echo "password" | passwd "apraythe" --stdin
+
+cat << EOF >/etc/sudoers.d/geouser
+geouser ALL = (root) NOPASSWD:ALL
+apraythe ALL = (root) NOPASSWD:ALL
+EOF
+
+chmod 0440 /etc/sudoers.d/geouser
+
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 subscribe_rhel () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
-  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Employee SKU/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk '{ print $NF }')
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms
 
   #Clean, update
@@ -84,7 +97,7 @@ subscribe_rhel () {
 subscribe_sat () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
-  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Satellite/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Red Hat Satellite' --pool-only | head -n 1)
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
 
   #Clean, update
@@ -96,7 +109,7 @@ subscribe_sat () {
 subscribe_ceph () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
-  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Ceph Storage/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Red Hat Ceph Storage' --pool-only | head -n 1)
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rpms --enable=rhel-7-server-rhceph-2-mon-rpms --enable=rhel-7-server-rhceph-2-osd-rpms --enable=rhel-7-server-rhceph-2-tools-rpms --enable=rhel-7-server-rhscon-2-agent-rpms --enable=rhel-7-server-rhscon-2-installer-rpms
 
   #Clean, update
@@ -108,7 +121,7 @@ subscribe_ceph () {
 subscribe_gfs () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
-  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --available | awk '/Red Hat Gluster Storage/,/Pool ID/'  | grep "Pool ID:" | head -1 | awk ' { print $NF } ')
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Red Hat Gluster Storage' --pool-only | head -n 1)
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rh-gluster-3-for-rhel-7-server-rpms --enable=rh-gluster-3-samba-for-rhel-7-server-rpms --enable=rh-gluster-3-nfs-for-rhel-7-server-rpms --enable=rh-gluster-3-nagios-for-rhel-7-server-rpms
 
   #Clean, update

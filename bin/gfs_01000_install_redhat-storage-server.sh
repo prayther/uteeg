@@ -92,7 +92,21 @@ if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         done
 fi
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.13 10.0.0.14
+for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
+  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
+          ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
+          ssh "${i}" systemctl restart firewalld
+done
+
+#again with names. having issues with names in some places.
+# from gfs-admin get everyone talking
+if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
+        for i in gfs-admin gfs-client gfs-backup gfs-node1 gfs-node2 gfs-node3
+          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
+        done
+fi
+
+for i in gfs-admin gfs-backup gfs-node1 gfs-node2 gfs-node3
   do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
           ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
           ssh "${i}" systemctl restart firewalld
@@ -105,7 +119,7 @@ done
 
 #only run this on admin node gfs-admin, ceph_admin
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-        for i in 10.0.0.10 10.0.0.11 10.0.0.12
+        for i in 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
           do gluster peer probe "${i}"
         done
 fi

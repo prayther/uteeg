@@ -107,10 +107,10 @@ gluster volume start distdispvol
 #Configure client to persistently mount
 #mount native client
 ssh 10.0.0.13 yum -y install glusterfs-fuse
-ssh 10.0.0.13 mkdir -p /mnt/labvol/games
-ssh 10.0.0.13 mkdir -p /mnt/labvol/private_games
 ssh 10.0.0.13 "echo gfs-node1:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
 ssh 10.0.0.13 "mount -a"
+ssh 10.0.0.13 mkdir -p /mnt/labvol/games
+ssh 10.0.0.13 mkdir -p /mnt/labvol/private_games
 #mount nfs
 ssh 10.0.0.13 mkdir /mnt/distdispvol
 ssh 10.0.0.13 "echo gfs-node2:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
