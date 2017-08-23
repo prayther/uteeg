@@ -74,10 +74,10 @@ fi
 #  done
 
 #allow NFS traffic through the firewall.
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12
-  do ssh "${i}" firewall-cmd --zone=public --add-service=rpc-bind --add-service=nfs --permanent && \
-          ssh "${i}" systemctl restart firewalld
-done
+#for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12
+#  do ssh "${i}" firewall-cmd --zone=public --add-service=rpc-bind --add-service=nfs --permanent && \
+#          ssh "${i}" systemctl restart firewalld
+#done
 
 ## admin node: non interactive, emptly pass ""
 #if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
@@ -106,35 +106,35 @@ gluster volume start distdispvol
 
 #Configure client to persistently mount
 #mount native client
-ssh gfs-client yum -y install glusterfs-fuse
-ssh gfs-client mkdir -p /mnt/labvol/games
-ssh gfs-client mkdir -p /mnt/labvol/private_games
-ssh gfs-client "echo gfs-node1:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
-ssh gfs-client "mount -a"
+ssh 10.0.0.13 yum -y install glusterfs-fuse
+ssh 10.0.0.13 mkdir -p /mnt/labvol/games
+ssh 10.0.0.13 mkdir -p /mnt/labvol/private_games
+ssh 10.0.0.13 "echo gfs-node1:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
+ssh 10.0.0.13 "mount -a"
 #mount nfs
-ssh gfs-client mkdir /mnt/distdispvol
-ssh gfs-client "echo gfs-node2:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
-ssh gfs-client "mount -a"
+ssh 10.0.0.13 mkdir /mnt/distdispvol
+ssh 10.0.0.13 "echo gfs-node2:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
+ssh 10.0.0.13 "mount -a"
 
 #ownership, facl's
-ssh gfs-client chgrp games /mnt/labvol/games
-ssh gfs-client chmod 2770 /mnt/labvol/games
-ssh gfs-client "touch /mnt/labvol/games/me"
-ssh gfs-client "touch /mnt/labvol/private_games/me"
+ssh 10.0.0.13 chgrp games /mnt/labvol/games
+ssh 10.0.0.13 chmod 2770 /mnt/labvol/games
+ssh 10.0.0.13 "touch /mnt/labvol/games/me"
+ssh 10.0.0.13 "touch /mnt/labvol/private_games/me"
 #group full access to any existing files and directories
-ssh gfs-client "setfacl -R -m g:games:rwX /mnt/labvol/games"
+ssh 10.0.0.13 "setfacl -R -m g:games:rwX /mnt/labvol/games"
 #group full access to any new files and directories
-ssh gfs-client "setfacl -R -m d:g:games:rwX /mnt/labvol/games"
+ssh 10.0.0.13 "setfacl -R -m d:g:games:rwX /mnt/labvol/games"
 
 
 #group read-only access to any existing files and directories
-ssh gfs-client "setfacl -R -m g:games:rX /mnt/labvol/private_games"
+ssh 10.0.0.13 "setfacl -R -m g:games:rX /mnt/labvol/private_games"
 #group read-only access to any new files and directories
-ssh gfs-client "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
+ssh 10.0.0.13 "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
 
-#[root@gfs-client games]# ll -Z /mnt/labvol/
+#[root@10.0.0.13 games]# ll -Z /mnt/labvol/
 #drwxrws---+ root games system_u:object_r:fusefs_t:s0    games
-#[root@gfs-client games]# getfacl /mnt/labvol/games
+#[root@10.0.0.13 games]# getfacl /mnt/labvol/games
 #getfacl: Removing leading '/' from absolute path names
 # file: mnt/labvol/games
 # owner: root
@@ -151,7 +151,7 @@ ssh gfs-client "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
 #default:mask::rwx
 #default:other::---
 
-#[root@gfs-client games]# getfacl /mnt/labvol/private_games
+#[root@10.0.0.13 games]# getfacl /mnt/labvol/private_games
 #getfacl: Removing leading '/' from absolute path names
 # file: mnt/labvol/private_games
 # owner: root
@@ -168,7 +168,7 @@ ssh gfs-client "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
 #default:other::r-x
 
 #Enable quotas for the 'labvol' volume, and set the hard and soft limits (1 GiB and 85%) for the /games directory.
-ssh gfs-client "umount /mnt/labvol"
+ssh 10.0.0.13 "umount /mnt/labvol"
 gluster volume quota labvol enable
 gluster volume quota labvol limit-usage /games 1GB 85%
 #the df command will report the hard-limit as the available space on a directory.
@@ -177,7 +177,7 @@ gluster volume set labvol quota-deem-statfs on
 #Set the quota update timeout for 'labvol' before the soft limit is reached to 30 seconds, and to five seconds for when the soft limit is exceeded.
 gluster volume quota labvol soft-timeout 30s
 gluster volume quota labvol hard-timeout 5s
-ssh gfs-client "mount /mnt/labvol"
+ssh 10.0.0.13 "mount /mnt/labvol"
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

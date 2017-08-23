@@ -104,7 +104,7 @@ ssh gfs-node3 "restorecon -Rv /bricks/rhs_lv3"
 gluster volume create labvol \
 	10.0.0.10:/bricks/rhs_lv1/brick \
 	10.0.0.11:/bricks/rhs_lv2/brick \
-	10.0.0.12:/bricks/rhs_lv3/brick 
+	10.0.0.12:/bricks/rhs_lv3/brick force
 gluster volume start labvol
 gluster volume status labvol
 
