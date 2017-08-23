@@ -74,10 +74,10 @@ for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
   done
 
 #LV virtualsize
-#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-11"
-#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-12"
-#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-13"
-#ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-14"
+ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-11"
+ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-12"
+ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-13"
+ansible gfs-admin -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-14"
 #ssh gfs-admin for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-1${i};done
 ansible gfs-node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-21"
 ansible gfs-node1 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-22"
@@ -95,10 +95,10 @@ ansible gfs-node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-43"
 ansible gfs-node3 -a "lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-44"
 #ssh gfs-node3 for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-4${i};done
 #mkfs
-#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-11"
-#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-12"
-#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-13"
-#ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-14"
+ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-11"
+ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-12"
+ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-13"
+ansible gfs-admin -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-14"
 #ssh gfs-admin for i in {1..4}; do mkfs -t xfs -i size=512 /dev/rhs_vg/brick-1${i};done
 ansible gfs-node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-21"
 ansible gfs-node1 -a "mkfs -t xfs -i size=512 /dev/rhs_vg/brick-22"
