@@ -73,9 +73,9 @@ ssh gfs-node1 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv1"
 ssh gfs-node2 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv2"
 ssh gfs-node3 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv3"
 #mkfs
-ssh gfs-node1 "mkfs -t xfs -i size=512 /dev/rhs_vg/rhs_lv1"
-ssh gfs-node2 "mkfs -t xfs -i size=512 /dev/rhs_vg/rhs_lv2"
-ssh gfs-node3 "mkfs -t xfs -i size=512 /dev/rhs_vg/rhs_lv3"
+ssh gfs-node1 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv1"
+ssh gfs-node2 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv2"
+ssh gfs-node3 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv3"
 #mount dir
 ssh gfs-node1 "ls /bricks/rhs_lv1 || mkdir -p /bricks/rhs_lv1"
 ssh gfs-node2 "ls /bricks/rhs_lv2 || mkdir -p /bricks/rhs_lv2"
