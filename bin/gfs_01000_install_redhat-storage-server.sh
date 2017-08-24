@@ -119,7 +119,7 @@ done
 
 #only run this on admin node gfs-admin, ceph_admin
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-        for i in 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
+        for i in 10.0.0.10 10.0.0.11 10.0.0.12
           do gluster peer probe "${i}"
         done
 fi
