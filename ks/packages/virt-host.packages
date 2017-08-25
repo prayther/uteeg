@@ -1,5 +1,6 @@
 #package 
-virt-who
+#ovirt-hosted-engine-setup
+#rhvm-appliance
 git
 wget
 vim

@@ -1,1 +1,0 @@
-network --device=eth0 --bootproto=static --ip=10.0.0.15 --netmask=255.255.255.0 --gateway=10.0.0.1 --nameserver=10.0.0.1 --hostname=servere.prayther.org
