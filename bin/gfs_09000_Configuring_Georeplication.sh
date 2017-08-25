@@ -75,6 +75,7 @@ fi
 ssh 10.0.0.14 adduser geouser
 ssh 10.0.0.14 "echo password | passwd geouser --stdin"
 ssh 10.0.0.14 groupadd geogroup
+ssh 10.0.0.14 "usermod -G geogroup geouser"
 
 # from gfs-admin get everyone talking
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
@@ -130,6 +131,9 @@ ssh 10.0.0.14 "gluster system:: execute mountbroker \
 ssh 10.0.0.14 "gluster system:: execute mountbroker \
 	user geouser backupvol"
 #Set the geo-replication-log-group group to geogroup.
+ssh 10.0.0.14 "gluster system:: execute mountbroker \
+ opt geo-replication-log-group geogroup"
+#Allow RPC connections from unprivileged ports.
 ssh 10.0.0.14 "gluster system:: execute mountbroker \
 	opt rpc-auth-allow-insecure on"
 

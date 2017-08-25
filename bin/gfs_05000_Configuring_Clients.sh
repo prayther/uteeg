@@ -109,16 +109,16 @@ gluster volume start distdispvol
 ssh 10.0.0.13 yum -y install glusterfs-fuse
 ssh 10.0.0.13 "echo gfs-node1:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
 ssh 10.0.0.13 "mount -a"
-ssh 10.0.0.13 mkdir -p /mnt/labvol/games
-ssh 10.0.0.13 mkdir -p /mnt/labvol/private_games
+ssh 10.0.0.13 "mkdir -p /mnt/labvol/games"
+ssh 10.0.0.13 "mkdir -p /mnt/labvol/private_games"
 #mount nfs
-ssh 10.0.0.13 mkdir /mnt/distdispvol
+ssh 10.0.0.13 "mkdir /mnt/distdispvol"
 ssh 10.0.0.13 "echo gfs-node2:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
 ssh 10.0.0.13 "mount -a"
 
 #ownership, facl's
-ssh 10.0.0.13 chgrp games /mnt/labvol/games
-ssh 10.0.0.13 chmod 2770 /mnt/labvol/games
+ssh 10.0.0.13 "chgrp games /mnt/labvol/games"
+ssh 10.0.0.13 "chmod 2770 /mnt/labvol/games"
 ssh 10.0.0.13 "touch /mnt/labvol/games/me"
 ssh 10.0.0.13 "touch /mnt/labvol/private_games/me"
 #group full access to any existing files and directories
