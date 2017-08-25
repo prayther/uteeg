@@ -134,12 +134,13 @@ subscribe_virt () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
   /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
-  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-7-server-supplementary-rpms --enable=rhel-7-server-rhv-4.1-rpms --enable=rhel-7-server-rhv-4-tools-rpms --enable=jb-eap-7-for-rhel-7-server-rpms
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-7-server-rhv-4-mgmt-agent-rpms
 
   #Clean, update
   /usr/bin/yum clean all
   rm -rf /var/cache/yum
   /usr/bin/yum -y update
+  /usr/bin/yum -y install ovirt-hosted-engine-setup rhvm-appliance screen
 }
 
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
@@ -154,7 +155,6 @@ fi
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "gfs" ]];then
   subscribe_gfs
 fi
-
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "virt" ]];then
   subscribe_virt
 fi
