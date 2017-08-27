@@ -75,9 +75,9 @@ mkdir /var/tmp/export
 mkdir /var/tmp/nfs
 chown vdsm.kvm /var/tmp/data /var/tmp/iso /var/tmp/export /var/tmp/nfs
 grep "var/tmp/data" /etc/exports || echo "/var/tmp/data *(rw,no_acl)" >> /etc/exports
-grep "var/tmpmnt/iso " /etc/exports || echo "/var/tmp/iso *(rw,no_acl)" >> /etc/exports
-grep "var/tmpmnt/export " /etc/exports || echo "/var/tmp/export *(rw,no_acl)" >> /etc/exports
-grep "var/tmpmnt/nfs " /etc/exports || echo "/var/tmp/nfs *(rw,no_acl)" >> /etc/exports
+grep "var/tmp/iso " /etc/exports || echo "/var/tmp/iso *(rw,no_acl)" >> /etc/exports
+grep "var/tmp/export " /etc/exports || echo "/var/tmp/export *(rw,no_acl)" >> /etc/exports
+grep "var/tmp/nfs " /etc/exports || echo "/var/tmp/nfs *(rw,no_acl)" >> /etc/exports
 systemctl start dns-server
 #echo "/dev/vdb1               /var/tmp/vdb1               xfs     defaults        0 0" >> /etc/fstab
 #mount -a
