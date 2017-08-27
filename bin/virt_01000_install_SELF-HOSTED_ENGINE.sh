@@ -74,10 +74,10 @@ mkdir /mnt/iso
 mkdir /mnt/export
 mkdir /mnt/nfs
 chown vdsm.kvm /mnt/data /mnt/iso /mnt/export
-echo "/mnt/data *(rw,no_acl)" >> /etc/exports
-echo "/mnt/iso *(rw,no_acl)" >> /etc/exports
-echo "/mnt/export *(rw,no_acl)" >> /etc/exports
-echo "/mnt/nfs *(rw,no_acl)" >> /etc/exports
+grep "mnt/data" /etc/exports || echo "/mnt/data *(rw,no_acl)" >> /etc/exports
+grep "mnt/iso " /etc/exports || echo "/mnt/iso *(rw,no_acl)" >> /etc/exports
+grep "mnt/export " /etc/exports || echo "/mnt/export *(rw,no_acl)" >> /etc/exports
+grep "mnt/nfs " /etc/exports || echo "/mnt/nfs *(rw,no_acl)" >> /etc/exports
 systemctl start dns-server
 #echo "/dev/vdb1               /mnt/vdb1               xfs     defaults        0 0" >> /etc/fstab
 #mount -a
@@ -96,7 +96,7 @@ OVEHOSTED_NETWORK/gateway=str:10.0.0.1
 OVEHOSTED_ENGINE/insecureSSL=none:None
 OVEHOSTED_ENGINE/clusterName=str:Default
 OVEHOSTED_STORAGE/storageDatacenterName=str:hosted_datacenter
-OVEHOSTED_STORAGE/domainType=str:nfs3
+OVEHOSTED_STORAGE/domainType=str:nfs4
 OVEHOSTED_STORAGE/connectionUUID=str:deeb3aec-3f5c-433e-8af8-eba37f2da263
 OVEHOSTED_STORAGE/LunID=none:None
 OVEHOSTED_STORAGE/imgSizeGB=str:58
