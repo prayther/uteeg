@@ -82,7 +82,7 @@ systemctl restart dns-server
 #echo "/dev/vdb1               /var/tmp/vdb1               xfs     defaults        0 0" >> /etc/fstab
 #mount -a
 
-cat << EOF > /hosted-engine-answer-file.txt
+cat << EOF > /root/hosted-engine-answer-file.txt
 [environment:default]
 OVEHOSTED_CORE/rollbackProceed=none:None
 OVEHOSTED_CORE/screenProceed=none:None
@@ -93,7 +93,6 @@ OVEHOSTED_NETWORK/fqdn=str:virt-engine.prayther.org
 OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt
 OVEHOSTED_NETWORK/firewallManager=str:iptables
 OVEHOSTED_NETWORK/gateway=str:10.0.0.1
-OVEHOSTED_NETWORK/nic=str:eth0
 OVEHOSTED_ENGINE/insecureSSL=none:None
 OVEHOSTED_ENGINE/clusterName=str:Default
 OVEHOSTED_STORAGE/storageDatacenterName=str:hosted_datacenter
@@ -154,7 +153,7 @@ OVEHOSTED_NOTIF/destEmail=str:root@localhost
 EOF
 
 #screen -m bash -c 'hosted-engine --deploy; exec bash'
-screen -m bash -c 'hosted-engine --deploy --config-append=/hosted-engine-answer-file.txt; exec bash'
+screen -m bash -c 'hosted-engine --deploy --config-append=/root/hosted-engine-answer-file.txt; exec bash'
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
