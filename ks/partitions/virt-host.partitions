@@ -2,10 +2,10 @@ volgroup vg00 --pesize=4096 pv.0
 part /boot --ondisk=vda --fstype=xfs --size=512
 part pv.0 --fstype=lvmpv --ondisk=vda --size=15360 --grow
 logvol /home --vgname=vg00 --name=home --fstype=xfs --size=1024
-logvol /var --vgname=vg00 --name=var --fstype=xfs --size=2048
+logvol /var --vgname=vg00 --name=var --fstype=xfs --size=102400
 logvol /var/log --vgname=vg00 --name=varlog --fstype=xfs --size=2048
 logvol /var/log/audit --vgname=vg00 --name=varlogaudit --fstype=xfs --size=512
-logvol /tmp --vgname=vg00 --name=tmp --fstype=xfs --size=10240
+logvol /tmp --vgname=vg00 --name=tmp --fstype=xfs --size=2048
 logvol / --vgname=vg00 --name=root --fstype=xfs --size=10240
 logvol swap --vgname=vg00 --name=swap --fstype=swap --size=10240
 logvol /opt --vgname=vg00 --name=opt --fstype=xfs --size=6144

@@ -362,13 +362,28 @@ sed -i /${IP}/d /root/.ssh/known_hosts
 sed -i /${IP}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 #list of os-variant: osinfo-query os
+#making an exception for virt 'name' and not os variant. doing host cpu passthru
+if [[ $(echo ${VMNAME} | grep virt) ]];then
+virt-install \
+   --name="${VMNAME}" \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
+   --ram="${RAM}" \
+   --cpu host-passthrough \
+   --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
+   --os-type=linux \
+   --noautoconsole --wait -1 \
+   --os-variant=rhel"${OSVARIANT}" \
+   --network network="${NETWORK}" \
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+fi
+
 if [[ "${OS}" = "rhel" ]];then
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
-   --cpu host
    --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
    --os-type=linux \
    --noautoconsole --wait -1 \
@@ -383,7 +398,6 @@ virt-install \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=150,sparse=false,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
-   --cpu host
    --location=/var/lib/libvirt/images/"${RHGS_ISO}" \
    --os-type=linux \
    --noautoconsole --wait -1 \

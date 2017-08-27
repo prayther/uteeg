@@ -81,6 +81,7 @@ systemctl enable sendmail
 systemctl start sendmail
 
 #this might help with the questions
+#almost works but not quite. have to hit enter for a few questions
 #echo \n \n \n | configure-gluster-nagios -c gluster-cluster -H 10.0.0.9
 configure-gluster-nagios -c gluster-cluster -H 10.0.0.9
 nagios -v /etc/nagios/nagios.cfg
@@ -111,7 +112,7 @@ fi
 
 #Add $NOTIFICATIONCOMMENT$\n directly before | /bin/mail -s in /etc/nagios/objects/commands.cfg for both notify-service-by-email and notify-host-by-email definitions.
 #search for '" |' and replace with  '$NOTIFICATIONCOMMENT$\n\" |'
-sed 's/"\ |/\ $NOTIFICATIONCOMMENT$\\n\" |/g' /etc/nagios/objects/commands.cfg
+sed -i 's/"\ |/\ $NOTIFICATIONCOMMENT$\\n\" |/g' /etc/nagios/objects/commands.cfg
 
 #Enable profiling
 gluster volume  profile labvol start
@@ -119,5 +120,8 @@ gluster volume info labvol #diagnostics.count-fop-hits: on
 gluster volume profile labvol info cumulative
 gluster volume  profile labvol stop #turn it off
 gluster volume top labvol open #View the performance metrics of bricks
+
+mutt
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
