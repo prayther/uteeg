@@ -69,17 +69,17 @@ rpm -Uvh /root/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
 systemctl enable sendmail
 systemctl start sendmail
 
-mkdir /mnt/data
-mkdir /mnt/iso
-mkdir /mnt/export
-mkdir /mnt/nfs
-chown vdsm.kvm /mnt/data /mnt/iso /mnt/export
-grep "mnt/data" /etc/exports || echo "/mnt/data *(rw,no_acl)" >> /etc/exports
-grep "mnt/iso " /etc/exports || echo "/mnt/iso *(rw,no_acl)" >> /etc/exports
-grep "mnt/export " /etc/exports || echo "/mnt/export *(rw,no_acl)" >> /etc/exports
-grep "mnt/nfs " /etc/exports || echo "/mnt/nfs *(rw,no_acl)" >> /etc/exports
+mkdir /var/tmp/data
+mkdir /var/tmp/iso
+mkdir /var/tmp/export
+mkdir /var/tmp/nfs
+chown vdsm.kvm /var/tmp/data /var/tmp/iso /var/tmp/export /var/tmp/nfs
+grep "var/tmp/data" /etc/exports || echo "/var/tmp/data *(rw,no_acl)" >> /etc/exports
+grep "var/tmpmnt/iso " /etc/exports || echo "/var/tmp/iso *(rw,no_acl)" >> /etc/exports
+grep "var/tmpmnt/export " /etc/exports || echo "/var/tmp/export *(rw,no_acl)" >> /etc/exports
+grep "var/tmpmnt/nfs " /etc/exports || echo "/var/tmp/nfs *(rw,no_acl)" >> /etc/exports
 systemctl start dns-server
-#echo "/dev/vdb1               /mnt/vdb1               xfs     defaults        0 0" >> /etc/fstab
+#echo "/dev/vdb1               /var/tmp/vdb1               xfs     defaults        0 0" >> /etc/fstab
 #mount -a
 
 cat << EOF > /hosted-engine-answer-file.txt
@@ -100,7 +100,7 @@ OVEHOSTED_STORAGE/domainType=str:nfs4
 OVEHOSTED_STORAGE/connectionUUID=str:deeb3aec-3f5c-433e-8af8-eba37f2da263
 OVEHOSTED_STORAGE/LunID=none:None
 OVEHOSTED_STORAGE/imgSizeGB=str:58
-OVEHOSTED_STORAGE/mntOptions=none:None
+OVEHOSTED_STORAGE/var/tmpOptions=none:None
 OVEHOSTED_STORAGE/iSCSIPortalIPAddress=none:None
 OVEHOSTED_STORAGE/metadataVolumeUUID=str:4e62f05c-ebab-4799-9421-1a9ed8c80bfa
 OVEHOSTED_STORAGE/sdUUID=str:c8d79cdc-56e0-489d-81d5-9d307f5cd24a
@@ -118,7 +118,7 @@ OVEHOSTED_STORAGE/iSCSIPortal=none:None
 OVEHOSTED_STORAGE/volUUID=str:c272fb18-c087-4a07-9b06-bf019c3e46aa
 OVEHOSTED_STORAGE/vgUUID=none:None
 OVEHOSTED_STORAGE/confVolUUID=str:874f5827-b78c-412c-abd9-acbc42734f43
-OVEHOSTED_STORAGE/storageDomainConnection=str:localhost:/mnt/nfs
+OVEHOSTED_STORAGE/storageDomainConnection=str:localhost:/var/tmp/nfs
 OVEHOSTED_STORAGE/iSCSIPortalUser=none:None
 OVEHOSTED_VDSM/consoleType=str:vnc
 OVEHOSTED_VM/vmMemSizeMB=int:5245
