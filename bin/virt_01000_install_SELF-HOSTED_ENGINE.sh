@@ -78,7 +78,7 @@ grep "var/tmp/data" /etc/exports || echo "/var/tmp/data *(rw,no_acl)" >> /etc/ex
 grep "var/tmp/iso " /etc/exports || echo "/var/tmp/iso *(rw,no_acl)" >> /etc/exports
 grep "var/tmp/export " /etc/exports || echo "/var/tmp/export *(rw,no_acl)" >> /etc/exports
 grep "var/tmp/nfs " /etc/exports || echo "/var/tmp/nfs *(rw,no_acl)" >> /etc/exports
-systemctl start dns-server
+systemctl restart dns-server
 #echo "/dev/vdb1               /var/tmp/vdb1               xfs     defaults        0 0" >> /etc/fstab
 #mount -a
 
@@ -93,6 +93,7 @@ OVEHOSTED_NETWORK/fqdn=str:virt-engine.prayther.org
 OVEHOSTED_NETWORK/bridgeName=str:ovirtmgmt
 OVEHOSTED_NETWORK/firewallManager=str:iptables
 OVEHOSTED_NETWORK/gateway=str:10.0.0.1
+OVEHOSTED_NETWORK/nic=str:eth0
 OVEHOSTED_ENGINE/insecureSSL=none:None
 OVEHOSTED_ENGINE/clusterName=str:Default
 OVEHOSTED_STORAGE/storageDatacenterName=str:hosted_datacenter
