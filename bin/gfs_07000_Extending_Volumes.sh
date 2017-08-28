@@ -105,9 +105,9 @@ ssh gfs-node3 "restorecon -Rv /bricks/rhs_lv6"
 
 #Add the 3 new bricks to the labvol volume, and set the replica count to two.
 gluster volume add-brick labvol replica 2 \
-	10.0.0.10:/bricks/rhs_lv4/brick \
-	10.0.0.11:/bricks/rhs_lv5/brick \
-	10.0.0.12:/bricks/rhs_lv6/brick
+	gfs-node1.prayther.org:/bricks/rhs_lv4/brick \
+	gfs-node2.prayther.org:/bricks/rhs_lv5/brick \
+	gfs-node3.prayther.org:/bricks/rhs_lv6/brick
 #Rebalance operations can negatively impact performance on a volume.
 #lazy When set to lazy every node is only allowed to migrate one file at a time.
 #normal This is the default setting. This allows every node to migrate two files at once, or (NUMBER-OF-LOGICAL_CPUS - 4 ) / 2, whichever is greater. 
