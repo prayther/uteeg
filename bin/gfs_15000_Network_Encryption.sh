@@ -63,7 +63,7 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 #this script can be run multiple times with a few precautions like umounting
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do ssh "${i}" "unmount /var/run/gluster/shared_storage/"
 done
 
@@ -73,7 +73,7 @@ gluster volume geo-replication labvol \
 
 for vols in $(gluster volume list);do echo y | gluster volume stop ${vols};done
 
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" "systemctl restart glusterd"
 done
 
@@ -81,13 +81,13 @@ done
 
 #Generate a private key for each system.
 #Use the generated private key to create a signed certificate by running the following command:
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do ssh "${i}" "openssl genrsa -out /etc/ssl/glusterfs.key 2048"
      ssh "${i}" "openssl req -new -x509 -key /etc/ssl/glusterfs.key -subj "/CN=${i}" -days 365 -out /etc/ssl/glusterfs.pem"
 done
 
 #look at files
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do ssh "${i}" "openssl rsa -in /etc/ssl/glusterfs.key -check"
      ssh "${i}" "openssl rsa -noout -text -in glusterfs.key"
      ssh "${i}" "openssl rsa -noout -modulus -in glusterfs.key | openssl md5"
@@ -98,18 +98,18 @@ done
 #For self signed CA certificates on servers, collect the .pem certificates of clients and servers, that is, /etc/ssl/glusterfs.pem files from every system. Concatenate the collected files into a single file.
 #Place this file in /etc/ssl/glusterfs.ca on all the servers in the trusted storage pool.
 cat /dev/null > /etc/ssl/glusterfs.ca
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do scp "${i}":/etc/ssl/glusterfs.pem /var/tmp/glusterfs_"${i}".pem
 	  cat /var/tmp/glusterfs_"${i}".pem >> /etc/ssl/glusterfs.ca
 done
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do scp /etc/ssl/glusterfs.ca "${i}":/etc/ssl/
 done
 
 #verify the ca chain
 openssl verify -verbose -purpose sslserver -CAfile /etc/ssl/glusterfs.pem /etc/ssl/glusterfs.ca
 
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" "systemctl restart glusterd"
 done
 
@@ -119,13 +119,13 @@ ssh rhel-client.prayther.org "mkdir /mnt/glusterfs"
 ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/gluster_shared_storage /mnt/glusterfs"
 
 #Set the list of common names of all the servers to access the volume. Be sure to include the common names of clients which will be allowed to access the volume.
-for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do ssh "${i}" "mkdir -p /var/lib/glusterd/" && \
 	  ssh "${i}" "touch /var/lib/glusterd/secure-access"
 done
 
 gluster volume set gluster_shared_storage auth.ssl-allow \
-	'gfs-admin.prayther.org,gfs-node2.prayther.org,gfs-node3.prayther.org,rhel-client.prayther.org'
+	'gfs-admin.prayther.org,gfs-node1.prayther.org,gfs-node2.prayther.org,gfs-node3.prayther.org,rhel-client.prayther.org'
 
 echo y | gluster volume stop gluster_shared_storage
 
