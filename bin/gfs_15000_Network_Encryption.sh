@@ -83,8 +83,8 @@ cat /dev/null > /etc/ssl/glusterfs.ca
 for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do scp "${i}":/etc/ssl/glusterfs.pem /var/tmp/glusterfs_"${i}".pem
 	  #openssl x509 -in /var/tmp/glusterfs_"${i}".pem -out /etc/ssl/glusterfs_"${i}"_done.pem -inform DER -outform PEM
-          ssh "${i}" openssl x509 -in /etc/ssl/glusterfs.pem -text -noout >> /etc/ssl/glusterfs.ca
-	  #cat /var/tmp/glusterfs_"${i}".pem >> /etc/ssl/glusterfs.ca
+          #ssh "${i}" openssl x509 -in /var/tmp/glusterfs_"${i}".pem -text -noout >> /etc/ssl/glusterfsi_"${i}"_readable.pem
+	  cat /var/tmp/glusterfs_"${i}".pem >> /etc/ssl/glusterfs.ca
 done
 for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do scp /etc/ssl/glusterfs.ca "${i}":/etc/ssl/
