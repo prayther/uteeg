@@ -74,7 +74,9 @@ done
 #look at files
 for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do ssh "${i}" "openssl rsa -in /etc/ssl/glusterfs.key -check"
-     #ssh "${i}" "openssl x509 -in /etc/ssl/glusterfs.pem -text -noout > /etc/ssl/glusterfs_text.pem"
+     ssh "${i}" "openssl rsa -noout -text -in glusterfs.key"
+     ssh "${i}" "openssl rsa -noout -modulus -in glusterfs.key | openssl md5"
+     ssh "${i}" "openssl x509 -in /etc/ssl/glusterfs.pem -text -noout"
      ssh "${i}" "openssl x509 -noout -in /etc/ssl/glusterfs.pem -text"
 done
 
