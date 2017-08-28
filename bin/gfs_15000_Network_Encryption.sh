@@ -62,62 +62,63 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
-  do ssh "${i}" firewall-cmd --zone=public --add-port=5666/tcp --permanent && \
-          ssh "${i}" systemctl restart firewalld
+echo y | gluster volume stop gluster_shared_storage
+
+#Generate a private key for each system.
+#Use the generated private key to create a signed certificate by running the following command:
+for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+  do ssh "${i}" "openssl genrsa -out /etc/ssl/glusterfs.key 2048 && \
+          ssh "${i}" openssl req -new -x509 -key /etc/ssl/glusterfs.key -subj "/CN=$(hostname)" -days 365 -out /etc/ssl/glusterfs.pem"
 done
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
-  do ssh "${i}" "sed -i '/^allowed_hosts/ s/$/,10.0.0.9/' /etc/nagios/nrpe.cfg"
+#look at files
+for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+  do ssh "${i}" "openssl rsa -in /etc/ssl/glusterfs.key -check && \
+     ssh "${i}" openssl x509 -in /etc/ssl/glusterfs.pem -text -noout"
 done
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
-  do ssh "${i}" "systemctl restart nrpe"
+#For self signed CA certificates on servers, collect the .pem certificates of clients and servers, that is, /etc/ssl/glusterfs.pem files from every system. Concatenate the collected files into a single file.
+#Place this file in /etc/ssl/glusterfs.ca on all the servers in the trusted storage pool.
+cat /dev/null > /etc/ssl/glusterfs.ca
+for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+  do scp "${i}":/etc/ssl/glusterfs.pem /var/tmp/glusterfs_"${i}".pem
+	  #openssl x509 -in /var/tmp/glusterfs_"${i}".pem -out /etc/ssl/glusterfs_"${i}"_done.pem -inform DER -outform PEM
+          ssh "${i}" openssl x509 -in /etc/ssl/glusterfs.pem -text -noout >> /etc/ssl/glusterfs.ca
+	  #cat /var/tmp/glusterfs_"${i}".pem >> /etc/ssl/glusterfs.ca
+done
+for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+  do scp /etc/ssl/glusterfs.ca "${i}":/etc/ssl/
 done
 
-yum -y install nagios-server-addons mutt sendmail
-sed -i /Addr=127.0.0.1/d /etc/mail/sendmail.mc
-systemctl enable sendmail
-systemctl start sendmail
+#verify the ca chain
+openssl verify -verbose -purpose sslserver -CAfile CAchain.pem /etc/ssl/glusterfs.ca
 
-#this might help with the questions
-#echo \n \n \n | configure-gluster-nagios -c gluster-cluster -H 10.0.0.9
-configure-gluster-nagios -c gluster-cluster -H 10.0.0.9
-nagios -v /etc/nagios/nagios.cfg
+gluster volume start gluster_shared_storage
 
-#Modify contact_name, alias, and email directives in /etc/nagios/gluster/gluster-contacts.cfg to reflect student
-#Add the contact name student for gluster-service and gluster-generic-host in /etc/nagios/gluster/gluster-templates.cfg.
-#if geouser is not found add section
-if [[ ! $(grep geouser@localhost /etc/nagios/gluster/gluster-contacts.cfg) ]];then
-cat << "EOF" >> /etc/nagios/gluster/gluster-contacts.cfg
-define contact {
-       contact_name                  student
-       alias                         student
-       email                         geouser@localhost
-       service_notification_period   24x7
-       service_notification_options  w,u,c,r,f,s
-       service_notification_commands notify-service-by-email
-       host_notification_period      24x7
-       host_notification_options     d,u,r,f,s
-       host_notification_commands    notify-host-by-email
-}
-EOF
-fi
+ssh rhel-client.prayther.org "mkdir /mnt/glusterfs"
+ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/gluster_shared_storage /mnt/glusterfs"
 
-# search for contacts, add ',student' to end of line
-if [[ ! $(grep snmp,student /etc/nagios/gluster/gluster-templates.cfg) ]];then
-sed -i '/contacts/ s/$/,student/' /etc/nagios/gluster/gluster-templates.cfg
-fi
+#Set the list of common names of all the servers to access the volume. Be sure to include the common names of clients which will be allowed to access the volume.
+for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+  do ssh "${i}" "mkdir -p /var/lib/glusterd/" && \
+	  ssh "${i}" "touch /var/lib/glusterd/secure-access"
+done
 
-#Add $NOTIFICATIONCOMMENT$\n directly before | /bin/mail -s in /etc/nagios/objects/commands.cfg for both notify-service-by-email and notify-host-by-email definitions.
-#search for '" |' and replace with  '$NOTIFICATIONCOMMENT$\n\" |'
-sed 's/"\ |/\ $NOTIFICATIONCOMMENT$\\n\" |/g' /etc/nagios/objects/commands.cfg
+gluster volume set gluster_shared_storage auth.ssl-allow \
+	'gfs-admin.prayther.org,gfs-node2.prayther.org,gfs-node3.prayther.org,rhel-client.prayther.org'
 
-#Enable profiling
-gluster volume  profile labvol start
-gluster volume info labvol #diagnostics.count-fop-hits: on
-gluster volume profile labvol info cumulative
-gluster volume  profile labvol stop #turn it off
-gluster volume top labvol open #View the performance metrics of bricks
+echo y | gluster volume stop gluster_shared_storage
+
+#Enable the client.ssl and server.ssl options on the volume.
+gluster volume set gluster_shared_storage client.ssl on
+gluster volume set gluster_shared_storage server.ssl on
+
+gluster volume start gluster_shared_storage
+gluster volume info gluster_shared_storage
+gluster volume status gluster_shared_storage
+
+ssh rhel-client.prayther.org "umount /mnt/glusterfs"
+ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/gluster_shared_storage /mnt/glusterfs"
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
