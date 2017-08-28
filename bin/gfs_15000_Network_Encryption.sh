@@ -62,7 +62,22 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
-echo y | gluster volume stop gluster_shared_storage
+#this script can be run multiple times with a few precautions like umounting
+for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
+  do ssh "${i}" "unmount /var/run/gluster/shared_storage/"
+done
+
+#stop all gluster volumes
+gluster volume geo-replication labvol \
+	geouser@10.0.0.14::backupvol stop
+
+for vols in $(gluster volume list);do echo y | gluster volume stop ${vols};done
+
+for i in gfs-admin.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+  do ssh "${i}" "systemctl restart glusterd"
+done
+
+#gluster volume start gluster_shared_storage
 
 #Generate a private key for each system.
 #Use the generated private key to create a signed certificate by running the following command:

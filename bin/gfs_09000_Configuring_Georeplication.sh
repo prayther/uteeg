@@ -156,6 +156,9 @@ gluster volume geo-replication labvol \
 gluster volume geo-replication labvol \
 	geouser@10.0.0.14::backupvol start
 
+#gluster volume geo-replication labvol \
+#        geouser@10.0.0.14::backupvol stop
+
 gluster volume geo-replication status
 # log file for trouble shooting
 gluster volume geo-replication labvol geouser@10.0.0.14::backupvol config log-file
