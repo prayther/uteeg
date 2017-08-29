@@ -63,7 +63,7 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 # VG, Thin pool, LV virtualsize
-for i in gfs-admin gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" pvcreate /dev/vdb && \
           ssh "${i}" vgcreate rhs_vg /dev/vdb && \
           ssh "${i}" lvcreate -L 19G -T rhs_vg/rhs_pool
