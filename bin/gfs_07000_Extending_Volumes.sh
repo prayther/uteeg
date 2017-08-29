@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-#runs or not based on hostname; ceph-?? gfs-??? sat-???
+#runs or not based on hostname; ceph-?? gfs-??? s.prayther.orgat-???
 if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "gfs" ]];then
  echo ""
  echo "Need to run this on the 'gfs' node"
@@ -64,37 +64,37 @@ fi
 
 ######################################################################################################
 #LV virtualsize
-ssh gfs-node1 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv4"
-ssh gfs-node2 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv5"
-ssh gfs-node3 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv6"
+ssh gfs-node1.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv4"
+ssh gfs-node2.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv5"
+ssh gfs-node3.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv6"
 #mkfs
-ssh gfs-node1 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv4"
-ssh gfs-node2 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv5"
-ssh gfs-node3 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv6"
+ssh gfs-node1.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv4"
+ssh gfs-node2.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv5"
+ssh gfs-node3.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv6"
 #mount dir
-ssh gfs-node1 "ls /bricks/rhs_lv4 || mkdir -p /bricks/rhs_lv4"
-ssh gfs-node2 "ls /bricks/rhs_lv5 || mkdir -p /bricks/rhs_lv5"
-ssh gfs-node3 "ls /bricks/rhs_lv6 || mkdir -p /bricks/rhs_lv6"
+ssh gfs-node1.prayther.org "ls /bricks/rhs_lv4 || mkdir -pv /bricks/rhs_lv4"
+ssh gfs-node2.prayther.org "ls /bricks/rhs_lv5 || mkdir -pv /bricks/rhs_lv5"
+ssh gfs-node3.prayther.org "ls /bricks/rhs_lv6 || mkdir -pv /bricks/rhs_lv6"
 #fstab entry
-ssh gfs-node1 "grep rhs_lv4 /etc/fstab || echo /dev/rhs_vg/rhs_lv4 /bricks/rhs_lv4 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs-node2 "grep rhs_lv5 /etc/fstab || echo /dev/rhs_vg/rhs_lv5 /bricks/rhs_lv5 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs-node3 "grep rhs_lv6 /etc/fstab || echo /dev/rhs_vg/rhs_lv6 /bricks/rhs_lv6 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node1.prayther.org "grep rhs_lv4 /etc/fstab || echo /dev/rhs_vg/rhs_lv4 /bricks/rhs_lv4 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node2.prayther.org "grep rhs_lv5 /etc/fstab || echo /dev/rhs_vg/rhs_lv5 /bricks/rhs_lv5 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node3.prayther.org "grep rhs_lv6 /etc/fstab || echo /dev/rhs_vg/rhs_lv6 /bricks/rhs_lv6 xfs defaults 1 2 >> /etc/fstab"
 #mount
-ssh gfs-node1 "mount /bricks/rhs_lv4"
-ssh gfs-node2 "mount /bricks/rhs_lv5"
-ssh gfs-node3 "mount /bricks/rhs_lv6"
+ssh gfs-node1.prayther.org "mount /bricks/rhs_lv4"
+ssh gfs-node2.prayther.org "mount /bricks/rhs_lv5"
+ssh gfs-node3.prayther.org "mount /bricks/rhs_lv6"
 #mkdir selinux context
-ssh gfs-node1 "ls /bricks/rhs_lv4/brick || mkdir -p /bricks/rhs_lv4/brick"
-ssh gfs-node2 "ls /bricks/rhs_lv5/brick || mkdir -p /bricks/rhs_lv5/brick"
-ssh gfs-node3 "ls /bricks/rhs_lv6/brick || mkdir -p /bricks/rhs_lv6/brick"
+ssh gfs-node1.prayther.org "ls /bricks/rhs_lv4/brick || mkdir -pv /bricks/rhs_lv4/brick"
+ssh gfs-node2.prayther.org "ls /bricks/rhs_lv5/brick || mkdir -pv /bricks/rhs_lv5/brick"
+ssh gfs-node3.prayther.org "ls /bricks/rhs_lv6/brick || mkdir -pv /bricks/rhs_lv6/brick"
 #semanage
-ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv4/brick"
-ssh gfs-node2 "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv5/brick"
-ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv6/brick"
+ssh gfs-node1.prayther.org "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv4/brick"
+ssh gfs-node2.prayther.org "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv5/brick"
+ssh gfs-node3.prayther.org "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv6/brick"
 #restorecon
-ssh gfs-node1 "restorecon -Rv /bricks/rhs_lv4"
-ssh gfs-node2 "restorecon -Rv /bricks/rhs_lv5"
-ssh gfs-node3 "restorecon -Rv /bricks/rhs_lv6"
+ssh gfs-node1.prayther.org "restorecon -Rv /bricks/rhs_lv4"
+ssh gfs-node2.prayther.org "restorecon -Rv /bricks/rhs_lv5"
+ssh gfs-node3.prayther.org "restorecon -Rv /bricks/rhs_lv6"
 
 #create/start gluster volume: labvol
 #gluster volume create labvol \
@@ -122,9 +122,9 @@ gluster volume rebalance labvol start
 gluster volume rebalance labvol status
 
 #Red Hat Gluster Storage volumes can be shrunk while online by removing one or more bricks. During removal, the replica count can be adjusted as well.
-gluster volume remove-brick labvol gfs-node1:/bricks/rhs_lv4/brick gfs-node1:/bricks/rhs_lv1/brick start
-gluster volume remove-brick labvol gfs-node1:/bricks/rhs_lv4/brick gfs-node1:/bricks/rhs_lv1/brick status
-echo y | gluster volume remove-brick labvol gfs-node1:/bricks/rhs_lv4/brick gfs-node1:/bricks/rhs_lv1/brick commit 
+gluster volume remove-brick labvol gfs-node1.prayther.org:/bricks/rhs_lv4/brick gfs-node1.prayther.org:/bricks/rhs_lv1/brick start
+gluster volume remove-brick labvol gfs-node1.prayther.org:/bricks/rhs_lv4/brick gfs-node1.prayther.org:/bricks/rhs_lv1/brick status
+echo y | gluster volume remove-brick labvol gfs-node1.prayther.org:/bricks/rhs_lv4/brick gfs-node1.prayther.org:/bricks/rhs_lv1/brick commit 
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
