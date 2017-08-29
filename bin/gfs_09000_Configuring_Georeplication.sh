@@ -72,99 +72,99 @@ fi
 #fi
 
 #geouser for unpriv geo user.
-ssh 10.0.0.14 adduser geouser
-ssh 10.0.0.14 "echo password | passwd geouser --stdin"
-ssh 10.0.0.14 groupadd geogroup
-ssh 10.0.0.14 "usermod -G geogroup geouser"
+ssh gfs-backup.prayther.org adduser geouser
+ssh gfs-backup.prayther.org "echo password | passwd geouser --stdin"
+ssh gfs-backup.prayther.org groupadd geogroup
+ssh gfs-backup.prayther.org "usermod -G geogroup geouser"
 
 # from gfs-admin get everyone talking
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-        for i in 10.0.0.14
+        for i in gfs-backup.prayther.org
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no geouser@"${i}" && \
 		  sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
         done
 fi
 
 #firewall for glusterfs
-for i in 10.0.0.14
+for i in gfs-backup.prayther.org
   do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
           ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
           ssh "${i}" systemctl restart firewalld
 done
 
 # VG, Thin pool, LV virtualsize
-ssh 10.0.0.14 "vgcreate backupvol_vg /dev/vdb"
-ssh 10.0.0.14 "lvcreate -L 10G -T backupvol_vg/backupvol_pool"
+ssh gfs-backup.prayther.org "vgcreate backupvol_vg /dev/vdb"
+ssh gfs-backup.prayther.org "lvcreate -L 10G -T backupvol_vg/backupvol_pool"
 #LV virtualsize
-ssh 10.0.0.14 "lvcreate -V 6G -T backupvol_vg/backupvol_pool -n backup_lv1"
+ssh gfs-backup.prayther.org "lvcreate -V 6G -T backupvol_vg/backupvol_pool -n backup_lv1"
 #mkfs
-ssh 10.0.0.14 "mkfs.xfs -f -i size=512 /dev/backupvol_vg/backup_lv1"
+ssh gfs-backup.prayther.org "mkfs.xfs -f -i size=512 /dev/backupvol_vg/backup_lv1"
 #mount dir
-ssh 10.0.0.14 "ls /bricks/backup_lv1 || mkdir -p /bricks/backup_lv1"
+ssh gfs-backup.prayther.org "ls /bricks/backup_lv1 || mkdir -pv /bricks/backup_lv1"
 #fstab entry
-ssh 10.0.0.14 "grep backup_lv1 /etc/fstab || echo /dev/backupvol_vg/backup_lv1 /bricks/backup_lv1 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-backup.prayther.org "grep backup_lv1 /etc/fstab || echo /dev/backupvol_vg/backup_lv1 /bricks/backup_lv1 xfs defaults 1 2 >> /etc/fstab"
 #mount
-ssh 10.0.0.14 "mkdir -p /bricks/backup_lv1"
-ssh 10.0.0.14 "mount /bricks/backup_lv1"
+ssh gfs-backup.prayther.org "mkdir -pv /bricks/backup_lv1"
+ssh gfs-backup.prayther.org "mount /bricks/backup_lv1"
 #mkdir selinux context
-ssh 10.0.0.14 "ls /bricks/backup_lv1/brick || mkdir -p /bricks/backup_lv1/brick"
+ssh gfs-backup.prayther.org "ls /bricks/backup_lv1/brick || mkdir -pv /bricks/backup_lv1/brick"
 #semanage
-ssh 10.0.0.14 "semanage fcontext -a -t glusterd_brick_t /bricks/backup_lv1/brick"
+ssh gfs-backup.prayther.org "semanage fcontext -a -t glusterd_brick_t /bricks/backup_lv1/brick"
 #restorecon
-ssh 10.0.0.14 "restorecon -Rv /bricks/backup_lv1"
+ssh gfs-backup.prayther.org "restorecon -Rv /bricks/backup_lv1"
 #create/start gluster volume: backupvol
-ssh 10.0.0.14 "gluster volume create backupvol \
-        10.0.0.14:/bricks/backup_lv1/brick force"
-ssh 10.0.0.14 "gluster volume start backupvol"
-ssh 10.0.0.14 "gluster volume status backupvol"
+ssh gfs-backup.prayther.org "gluster volume create backupvol \
+        gfs-backup.prayther.org:/bricks/backup_lv1/brick force"
+ssh gfs-backup.prayther.org "gluster volume start backupvol"
+ssh gfs-backup.prayther.org "gluster volume status backupvol"
 
 #Enable shared storage:
 gluster volume set all cluster.enable-shared-storage enable
 #/var/mountbroker-root. This directory must be created with permissions 0711
-ssh 10.0.0.14 "mkdir -m 0711 /var/mountbroker-root"
-ssh 10.0.0.14 "semanage fcontext -a -e /home /var/mountbroker-root"
-ssh 10.0.0.14 "restorecon -Rv /var/mountbroker-root"
+ssh gfs-backup.prayther.org "mkdir -pv -m 0711 /var/mountbroker-root"
+ssh gfs-backup.prayther.org "semanage fcontext -a -e /home /var/mountbroker-root"
+ssh gfs-backup.prayther.org "restorecon -Rv /var/mountbroker-root"
 #Set the mountbroker-root directory to /var/mountbroker-root.
-ssh 10.0.0.14 "gluster system:: execute mountbroker \
+ssh gfs-backup.prayther.org "gluster system:: execute mountbroker \
 	opt mountbroker-root /var/mountbroker-root"
 #Set the mountbroker user for the backupvol volume to geouser.
-ssh 10.0.0.14 "gluster system:: execute mountbroker \
+ssh gfs-backup.prayther.org "gluster system:: execute mountbroker \
 	user geouser backupvol"
 #Set the geo-replication-log-group group to geogroup.
-ssh 10.0.0.14 "gluster system:: execute mountbroker \
+ssh gfs-backup.prayther.org "gluster system:: execute mountbroker \
  opt geo-replication-log-group geogroup"
 #Allow RPC connections from unprivileged ports.
-ssh 10.0.0.14 "gluster system:: execute mountbroker \
+ssh gfs-backup.prayther.org "gluster system:: execute mountbroker \
 	opt rpc-auth-allow-insecure on"
 
-ssh 10.0.0.14 "systemctl restart glusterd"
+ssh gfs-backup.prayther.org "systemctl restart glusterd"
 
 #create SSH key pairs for the georeplication daemon for each node.
 gluster system:: execute gsec_create
 #create and push the SSH keys that will be used for georeplication.
 gluster volume geo-replication labvol \
-	geouser@10.0.0.14::backupvol create push-pem
+	geouser@gfs-backup.prayther.org::backupvol create push-pem
 
 #copy the keys pushed in the previous step to the correct locations.
-ssh 10.0.0.14 "/usr/libexec/glusterfs/set_geo_rep_pem_keys.sh \
+ssh gfs-backup.prayther.org "/usr/libexec/glusterfs/set_geo_rep_pem_keys.sh \
 	geouser labvol backupvol"
 
 #configure the georeplication link between labvol and backupvol to use shared storage for keeping track of changes, and more.
 gluster volume geo-replication labvol \
-	geouser@10.0.0.14::backupvol config use_meta_volume true
+	geouser@gfs-backup.prayther.org::backupvol config use_meta_volume true
 #Start georeplication between labvol and backupvol.
 gluster volume geo-replication labvol \
-	geouser@10.0.0.14::backupvol start
+	geouser@gfs-backup.prayther.org::backupvol start
 
 #gluster volume geo-replication labvol \
-#        geouser@10.0.0.14::backupvol stop
+#        geouser@gfs-backup.prayther.org::backupvol stop
 
 gluster volume geo-replication status
 # log file for trouble shooting
-gluster volume geo-replication labvol geouser@10.0.0.14::backupvol config log-file
-#/var/log/glusterfs/geo-replication/labvol/ssh%3A%2F%2Fgeouser%4010.0.0.14%3Agluster%3A%2F%2F127.0.0.1%3Abackupvol.log
+gluster volume geo-replication labvol geouser@gfs-backup.prayther.org::backupvol config log-file
+#/var/log/glusterfs/geo-replication/labvol/ssh%3A%2F%2Fgeouser%40gfs-backup.prayther.org%3Agluster%3A%2F%2F127.0.0.1%3Abackupvol.log
 gluster volume geo-replication labvol \
- geouser@10.0.0.14::backupvol config checkpoint now
+ geouser@gfs-backup.prayther.org::backupvol config checkpoint now
 #geo-replication config updated successfully
 
 
@@ -173,7 +173,7 @@ gluster volume set labvol changelog.rollover-time 5
 
 #Configure the georeplication agreement to keep files deleted from labvol on backupvol.
 gluster volume geo-replication labvol \
-	geouser@10.0.0.14::backupvol config ignore-deletes true
+	geouser@gfs-backup.prayther.org::backupvol config ignore-deletes true
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
