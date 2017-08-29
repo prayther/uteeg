@@ -107,14 +107,14 @@ gluster volume start distdispvol
 #Configure client to persistently mount
 #mount native client
 ssh rhel-client.prayther.org yum -y install glusterfs-fuse
-ssh rhel-client.prayther.org "echo gfs-node1.prayther.org:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
-ssh rhel-client.prayther.org "mount -a"
+ssh rhel-client.prayther.org "echo #gfs-node1.prayther.org:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
+doit ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/labvol /mnt/labvol"
 ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/games"
 ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/private_games"
 #mount nfs
 ssh rhel-client.prayther.org "mkdir -pv /mnt/distdispvol"
-ssh rhel-client.prayther.org "echo gfs-node2.prayther.org:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
-ssh rhel-client.prayther.org "mount -a"
+ssh rhel-client.prayther.org "echo #gfs-node2.prayther.org:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
+doit ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/distdispvol /mnt/distdispvol"
 
 #ownership, facl's
 ssh rhel-client.prayther.org "chgrp games /mnt/labvol/games"
@@ -177,7 +177,7 @@ gluster volume set labvol quota-deem-statfs on
 #Set the quota update timeout for 'labvol' before the soft limit is reached to 30 seconds, and to five seconds for when the soft limit is exceeded.
 gluster volume quota labvol soft-timeout 30s
 gluster volume quota labvol hard-timeout 5s
-ssh rhel-client.prayther.org "mount /mnt/labvol"
+doit ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/labvol /mnt/labvol"
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
