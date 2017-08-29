@@ -120,13 +120,13 @@ ansible gfs-node3 -a "mkfs.xfs -f -i size=512 /dev/rhs_vg/brick-44"
 #  do ssh gfs-admin mkdir -p /bricks/brick-1"${i}"
 #done
 for i in {1..4}
-  do ssh gfs-node1 mkdir -p /bricks/brick-2"${i}"
+  do ssh gfs-node1 mkdir -pv /bricks/brick-2"${i}"
 done
 for i in {1..4}
-  do ssh gfs-node2 mkdir -p /bricks/brick-3"${i}"
+  do ssh gfs-node2 mkdir -pv /bricks/brick-3"${i}"
 done
 for i in {1..4}
-  do ssh gfs-node3 mkdir -p /bricks/brick-4"${i}"
+  do ssh gfs-node3 mkdir -pv /bricks/brick-4"${i}"
 done
 #fstab entry
 ssh gfs-admin "grep brick-1 /etc/fstab || echo /dev/rhs_vg/brick-11 /bricks/brick-11 xfs defaults 1 2 >> /etc/fstab"
