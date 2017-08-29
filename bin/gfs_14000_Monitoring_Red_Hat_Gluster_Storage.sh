@@ -62,16 +62,16 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org gfs-backup.prayther.org
   do ssh "${i}" firewall-cmd --zone=public --add-port=5666/tcp --permanent && \
           ssh "${i}" systemctl restart firewalld
 done
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
-  do ssh "${i}" "sed -i '/^allowed_hosts/ s/$/,10.0.0.9/' /etc/nagios/nrpe.cfg"
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org gfs-backup.prayther.org
+  do ssh "${i}" "sed -i '/^allowed_hosts/ s/$/,gfs-admin.prayther.org/' /etc/nagios/nrpe.cfg"
 done
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org gfs-backup.prayther.org
   do ssh "${i}" "systemctl restart nrpe"
 done
 
@@ -82,8 +82,8 @@ systemctl start sendmail
 
 #this might help with the questions
 #almost works but not quite. have to hit enter for a few questions
-#echo \n \n \n | configure-gluster-nagios -c gluster-cluster -H 10.0.0.9
-configure-gluster-nagios -c gluster-cluster -H 10.0.0.9
+#echo \n \n \n | configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
+configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
 nagios -v /etc/nagios/nagios.cfg
 
 #Modify contact_name, alias, and email directives in /etc/nagios/gluster/gluster-contacts.cfg to reflect student
