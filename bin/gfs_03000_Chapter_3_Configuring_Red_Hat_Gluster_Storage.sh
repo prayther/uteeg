@@ -106,9 +106,9 @@ ssh gfs-node3.prayther.org "restorecon -Rv /bricks/rhs_lv3"
 #	10.0.0.11:/bricks/rhs_lv2/brick \
 #	10.0.0.12:/bricks/rhs_lv3/brick force
 gluster volume create labvol \
-	gfs-node1.prayther.org.prayther.org:/bricks/rhs_lv1/brick \
-	gfs-node2.prayther.org.prayther.org:/bricks/rhs_lv2/brick \
-	gfs-node3.prayther.org.prayther.org:/bricks/rhs_lv3/brick force
+	gfs-node1.prayther.org:/bricks/rhs_lv1/brick \
+	gfs-node2.prayther.org:/bricks/rhs_lv2/brick \
+	gfs-node3.prayther.org:/bricks/rhs_lv3/brick force
 gluster volume start labvol
 gluster volume status labvol
 
