@@ -121,7 +121,14 @@ gluster volume profile labvol info cumulative
 gluster volume  profile labvol stop #turn it off
 gluster volume top labvol open #View the performance metrics of bricks
 
-mutt
+#mutt
+echo "su - geouser"
+echo ""
+echo "mutt"
+echo ""
+echo "should get notification from nagios"
+echo ""
+
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

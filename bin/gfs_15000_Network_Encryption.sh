@@ -64,12 +64,12 @@ fi
 
 #this script can be run multiple times with a few precautions like umounting
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
-  do ssh "${i}" "unmount /var/run/gluster/shared_storage/"
+  do ssh "${i}" "umount /var/run/gluster/shared_storage/"
 done
 
 #stop all gluster volumes
 gluster volume geo-replication labvol \
-	geouser@10.0.0.14::backupvol stop
+	geouser@gfs-backup.prayther.org::backupvol stop
 
 for vols in $(gluster volume list);do echo y | gluster volume stop ${vols};done
 
@@ -89,9 +89,8 @@ done
 #look at files
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
   do ssh "${i}" "openssl rsa -in /etc/ssl/glusterfs.key -check"
-     ssh "${i}" "openssl rsa -noout -text -in glusterfs.key"
-     ssh "${i}" "openssl rsa -noout -modulus -in glusterfs.key | openssl md5"
-     ssh "${i}" "openssl x509 -in /etc/ssl/glusterfs.pem -text -noout"
+     ssh "${i}" "openssl rsa -noout -text -in /etc/ssl/glusterfs.key"
+     ssh "${i}" "openssl rsa -noout -modulus -in /etc/ssl/glusterfs.key | openssl md5"
      ssh "${i}" "openssl x509 -noout -in /etc/ssl/glusterfs.pem -text"
 done
 
@@ -115,12 +114,12 @@ done
 
 gluster volume start gluster_shared_storage
 
-ssh rhel-client.prayther.org "mkdir /mnt/glusterfs"
+ssh rhel-client.prayther.org "mkdir -pv /mnt/glusterfs"
 ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/gluster_shared_storage /mnt/glusterfs"
 
 #Set the list of common names of all the servers to access the volume. Be sure to include the common names of clients which will be allowed to access the volume.
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
-  do ssh "${i}" "mkdir -p /var/lib/glusterd/" && \
+  do ssh "${i}" "mkdir -pv /var/lib/glusterd/" && \
 	  ssh "${i}" "touch /var/lib/glusterd/secure-access"
 done
 

@@ -175,5 +175,11 @@ gluster volume set labvol changelog.rollover-time 5
 gluster volume geo-replication labvol \
 	geouser@gfs-backup.prayther.org::backupvol config ignore-deletes true
 
+#shut down geo-replication. hard to shutdown labvol later because of geo-replication
+gluster volume geo-replication labvol \
+        geouser@gfs-backup.prayther.org::backupvol stop
+
+gluster volume geo-replication status
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
