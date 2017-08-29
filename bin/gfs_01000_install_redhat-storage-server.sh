@@ -85,14 +85,27 @@ if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 fi
 
+## from gfs-admin get everyone talking 
+#if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
+#        for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.13 10.0.0.14
+#          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
+#        done
+#fi
+#
+#for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
+#  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
+#          ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
+#          ssh "${i}" systemctl restart firewalld
+#done
+
 # from gfs-admin get everyone talking 
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-        for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.13 10.0.0.14
+        for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org gfs-backup.prayther.org
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
         done
 fi
 
-for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org gfs-backup.prayther.org
   do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
           ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
           ssh "${i}" systemctl restart firewalld
@@ -101,12 +114,12 @@ done
 #again with names. having issues with names in some places.
 # from gfs-admin get everyone talking
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-        for i in gfs-admin gfs-client gfs-backup gfs-node1 gfs-node2 gfs-node3
+        for i in gfs-admin.prayther.org gfs-client.prayther.org gfs-backup.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
           do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
         done
 fi
 
-for i in gfs-admin gfs-backup gfs-node1 gfs-node2 gfs-node3
+for i in gfs-admin.prayther.org gfs-backup.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
           ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
           ssh "${i}" systemctl restart firewalld
@@ -119,7 +132,7 @@ done
 
 #only run this on admin node gfs-admin, ceph_admin
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-        for i in 10.0.0.10 10.0.0.11 10.0.0.12
+        for i in gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
           do gluster peer probe "${i}"
         done
 fi
