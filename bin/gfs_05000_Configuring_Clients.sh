@@ -41,7 +41,7 @@ doit() {
         fi
 }
 
-#runs or not based on hostname; ceph-?? gfs-??? sat-???
+#runs or not based on hostname; ceph-?? gfs-??? s.prayther.orgat-???
 if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "gfs" ]];then
  echo ""
  echo "Need to run this on the 'gfs' node"
@@ -63,12 +63,12 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 # VG, Thin pool, LV virtualsize
-#for i in gfs-node1 gfs-node2 gfs-node3
+#for i in gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
 #  do ssh "${i}" pvcreate /dev/vdb
 #          ssh "${i}" vgcreate rhs_vg /dev/vdb
 #          ssh "${i}" lvcreate -L 10G -T rhs_vg/rhs_pool
 #done
-#for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
+#for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
 #  do grep -F '[gluster]' /etc/ansible/hosts || echo "[gluster]" >> /etc/ansible/hosts && \
 #	  grep "${i}" /etc/ansible/hosts || echo "${i}" >> /etc/ansible/hosts
 #  done
@@ -84,9 +84,9 @@ fi
 #        ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
 #        ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 #fi
-## from gfs-admin get everyone talking
+## from gfs-admin.prayther.org get everyone talking
 #if [[ $(hostname -s | awk -F"_" '{print $2}') -eq "admin" ]];then
-#        for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
+#        for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
 #          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
 
 #apply all relevant volume options
@@ -106,35 +106,35 @@ gluster volume start distdispvol
 
 #Configure client to persistently mount
 #mount native client
-ssh 10.0.0.13 yum -y install glusterfs-fuse
-ssh 10.0.0.13 "echo gfs-node1:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
-ssh 10.0.0.13 "mount -a"
-ssh 10.0.0.13 "mkdir -p /mnt/labvol/games"
-ssh 10.0.0.13 "mkdir -p /mnt/labvol/private_games"
+ssh rhel-client.prayther.org yum -y install glusterfs-fuse
+ssh rhel-client.prayther.org "echo gfs-node1.prayther.org:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
+ssh rhel-client.prayther.org "mount -a"
+ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/games"
+ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/private_games"
 #mount nfs
-ssh 10.0.0.13 "mkdir /mnt/distdispvol"
-ssh 10.0.0.13 "echo gfs-node2:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
-ssh 10.0.0.13 "mount -a"
+ssh rhel-client.prayther.org "mkdir -pv /mnt/distdispvol"
+ssh rhel-client.prayther.org "echo gfs-node2.prayther.org:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
+ssh rhel-client.prayther.org "mount -a"
 
 #ownership, facl's
-ssh 10.0.0.13 "chgrp games /mnt/labvol/games"
-ssh 10.0.0.13 "chmod 2770 /mnt/labvol/games"
-ssh 10.0.0.13 "touch /mnt/labvol/games/me"
-ssh 10.0.0.13 "touch /mnt/labvol/private_games/me"
+ssh rhel-client.prayther.org "chgrp games /mnt/labvol/games"
+ssh rhel-client.prayther.org "chmod 2770 /mnt/labvol/games"
+ssh rhel-client.prayther.org "touch /mnt/labvol/games/me"
+ssh rhel-client.prayther.org "touch /mnt/labvol/private_games/me"
 #group full access to any existing files and directories
-ssh 10.0.0.13 "setfacl -R -m g:games:rwX /mnt/labvol/games"
+ssh rhel-client.prayther.org "setfacl -R -m g:games:rwX /mnt/labvol/games"
 #group full access to any new files and directories
-ssh 10.0.0.13 "setfacl -R -m d:g:games:rwX /mnt/labvol/games"
+ssh rhel-client.prayther.org "setfacl -R -m d:g:games:rwX /mnt/labvol/games"
 
 
 #group read-only access to any existing files and directories
-ssh 10.0.0.13 "setfacl -R -m g:games:rX /mnt/labvol/private_games"
+ssh rhel-client.prayther.org "setfacl -R -m g:games:rX /mnt/labvol/private_games"
 #group read-only access to any new files and directories
-ssh 10.0.0.13 "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
+ssh rhel-client.prayther.org "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
 
-#[root@10.0.0.13 games]# ll -Z /mnt/labvol/
+#[root@rhel-client.prayther.org games]# ll -Z /mnt/labvol/
 #drwxrws---+ root games system_u:object_r:fusefs_t:s0    games
-#[root@10.0.0.13 games]# getfacl /mnt/labvol/games
+#[root@rhel-client.prayther.org games]# getfacl /mnt/labvol/games
 #getfacl: Removing leading '/' from absolute path names
 # file: mnt/labvol/games
 # owner: root
@@ -151,7 +151,7 @@ ssh 10.0.0.13 "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
 #default:mask::rwx
 #default:other::---
 
-#[root@10.0.0.13 games]# getfacl /mnt/labvol/private_games
+#[root@rhel-client.prayther.org games]# getfacl /mnt/labvol/private_games
 #getfacl: Removing leading '/' from absolute path names
 # file: mnt/labvol/private_games
 # owner: root
@@ -168,7 +168,7 @@ ssh 10.0.0.13 "setfacl -R -m d:g:games:rX /mnt/labvol/private_games"
 #default:other::r-x
 
 #Enable quotas for the 'labvol' volume, and set the hard and soft limits (1 GiB and 85%) for the /games directory.
-ssh 10.0.0.13 "umount /mnt/labvol"
+ssh rhel-client.prayther.org "umount /mnt/labvol"
 gluster volume quota labvol enable
 gluster volume quota labvol limit-usage /games 1GB 85%
 #the df command will report the hard-limit as the available space on a directory.
@@ -177,7 +177,7 @@ gluster volume set labvol quota-deem-statfs on
 #Set the quota update timeout for 'labvol' before the soft limit is reached to 30 seconds, and to five seconds for when the soft limit is exceeded.
 gluster volume quota labvol soft-timeout 30s
 gluster volume quota labvol hard-timeout 5s
-ssh 10.0.0.13 "mount /mnt/labvol"
+ssh rhel-client.prayther.org "mount /mnt/labvol"
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
