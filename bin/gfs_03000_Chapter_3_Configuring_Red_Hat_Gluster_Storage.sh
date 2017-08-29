@@ -63,52 +63,52 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 # VG, Thin pool, LV virtualsize
-for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
+for i in gfs-admin gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" pvcreate /dev/vdb && \
           ssh "${i}" vgcreate rhs_vg /dev/vdb && \
           ssh "${i}" lvcreate -L 19G -T rhs_vg/rhs_pool
 done
 #LV virtualsize
-ssh gfs-node1 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv1"
-ssh gfs-node2 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv2"
-ssh gfs-node3 "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv3"
+ssh gfs-node1.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv1"
+ssh gfs-node2.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv2"
+ssh gfs-node3.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv3"
 #mkfs
-ssh gfs-node1 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv1"
-ssh gfs-node2 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv2"
-ssh gfs-node3 "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv3"
+ssh gfs-node1.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv1"
+ssh gfs-node2.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv2"
+ssh gfs-node3.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv3"
 #mount dir
-ssh gfs-node1 "ls /bricks/rhs_lv1 || mkdir -p /bricks/rhs_lv1"
-ssh gfs-node2 "ls /bricks/rhs_lv2 || mkdir -p /bricks/rhs_lv2"
-ssh gfs-node3 "ls /bricks/rhs_lv3 || mkdir -p /bricks/rhs_lv3"
+ssh gfs-node1.prayther.org "ls /bricks/rhs_lv1 || mkdir -p /bricks/rhs_lv1"
+ssh gfs-node2.prayther.org "ls /bricks/rhs_lv2 || mkdir -p /bricks/rhs_lv2"
+ssh gfs-node3.prayther.org "ls /bricks/rhs_lv3 || mkdir -p /bricks/rhs_lv3"
 #fstab entry
-ssh gfs-node1 "grep rhs_lv1 /etc/fstab || echo /dev/rhs_vg/rhs_lv1 /bricks/rhs_lv1 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs-node2 "grep rhs_lv2 /etc/fstab || echo /dev/rhs_vg/rhs_lv2 /bricks/rhs_lv2 xfs defaults 1 2 >> /etc/fstab"
-ssh gfs-node3 "grep rhs_lv3 /etc/fstab || echo /dev/rhs_vg/rhs_lv3 /bricks/rhs_lv3 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node1.prayther.org "grep rhs_lv1 /etc/fstab || echo /dev/rhs_vg/rhs_lv1 /bricks/rhs_lv1 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node2.prayther.org "grep rhs_lv2 /etc/fstab || echo /dev/rhs_vg/rhs_lv2 /bricks/rhs_lv2 xfs defaults 1 2 >> /etc/fstab"
+ssh gfs-node3.prayther.org "grep rhs_lv3 /etc/fstab || echo /dev/rhs_vg/rhs_lv3 /bricks/rhs_lv3 xfs defaults 1 2 >> /etc/fstab"
 #mount
-ssh gfs-node1 "mount /bricks/rhs_lv1"
-ssh gfs-node2 "mount /bricks/rhs_lv2"
-ssh gfs-node3 "mount /bricks/rhs_lv3"
+ssh gfs-node1.prayther.org "mount /bricks/rhs_lv1"
+ssh gfs-node2.prayther.org "mount /bricks/rhs_lv2"
+ssh gfs-node3.prayther.org "mount /bricks/rhs_lv3"
 #mkdir selinux context
-ssh gfs-node1 "ls /bricks/rhs_lv1/brick || mkdir -p /bricks/rhs_lv1/brick"
-ssh gfs-node2 "ls /bricks/rhs_lv2/brick || mkdir -p /bricks/rhs_lv2/brick"
-ssh gfs-node3 "ls /bricks/rhs_lv3/brick || mkdir -p /bricks/rhs_lv3/brick"
+ssh gfs-node1.prayther.org "ls /bricks/rhs_lv1/brick || mkdir -p /bricks/rhs_lv1/brick"
+ssh gfs-node2.prayther.org "ls /bricks/rhs_lv2/brick || mkdir -p /bricks/rhs_lv2/brick"
+ssh gfs-node3.prayther.org "ls /bricks/rhs_lv3/brick || mkdir -p /bricks/rhs_lv3/brick"
 #semanage
-ssh gfs-node1 "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv1/brick"
-ssh gfs-node2 "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv2/brick"
-ssh gfs-node3 "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv3/brick"
+ssh gfs-node1.prayther.org "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv1/brick"
+ssh gfs-node2.prayther.org "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv2/brick"
+ssh gfs-node3.prayther.org "semanage fcontext -a -t glusterd_brick_t /bricks/rhs_lv3/brick"
 #restorecon
-ssh gfs-node1 "restorecon -Rv /bricks/rhs_lv1"
-ssh gfs-node2 "restorecon -Rv /bricks/rhs_lv2"
-ssh gfs-node3 "restorecon -Rv /bricks/rhs_lv3"
+ssh gfs-node1.prayther.org "restorecon -Rv /bricks/rhs_lv1"
+ssh gfs-node2.prayther.org "restorecon -Rv /bricks/rhs_lv2"
+ssh gfs-node3.prayther.org "restorecon -Rv /bricks/rhs_lv3"
 #create/start gluster volume: labvol
 #gluster volume create labvol \
 #	10.0.0.10:/bricks/rhs_lv1/brick \
 #	10.0.0.11:/bricks/rhs_lv2/brick \
 #	10.0.0.12:/bricks/rhs_lv3/brick force
 gluster volume create labvol \
-	gfs-node1.prayther.org:/bricks/rhs_lv1/brick \
-	gfs-node2.prayther.org:/bricks/rhs_lv2/brick \
-	gfs-node3.prayther.org:/bricks/rhs_lv3/brick force
+	gfs-node1.prayther.org.prayther.org:/bricks/rhs_lv1/brick \
+	gfs-node2.prayther.org.prayther.org:/bricks/rhs_lv2/brick \
+	gfs-node3.prayther.org.prayther.org:/bricks/rhs_lv3/brick force
 gluster volume start labvol
 gluster volume status labvol
 
