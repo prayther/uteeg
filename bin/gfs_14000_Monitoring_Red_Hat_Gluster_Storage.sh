@@ -82,8 +82,8 @@ systemctl start sendmail
 
 #this might help with the questions
 #almost works but not quite. have to hit enter for a few questions
-#echo \n \n \n | configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
-configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
+echo \n \n \n \n \n | configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
+#configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
 nagios -v /etc/nagios/nagios.cfg
 
 #Modify contact_name, alias, and email directives in /etc/nagios/gluster/gluster-contacts.cfg to reflect student

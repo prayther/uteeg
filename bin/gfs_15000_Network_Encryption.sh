@@ -138,7 +138,7 @@ gluster volume status gluster_shared_storage
 
 ssh rhel-client.prayther.org "umount /var/run/gluster/shared_storage/"
 ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/gluster_shared_storage /var/run/gluster/shared_storage/"
-ssh rhel-client.prayther.org grep "SSL /var/log/glusterfs/mnt-glusterfs.log" #should see 'SSL support on the I/O path is ENABLED', 'SSL support for glusterd is ENABLED', 'SSL verification succeeded'
+ssh rhel-client.prayther.org grep "SSL /var/log/glusterfs/run-gluster-shared_storage.log" #should see 'SSL support on the I/O path is ENABLED', 'SSL support for glusterd is ENABLED', 'SSL verification succeeded'
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

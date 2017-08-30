@@ -83,7 +83,8 @@ gluster volume set gluster_shared_storage features.uss enable
 ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/gluster_shared_storage /var/run/gluster/shared_storage"
 
 #Enable shared storage for Red Hat Gluster Storage.
-gluster volume set all cluster.enable-shared-storage enable
+#already done in previous script
+#gluster volume set all cluster.enable-shared-storage enable
 
 #allow crond access to files labeled fusefs_t
 for i in gfs-node2.prayther.org gfs-node3.prayther.org
@@ -105,7 +106,8 @@ ssh gfs-node2.prayther.org "snap_scheduler.py enable"
 #Create a new schedule, called hourly, that takes a new snapshot of the snapvol volume every hour.
 ssh gfs-node2.prayther.org "snap_scheduler.py add minutes '*/2 * * * *' gluster_shared_storage"
 
-
+ssh gfs-node2.prayther.org "snap_scheduler.py list"
+ssh gfs-node2.prayther.org "gluster snapshot list"
 
 
 
