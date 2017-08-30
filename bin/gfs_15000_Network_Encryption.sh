@@ -114,8 +114,8 @@ done
 
 gluster volume start gluster_shared_storage
 
-ssh rhel-client.prayther.org "mkdir -pv /mnt/glusterfs"
-ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/gluster_shared_storage /mnt/glusterfs"
+ssh rhel-client.prayther.org "mkdir -pv /var/run/gluster/shared_storage/"
+ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/gluster_shared_storage /var/run/gluster/shared_storage/"
 
 #Set the list of common names of all the servers to access the volume. Be sure to include the common names of clients which will be allowed to access the volume.
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org
@@ -136,8 +136,8 @@ gluster volume start gluster_shared_storage
 gluster volume info gluster_shared_storage
 gluster volume status gluster_shared_storage
 
-ssh rhel-client.prayther.org "umount /mnt/glusterfs"
-ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/gluster_shared_storage /mnt/glusterfs"
+ssh rhel-client.prayther.org "umount /var/run/gluster/shared_storage/"
+ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/gluster_shared_storage /var/run/gluster/shared_storage/"
 ssh rhel-client.prayther.org grep "SSL /var/log/glusterfs/mnt-glusterfs.log" #should see 'SSL support on the I/O path is ENABLED', 'SSL support for glusterd is ENABLED', 'SSL verification succeeded'
 
 echo "###INFO: Finished $0"
