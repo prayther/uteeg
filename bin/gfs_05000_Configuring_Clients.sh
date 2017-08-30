@@ -89,6 +89,10 @@ fi
 #        for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
 #          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}"
 
+#for rerunning the script
+ssh rhel-client.prayther.org "umount /mnt/labvol"
+ssh rhel-client.prayther.org "umount /mnt/distdispvol"
+
 #apply all relevant volume options
 gluster volume set labvol nfs.disable on
 gluster volume set labvol auth.allow '10.0.0.*'
