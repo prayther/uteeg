@@ -74,7 +74,8 @@ gluster snapshot config auto-delete enable
 #Enable automatic activation of new snapshots.
 gluster snapshot config activate-on-create enable
 
-ssh rhel-client.prayther.org "umount -v /var/run/gluster/shared_storage/"
+#ssh rhel-client.prayther.org "umount -v /var/run/gluster/shared_storage/"
+ssh rhel-client.prayther.org "mkdir -pv /var/run/gluster/shared_storage/"
 
 #Enable user-serviceable snapshots
 gluster volume set gluster_shared_storage features.uss enable
