@@ -108,9 +108,9 @@ gluster volume start distdispvol
 #mount native client
 ssh rhel-client.prayther.org yum -y install glusterfs-fuse
 ssh rhel-client.prayther.org "echo #gfs-node1.prayther.org:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
-doit ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/labvol /mnt/labvol"
 ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/games"
 ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/private_games"
+doit ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/labvol /mnt/labvol"
 #mount nfs
 ssh rhel-client.prayther.org "mkdir -pv /mnt/distdispvol"
 ssh rhel-client.prayther.org "echo #gfs-node2.prayther.org:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
