@@ -74,7 +74,7 @@ gluster volume geo-replication labvol \
 for vols in $(gluster volume list);do echo y | gluster volume stop ${vols};done
 
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh "${i}" "systemctl restart glusterd"
+  do ssh "${i}" "sleep 60 && systemctl restart glusterd"
 done
 
 #gluster volume start gluster_shared_storage
@@ -109,7 +109,7 @@ done
 openssl verify -verbose -purpose sslserver -CAfile /etc/ssl/glusterfs.pem /etc/ssl/glusterfs.ca
 
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh "${i}" "systemctl restart glusterd"
+  do ssh "${i}" "sleep 60 && systemctl restart glusterd"
 done
 
 gluster volume start gluster_shared_storage
@@ -139,6 +139,10 @@ gluster volume status gluster_shared_storage
 ssh rhel-client.prayther.org "umount /var/run/gluster/shared_storage/"
 ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/gluster_shared_storage /var/run/gluster/shared_storage/"
 ssh rhel-client.prayther.org grep "SSL /var/log/glusterfs/run-gluster-shared_storage.log" #should see 'SSL support on the I/O path is ENABLED', 'SSL support for glusterd is ENABLED', 'SSL verification succeeded'
+
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+  do ssh "${i}" "sleep 60 && systemctl restart glusterd"
+done
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
