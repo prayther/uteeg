@@ -229,7 +229,7 @@ ssh gfs-node3.prayther.org "restorecon -Rv /bricks/brick-44"
 
 gluster volume create distreplvol replica 2 \
 	gfs-admin.prayther.org:/bricks/brick-11/brick \
-        gfs-node1.prayther.org::/bricks/brick-21/brick \
+        gfs-node1.prayther.org:/bricks/brick-21/brick \
         gfs-node2.prayther.org:/bricks/brick-31/brick \
         gfs-node3.prayther.org:/bricks/brick-41/brick force
 
@@ -251,8 +251,8 @@ gluster volume create distreplvol replica 2 \
 #	10.0.0.12:/bricks/brick-43/brick \
 #	10.0.0.12:/bricks/brick-44/brick 
 gluster volume start distreplvol
-gluster volume status distreplvol
 gluster volume info distreplvol
+gluster volume status distreplvol
 #gluster volume stop distreplvol
 #gluster volume delete distreplvol
 #Create and start the distdispvol volume as outlined.
