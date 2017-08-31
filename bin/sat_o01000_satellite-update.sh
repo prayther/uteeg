@@ -42,6 +42,7 @@ doit() {
 }
 
 # This seems to work as a 'safety net' and upgrades after installing from media
+katello-service stop
 satellite-installer --scenario satellite --upgrade
 
 # Notice adding of tftp for provisioning from capsules and the removal of Puppet

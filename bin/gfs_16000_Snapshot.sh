@@ -74,40 +74,40 @@ gluster snapshot config auto-delete enable
 #Enable automatic activation of new snapshots.
 gluster snapshot config activate-on-create enable
 
-#ssh rhel-client.prayther.org "umount -v /var/run/gluster/shared_storage/"
-ssh rhel-client.prayther.org "mkdir -pv /var/run/gluster/shared_storage/"
+#ssh rhel-client.prayther.org "umount -v /mnt/distreplvol/"
+ssh rhel-client.prayther.org "mkdir -pv /mnt/distreplvol/"
 
 #Enable user-serviceable snapshots
-gluster volume set gluster_shared_storage features.uss enable
+gluster volume set distreplvol features.uss enable
 
-ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/gluster_shared_storage /var/run/gluster/shared_storage"
+ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/distreplvol /mnt/distreplvol"
 
 #Enable shared storage for Red Hat Gluster Storage.
 #already done in previous script
 #gluster volume set all cluster.enable-shared-storage enable
 
 #allow crond access to files labeled fusefs_t
-for i in gfs-node2.prayther.org gfs-node3.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" "setsebool -P cron_system_cronjob_use_shares 1"
 done
 
 #initialize the snapshot scheduler.
-for i in gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh "${i}" "mount -t glusterfs gfs-node2:/gluster_shared_storage /var/run/gluster/shared_storage"
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+  do ssh "${i}" "mount -t glusterfs gfs-node2:/distreplvol /mnt/distreplvol"
 done
 
-for i in gfs-node2.prayther.org gfs-node3.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" "snap_scheduler.py init"
 done
 
 #on one srv enable the snapshot scheduler.
-ssh gfs-node2.prayther.org "snap_scheduler.py enable"
+ssh gfs-admin.prayther.org "snap_scheduler.py enable"
 
 #Create a new schedule, called hourly, that takes a new snapshot of the snapvol volume every hour.
-ssh gfs-node2.prayther.org "snap_scheduler.py add minutes '*/2 * * * *' gluster_shared_storage"
+ssh gfs-admin.prayther.org "snap_scheduler.py add minutes '*/2 * * * *' distreplvol"
 
-ssh gfs-node2.prayther.org "snap_scheduler.py list"
-ssh gfs-node2.prayther.org "gluster snapshot list"
+ssh gfs-admin.prayther.org "snap_scheduler.py list"
+ssh gfs-admin.prayther.org "gluster snapshot list"
 
 
 
