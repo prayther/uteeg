@@ -95,6 +95,11 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
   do ssh "${i}" "setsebool -P cron_system_cronjob_use_shares 1"
 done
 
+#mkdir
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+  do ssh "${i}" "mkdir -pv /mnt/distreplvol"
+done
+
 #initialize the snapshot scheduler.
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
   do ssh "${i}" "mount -t glusterfs gfs-node2:/distreplvol /mnt/distreplvol"
