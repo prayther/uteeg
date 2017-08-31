@@ -67,15 +67,19 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
           do ssh "${i}" exit || echo "ssh to ${i} failded" || exit 1
 done
 
+#has to be pool for each lv
 # VG, Thin pool, LV virtualsize
-for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh "${i}" pvcreate /dev/vdb && \
-          ssh "${i}" vgcreate rhs_vg /dev/vdb && \
-          ssh "${i}" lvcreate -L 19G -T rhs_vg/rhs_pool
-done
+#for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
+#  do ssh "${i}" pvcreate /dev/vdb && \
+#          ssh "${i}" vgcreate rhs_vg /dev/vdb && \
+#          ssh "${i}" lvcreate -L 19G -T rhs_vg/rhs_pool
+#done
 #LV virtualsize
-ssh gfs-node1.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv1"
+ssh gfs-node1.prayther.org "lvcreate -L 2G -T rhs_vg/rhs_pool1"
+ssh gfs-node1.prayther.org "lvcreate -V 1G -T rhs_vg/rhs_pool -n rhs_lv1"
+ssh gfs-node2.prayther.org "lvcreate -L 2G -T rhs_vg/rhs_pool2"
 ssh gfs-node2.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv2"
+ssh gfs-node3.prayther.org "lvcreate -L 2G -T rhs_vg/rhs_pool3"
 ssh gfs-node3.prayther.org "lvcreate -V 2G -T rhs_vg/rhs_pool -n rhs_lv3"
 #mkfs
 ssh gfs-node1.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv1"
