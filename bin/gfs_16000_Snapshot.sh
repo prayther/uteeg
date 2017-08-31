@@ -62,6 +62,10 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
+#check to make sure all machines are ready
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org gfs-backup.prayther.org
+          do ssh "${i}" exit || echo "ssh to ${i} failded" || exit 1
+done
 #########################################################################################
 
 #Remember that snap-max-soft-limit is expressed as a percentage of snap-max-hard-limit. In this case, 48 snapshots is 75% of 64.

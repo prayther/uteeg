@@ -62,6 +62,11 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
+#check to make sure all machines are ready
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org gfs-backup.prayther.org
+          do ssh "${i}" exit || echo "ssh to ${i} failded" || exit 1
+done
+
 #########################################################################################
 
 #make sure only to do the following once. or keys will change
