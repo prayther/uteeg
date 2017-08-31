@@ -61,42 +61,12 @@ if [[ $(id -u) != "0" ]];then
         echo
         exit 1
 fi
-
-#Install this on gfs nodes: gfs-admin gfs-node1 gfs-node2 gfs-node3
-
-#for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
-#  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
-#done
-# yum groupinstall "Infiniband Support"
-
-#systemctl enable glusterd
-#systemctl start glusterd
-#firewall-cmd --get-active-zones
-
-#firewall-cmd --zone=public --add-service=glusterfs --permanent
-#systemctl restart firewalld
-
-#tuned-adm list
-#tuned-adm profile rhgs-random-io
-
+####################################################################################
 # admin node: non interactive, emptly pass ""
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
         ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
 fi
-
-## from gfs-admin get everyone talking 
-#if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-#        for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.13 10.0.0.14
-#          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
-#        done
-#fi
-#
-#for i in 10.0.0.9 10.0.0.10 10.0.0.11 10.0.0.12 10.0.0.14
-#  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
-#          ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
-#          ssh "${i}" systemctl restart firewalld
-#done
 
 # from gfs-admin get everyone talking 
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
@@ -110,25 +80,6 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
           ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
           ssh "${i}" systemctl restart firewalld
 done
-
-#again with names. having issues with names in some places.
-# from gfs-admin get everyone talking
-if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
-        for i in gfs-admin.prayther.org gfs-client.prayther.org gfs-backup.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
-          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
-        done
-fi
-
-for i in gfs-admin.prayther.org gfs-backup.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh "${i}" firewall-cmd --zone=public --add-service=glusterfs --permanent && \
-          ssh "${i}" firewall-cmd --add-service=rpc-bind --add-service=nfs --permanent && \
-          ssh "${i}" systemctl restart firewalld
-done
-
-#for i in gfs-admin gfs-node1 gfs-node2 gfs-node3
-#  do ssh "${i}" yum -y install ansible gdeploy redhat-storage-server glusterfs-ganesha gstatus sshpass ntpdate nagios-server-addons glusterfs glusterfs-fuse heketi-client heketi ctdb krb5-workstation ntpdate nfs-utils rpcbind cifs-utils samba samba-client samba-winbind samba-winbind-clients samba-winbind-krb5-locator
-#done
-
 
 #only run this on admin node gfs-admin, ceph_admin
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then

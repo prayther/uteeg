@@ -118,13 +118,13 @@ gluster volume start distdispvol
 ssh rhel-client.prayther.org yum -y install glusterfs-fuse
 doit ssh rhel-client.prayther.org "echo #gfs-node1.prayther.org:/labvol /mnt/labvol glusterfs _netdev,acl 0 0 >> /etc/fstab"
 ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol"
-doit ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/labvol /mnt/labvol"
+ssh rhel-client.prayther.org "mount -t glusterfs gfs-node1:/labvol /mnt/labvol"
 ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/games"
 ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/private_games"
 #mount nfs
 ssh rhel-client.prayther.org "mkdir -pv /mnt/distdispvol"
 doit ssh rhel-client.prayther.org "echo #gfs-node2.prayther.org:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
-doit ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/distdispvol /mnt/distdispvol"
+ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/distdispvol /mnt/distdispvol"
 
 #ownership, facl's
 ssh rhel-client.prayther.org "chgrp games /mnt/labvol/games"
@@ -178,6 +178,8 @@ ssh rhel-client.prayther.org "setfacl -R -m d:g:games:rX /mnt/labvol/private_gam
 #default:other::r-x
 
 #Enable quotas for the 'labvol' volume, and set the hard and soft limits (1 GiB and 85%) for the /games directory.
+ssh rhel-client.prayther.org "ll /mnt/labvol"
+ssh rhel-client.prayther.org "ll/mnt/distdispvol" 
 ssh rhel-client.prayther.org "umount /mnt/labvol"
 ssh rhel-client.prayther.org "umount /mnt/distdispvol"
 gluster volume quota labvol enable

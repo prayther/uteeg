@@ -88,7 +88,7 @@ ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/distreplvol /mnt/dis
 
 #Enable shared storage for Red Hat Gluster Storage.
 #already done in previous script
-#gluster volume set all cluster.enable-shared-storage enable
+gluster volume set all cluster.enable-shared-storage enable
 
 #allow crond access to files labeled fusefs_t
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
