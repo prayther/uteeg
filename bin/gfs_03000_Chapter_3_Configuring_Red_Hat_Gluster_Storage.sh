@@ -69,8 +69,8 @@ done
 
 # VG, Thin pool, LV virtualsize
 for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh "${i}" pvcreate /dev/vdb && \
-          ssh "${i}" vgcreate rhs_vg /dev/vdb
+  do ssh "${i}" pvcreate /dev/vdb || echo "pvcreate /dev/vdb failed" || exit 1 && \
+          ssh "${i}" vgcreate rhs_vg /dev/vdb || echo "pvcreate /dev/vdb failed" || exit 1
 done
 #LV virtualsize
 ssh gfs-node1.prayther.org "lvcreate -L 2G -T rhs_vg/rhs_pool1"

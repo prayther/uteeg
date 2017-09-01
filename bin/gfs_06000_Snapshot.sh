@@ -109,6 +109,9 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
   do ssh "${i}" "snap_scheduler.py init"
 done
 
+#getting this error and don't know why. but becomes available. so gonna sleep for a second
+#snap_scheduler: Failed: /var/run/gluster/shared_storage does not exist.
+sleep 15
 #on one srv enable the snapshot scheduler.
 ssh gfs-admin.prayther.org "snap_scheduler.py enable"
 
