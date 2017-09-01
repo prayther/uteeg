@@ -82,14 +82,14 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
 #sed 's/gfs-...../&.prayther.org/g' gfs_04000_Chapter_4_Creating_Volumes.sh
 # the thin lv is being made in gfs_03000_Chapter_3_Configuring_Red_Hat_Gluster_Storage.sh
 #LV virtualsize
-ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool1"
-ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool1 -n brick-11"
-ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool2"
-ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool2 -n brick-12"
-ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool3"
-ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool3 -n brick-13"
-ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool4"
-ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool4 -n brick-14"
+ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool11"
+ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool11 -n brick-11"
+ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool12"
+ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool12 -n brick-12"
+ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool13"
+ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool13 -n brick-13"
+ansible gfs-admin.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool14"
+ansible gfs-admin.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool14 -n brick-14"
 #ssh gfs-admin.prayther.org for i in {1..4}; do lvcreate -V 2G -T rhs_vg/rhs_pool -n brick-1${i};done
 ansible gfs-node1.prayther.org -a "lvcreate -L 2G -T rhs_vg/rhs_pool21"
 ansible gfs-node1.prayther.org -a "lvcreate -V 1G -T rhs_vg/rhs_pool21 -n brick-21"
