@@ -140,9 +140,9 @@ ansible gfs-node3.prayther.org -a "mkfs.xfs -f -i size=512 /dev/rhs_vg/brick-43"
 ansible gfs-node3.prayther.org -a "mkfs.xfs -f -i size=512 /dev/rhs_vg/brick-44"
 #ssh gfs-node3.prayther.org for i in {1..4}; do mkfs.xfs -f -i size=512 /dev/rhs_vg/brick-4${i};done
 #mount dir
-#for i in {1..4}
-#  do ssh gfs-admin.prayther.org mkdir -p /bricks/brick-1"${i}"
-#done
+for i in {1..4}
+  do ssh gfs-admin.prayther.org mkdir -pv /bricks/brick-1"${i}"
+done
 for i in {1..4}
   do ssh gfs-node1.prayther.org mkdir -pv /bricks/brick-2"${i}"
 done
