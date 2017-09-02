@@ -70,11 +70,11 @@ done
 ######################################################################################################
 #LV virtualsize
 ssh gfs-node1.prayther.org "lvcreate -L 2G -T rhs_vg/rhs_pool4"
-ssh gfs-node1.prayther.org "lvcreate -V 1G -T rhs_vg/rhs_pool -n rhs_lv4"
+ssh gfs-node1.prayther.org "lvcreate -V 1G -T rhs_vg/rhs_pool4 -n rhs_lv4"
 ssh gfs-node2.prayther.org "lvcreate -L 2G -T rhs_vg/rhs_pool5"
-ssh gfs-node2.prayther.org "lvcreate -V 1G -T rhs_vg/rhs_pool -n rhs_lv5"
+ssh gfs-node2.prayther.org "lvcreate -V 1G -T rhs_vg/rhs_pool5 -n rhs_lv5"
 ssh gfs-node3.prayther.org "lvcreate -L 2G -T rhs_vg/rhs_pool6"
-ssh gfs-node3.prayther.org "lvcreate -V 1G -T rhs_vg/rhs_pool -n rhs_lv6"
+ssh gfs-node3.prayther.org "lvcreate -V 1G -T rhs_vg/rhs_pool6 -n rhs_lv6"
 #mkfs
 ssh gfs-node1.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv4"
 ssh gfs-node2.prayther.org "mkfs.xfs -f -i size=512 /dev/rhs_vg/rhs_lv5"
