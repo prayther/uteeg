@@ -181,8 +181,8 @@ gluster volume geo-replication labvol \
 	geouser@gfs-backup.prayther.org::backupvol config ignore-deletes true
 
 #shut down geo-replication. hard to shutdown labvol later because of geo-replication
-gluster volume geo-replication labvol \
-        geouser@gfs-backup.prayther.org::backupvol stop
+#gluster volume geo-replication labvol \
+#        geouser@gfs-backup.prayther.org::backupvol stop
 
 gluster volume geo-replication status
 

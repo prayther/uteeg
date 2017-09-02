@@ -81,6 +81,9 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
 done
 
 yum -y install nagios-server-addons mutt sendmail
+#you can get to the gui even though it's not configured. htpasswd /etc/nagios/passwd nagiosadmin. https://<hostname>/nagios/
+firewall-cmd --zone=public --add-port=443/tcp --permanent
+firewall-cmd --reload
 sed -i /Addr=127.0.0.1/d /etc/mail/sendmail.mc
 systemctl enable sendmail
 systemctl start sendmail

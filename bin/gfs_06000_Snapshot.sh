@@ -69,8 +69,9 @@ done
 #########################################################################################
 
 #Remember that snap-max-soft-limit is expressed as a percentage of snap-max-hard-limit. In this case, 48 snapshots is 75% of 64.
-echo y | gluster snapshot config snap-max-hard-limit 64 \
- snap-max-soft-limit 75
+#vm's are using too much memory, going to limit snaps to 1
+echo y | gluster snapshot config snap-max-hard-limit 2 \
+ snap-max-soft-limit 50
 
 #Enable automatic deletion of snapshots when snap-max-soft-limit is exceeded.
 gluster snapshot config auto-delete enable
