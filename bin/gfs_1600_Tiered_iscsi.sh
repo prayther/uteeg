@@ -85,16 +85,16 @@ systemctl restart target
 
 #create a 140M block device and configure an iscsi lun
 for i in gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh ${i} targetcli clearconfig confirm=True
-          ssh ${i} targetcli backstores/fileio create disk1 /disk1.img 140M
+  do ssh ${i} "targetcli clearconfig confirm=True"
+          ssh ${i} "targetcli backstores/fileio create disk1 /disk1.img 140M"
           ssh ${i} "targetcli ls iscsi 1 | grep iqn || targetcli /iscsi create iqn.2017-09.org.prayther:lun1"
           ssh ${i} "targetcli ls /iscsi 1 | grep iqn | cut -d\" \" -f4 > /tmp/wwn"
           scp ${i}:/tmp/wwn /tmp/wwn.${i}
           #scp ${i}:/etc/iscsi/initiatorname.iscsi /tmp/initiator.${i}
           #source /tmp/initiator.${i}
-          #ssh ${i} targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create ${InitiatorName}:clientlun1
-          ssh ${i} targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create iqn.2017-09.org.prayther:clientlun1
-          ssh ${i} targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/luns create /backstores/fileio/disk1
+          #ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create ${InitiatorName}:clientlun1"
+          ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create iqn.2017-09.org.prayther:clientlun1"
+          ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/luns create /backstores/fileio/disk1"
 done
 
   #ssh "${i}" targetcli /iscsi/iqn.2003-01.org.linux-iscsi.gfs-node2.x8664:sn.a6c957b7f1c4/tpg1/luns create /backstores/fileio/disk1
