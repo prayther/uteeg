@@ -84,16 +84,17 @@ done
 
 yum -y install nagios-server-addons mutt sendmail
 # htpasswd /etc/nagios/passwd nagiosadmin. https://<hostname>/nagios/
+# set nagiosadmin with password redhat
+htpasswd -b /etc/nagios/passwd nagiosadmin redhat
 firewall-cmd --zone=public --add-port=443/tcp --permanent
 firewall-cmd --reload
 sed -i /Addr=127.0.0.1/d /etc/mail/sendmail.mc
 systemctl enable sendmail
 systemctl start sendmail
 
-#this might help with the questions
-#almost works but not quite. have to hit enter for a few questions
-echo \n \n \n \n \n | configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
-#configure-gluster-nagios -c gluster-cluster -H gfs-admin.prayther.org
+#answer 'yes' to 3 questions with the echo
+echo -en "\n\n\n\n\n" | configure-gluster-nagios -c gluster-cluster -H gfs-node1.prayther.org
+#configure-gluster-nagios -c gluster-cluster -H gfs-node1.prayther.org
 nagios -v /etc/nagios/nagios.cfg
 
 #Modify contact_name, alias, and email directives in /etc/nagios/gluster/gluster-contacts.cfg to reflect student

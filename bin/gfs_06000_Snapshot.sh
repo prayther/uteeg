@@ -86,6 +86,7 @@ ssh rhel-client.prayther.org "mkdir -pv /mnt/distreplvol/"
 gluster volume set distreplvol features.uss enable
 
 ssh rhel-client.prayther.org "mount -t glusterfs gfs-node2:/distreplvol /mnt/distreplvol"
+ssh rhel-client.prayther.org "touch /mnt/distreplvol/me"
 
 #Enable shared storage for Red Hat Gluster Storage.
 #already done in previous script
