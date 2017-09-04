@@ -84,8 +84,8 @@ systemctl restart target
 #done
 
 #create a 140M block device and configure an iscsi lun
-for i in gfs-node2.prayther.org
-  do ssh ${i} "targetcli clearconfig confirm=True"
+for i in gfs-node2.prayther.org gfs-node3.prayther.org
+  do ssh ${i} targetcli clearconfig confirm=True
           ssh ${i} targetcli backstores/fileio create disk1 /disk1.img 140M
           ssh ${i} "targetcli ls iscsi 1 | grep iqn || targetcli /iscsi create iqn.2017-09.org.prayther:lun1"
           ssh ${i} "targetcli ls /iscsi 1 | grep iqn | cut -d\" \" -f4 > /tmp/wwn"
