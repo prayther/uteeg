@@ -82,7 +82,7 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
    ssh "${i}" "chkconfig glusterpmd on"
 done
 
-yum -y install nagios-server-addons mutt sendmail
+yum -y install nagios-server-addons mutt sendmail sendmail-cf
 # htpasswd /etc/nagios/passwd nagiosadmin. https://<hostname>/nagios/
 # set nagiosadmin with password redhat
 htpasswd -b /etc/nagios/passwd nagiosadmin redhat
