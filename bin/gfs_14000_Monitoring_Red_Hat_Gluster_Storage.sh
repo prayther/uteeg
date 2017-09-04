@@ -133,11 +133,22 @@ gluster volume  profile labvol stop #turn it off
 gluster volume top labvol open #View the performance metrics of bricks
 
 #mutt
+echo ""
+echo ""
+echo ""
 echo "su - geouser"
 echo ""
 echo "mutt"
 echo ""
 echo "should get notification from nagios"
+echo ""
+echo ""
+echo ""
+echo "https://gfs-admin/nagios/ nagiosadmin redhat"
+echo ""
+echo ""
+echo ""
+echo ""
 echo ""
 
 
