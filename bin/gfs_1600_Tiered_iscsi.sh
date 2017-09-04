@@ -117,6 +117,12 @@ ssh rhel-client.prayther.org "iscsiadm --mode node --targetname iqn.2017-09.org.
 ssh rhel-client.prayther.org "systemctl restart iscsi"
 ssh rhel-client.prayther.org "iscsiadm --mode node --targetname iqn.2017-09.org.prayther:lun1 --portal gfs-node2.prayther.org --login"
 ssh rhel-client.prayther.org "systemctl status iscsi"
+ssh rhel-client.prayther.org "lsblk --scsi"
+ssh rhel-client.prayther.org "mkfs.xfs /dev/sda"
+ssh rhel-client.prayther.org "iscsiadm -m session -P 3"
+ssh rhel-client.prayther.org "mkdir -pv /mnt/iscsi"
+ssh rhel-client.prayther.org "mount -v /dev/sda /mnt/iscsi"
+ssh rhel-client.prayther.org "touch /mnt/iscsi/me"
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
