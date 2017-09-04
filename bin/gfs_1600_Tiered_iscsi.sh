@@ -68,10 +68,9 @@ for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gf
 done
 
 for i in gfs-node2.prayther.org gfs-node3.prayther.org
-  do ssh "${i}" yum -y install iscsi-initiator-utils targetcli || echo "yum -y install iscsi-initiator-utils targetcli failed" || exit 1 && \
+  do ssh "${i}" rpm -qa | grep targetcli || yum -y install iscsi-initiator-utils targetcli || echo "yum -y install iscsi-initiator-utils targetcli failed" || exit 1 && \
 	  ssh "${i}" firewall-cmd --zone=public --add-port=3260/tcp --permanent
 	  ssh "${i}" firewall-cmd --reload
-	  ssh "${i}" targetcli
 done
 
 systemctl enable target
