@@ -91,6 +91,7 @@ for i in gfs-node2.prayther.org gfs-node3.prayther.org
           #ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create ${InitiatorName}:clientlun1"
           ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create iqn.2017-09.org.prayther:clientlun1"
           ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/luns create /backstores/fileio/disk1"
+          ssh ${i} "targetcli saveconfig"
           ssh ${i} "systemctl enable target"
           ssh ${i} "systemctl restart target"
 done
