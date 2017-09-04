@@ -115,5 +115,7 @@ ssh rhel-client.prayther.org "systemctl restart iscsi"
 ssh rhel-client.prayther.org "iscsiadm --mode discoverydb --type sendtargets --portal gfs-node2.prayther.org --discover"
 ssh rhel-client.prayther.org "iscsiadm --mode node --targetname iqn.2017-09.org.prayther:lun1 --portal gfs-node2.prayther.org --login"
 
+ssh rhel-client.prayther.org "systemctl restart iscsi"
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
