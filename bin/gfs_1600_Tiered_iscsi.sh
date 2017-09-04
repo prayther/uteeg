@@ -73,9 +73,6 @@ for i in gfs-node2.prayther.org gfs-node3.prayther.org
 	  ssh "${i}" firewall-cmd --reload
 done
 
-systemctl enable target
-systemctl restart target
-
 #could use an lv instead of the block device
 #for i in gfs-node2.prayther.org gfs-node3.prayther.org
 #  do ssh "${i}" lvcreate -L 2G -T rhs_vg/iscsi_pool
@@ -94,6 +91,8 @@ for i in gfs-node2.prayther.org gfs-node3.prayther.org
           #ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create ${InitiatorName}:clientlun1"
           ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/acls create iqn.2017-09.org.prayther:clientlun1"
           ssh ${i} "targetcli /iscsi/$(cat /tmp/wwn.${i})/tpg1/luns create /backstores/fileio/disk1"
+          ssh ${i} "systemctl enable target"
+          ssh ${i} "systemctl restart target"
 done
 
   #ssh "${i}" targetcli /iscsi/iqn.2003-01.org.linux-iscsi.gfs-node2.x8664:sn.a6c957b7f1c4/tpg1/luns create /backstores/fileio/disk1
