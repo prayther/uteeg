@@ -18,4 +18,5 @@ vim
 bind-utils
 deltarpm
 nfs-utils
+net-tools
 #ansible

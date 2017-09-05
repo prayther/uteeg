@@ -62,7 +62,8 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 ####################################################################################
-firewall-cmd --add-port=80/tcp --permanent
+#Check_MK / OMD server install/cfg
+firewall-cmd --add-port=80/tcp --add-port=6556/tcp --permanent
 firewall-cmd --reload
 #subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
@@ -70,18 +71,35 @@ yum install http://"${GATEWAY}"/ks/apps/check_mk/check-mk-raw-1.4.0p10-el7-57.x8
 #yum install http://"${GATEWAY}"/ks/apps/check_mk/check-mk-raw*
 omd create dev
 omd start dev
-#yum install -y http://rhel-client.prayther.org/dev/check_mk/agents/check-mk-agent-1.4.0p10-1.noarch.rpm
-yum install -y http://rhel-client.prayther.org/dev/check_mk/agents/check-mk-agent
+systemctl status omd
+#htpasswd -m ~/etc/htpasswd cmkadmin' as site user
+#cmkadmin with password: ZSllOAuI
+htpasswd -b /opt/omd/sites/dev/etc/htpasswd cmkadmin redhat
+
+#Client cfg
+#yum install -y http://$(hostname)/dev/check_mk/agents/check-mk-agent-1.4.0p10-1.noarch.rpm
+yum install -y http://checkmk-admin/dev/check_mk/agents/check-mk-agent-1.4.0p10-1.noarch.rpm
+firewall-cmd --add-port=6556/tcp --permanent
 yum install -y net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
 net-snmp-config --create-snmpv3-user -A 12345678 -X 12345678 -a MD5 -x DES admin
 systemctl enable snmpd
 systemctl restart snmpd
 snmpwalk -v3 -u admin -l authNoPriv -a MD5 -x DES -A 12345678 -X 12345678 localhost
+firewall-cmd --add-service=snmp --permanent
+firewall-cmd --reload
+iptables -nL
+systemctl status snmpd
+systemctl status xinetd
 
 #check_mk/omd does not like selinux
 setenforce permissive
+#sed search and replace SELINUX=enforcing with SELINUX=permissive
+sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 
-
+#loginto the http://$(hostname)/dev/ #dev is the site name used above to create the omd site
+#got to WATO - Configuration menu -> Hosts
+#Create a directory and git it a ip range and snmp credential.
+#auto discovers your machines
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

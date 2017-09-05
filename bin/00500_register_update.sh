@@ -25,6 +25,7 @@ echo "###INFO: $(date)"
 # read configuration (needs to be adopted!)
 #. ./satenv.sh
 source ../etc/virt-inst.cfg
+source ../lib/virt-inst.lib
 
 
 doit() {
@@ -155,6 +156,9 @@ subscribe_checkmk () {
   /usr/bin/yum -y update
   /usr/bin/yum -y install ovirt-hosted-engine-setup rhvm-appliance screen
 }
+
+#setup snmp
+snmp-enable
 
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
   subscribe_rhel
