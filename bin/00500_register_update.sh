@@ -143,6 +143,19 @@ subscribe_virt () {
   /usr/bin/yum -y install ovirt-hosted-engine-setup rhvm-appliance screen
 }
 
+subscribe_checkmk () {
+  /usr/sbin/subscription-manager unregister
+  /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-extras-rpms
+
+  #Clean, update
+  /usr/bin/yum clean all
+  rm -rf /var/cache/yum
+  /usr/bin/yum -y update
+  /usr/bin/yum -y install ovirt-hosted-engine-setup rhvm-appliance screen
+}
+
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
   subscribe_rhel
 fi
@@ -158,6 +171,10 @@ fi
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "virt" ]];then
   subscribe_virt
 fi
+if [[ $(hostname -s | awk -F"-" '{print $1}') = "checkmk" ]];then
+  subscribe_checkmk
+fi
+
 
 
 echo "###INFO: Finished $0"

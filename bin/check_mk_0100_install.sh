@@ -64,9 +64,10 @@ fi
 ####################################################################################
 firewall-cmd --add-port=80/tcp --permanent
 firewall-cmd --reload
-subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
+#subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
-yum install http://10.0.0.1/ks/apps/check_mk/check-mk-raw-1.4.0p10-el7-57.x86_64.rpm -y
+#yum install http://"${GATEWAY}"/ks/apps/check_mk/check-mk-raw-1.4.0p10-el7-57.x86_64.rpm -y
+yum install http://"${GATEWAY}"/ks/apps/check_mk/check-mk-raw*
 omd create dev
 omd start dev
 #yum install -y http://rhel-client.prayther.org/dev/check_mk/agents/check-mk-agent-1.4.0p10-1.noarch.rpm
