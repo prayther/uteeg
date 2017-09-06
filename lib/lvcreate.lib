@@ -1,0 +1,6 @@
+# Usage: lvcreate_snap vg size pool name vsize
+# Creates thinly provisioned pool with logical volume compatible with snapshots
+       lvcreate_snap () {
+           lvcreate -L ${2} -T ${1}/${3}
+           lvcreate -V ${5} -T ${1}/${3} -n${4} 
+           }

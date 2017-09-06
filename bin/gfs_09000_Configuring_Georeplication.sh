@@ -123,6 +123,16 @@ ssh gfs-backup.prayther.org "gluster volume create backupvol \
 ssh gfs-backup.prayther.org "gluster volume start backupvol"
 ssh gfs-backup.prayther.org "gluster volume status backupvol"
 
+if [[ $(date +%Y-%m-%d) == "2017-09-06" ]];then
+	echo""
+	echo "if the date is 2017-09-06"
+	echo ""
+	echo "want to stop here to practice commands on cli"
+	echo ""
+	echo "exit 0"
+	exit 0
+fi
+
 #Enable shared storage:
 gluster volume set all cluster.enable-shared-storage enable
 #/var/mountbroker-root. This directory must be created with permissions 0711
