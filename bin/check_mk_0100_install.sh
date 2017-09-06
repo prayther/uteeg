@@ -77,9 +77,13 @@ systemctl status omd
 htpasswd -b /opt/omd/sites/dev/etc/htpasswd cmkadmin redhat
 
 #Client cfg
+#check_mk plugin
 #yum install -y http://$(hostname)/dev/check_mk/agents/check-mk-agent-1.4.0p10-1.noarch.rpm
-yum install -y http://checkmk-admin/dev/check_mk/agents/check-mk-agent-1.4.0p10-1.noarch.rpm
-firewall-cmd --add-port=6556/tcp --permanent
+#yum install -y http://checkmk-admin/dev/check_mk/agents/check-mk-agent-1.4.0p10-1.noarch.rpm
+#firewall-cmd --add-port=6556/tcp --permanent
+#systemctl status xinetd
+
+#snmp
 yum install -y net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
 net-snmp-config --create-snmpv3-user -A 12345678 -X 12345678 -a MD5 -x DES admin
 systemctl enable snmpd
@@ -89,7 +93,6 @@ firewall-cmd --add-service=snmp --permanent
 firewall-cmd --reload
 iptables -nL
 systemctl status snmpd
-systemctl status xinetd
 
 #check_mk/omd does not like selinux
 setenforce permissive
@@ -98,7 +101,8 @@ sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 
 #loginto the http://$(hostname)/dev/ #dev is the site name used above to create the omd site
 #got to WATO - Configuration menu -> Hosts
-#Create a directory and git it a ip range and snmp credential.
+#Create a directory and get it an ip range and snmp credential.
+#set all the defaults like 'important' server and enable monitoring
 #auto discovers your machines
 
 echo "###INFO: Finished $0"

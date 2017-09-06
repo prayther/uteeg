@@ -88,6 +88,7 @@ yum -y install nagios-server-addons mutt sendmail sendmail-cf
 htpasswd -b /etc/nagios/passwd nagiosadmin redhat
 firewall-cmd --zone=public --add-port=443/tcp --permanent
 firewall-cmd --reload
+#sed search and delete line
 sed -i /Addr=127.0.0.1/d /etc/mail/sendmail.mc
 systemctl enable sendmail
 systemctl start sendmail

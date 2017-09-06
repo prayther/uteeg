@@ -10,5 +10,4 @@ snmp-enable () {
   firewall-cmd --reload
   iptables -nL
   systemctl status snmpd
-  systemctl status xinetd
 }
