@@ -158,7 +158,7 @@ subscribe_checkmk () {
 }
 
 #setup snmp
-snmp-enable
+#snmp-enable
 
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
   subscribe_rhel
