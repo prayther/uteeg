@@ -25,7 +25,7 @@ echo "###INFO: $(date)"
 # read configuration (needs to be adopted!)
 #. ./satenv.sh
 source ../etc/virt-inst.cfg
-source ../lib/virt-inst.lib
+#source ../lib/virt-inst.lib
 
 
 doit() {
