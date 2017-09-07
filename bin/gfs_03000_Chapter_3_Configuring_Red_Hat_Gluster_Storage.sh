@@ -117,6 +117,7 @@ gluster volume create labvol \
 	gfs-node2.prayther.org:/bricks/rhs_lv2/brick \
 	gfs-node3.prayther.org:/bricks/rhs_lv3/brick force
 gluster volume start labvol
+gluster volume info labvol
 gluster volume status labvol
 
 echo "###INFO: Finished $0"
