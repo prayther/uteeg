@@ -123,9 +123,9 @@ ssh gfs-backup.prayther.org "gluster volume create backupvol \
 ssh gfs-backup.prayther.org "gluster volume start backupvol"
 ssh gfs-backup.prayther.org "gluster volume status backupvol"
 
-if [[ $(date +%Y-%m-%d) == "2017-09-06" ]];then
+if [[ $(date +%Y-%m-%d) == "2017-09-07" ]];then
 	echo""
-	echo "if the date is 2017-09-06"
+	echo "if the date is $(date +%Y-%m-%d)"
 	echo ""
 	echo "want to stop here to practice commands on cli"
 	echo ""
