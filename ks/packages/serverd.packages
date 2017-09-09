@@ -7,3 +7,4 @@ bind-utils
 deltarpm
 nfs-utils
 #ansible
+@core

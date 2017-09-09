@@ -147,7 +147,7 @@ curl -s --head http://"${SERVER}"/ks/rhel/Packages/repodata/ | grep "200 OK" || 
 
 # Install httpd for ks, iso, manifest.zip
 #rpm -q httpd || dnf -y install httpd
-# open httpd to all if not already
+# open httpd to all if not already for ks and other activities later to be able to get to the libvirt host as an httpd server
 firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=httpd
 
 # this will be the uniq ks.cfg file for building this vm
@@ -157,6 +157,10 @@ reboot
 auth --enableshadow --passalgo=sha512
 # Use CDROM installation media
 #cdrom
+#if [[ ${OS} == "fedora" ]];then
+#  url --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$releasever&arch=$basearch
+#fi
+
 url --url ${URL}/${OS}
 #this repo is just rhel dvd. which makes it, special evidently. had to cd Packages: create_repo and point to that.
 #this messes up the versions of packages and breaks gluster, thus the entire kickstart. kickstart console Ctrl-Alt 2 less G /tmp/packages
@@ -193,7 +197,7 @@ clearpart --all --initlabel
 #repo --name=rhel --baseurl=http://"${SERVER}"/ks/rhel
 
 %packages
-@core
+#@core
 %include /tmp/${VMNAME}.packages
 %end
 
@@ -402,6 +406,19 @@ virt-install \
    --os-type=linux \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
+   --network network="${NETWORK}" \
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+fi
+if [[ "${OS}" = "fedora" ]];then
+virt-install \
+   --name="${VMNAME}" \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=150,sparse=false,format=qcow2,cache=none \
+   --vcpus="${VCPUS}" --ram="${RAM}" \
+   --location=/var/lib/libvirt/images/"${FEDORA_ISO}" \
+   --os-type=linux \
+   --noautoconsole --wait -1 \
+   --os-variant=fedora"${OSVARIANT}" \
    --network network="${NETWORK}" \
    --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
 fi

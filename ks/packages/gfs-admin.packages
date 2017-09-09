@@ -20,3 +20,4 @@ deltarpm
 nfs-utils
 net-tools
 #ansible
+@core

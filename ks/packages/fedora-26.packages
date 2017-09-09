@@ -1,0 +1,19 @@
+#dnf group list -v hidden
+#package 
+@workstation-product-environment
+@development-tools
+@office
+@ansible-node
+@eclipse
+@firefox
+chrony
+kexec-tools
+#added below for own purposes
+git
+mlocate
+wget
+vim
+bind-utils
+deltarpm
+nfs-utils
+@core

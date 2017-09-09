@@ -1,0 +1,6 @@
+part pv.288 --fstype="lvmpv" --ondisk=vda --size=15360 --grow
+part /boot --fstype="ext4" --ondisk=vda --size=1024
+volgroup fedora --pesize=4096 pv.288
+logvol /  --fstype="xfs" --size=235236 --encrypted --name=root --vgname=fedora
+logvol swap  --fstype="swap" --size=4096 --name=swap --vgname=fedora
+
