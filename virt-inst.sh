@@ -350,8 +350,8 @@ ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unr
 
 virsh destroy "${VMNAME}"
 virsh undefine "${VMNAME}"
-rm -rf /var/lib/libvirt/images/"${VMNAME}".qcow2
-rm -rf /var/lib/libvirt/images/"${VMNAME}"data.qcow2
+rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
+rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2
 
 #if the ip does not exist make a hosts entry into libvirt (dnsmasq) host so that the vm will resolve. important for satellite
 grep -i "${IP}    ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts || echo "${IP}	${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
@@ -379,7 +379,7 @@ virt-install \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
 fi
 
 if [[ "${OS}" = "rhel" ]];then
@@ -393,7 +393,7 @@ virt-install \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
 fi
 
 if [[ "${OS}" = "rhgf" ]];then
@@ -407,7 +407,7 @@ virt-install \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
 fi
 if [[ "${OS}" = "fedora" ]];then
 virt-install \
@@ -418,8 +418,9 @@ virt-install \
    --location=/var/lib/libvirt/images/"${FEDORA_ISO}" \
    --os-type=linux \
    --noautoconsole --wait -1 \
-   --os-variant=fedora"${OSVARIANT}" \
+   --os-variant=generic
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+   --initrd-inject=vm.ks --extra-args "ks=file:/var/www/html/ks/ks_${UNIQ}.cfg" \
+   --extra-args "ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
 fi
 
