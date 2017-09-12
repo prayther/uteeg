@@ -178,8 +178,8 @@ ssh rhel-client.prayther.org "setfacl -R -m d:g:games:rX /mnt/labvol/private_gam
 #default:other::r-x
 
 #Enable quotas for the 'labvol' volume, and set the hard and soft limits (1 GiB and 85%) for the /games directory.
-ssh rhel-client.prayther.org "ll /mnt/labvol"
-ssh rhel-client.prayther.org "ll/mnt/distdispvol" 
+ssh rhel-client.prayther.org "ls /mnt/labvol"
+ssh rhel-client.prayther.org "ls /mnt/distdispvol" 
 ssh rhel-client.prayther.org "umount /mnt/labvol"
 ssh rhel-client.prayther.org "umount /mnt/distdispvol"
 gluster volume quota labvol enable
