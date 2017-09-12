@@ -63,7 +63,7 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 #check to make sure all machines are ready
-for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org gfs-backup.prayther.org
+for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org gfs-node1.prayther.org gfs-backup.prayther.org
           do ssh "${i}" exit || echo "ssh to ${i} failded" || exit 1
 done
 
@@ -102,27 +102,74 @@ done
 #gluster volume create iscsivol \
 #	gfs-node2.prayther.org \
 
-ssh rhel-client.prayther.org "rpm -qa | grep iscsi-initiator-utils || yum install -y iscsi-initiator-utils"
-ssh rhel-client.prayther.org "systemctl enable iscsi"
-#ssh rhel-client.prayther.org "systemctl restart iscsid"
+ssh gfs-node1.prayther.org "rpm -qa | grep iscsi-initiator-utils || yum install -y iscsi-initiator-utils"
+ssh gfs-node1.prayther.org "systemctl enable iscsi"
+#ssh gfs-node1.prayther.org "systemctl restart iscsid"
 
-ssh rhel-client.prayther.org "cat << EOF > /etc/iscsi/initiatorname.iscsi
+ssh gfs-node1.prayther.org "cat << EOF > /etc/iscsi/initiatorname.iscsi
 InitiatorName=iqn.2017-09.org.prayther:clientlun1
 EOF"
-ssh rhel-client.prayther.org "systemctl restart iscsid"
+ssh gfs-node1.prayther.org "systemctl restart iscsid"
 
-ssh rhel-client.prayther.org "iscsiadm --mode discoverydb --type sendtargets --portal gfs-node2.prayther.org --discover"
-ssh rhel-client.prayther.org "iscsiadm --mode node --targetname iqn.2017-09.org.prayther:lun1 --portal gfs-node2.prayther.org --login"
+ssh gfs-node1.prayther.org "iscsiadm --mode discoverydb --type sendtargets --portal gfs-node2.prayther.org --discover"
+ssh gfs-node1.prayther.org "iscsiadm --mode node --targetname iqn.2017-09.org.prayther:lun1 --portal gfs-node2.prayther.org --login"
 
-ssh rhel-client.prayther.org "systemctl restart iscsi"
-ssh rhel-client.prayther.org "iscsiadm --mode node --targetname iqn.2017-09.org.prayther:lun1 --portal gfs-node2.prayther.org --login"
-ssh rhel-client.prayther.org "systemctl status iscsi"
-ssh rhel-client.prayther.org "lsblk --scsi"
-ssh rhel-client.prayther.org "mkfs.xfs /dev/sda"
-ssh rhel-client.prayther.org "iscsiadm -m session -P 3"
-ssh rhel-client.prayther.org "mkdir -pv /mnt/iscsi"
-ssh rhel-client.prayther.org "mount -v /dev/sda /mnt/iscsi"
-ssh rhel-client.prayther.org "touch /mnt/iscsi/me"
+ssh gfs-node1.prayther.org "systemctl restart iscsi"
+ssh gfs-node1.prayther.org "iscsiadm --mode node --targetname iqn.2017-09.org.prayther:lun1 --portal gfs-node2.prayther.org --login"
+ssh gfs-node1.prayther.org "systemctl status iscsi"
+ssh gfs-node1.prayther.org "lsblk --scsi"
+
+#if you run the script twice
+ssh gfs-node1.prayther.org "umount /mnt/iscsi*"
+#delele partition with fdisk
+ssh gfs-node1.prayther.org "echo 'd
+
+w'|fdisk /dev/sda"
+ssh gfs-node1.prayther.org "partprobe"
+#delele partition with fdisk
+ssh gfs-node1.prayther.org "echo 'd
+
+w'|fdisk /dev/sda"
+ssh gfs-node1.prayther.org "partprobe"
+#create 10M primary partition
+ssh gfs-node1.prayther.org "echo 'n
+
+
+
++10M
+w'|fdisk /dev/sda"
+ssh gfs-node1.prayther.org "partprobe"
+#create 100M primary partition. xfs requires larger partition
+ssh gfs-node1.prayther.org "echo 'n
+
+
+
++100M
+w'|fdisk /dev/sda"
+#partprobe to recognize changes
+ssh gfs-node1.prayther.org "partprobe"
+ssh gfs-node1.prayther.org "mkfs.ext4 /dev/sda1"
+ssh gfs-node1.prayther.org "e2label /dev/sda1 iscsilun0"
+ssh gfs-node1.prayther.org "e2label /dev/sda1"
+ssh gfs-node1.prayther.org "iscsiadm -m session -P 3"
+ssh gfs-node1.prayther.org "mkdir -pv /mnt/iscsiext4"
+ssh gfs-node1.prayther.org "mount -L iscsilun0 /mnt/iscsiext4"
+ssh gfs-node1.prayther.org "touch /mnt/iscsiext4/me"
+#mount with label on xfs partiton
+ssh gfs-node1.prayther.org "mkfs.xfs -f -b size=1024 /dev/sda2"
+ssh gfs-node1.prayther.org "xfs_admin -L "newlabel" /dev/sda2"
+ssh gfs-node1.prayther.org "mkdir -pv /mnt/iscsixfs"
+ssh gfs-node1.prayther.org "mount -L iscsilun0 /mnt/iscsixfs"
+ssh gfs-node1.prayther.org "touch /mnt/iscsixfs/me"
+
+#make bricks for tier
+ssh gfs-node1.prayther.org "mkdir -pv /mnt/iscsiext4/brk1"
+ssh gfs-node1.prayther.org "mkdir -pv /mnt/iscsixfs/brk2"
+
+gluster volume tier labvol attach replica 2 \
+	gfs-node1.prayther.org:/mnt/iscsiext4/brk1 \
+	gfs-node1.prayther.org:/mnt/iscsixfs/brk2
+
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
