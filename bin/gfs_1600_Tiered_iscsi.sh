@@ -169,7 +169,9 @@ ssh gfs-node1.prayther.org "mkdir -pv /mnt/iscsixfs/brk2"
 gluster volume tier labvol attach replica 2 \
 	gfs-node1.prayther.org:/mnt/iscsiext4/brk1 \
 	gfs-node1.prayther.org:/mnt/iscsixfs/brk2
-
+#status
+gluster volume info labvol
+gluster volume tier labvol status
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
