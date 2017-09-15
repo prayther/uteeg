@@ -165,6 +165,8 @@ repo --name=rpmfusion-free-updates --mirrorlist="https://mirrors.rpmfusion.org/m
 repo --name=rpmfusion-nonfree --mirrorlist="https://mirrors.rpmfusion.org/mirrorlist?repo=nonfree-fedora-26&arch=x86_64" --includepkgs=rpmfusion-nonfree-release
 repo --name=rpmfusion-nonfree-updates --mirrorlist="https://mirrors.rpmfusion.org/mirrorlist?repo=nonfree-fedora-updates-released-26&arch=x86_64" --includepkgs=rpmfusion-nonfree-release
 repo --name=google-chrome --baseurl="http://dl.google.com/linux/chrome/rpm/stable/x86_64"
+repo --name=insync --baseurl="http://yum.insynchq.com/fedora/$releasever/"
+repo --name=rocketchat --baseurl="https://copr-be.cloud.fedoraproject.org/results/xenithorb/rocketchat-dev/fedora-$releasever-$basearch/"
 
 # zerombr
 # https://docs.fedoraproject.org/en-US/Fedora/26/html/Installation_Guide/sect-kickstart-commands-zerombr.html
@@ -306,6 +308,8 @@ transmission-gtk
 redhat-internal-cert-install
 redhat-internal-NetworkManager-openvpn-profiles
 gnome-tweak-tool
+insync
+rocketchat-desktop
 %end
 
 # Post-installation Script
