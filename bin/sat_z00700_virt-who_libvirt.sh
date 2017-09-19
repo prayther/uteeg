@@ -45,11 +45,12 @@ doit() {
 rpm -q virt-who || doit /usr/bin/yum install -y virt-who
 
 # configure virt-who
-if [ ! -f /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf ];then
-cat << EOF > /etc/virt-who.d/${VMNAME}.${DOMAIN}.conf
+#if [ -f /etc/virt-who.d/$(hostname).conf ];then
+ls /etc/virt-who.d/$(hostname).conf || cat << EOF > /etc/virt-who.d/$(hostname).conf
 [sat.laptop.prayther]
+#Don't forget that where ever this is running from... needs to be registered to the satellite/self-registered.
 type=libvirt
-#server=sat.laptop.prayther
+#server=virt.laptop.prayther
 server=${GATEWAY}
 #username=root
 #password=password
@@ -58,7 +59,7 @@ owner=${ORG}
 env=Library
 hypervisor_id=hostname
 EOF
-fi
+#fi
 
 # config satellite 6 if not already
 grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
