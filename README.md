@@ -3,7 +3,7 @@ virt-install (libvirt/KVM) Kickstart
 Purpose:
 Rapidly deploy Satellite and other things on a libvirt test bed. Mine is a laptop.
 Using dnf install virt-install virt-manager. Deploy Satellite 6.2.x fully configured in ~45 minutes.
-Save time by using local media to install RHEL and Satellite. The first time you pull repositories from cdn.redhat.com, export them to your same httpd server used for kickstart.
+Save time and be self contained by using local media to install RHEL and Satellite. The first time you pull repositories from cdn.redhat.com, export them to your same httpd server used for kickstart.
 
 Run virt-inst.sh <vmname> <disc in GB> <vcpus> <mem> (virt-inst.sh satellite 300 4 6144).
 1 Creates a libvirt vm.

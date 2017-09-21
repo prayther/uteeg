@@ -1,61 +1,8 @@
-#!/bin/bash -x
-
-# virt-inst.sh uses a libvirt host as a Kickstart server, NFS host, Satellite/RHEL DVD repository and local CDN.
-# It utilizes local media, RHEL & Satellite DVD media to install satellite. If available it also connects to
-# Red Hat CDN with a valid account and pool id.
-# Setup:
-# cd /var/www/html && git clone https://github.com/prayther/uteeg.git
-# ln -s uteeg ks
-# cp ~/Downloads/rhel-server-7.3-x86_64-dvd.iso /var/www/html/ks/iso/
-# cp ~/Downloads/satellite-6.2.10-rhel-7-x86_64-dvd.iso /var/www/html/ks/iso/
-# cp ~/Downloads/manifest.zip /var/www/html/ks/manifest/
-# ./virt-inst.sh testvm 10 2 2048
-
-#https://github.com/prayther/uteeg
-#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
-# mschreie@redhat.com
-# setting up  a satellite for demo purposes
-# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
-
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
 
-logfile="../log/$(basename $0 .sh).log"
-donefile="../log/$(basename $0 .sh).done"
-touch $logfile
-touch $donefile
-
-exec > >(tee -a "$logfile") 2>&1
-
-echo "###INFO: Starting $0"
-echo "###INFO: $(date)"
-
-# read configuration (needs to be adopted!)
-#. ./satenv.sh
-source etc/virt-inst.cfg
-
-
-doit() {
-        echo "INFO: doit: $@" >&2
-        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
-        grep -q "$cmd2grep" $donefile
-        if [ $? -eq 0 ] ; then
-                echo "INFO: doit: found cmd in donefile - skipping" >&2
-        else
-                "$@" 2>&1 || {
-                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
-                        exit 1
-                }
-                echo "$cmd2grep" >> $donefile
-                echo "INFO: doit: cmd finished successfull" >&2
-        fi
-}
-
-error_exit () {
-	echo "${0}: ${1:-"Unknown Error"}" 1>&2
-	exit 1
-}
+source etc/bsfl
 
 if [ -z "${1}" ];then
   echo ""
@@ -73,36 +20,6 @@ if [ -z "${1}" ];then
   echo ""
   exit 1
 fi
-
-
-#if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
-#if [ -z "${1}" ];then
-#  echo ""
-#  echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
-#  echo ""
-#  echo "Ex: ./virt-install.sh testvm 10 2 2048"
-#  echo ""
-#  echo "Only run one of these at a time. Building multiple"
-#  echo "VM's gets all wacky with the libvirtd restart and "
-#  echo "starting and stopping the network"
-#  echo ""
-#  echo "All the starting and stopping is to get dhcp leases straight"
-#  echo ""
-#  echo ""
-#  exit 1
-#fi
-
-# make sure your your libvirt host has sw needed for virt-inst.sh
-#for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
-#  do
-#    if [[ $(rpm -q "${sw}") ]];then
-#      echo ""${sw}" installed"
-#    else
-#      echo ""${sw}" not installed..."
-#      echo "yum install -y "${sw}" # run this and try again"
-#      exit 1
-#    fi
-#done
 
 # Install httpd for ks, iso, manifest.zip, nfs-utils for satellite export. using some ansible
 for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
