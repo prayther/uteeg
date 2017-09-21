@@ -124,7 +124,7 @@ ssh rhel-client.prayther.org "mkdir -pv /mnt/labvol/private_games"
 #mount nfs
 ssh rhel-client.prayther.org "mkdir -pv /mnt/distdispvol"
 doit ssh rhel-client.prayther.org "echo #gfs-node2.prayther.org:/distdispvol /mnt/distdispvol nfs rw 0 0 >> /etc/fstab"
-ssh rhel-client.prayther.org "mount -o acl -t glusterfs gfs-node2:/distdispvol /mnt/distdispvol"
+ssh rhel-client.prayther.org "mount -o acl -t nfs gfs-node2:/distdispvol /mnt/distdispvol"
 
 #ownership, facl's
 ssh rhel-client.prayther.org "chgrp games /mnt/labvol/games"

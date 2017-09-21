@@ -398,7 +398,7 @@ rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
 rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2
 
 #if the ip does not exist make a hosts entry into libvirt (dnsmasq) host so that the vm will resolve. important for satellite
-grep -i "${IP}    ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts || echo "${IP}	${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
+grep -i "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts || echo "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
 
 #virsh net-destroy ${NETWORK}
 #virsh net-start ${NETWORK}
