@@ -70,15 +70,19 @@ if [ -z "${1}" ];then
 fi
 
 # make sure your your libvirt host has sw needed for virt-inst.sh
+#for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
+#  do
+#    if [[ $(rpm -q "${sw}") ]];then
+#      echo ""${sw}" installed"
+#    else
+#      echo ""${sw}" not installed..."
+#      echo "yum install -y "${sw}" # run this and try again"
+#      exit 1
+#    fi
+#done
+
 for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
-  do
-    if [[ $(rpm -q "${sw}") ]];then
-      echo ""${sw}" installed"
-    else
-      echo ""${sw}" not installed..."
-      echo "yum install -y "${sw}" # run this and try again"
-      exit 1
-    fi
+  do rpm -q "${sw}" || dnf install "${sw}"
 done
 
 #this set vars per vm from hosts file based on $1, vmname used to launch this script

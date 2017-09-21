@@ -52,12 +52,17 @@ doit() {
         fi
 }
 
-#if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
+error_exit () {
+	echo "${0}: ${1:-"Unknown Error"}" 1>&2
+	exit 1
+}
+
 if [ -z "${1}" ];then
   echo ""
-  echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
+  echo " ./virt-install.sh <vmname>"
   echo ""
-  echo "Ex: ./virt-install.sh testvm 10 2 2048"
+  echo "You need to configure a vm in uteeg/etc/hosts"
+  echo "Use an example in uteeg/etc/hosts as an example"
   echo ""
   echo "Only run one of these at a time. Building multiple"
   echo "VM's gets all wacky with the libvirtd restart and "
@@ -69,16 +74,39 @@ if [ -z "${1}" ];then
   exit 1
 fi
 
+
+#if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
+#if [ -z "${1}" ];then
+#  echo ""
+#  echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
+#  echo ""
+#  echo "Ex: ./virt-install.sh testvm 10 2 2048"
+#  echo ""
+#  echo "Only run one of these at a time. Building multiple"
+#  echo "VM's gets all wacky with the libvirtd restart and "
+#  echo "starting and stopping the network"
+#  echo ""
+#  echo "All the starting and stopping is to get dhcp leases straight"
+#  echo ""
+#  echo ""
+#  exit 1
+#fi
+
 # make sure your your libvirt host has sw needed for virt-inst.sh
+#for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
+#  do
+#    if [[ $(rpm -q "${sw}") ]];then
+#      echo ""${sw}" installed"
+#    else
+#      echo ""${sw}" not installed..."
+#      echo "yum install -y "${sw}" # run this and try again"
+#      exit 1
+#    fi
+#done
+
+# Install httpd for ks, iso, manifest.zip, nfs-utils for satellite export. using some ansible
 for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
-  do
-    if [[ $(rpm -q "${sw}") ]];then
-      echo ""${sw}" installed"
-    else
-      echo ""${sw}" not installed..."
-      echo "yum install -y "${sw}" # run this and try again"
-      exit 1
-    fi
+  do rpm -q "${sw}" || dnf install "${sw}"
 done
 
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
@@ -96,6 +124,11 @@ OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
 #ceph-*
 #gfs-*
 #PRODUCT=$(echo "${VMNAME}" | awk -F"-" '{print $1}')
+
+#error_exit. function to catch an error and exit with a message
+grep "^DocumentRoot" /etc/httpd/conf/httpd.conf ||  error_exit "Line $LINENO: Looking for ^DocumentRoot /etc/httpd/conf/httpd.conf Need to install httpd and put uteeg in /var/www/html/uteeg. For some dumb reason I setup ln -s uteeg ks also."
+ls /var/www/html/uteeg || error_exit "Line $LINENO: Just put uteeg under /var/www/html. And create ln -s uteeg ks"
+ls /var/www/html/ks || error_exit "Line $LINENO: Just put ks link under /var/www/html. And create ln -s uteeg ks"
 
 #Pull vm info from hosts file
 #inputfile=./etc/hosts
@@ -143,12 +176,16 @@ if [[ -f ks/network/"${VMNAME}".network ]];then
     exit 1
 fi
 
-curl -s --head http://"${SERVER}"/ks/rhel/Packages/repodata/ | grep "200 OK" || echo "have to run cd /var/www/html/uteeg/rhel/Packages && createrepo_c ." ||  exit 1
+#curl -s --head http://"${SERVER}"/ks/rhel/Packages/repodata/ | grep "200 OK" || echo "have to run cd /var/www/html/uteeg/rhel/Packages && createrepo_c ." ||  exit 1
+ls /var/www/html/ks/rhel/Packages/repodata/ || error_exit "Line $LINENO: have to run cd /var/www/html/uteeg/rhel/Packages && createrepo_c ."
 
 # Install httpd for ks, iso, manifest.zip
 #rpm -q httpd || dnf -y install httpd
 # open httpd to all if not already for ks and other activities later to be able to get to the libvirt host as an httpd server
-firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=httpd
+#firewall-cmd --get-default-zone
+#firewall-cmd --get-service #lists all service avail. not just enabled
+
+firewall-cmd --list-all | grep -i services | grep http || firewall-cmd --permanent --add-service=http && firewall-cmd --reload
 
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
@@ -431,4 +468,3 @@ virt-install \
 fi
 #   --os-variant=fedora"${OSVARIANT}" \
 #   --network network="${NETWORK}",model=rtl8139 \
-
