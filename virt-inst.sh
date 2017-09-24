@@ -356,7 +356,7 @@ grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo "${VMNAME}.${DOMAIN}" >
 #unregister so you don't make a mess on cdn
 ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
-cmd "file /etc/libvirt/qemu/networks/laptoplab.xml" || msg_error "Line $LINENO: Looking for libvirt network: /etc/libvirt/qemu/networks/laptoplab.xml
+cmd "file /etc/libvirt/qemu/networks/laptoplab.xml" || die "Line $LINENO: Looking for libvirt network: /etc/libvirt/qemu/networks/laptoplab.xml
 <!--
 WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
 OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
