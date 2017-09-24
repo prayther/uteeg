@@ -2,14 +2,16 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
 
-source etc/bsfl
+source lib/bsfl/lib/bsfl.sh
+#DEBUG=yes
+source etc/virt-inst.cfg
 
 if [ -z "${1}" ];then
   echo ""
   echo " ./virt-install.sh <vmname>"
   echo ""
   echo "You need to configure a vm in uteeg/etc/hosts"
-  echo "Use an example in uteeg/etc/hosts as an example"
+  echo "Use an example in uteeg/etc/hosts"
   echo ""
   echo "Only run one of these at a time. Building multiple"
   echo "VM's gets all wacky with the libvirtd restart and "
@@ -22,57 +24,34 @@ if [ -z "${1}" ];then
 fi
 
 # Install httpd for ks, iso, manifest.zip, nfs-utils for satellite export. using some ansible
-for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
-  do rpm -q "${sw}" || dnf install "${sw}"
-done
+install_libvirt_host_resources () {
+rpm -q ansible virt-manager virt-install virt-viewer nfs-utils httpd
+}
+cmd install_libvirt_host_resources || msg_error "Line $LINENO: rpm -q ansible virt-manager virt-install virt-viewer nfs-utils httpd"
 
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
 inputfile=./etc/hosts
-VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")
-DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")
-VCPU=$(awk /"${1}"/'{print $3}' "${inputfile}")
-RAM=$(awk /"${1}"/'{print $4}' "${inputfile}")
-IP=$(awk /"${1}"/'{print $5}' "${inputfile}")
-OS=$(awk /"${1}"/'{print $6}' "${inputfile}")
-RHVER=$(awk /"${1}"/'{print $7}' "${inputfile}")
-OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
+cmd "VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")"
+cmd "DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")"
+cmd "VCPU=$(awk /"${1}"/'{print $3}' "${inputfile}")"
+cmd "RAM=$(awk /"${1}"/'{print $4}' "${inputfile}")"
+cmd "IP=$(awk /"${1}"/'{print $5}' "${inputfile}")"
+cmd "OS=$(awk /"${1}"/'{print $6}' "${inputfile}")"
+cmd "RHVER=$(awk /"${1}"/'{print $7}' "${inputfile}")"
+cmd "OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")"
 #vmname needs to have the structure:
 #sat-*
 #ceph-*
 #gfs-*
 #PRODUCT=$(echo "${VMNAME}" | awk -F"-" '{print $1}')
 
-#error_exit. function to catch an error and exit with a message
-grep "^DocumentRoot" /etc/httpd/conf/httpd.conf ||  error_exit "Line $LINENO: Looking for ^DocumentRoot /etc/httpd/conf/httpd.conf Need to install httpd and put uteeg in /var/www/html/uteeg. For some dumb reason I setup ln -s uteeg ks also."
-ls /var/www/html/uteeg || error_exit "Line $LINENO: Just put uteeg under /var/www/html. And create ln -s uteeg ks"
-ls /var/www/html/ks || error_exit "Line $LINENO: Just put ks link under /var/www/html. And create ln -s uteeg ks"
+cmd "grep "^DocumentRoot" /etc/httpd/conf/httpd.conf" || msg_error "Line $LINENO: Looking for ^DocumentRoot /etc/httpd/conf/httpd.conf Need to install httpd and put uteeg in /var/www/html/uteeg. For some dumb reason I setup ln -s uteeg ks also."
+cmd "file /var/www/html/uteeg" || msg_error "Line $LINENO: Just put uteeg under /var/www/html. And create ln -s uteeg ks"
+cmd "file /var/www/html/ks" || msg_error "Line $LINENO: Just put ks link under /var/www/html. And create ln -s uteeg ks"
 
-#Pull vm info from hosts file
-#inputfile=./etc/hosts
-#while IFS=" " read -r VMNAME DISC_SIZE VCPU RAM IP; do
-#  VMNAME="$VMNAME"
-#  DISC_SIZE="$DISC_SIZE"
-#  VCPU="$VCPU"
-##  MEM="$RAM"
-#  IP="$IP"
-#done < "$inputfile" | grep $1
+exit 4
 
-# This is just saving the info in virt-inst.cfg. You have to use all 4 parameters each time
-# You will have a history of the last values for each uniq vmname you have used saved in virt-inst.cfg
-#VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
-#export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
-#export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg
-#export RAM=${4} && echo "${1}_RAM=${4}" >> etc/virt-inst.cfg
-
-# replace vars if they change for same vm name
-#if [[ -n "${VMNAME}" ]];then
-#      sed -i /VMNAME=/d etc/virt-inst.cfg
-#      sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
-#      sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
-#      sed -i /${1}_RAM=/d etc/virt-inst.cfg
-#fi
-
-UNIQ=${VMNAME}_$(date '+%s')
+cmd "UNIQ=${VMNAME}_$(date '+%s')"
 
 if [[ -z "${ORG}" ]]; [[ -z "${SERVER}" ]];then
   echo ""

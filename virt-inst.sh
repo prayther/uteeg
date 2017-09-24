@@ -352,6 +352,28 @@ grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo "${VMNAME}.${DOMAIN}" >
 #unregister so you don't make a mess on cdn
 ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
+cmd "file /etc/libvirt/qemu/networks/laptoplab.xml" || msg_error "Line $LINENO: Looking for libvirt network: /etc/libvirt/qemu/networks/laptoplab.xml
+<!--
+WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
+  virsh net-edit laptoplab
+or other application using the libvirt API.
+-->
+
+<network>
+  <name>laptoplab</name>
+  <uuid>dca25628-b900-42a6-8176-14b660005520</uuid>
+  <forward dev='wlp4s0' mode='nat'>
+    <interface dev='wlp4s0'/>
+  </forward>
+  <bridge name='virbr1' stp='on' delay='0'/>
+  <mac address='52:54:00:ab:29:e0'/>
+  <domain name='laptoplab'/>
+  <ip address='10.0.0.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+"
+
 virsh destroy "${VMNAME}"
 virsh undefine "${VMNAME}"
 rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
