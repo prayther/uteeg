@@ -38,7 +38,7 @@ file ~uteeg/bsfl || cd /root && git clone https://github.com/SkypLabs/bsfl.git
 #. ./satenv.sh
 source etc/virt-inst.cfg
 #cmd "source bsfl/lib/bsfl/lib/bsfl.sh" || die "Line $LINENO: could not source bsfl/lib/bsfl/lib/bsfl.sh"
-cmd "source bsfl/lib/bsfl/lib/bsfl.sh" || exit 1
+source bsfl/lib/bsfl.sh || exit 1
 
 
 doit() {
