@@ -34,6 +34,7 @@ echo "###INFO: $(date)"
 # read configuration (needs to be adopted!)
 #. ./satenv.sh
 source etc/virt-inst.cfg
+source lib/bsfl/lib/bsfl.sh
 
 
 doit() {
