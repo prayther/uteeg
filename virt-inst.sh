@@ -31,10 +31,13 @@ exec > >(tee -a "$logfile") 2>&1
 echo "###INFO: Starting $0"
 echo "###INFO: $(date)"
 
+# bsfl are bash libs used in scripts in uteeg
+file /root/bsfl || cd /root && git clone https://github.com/SkypLabs/bsfl.git
+
 # read configuration (needs to be adopted!)
 #. ./satenv.sh
 source etc/virt-inst.cfg
-source lib/bsfl/lib/bsfl.sh
+source ~/bsfl/lib/bsfl/lib/bsfl.sh
 
 
 doit() {
