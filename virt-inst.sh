@@ -141,6 +141,8 @@ file_exists "/etc/libvirt/qemu/networks/laptoplab.xml" || libvirt_create_laptopl
 
 cmd file_exists /var/www/html/uteeg
 die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/prayther/uteeg"
+cmd file_exists /var/www/html/uteeg/bsfl
+die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/skyplabs/bsfl"
 
 #setup rhel server media in /var/www/html/uteeg/rhel
 # assume media is located at $RHEL_ISO, etc/rhel.cfg
