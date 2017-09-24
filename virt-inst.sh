@@ -37,7 +37,7 @@ file /root/bsfl || cd /root && git clone https://github.com/SkypLabs/bsfl.git
 # read configuration (needs to be adopted!)
 #. ./satenv.sh
 source etc/virt-inst.cfg
-source ~/bsfl/lib/bsfl/lib/bsfl.sh
+source bsfl/lib/bsfl/lib/bsfl.sh
 
 
 doit() {
