@@ -26,6 +26,7 @@ file ~/uteeg/bsfl || git clone https://github.com/SkypLabs/bsfl.git
 
 # read configuration (needs to be adopted!)
 #source etc/virt-inst.cfg
+source etc/rhel.cfg
 source ./bsfl/lib/bsfl.sh || exit 1
 
 #if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
@@ -57,9 +58,14 @@ fi
 #    fi
 #done
 
+# Install httpd for ks, iso, manifest.zip
 for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
   do cmd "rpm -q "${sw}"" || dnf install "${sw}"
 done
+cmd systemctl enable httpd
+cmd systemctl start httpd
+cmd firewall-cmd --list-all | grep -i services | grep http || firewall-cmd --permanent --add-service=http && firewall-cmd --reload
+
 
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
 inputfile=etc/hosts
@@ -139,16 +145,13 @@ die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone ht
 #setup rhel server media in /var/www/html/uteeg/rhel
 # assume media is located at $RHEL_ISO, etc/rhel.cfg
 cmd mkdir -pv /mnt/rhel
-mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel
-mkdir -pv /var/www/html/uteeg/rhel
-curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK"
+cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel
+cmd mkdir -v /var/www/html/uteeg/rhel
+cmd rsync -av /mnt/rhel/* /var/www/html/uteeg/rhel/
+cmd curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK"
 die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
 
 # Install httpd for ks, iso, manifest.zip
-#rpm -q httpd || dnf -y install httpd
-# open httpd to all if not already for ks and other activities later to be able to get to the libvirt host as an httpd server
-#firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=httpd
-cmd firewall-cmd --list-all | grep -i services | grep http || firewall-cmd --permanent --add-service=http && firewall-cmd --reload
 
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
