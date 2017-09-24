@@ -32,12 +32,13 @@ echo "###INFO: Starting $0"
 echo "###INFO: $(date)"
 
 # bsfl are bash libs used in scripts in uteeg
-file /root/bsfl || cd /root && git clone https://github.com/SkypLabs/bsfl.git
+file ~uteeg/bsfl || cd /root && git clone https://github.com/SkypLabs/bsfl.git
 
 # read configuration (needs to be adopted!)
 #. ./satenv.sh
 source etc/virt-inst.cfg
-source bsfl/lib/bsfl/lib/bsfl.sh
+#cmd "source bsfl/lib/bsfl/lib/bsfl.sh" || die "Line $LINENO: could not source bsfl/lib/bsfl/lib/bsfl.sh"
+cmd "source bsfl/lib/bsfl/lib/bsfl.sh" || exit 1
 
 
 doit() {
