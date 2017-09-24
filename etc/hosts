@@ -1,17 +1,24 @@
-#name disc cpu mem ip os rhver osvariant
+#VMNAME DISCSIZE VCPU MEM IP OS RHVER OSVARIANT VIRTHOST DOMAIN URL DISC NIC MASK
+#CEPH
 ceph-admin 100 2 2048 10.0.0.2 rhel 7.4 7.3
 ceph-node1 100 2 2048 10.0.0.3 rhel 7.4 7.3
 ceph-node2 100 2 2048 10.0.0.4 rhel 7.4 7.3
 ceph-node3 100 2 2048 10.0.0.5 rhel 7.4 7.3
-sat-62 300 4 6144 10.0.0.8 rhel 7.4 7.3
+#Satellite
+sat-62 300 4 6144 10.0.0.8 rhel 7.4 7.3 10.0.0.1 prayther.org "http://${SERVER}/ks" vda eth0 255.255.255.0 prayther.org
+#Gluster
 gfs-admin 50 2 1024 10.0.0.9 rhgf 7.4 7.3
 gfs-node1 50 2 1024 10.0.0.10 rhgf 7.4 7.3
 gfs-node2 50 2 1024 10.0.0.11 rhgf 7.4 7.3
 gfs-node3 50 2 1024 10.0.0.12 rhgf 7.4 7.3
 rhel-client 50 2 1024 10.0.0.13 rhel 7.4 7.3
 gfs-backup 50 2 1024 10.0.0.14 rhgf 7.4 7.3
+#Virtualization
 virt-host 300 6 6144 10.0.0.15 rhel 7.4 7.3
+#Check_MK
 checkmk-admin 50 2 1024 10.0.0.17 rhel 7.4 7.3
+#Fedora
 fedora-26 150 2 4096 10.0.0.18 fedora 26 generic
+#test
 serverd 50 2 1024 10.0.0.19 rhel 7.4 7.3
 

@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # virt-inst.sh uses a libvirt host as a Kickstart server, NFS host, Satellite/RHEL DVD repository and local CDN.
 # It utilizes local media, RHEL & Satellite DVD media to install satellite. If available it also connects to
@@ -21,41 +21,12 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
 
-logfile="../log/$(basename $0 .sh).log"
-donefile="../log/$(basename $0 .sh).done"
-touch $logfile
-touch $donefile
-
-exec > >(tee -a "$logfile") 2>&1
-
-echo "###INFO: Starting $0"
-echo "###INFO: $(date)"
-
 # bsfl are bash libs used in scripts in uteeg
-file ~uteeg/bsfl || cd /root && git clone https://github.com/SkypLabs/bsfl.git
+file ~/uteeg/bsfl || git clone https://github.com/SkypLabs/bsfl.git
 
 # read configuration (needs to be adopted!)
-#. ./satenv.sh
-source etc/virt-inst.cfg
-#cmd "source bsfl/lib/bsfl/lib/bsfl.sh" || die "Line $LINENO: could not source bsfl/lib/bsfl/lib/bsfl.sh"
-source bsfl/lib/bsfl.sh || exit 1
-
-
-doit() {
-        echo "INFO: doit: $@" >&2
-        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
-        grep -q "$cmd2grep" $donefile
-        if [ $? -eq 0 ] ; then
-                echo "INFO: doit: found cmd in donefile - skipping" >&2
-        else
-                "$@" 2>&1 || {
-                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
-                        exit 1
-                }
-                echo "$cmd2grep" >> $donefile
-                echo "INFO: doit: cmd finished successfull" >&2
-        fi
-}
+#source etc/virt-inst.cfg
+source ./bsfl/lib/bsfl.sh || exit 1
 
 #if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
 if [ -z "${1}" ];then
@@ -87,11 +58,11 @@ fi
 #done
 
 for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
-  do rpm -q "${sw}" || dnf install "${sw}"
+  do cmd "rpm -q "${sw}"" || dnf install "${sw}"
 done
 
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
-inputfile=./etc/hosts
+inputfile=etc/hosts
 VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")
 DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")
 VCPU=$(awk /"${1}"/'{print $3}' "${inputfile}")
@@ -100,64 +71,84 @@ IP=$(awk /"${1}"/'{print $5}' "${inputfile}")
 OS=$(awk /"${1}"/'{print $6}' "${inputfile}")
 RHVER=$(awk /"${1}"/'{print $7}' "${inputfile}")
 OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
-#vmname needs to have the structure:
-#sat-*
-#ceph-*
-#gfs-*
-#PRODUCT=$(echo "${VMNAME}" | awk -F"-" '{print $1}')
+VIRTHOST=$(awk /"${1}"/'{print $9}' "${inputfile}")
+DOMAIN=$(awk /"${1}"/'{print $10}' "${inputfile}")
+URL=$(awk /"${1}"/'{print $11}' "${inputfile}")
+DISC=$(awk /"${1}"/'{print $12}' "${inputfile}")
+NIC=$(awk /"${1}"/'{print $13}' "${inputfile}")
+MASK=$(awk /"${1}"/'{print $14}' "${inputfile}")
 
-#Pull vm info from hosts file
-#inputfile=./etc/hosts
-#while IFS=" " read -r VMNAME DISC_SIZE VCPU RAM IP; do
-#  VMNAME="$VMNAME"
-#  DISC_SIZE="$DISC_SIZE"
-#  VCPU="$VCPU"
-##  MEM="$RAM"
-#  IP="$IP"
-#done < "$inputfile" | grep $1
+cmd has_value VMNAME
+cmd has_value DISC_SIZE
+cmd has_value VCPU
+cmd has_value RAM
+cmd has_value IP
+cmd has_value OS
+cmd has_value RHVER
+cmd has_value OSVARIANT
+cmd has_value VIRTHOST
+cmd has_value URL
+cmd has_value DISC
+cmd has_value NIC
+cmd has_value MASK
 
-# This is just saving the info in virt-inst.cfg. You have to use all 4 parameters each time
-# You will have a history of the last values for each uniq vmname you have used saved in virt-inst.cfg
-#VMNAME=${1} && echo "VMNAME=${1}" >> etc/virt-inst.cfg
-#export DISC_SIZE=${2} && echo "${1}_DISC_SIZE=${2}" >> etc/virt-inst.cfg
-#export VCPUS=${3} && echo "${1}_VCPUS=${3}" >> etc/virt-inst.cfg
-#export RAM=${4} && echo "${1}_RAM=${4}" >> etc/virt-inst.cfg
+#sets a uniq name for the ks file
+cmd "UNIQ=${VMNAME}_$(date '+%s')"
 
-# replace vars if they change for same vm name
-#if [[ -n "${VMNAME}" ]];then
-#      sed -i /VMNAME=/d etc/virt-inst.cfg
-#      sed -i /${1}_DISC_SIZE=/d etc/virt-inst.cfg
-#      sed -i /${1}_VCPUS=/d etc/virt-inst.cfg
-#      sed -i /${1}_RAM=/d etc/virt-inst.cfg
-#fi
+#test that the vm config files exist
+cmd file_exists ks/network/${VMNAME}.network || die_if_false msg_failed "Line $LINENO: ./ks/network/"${VMNAME}".network does not exist"
+cmd file_exists "ks/partitions/"${VMNAME}".partitions" || die_if_false msg_failed "Line $LINENO: ./ks/partitions/"${VMNAME}".partitions does not exist"
+cmd file_exists "./ks/packages/"${VMNAME}".packages" || die_if_false msg_failed "Line $LINENO: ./ks/packages/"${VMNAME}".packages does not exist"
+cmd file_exists "./ks/post/"${VMNAME}".post" || die_if_false msg_failed "Line $LINENO: ./ks/post/"${VMNAME}".post does not exist"
 
-UNIQ=${VMNAME}_$(date '+%s')
+#move to function file somewhere
+#setup the 10.0.0.0 libvirt network no dhcp and default it on
+libvirt_create_laptoplab_network() {
+  echo "Line $LINENO: creating libvirt network: /etc/libvirt/qemu/networks/laptoplab.xml"
+  echo
+  echo "restarting libvirtd..."
+  cat << "EOFLAPTOPLAB" > /etc/libvirt/qemu/networks/laptoplab.xml
+<!--
+WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
+  virsh net-edit laptoplab
+or other application using the libvirt API.
+-->
 
-if [[ -z "${ORG}" ]]; [[ -z "${SERVER}" ]];then
-  echo ""
-  echo "You must set default values/arrays in ../etc/virt-inst.cfg"
-  echo ""
-  echo ""
-  exit 1
-fi
+<network>
+  <name>laptoplab</name>
+  <uuid>dca25628-b900-42a6-8176-14b660005520</uuid>
+  <forward dev='wlp4s0' mode='nat'>
+    <interface dev='wlp4s0'/>
+  </forward>
+  <bridge name='virbr1' stp='on' delay='0'/>
+  <mac address='52:54:00:ab:29:e0'/>
+  <domain name='laptoplab'/>
+  <ip address='10.0.0.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+  virsh net-autostart laptoplab
+  systemctl restart libvirtd
+EOFLAPTOPLAB
+}
+file_exists "/etc/libvirt/qemu/networks/laptoplab.xml" || libvirt_create_laptoplab_network
 
-if [[ -f ks/network/"${VMNAME}".network ]];then
-  echo "Kickstart config files in place.... OK"
-  else
-    echo "Kickstart config files are missing."
-    echo "You must create files for %include."
-    echo "Look in the uteeg/ks/* for examples on network, partitions, packages and post"
-    echo
-    echo "Also need uteeg/etc/hosts entry"
-    exit 1
-fi
+cmd file_exists /var/www/html/uteeg
+die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/prayther/uteeg"
 
-curl -s --head http://"${SERVER}"/ks/rhel/Packages/repodata/ | grep "200 OK" || echo "have to run cd /var/www/html/uteeg/rhel/Packages && createrepo_c ." ||  exit 1
+#setup rhel server media in /var/www/html/uteeg/rhel
+# assume media is located at $RHEL_ISO, etc/rhel.cfg
+cmd mkdir -pv /mnt/rhel
+mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel
+mkdir -pv /var/www/html/uteeg/rhel
+curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK"
+die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
 
 # Install httpd for ks, iso, manifest.zip
 #rpm -q httpd || dnf -y install httpd
 # open httpd to all if not already for ks and other activities later to be able to get to the libvirt host as an httpd server
-firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=httpd
+#firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=httpd
+cmd firewall-cmd --list-all | grep -i services | grep http || firewall-cmd --permanent --add-service=http && firewall-cmd --reload
 
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
@@ -173,7 +164,7 @@ auth --enableshadow --passalgo=sha512
 url --url ${URL}/${OS}
 #this repo is just rhel dvd. which makes it, special evidently. had to cd Packages: create_repo and point to that.
 #this messes up the versions of packages and breaks gluster, thus the entire kickstart. kickstart console Ctrl-Alt 2 less G /tmp/packages
-#repo --name=rhelbase --baseurl=http://"${SERVER}"/ks/rhel/Packages/
+#repo --name=rhelbase --baseurl=http://"${VIRTHOST}"/ks/rhel/Packages/
 # Use graphical install
 #text
 cmdline
@@ -203,7 +194,7 @@ clearpart --all --initlabel
 %include /tmp/${VMNAME}.partitions
 
 #repo --name=epel --baseurl=http://dl.fedoraproject.org/pub/epel/7/x86_64
-#repo --name=rhel --baseurl=http://"${SERVER}"/ks/rhel
+#repo --name=rhel --baseurl=http://"${VIRTHOST}"/ks/rhel
 
 %packages
 #@core
@@ -243,10 +234,10 @@ LOG_() { while IFS='' read -r line; do echo "$(date)-${0} $line" >> /root/ks_vir
 exec 2> >(LOG_)
 
 #jump through hoops to get git (not on the gluster dvd) so that we can pull down the git repo to config with
-yum-config-manager --add-repo http://"${SERVER}"/ks/rhel/Packages
-rpm --import http://"${SERVER}"/ks/rhel/RPM-GPG-KEY-redhat-release
+yum-config-manager --add-repo http://"${VIRTHOST}"/ks/rhel/Packages
+rpm --import http://"${VIRTHOST}"/ks/rhel/RPM-GPG-KEY-redhat-release
 yum -y install git
-rm -f /etc/yum.repos.d/"${SERVER}"*.repo
+rm -f /etc/yum.repos.d/"${VIRTHOST}"*.repo
 
 cd /root && /usr/bin/git clone https://github.com/prayther/uteeg.git
 cd /usr/local && /usr/bin/git clone https://github.com/prayther/uteeg.git
@@ -299,8 +290,8 @@ ID_RSAPUB
 chmod 644 /root/.ssh/id_rsa.pub
 
 # setup known_hosts in both directions for libvirt host and vm
-# GATEWAY is the libvirt host. hostname will be the vm in question because hostname evaluates before sending the command
-ssh -o StrictHostKeyChecking=no root@${GATEWAY} "ssh -o StrictHostKeyChecking=no root@${VMNAME}.${DOMAIN} exit"
+# VIRTHOST is the libvirt host. hostname will be the vm in question because hostname evaluates before sending the command
+ssh -o StrictHostKeyChecking=no root@${VIRTHOST} "ssh -o StrictHostKeyChecking=no root@${VMNAME}.${DOMAIN} exit"
 
 cat << "EOFKS1" > /tmp/ks_virt-inst1.sh
 #!/bin/bash -x
@@ -357,28 +348,6 @@ grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo "${VMNAME}.${DOMAIN}" >
 #unregister so you don't make a mess on cdn
 ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
-cmd "file /etc/libvirt/qemu/networks/laptoplab.xml" || die "Line $LINENO: Looking for libvirt network: /etc/libvirt/qemu/networks/laptoplab.xml
-<!--
-WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
-OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
-  virsh net-edit laptoplab
-or other application using the libvirt API.
--->
-
-<network>
-  <name>laptoplab</name>
-  <uuid>dca25628-b900-42a6-8176-14b660005520</uuid>
-  <forward dev='wlp4s0' mode='nat'>
-    <interface dev='wlp4s0'/>
-  </forward>
-  <bridge name='virbr1' stp='on' delay='0'/>
-  <mac address='52:54:00:ab:29:e0'/>
-  <domain name='laptoplab'/>
-  <ip address='10.0.0.1' netmask='255.255.255.0'>
-  </ip>
-</network>
-"
-
 virsh destroy "${VMNAME}"
 virsh undefine "${VMNAME}"
 rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
@@ -410,7 +379,7 @@ virt-install \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
 fi
 
 #when looking at size, for sparse (thin provision) use du -sh, ls will show you what the OS thinks.
@@ -425,7 +394,7 @@ virt-install \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
 fi
 
 if [[ "${OS}" = "rhgf" ]];then
@@ -439,7 +408,7 @@ virt-install \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
+   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
 fi
 if [[ "${OS}" = "fedora" ]];then
 virt-install \
@@ -453,6 +422,6 @@ virt-install \
    --os-variant=generic
    --network network="${NETWORK}" \
    --initrd-inject=vm.ks --extra-args "ks=file:/var/www/html/ks/ks_${UNIQ}.cfg" \
-   --extra-args "ip=${IP}::${GATEWAY}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${GATEWAY}"
+   --extra-args "ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
 fi
 
