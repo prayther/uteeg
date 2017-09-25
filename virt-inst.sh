@@ -141,13 +141,16 @@ EOFLAPTOPLAB
 cmd file_exists "/etc/libvirt/qemu/networks/laptoplab.xml" || libvirt_create_laptoplab_network
 
 cmd directory_exists /var/www/html/uteeg || die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/prayther/uteeg && cd uteeg && git clone https://github.com/skyplabs/bsfl"
+cmd ln -s /var/www/html/uteeg /var/www/html/ks
 
 #setup rhel server media in /var/www/html/uteeg/rhel
 # assume media is located at $RHEL_ISO, etc/rhel.cfg
 cmd mkdir -pv /mnt/rhel
-cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel
+cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel || die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /tmp and I'll mount and copy it"
 cmd mkdir -v /var/www/html/uteeg/rhel
 cmd rsync -av /mnt/rhel/* /var/www/html/uteeg/rhel/
+cmd umount /mnt/rhel
+cmd createrepo_c rhel/Packages
 cmd curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK" || die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
 
 # Install httpd for ks, iso, manifest.zip
@@ -345,27 +348,27 @@ EOF
 
 #configure ansible
 #rpm -q ansible || /usr/bin/yum install -y ansible
-grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo ["${VMNAME}"] >> /etc/ansible/hosts
-grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
+cmd grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo ["${VMNAME}"] >> /etc/ansible/hosts
+cmd grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
 #unregister so you don't make a mess on cdn
-ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
+cmd ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
 
-virsh destroy "${VMNAME}"
-virsh undefine "${VMNAME}"
-rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
-rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2
+cmd virsh destroy "${VMNAME}"
+cmd virsh undefine "${VMNAME}"
+cmd rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
+cmd rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2
 
 #if the ip does not exist make a hosts entry into libvirt (dnsmasq) host so that the vm will resolve. important for satellite
-grep -i "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts || echo "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
+cmd grep -i "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts || echo "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
 
 #virsh net-destroy ${NETWORK}
 #virsh net-start ${NETWORK}
 
 # just remove so ssh won't fail. ks/boot scripts put it back for a new vm later
-sed -i /${VMNAME}/d /root/.ssh/known_hosts
-sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
-sed -i /${IP}/d /root/.ssh/known_hosts
-sed -i /${IP}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
+cmd sed -i /${VMNAME}/d /root/.ssh/known_hosts
+cmd sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
+cmd sed -i /${IP}/d /root/.ssh/known_hosts
+cmd sed -i /${IP}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 #list of os-variant: osinfo-query os
 #making an exception for virt 'name' and not os variant. doing host cpu passthru
