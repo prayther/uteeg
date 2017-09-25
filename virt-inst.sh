@@ -150,7 +150,7 @@ cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel || die_if_false msg_failed "Line 
 cmd mkdir -v /var/www/html/uteeg/rhel
 cmd rsync -av /mnt/rhel/* /var/www/html/uteeg/rhel/
 cmd umount /mnt/rhel
-cmd createrepo_c rhel/Packages
+cmd directory_exists rhel/Packages/repodata || cmd createrepo_c rhel/Packages
 cmd curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK" || die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
 
 # Install httpd for ks, iso, manifest.zip
