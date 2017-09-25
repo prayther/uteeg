@@ -170,14 +170,20 @@ cmd directory_exists /mnt/rhel \
 	|| cmd mkdir -pv /mnt/rhel \
 	|| die_if_false msg_failed "Line $LINENO: could not mkdir /mnt/rhel"
 cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel \
-	|| die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /tmp and I'll mount and copy it"
-cmd directory_exists /var/www/html/uteeg/rhel \
+	|| die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /tmp and I'll mount and copy it for ks and move it to url://../iso"
+cmd dirrectory_exists /var/www/html/uteeg/rhel \
 	|| cmd mkdir -v /var/www/html/uteeg/rhel \
 	|| die_if_false msg_failed "Line $LINENO: could not mkdir /var/www/html/uteeg/rhel"
 cmd directory_exists /var/www/html/uteeg/rhel/Packages \
 	|| cmd rsync -av /mnt/rhel/* /var/www/html/uteeg/rhel/ \
 	|| die_if_false msg_failed "Line $LINENO: could not rysnc /mnt/rhel/"
 cmd umount /mnt/rhel
+cmd directory_exists /var/www/html/uteeg/iso \
+        || cmd mkdir -pv /var/www/html/uteeg/iso \
+        || die_if_false msg_failed "Line $LINENO: could not mkdir /uteeg/iso"
+cmd file_exists /var/www/html/uteeg/iso/"${ISO}" \
+        || cmd mv /tmp/"${ISO}" /var/www/html/uteeg/iso/"${ISO}" \
+        || die_if_false msg_failed "Line $LINENO: could not mv rhel dvd from tmp to uteeg/iso"
 cmd directory_exists rhel/Packages/repodata \
 	|| cmd createrepo_c rhel/Packages \
 	|| die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
@@ -287,31 +293,31 @@ chmod 400 /root/.ssh/authorized_keys
 
 cat << "ID_RSA" > /root/.ssh/id_rsa
 -----BEGIN RSA PRIVATE KEY-----
-MIIEpAIBAAKCAQEAys1szr+3WRpYdVVrj+vB54N++GXpkj0+dLXUsFwV1PZK5HjW
-xcAovYoiW+6iKjBX/ZAVguSXy1Bq85Lkw5JRaETPE2Y9QtWo9gY6ExOsRaB7JXT6
-80To/DKmBcpDV2LitLoFj1OTRR9oz3NUq3e8CrfTmAf9qs9uGoyX/rt86OZJNWYr
-XbHn4KObGJ+1AXVBslx8Nfw4bPLR24FQO8Ja0shIeoJrqptXU2ZKYvvqRWi3qF/D
-qjZVScDzAXnmIUpj6lyciw8PK9c++G+mZiqkC48hokDNVg2QidMtCr8eFT2GJaSL
-oCUupc83bgXJ3LHw3nqpg7pmEk7VEPTgIBMscwIDAQABAoIBAQCZ1E5XWObLSIeW
-oK+RIIQZhw3VfwA3tAre3lmxWHga7KMMQHiw0TxV4SSE1TLei4MCy7r1aU2Wo64s
-idzKV/819xOXpHKNcqHR1BFTDRYcTkl6tQvxYPDU89opBC4mZ9SMv5meCQfpY5TN
-3q53zb+t5ZgzdsQ8P1FGBCT6zN5HjaNHbVf3EM2CuonBPoVg8Jp8sJAkhZ8a/0dM
-7tYNiWnv1KrobbCBGuUtbNj0QfJDpfz/AGqofCI8z+vGSLes7wKxvcAKhpWgdnCb
-sBJUwddfE0HaUw4Sf/gcwlKN507wJPfgOevV6KXgfwteL9oKC9FznT4+GDE/d4+/
-nxtw7LERAoGBAPgiLIst8Ife5WyNWhW700xKPtptFfmVnDzAMWW/mW2MQT8Hla71
-/CwqehSg1qvA9Dt+rQJ3vOTO4DfXoCMG+z+S0LOYOwzB3d2s7/NjQdAVhR4B7BYk
-VPQL5h9vf77dh6D97q4qDlo27guP3f4qSUSvXy6CG+BFLTtgG4g9g3drAoGBANE7
-WU9qXwbocRzyyod87lEwgM/qeiIaL3KmBTlM3K1PGpgwi92AFO/nriCrZ5YA8wWQ
-V10QzRakgfuSDwqzpnKmjUvedSZj1dSzVH4dJYsFLmxijgfLpb1JeS/cjBqxSBI1
-nFUMzgydx2XBT3vYXQbC0dRL3xgD48LHpIGiTUkZAoGBAKnPKVCuRbeWMMfTDF1n
-Rrkk7lKo6Kr/WgaxOJz7PFKd82DhHey4ZrUK9LT9RSwRRpMYo+nWa6zibsuIgwy1
-kGf3X2Aow/B9FArKeQPFX5q5v3nDsv+MKZ9CLWBB+9hw3oqsfRUvrtbKVKoQ8Mkp
-wy6AHdFENTOL4+KIaQ8Zmci1AoGAVOqHVqnPI1iW/66x78cOWbkbrkZ1hv2loBwt
-JpJBRb1DB908BouC89LNYsjt431DJFDuhADbm4LslhMzM56xwPpDgjUoyoneMNMP
-SZe+sutJagedqSBHhckZ/AjAe9zTaUCE0CfAQHKQiIWqIpMvPh03V7frNS3u9BBe
-fZZHU5ECgYBYZUteZSX4uNahAhXdsYf0vHDVJ4e6Z+ju2GUh0MMkI0PdWJKyVkXz
-u2GAE2G6RRsXFXi0GV0VtFsWmDZ1918YIYcvx6cc9Sv5WRSxXCpkzd11tAVSsmbO
-jJmTpxI+UaDnZ3FGcjXuwZtQIaYAOpj1aXJMeoMsW0aeVaaU9thhfA==
+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
 -----END RSA PRIVATE KEY-----
 ID_RSA
 chmod 600 /root/.ssh/id_rsa

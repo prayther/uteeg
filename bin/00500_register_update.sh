@@ -59,6 +59,17 @@ doit() {
 # exit 1
 #fi
 
+#ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
+#ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa
+
+# from gfs-admin get everyone talking
+#if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
+#        for i in gfs-admin.prayther.org gfs-node1.prayther.org gfs-node2.prayther.org gfs-node3.prayther.org rhel-client.prayther.org gfs-backup.prayther.org
+#          do sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no "${i}" || echo "ssh-copy-id -o StrictHostKeyChecking=no ${i} failded" || exit 1
+#        done
+#fi
+
+
 if [[ $(id -u) != "0" ]];then
         echo "Must run as root"
         echo
