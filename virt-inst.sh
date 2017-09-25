@@ -26,9 +26,12 @@ file ~/uteeg/bsfl || git clone https://github.com/SkypLabs/bsfl.git
 
 # read configuration (needs to be adopted!)
 #source etc/virt-inst.cfg
+source etc/virthost.cfg
 source etc/rhel.cfg
 source ./bsfl/lib/bsfl.sh || exit 1
-DEBUG=yes
+DEBUG=no
+LOG_ENABLED="yes"
+SYSLOG_ENABLED="yes"
 
 #if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
 if [ -z "${1}" ];then
@@ -60,12 +63,18 @@ fi
 #done
 
 # Install httpd for ks, iso, manifest.zip
-for sw in ansible virt-manager virt-install virt-viewer nfs-utils httpd;
+for sw in git ansible virt-manager virt-install virt-viewer nfs-utils httpd;
   do cmd "rpm -q "${sw}"" || dnf install "${sw}"
 done
-cmd systemctl enable httpd
-cmd systemctl start httpd
-cmd firewall-cmd --list-all | grep -i services | grep http || firewall-cmd --permanent --add-service=http && firewall-cmd --reload
+cmd systemctl is-enabled httpd \
+	|| cmd systemctl enable httpd \
+	|| die_if_false msg_failed "Line $LINENO: could not enable httpd"
+cmd systemctl is-active httpd \
+	|| cmd systemctl start httpd \
+	|| die_if_false msg_failed "Line $LINENO: could not start httpd"
+cmd firewall-cmd --info-service http \
+	|| firewall-cmd --permanent --add-service=http && firewall-cmd --reload \
+	|| die_if_false msg_failed "Line $LINENO: could not setup firewall-cmd httpd" 
 
 
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
@@ -80,10 +89,12 @@ RHVER=$(awk /"${1}"/'{print $7}' "${inputfile}")
 OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
 VIRTHOST=$(awk /"${1}"/'{print $9}' "${inputfile}")
 DOMAIN=$(awk /"${1}"/'{print $10}' "${inputfile}")
-URL=$(awk /"${1}"/'{print $11}' "${inputfile}")
-DISC=$(awk /"${1}"/'{print $12}' "${inputfile}")
-NIC=$(awk /"${1}"/'{print $13}' "${inputfile}")
-MASK=$(awk /"${1}"/'{print $14}' "${inputfile}")
+DISC=$(awk /"${1}"/'{print $11}' "${inputfile}")
+NIC=$(awk /"${1}"/'{print $12}' "${inputfile}")
+MASK=$(awk /"${1}"/'{print $13}' "${inputfile}")
+ISO=$(awk /"${1}"/'{print $14}' "${inputfile}")
+MEDIA=$(awk /"${1}"/'{print $15}' "${inputfile}")
+NETWORK=$(awk /"${1}"/'{print $16}' "${inputfile}")
 
 cmd has_value VMNAME
 cmd has_value DISC_SIZE
@@ -94,19 +105,25 @@ cmd has_value OS
 cmd has_value RHVER
 cmd has_value OSVARIANT
 cmd has_value VIRTHOST
-cmd has_value URL
 cmd has_value DISC
 cmd has_value NIC
 cmd has_value MASK
+cmd has_value ISO
+cmd has_value MEDIA
+cmd has_value NETWORK
 
 #sets a uniq name for the ks file
-cmd "UNIQ=${VMNAME}_$(date '+%s')"
+UNIQ=${VMNAME}_$(date '+%s')
 
 #test that the vm config files exist
-cmd file_exists ks/network/${VMNAME}.network || die_if_false msg_failed "Line $LINENO: ./ks/network/"${VMNAME}".network does not exist"
-cmd file_exists "ks/partitions/"${VMNAME}".partitions" || die_if_false msg_failed "Line $LINENO: ./ks/partitions/"${VMNAME}".partitions does not exist"
-cmd file_exists "./ks/packages/"${VMNAME}".packages" || die_if_false msg_failed "Line $LINENO: ./ks/packages/"${VMNAME}".packages does not exist"
-cmd file_exists "./ks/post/"${VMNAME}".post" || die_if_false msg_failed "Line $LINENO: ./ks/post/"${VMNAME}".post does not exist"
+cmd file_exists ks/network/${VMNAME}.network \
+	|| die_if_false msg_failed "Line $LINENO: ./ks/network/"${VMNAME}".network does not exist"
+cmd file_exists "ks/partitions/"${VMNAME}".partitions" \
+	|| die_if_false msg_failed "Line $LINENO: ./ks/partitions/"${VMNAME}".partitions does not exist"
+cmd file_exists "./ks/packages/"${VMNAME}".packages" \
+	|| die_if_false msg_failed "Line $LINENO: ./ks/packages/"${VMNAME}".packages does not exist"
+cmd file_exists "./ks/post/"${VMNAME}".post" \
+	|| die_if_false msg_failed "Line $LINENO: ./ks/post/"${VMNAME}".post does not exist"
 
 #move to function file somewhere
 #setup the 10.0.0.0 libvirt network no dhcp and default it on
@@ -138,22 +155,32 @@ or other application using the libvirt API.
   systemctl restart libvirtd
 EOFLAPTOPLAB
 }
-cmd file_exists "/etc/libvirt/qemu/networks/laptoplab.xml" || libvirt_create_laptoplab_network
+cmd file_exists "/etc/libvirt/qemu/networks/laptoplab.xml" \
+	|| libvirt_create_laptoplab_network
 
-cmd directory_exists /var/www/html/uteeg || die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/prayther/uteeg && cd uteeg && git clone https://github.com/skyplabs/bsfl"
-cmd ln -s /var/www/html/uteeg /var/www/html/ks
+cmd directory_exists /var/www/html/uteeg \
+	|| die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/prayther/uteeg && cd uteeg && git clone https://github.com/skyplabs/bsfl"
+cmd ls -l /var/www/html/ks \
+	|| cmd ln -s /var/www/html/uteeg /var/www/html/ks \
+	|| die_if_false msg_failed "Line $LINENO: unable to create ln -s uteeg ks"
 
-#setup rhel server media in /var/www/html/uteeg/rhel
+#setup rhel server kickstart media in /var/www/html/uteeg/rhel
 # assume media is located at $RHEL_ISO, etc/rhel.cfg
-cmd mkdir -pv /mnt/rhel
-cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel || die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /tmp and I'll mount and copy it"
-cmd mkdir -v /var/www/html/uteeg/rhel
-cmd rsync -av /mnt/rhel/* /var/www/html/uteeg/rhel/
+cmd directory_exists /mnt/rhel \
+	|| cmd mkdir -pv /mnt/rhel \
+	|| die_if_false msg_failed "Line $LINENO: could not mkdir /mnt/rhel"
+cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel \
+	|| die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /tmp and I'll mount and copy it"
+cmd directory_exists /var/www/html/uteeg/rhel \
+	|| cmd mkdir -v /var/www/html/uteeg/rhel \
+	|| die_if_false msg_failed "Line $LINENO: could not mkdir /var/www/html/uteeg/rhel"
+cmd directory_exists /var/www/html/uteeg/rhel/Packages \
+	|| cmd rsync -av /mnt/rhel/* /var/www/html/uteeg/rhel/ \
+	|| die_if_false msg_failed "Line $LINENO: could not rysnc /mnt/rhel/"
 cmd umount /mnt/rhel
-cmd directory_exists rhel/Packages/repodata || cmd createrepo_c rhel/Packages
-cmd curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK" || die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
-
-# Install httpd for ks, iso, manifest.zip
+cmd directory_exists rhel/Packages/repodata \
+	|| cmd createrepo_c rhel/Packages \
+	|| die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
 
 # this will be the uniq ks.cfg file for building this vm
 cat >> ./ks_${UNIQ}.cfg <<EOF
@@ -166,7 +193,7 @@ auth --enableshadow --passalgo=sha512
 #  url --mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$releasever&arch=$basearch
 #fi
 
-url --url ${URL}/${OS}
+url --url "${URL}/${MEDIA}"
 #this repo is just rhel dvd. which makes it, special evidently. had to cd Packages: create_repo and point to that.
 #this messes up the versions of packages and breaks gluster, thus the entire kickstart. kickstart console Ctrl-Alt 2 less G /tmp/packages
 #repo --name=rhelbase --baseurl=http://"${VIRTHOST}"/ks/rhel/Packages/
@@ -347,86 +374,104 @@ EOF
 #so be very careful with the next few commands that destroy anything existing without confirmation.
 
 #configure ansible
-#rpm -q ansible || /usr/bin/yum install -y ansible
-cmd grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo ["${VMNAME}"] >> /etc/ansible/hosts
-cmd grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts || echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
+cmd rpm -q ansible || /usr/bin/yum install -y ansible
+cmd grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts \
+	|| cmd echo ["${VMNAME}"] >> /etc/ansible/hosts
+cmd grep -i "${VMNAME}.${DOMAIN}" /etc/ansible/hosts \
+	|| cmd echo "${VMNAME}.${DOMAIN}" >> /etc/ansible/hosts
 #unregister so you don't make a mess on cdn
-cmd ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister"
+cmd ansible "${VMNAME}.${DOMAIN}" --timeout=5 -a "/usr/sbin/subscription-manager unregister" \
+	|| msg_warning "OK if ansible unregister CDN fails."
 
-cmd virsh destroy "${VMNAME}"
-cmd virsh undefine "${VMNAME}"
+virsh list --all | grep "${VMNAME}" && cmd virsh destroy "${VMNAME}"
+virsh list --all | grep "${VMNAME}" && cmd virsh undefine "${VMNAME}"
 cmd rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
 cmd rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2
 
 #if the ip does not exist make a hosts entry into libvirt (dnsmasq) host so that the vm will resolve. important for satellite
-cmd grep -i "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts || echo "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
+cmd 'grep -i "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts' || echo "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts
 
 #virsh net-destroy ${NETWORK}
 #virsh net-start ${NETWORK}
 
+cmd file_exists ~/.ssh/id_rsa \
+	 || ssh-keygen -N '' -t rsa -f ~/.ssh/id_rsa \
+	 || die_if_false msg_failed "Line $LINENO: could not ssh-keygen" 
+
 # just remove so ssh won't fail. ks/boot scripts put it back for a new vm later
-cmd sed -i /${VMNAME}/d /root/.ssh/known_hosts
-cmd sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
-cmd sed -i /${IP}/d /root/.ssh/known_hosts
-cmd sed -i /${IP}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
+msg_ok grep ${VMNAME} /root/.ssh/known_hosts \
+	&& cmd sed -i /${VMNAME}/d /root/.ssh/known_hosts
+msg_ok grep ${VMNAME} /root/.ssh/known_hosts \
+        && cmd sed -i /${VMNAME}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
+msg_ok grep ${IP} /root/.ssh/known_hosts \
+        && cmd sed -i /${IP}/d /root/.ssh/known_hosts
+msg_ok grep ${IP} /root/.ssh/known_hosts \
+        && cmd sed -i /${IP}/d /home/"${VIRTHOSTUSER}"/.ssh/known_hosts
 
 #list of os-variant: osinfo-query os
 #making an exception for virt 'name' and not os variant. doing host cpu passthru
-if [[ $(echo ${VMNAME} | grep virt) ]];then
-virt-install \
-   --name="${VMNAME}" \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
-   --ram="${RAM}" \
-   --cpu host-passthrough \
-   --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
-   --os-type=linux \
-   --noautoconsole --wait -1 \
-   --os-variant=rhel"${OSVARIANT}" \
-   --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
-fi
+#if [[ $(echo ${VMNAME} | grep virt) ]];then
+#virt-install \
+#   --name="${VMNAME}" \
+#   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
+#   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
+#   --ram="${RAM}" \
+#   --cpu host-passthrough \
+#   --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
+#   --os-type=linux \
+#   --noautoconsole --wait -1 \
+#   --os-variant=rhel"${OSVARIANT}" \
+#   --network network="${NETWORK}" \
+#   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
+#fi
 
 #when looking at size, for sparse (thin provision) use du -sh, ls will show you what the OS thinks.
-if [[ "${OS}" = "rhel" ]];then
+#virt_install() {
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=true,format=qcow2,cache=none \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=true,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
-   --location=/var/lib/libvirt/images/"${RHEL_ISO}" \
+   --location=/tmp/"${ISO}" \
    --os-type=linux \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
-fi
+   --extra-args "ks=${URL}/ks_${UNIQ}.cfg ip=${IP} gateway=${VIRTHOST} netmask=${MASK} hostname=${VMNAME}.${DOMAIN} device=${NIC} nameserver=${VIRTHOST}"
+#   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
+#   --extra-args "ks=${URL}/ks_${UNIQ}.cfg ip=${IP} gateway=${VIRTHOST} netmask=${MASK} hostname=${VMNAME}.${DOMAIN} device=${NIC} nameserver=${VIRTHOST}"
+   #--extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
+#   --extra-args "ks=${URL}/ks_${UNIQ}.cfg ip=${IP} gateway=${VIRTHOST} netmask=${MASK} hostname=${VMNAME}.${DOMAIN} device=${NIC} nameserver=${VIRTHOST}"
+#}
+#cmd virt-install || die_if_false msg_failed "Line $LINENO: Actual VM creation with Libvirt failed"
 
-if [[ "${OS}" = "rhgf" ]];then
-virt-install \
-   --name="${VMNAME}" \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=150,sparse=false,format=qcow2,cache=none \
-   --vcpus="${VCPUS}" --ram="${RAM}" \
-   --location=/var/lib/libvirt/images/"${RHGS_ISO}" \
-   --os-type=linux \
-   --noautoconsole --wait -1 \
-   --os-variant=rhel"${OSVARIANT}" \
-   --network network="${NETWORK}" \
-   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
-fi
-if [[ "${OS}" = "fedora" ]];then
-virt-install \
-   --name="${VMNAME}" \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=150,sparse=false,format=qcow2,cache=none \
-   --vcpus="${VCPUS}" --ram="${RAM}" \
-   --location=/var/lib/libvirt/images/"${FEDORA_ISO}" \
-   --os-type=linux \
-   --noautoconsole --wait -1 \
-   --os-variant=generic
-   --network network="${NETWORK}" \
-   --initrd-inject=vm.ks --extra-args "ks=file:/var/www/html/ks/ks_${UNIQ}.cfg" \
-   --extra-args "ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
-fi
+#[root@localhost disk]# virt-install --name=server2.example.com --ram=2048 --vcpus=2 --autostart --os-type=linux --extra-args='ks=ftp://192.168.0.43/pub/centos/ks.cfg ksdevice=ens3 ip=192.168.122.90 netmask=255.255.255.0 gateway=192.168.122.1 dns=8.8.8.8' --disk vol=skladishte/volume1,bus=virtio --location=ftp://192.168.0.43/pub/centos --network bridge=virbr0
+
+#if [[ "${OS}" = "rhgf" ]];then
+#virt-install \
+#   --name="${VMNAME}" \
+#   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
+#   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=150,sparse=false,format=qcow2,cache=none \
+#   --vcpus="${VCPUS}" --ram="${RAM}" \
+#   --location=/var/lib/libvirt/images/"${RHGS_ISO}" \
+#   --os-type=linux \
+#   --noautoconsole --wait -1 \
+#   --os-variant=rhel"${OSVARIANT}" \
+#   --network network="${NETWORK}" \
+#   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
+#fi
+#if [[ "${OS}" = "fedora" ]];then
+#virt-install \
+#   --name="${VMNAME}" \
+#   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
+#   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=150,sparse=false,format=qcow2,cache=none \
+#   --vcpus="${VCPUS}" --ram="${RAM}" \
+#   --location=/var/lib/libvirt/images/"${FEDORA_ISO}" \
+#   --os-type=linux \
+#   --noautoconsole --wait -1 \
+#   --os-variant=generic
+#   --network network="${NETWORK}" \
+#   --initrd-inject=vm.ks --extra-args "ks=file:/var/www/html/ks/ks_${UNIQ}.cfg" \
+#   --extra-args "ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
+#fi
 

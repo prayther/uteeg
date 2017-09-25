@@ -1,11 +1,12 @@
-#VMNAME DISCSIZE VCPU MEM IP OS RHVER OSVARIANT VIRTHOST DOMAIN URL DISC NIC MASK
+#VMNAME DISCSIZE VCPU MEM IP OS RHVER OSVARIANT VIRTHOST DOMAIN DISC NIC MASK ISO MEDIA NETWORK
+#list of os-variant: osinfo-query os # libvirt thing
 #CEPH
 ceph-admin 100 2 2048 10.0.0.2 rhel 7.4 7.3
 ceph-node1 100 2 2048 10.0.0.3 rhel 7.4 7.3
 ceph-node2 100 2 2048 10.0.0.4 rhel 7.4 7.3
 ceph-node3 100 2 2048 10.0.0.5 rhel 7.4 7.3
 #Satellite
-sat-62 300 4 6144 10.0.0.8 rhel 7.4 7.3 10.0.0.1 prayther.org "http://${SERVER}/ks" vda eth0 255.255.255.0 prayther.org
+sat-62 300 4 6144 10.0.0.8 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 #Gluster
 gfs-admin 50 2 1024 10.0.0.9 rhgf 7.4 7.3
 gfs-node1 50 2 1024 10.0.0.10 rhgf 7.4 7.3
