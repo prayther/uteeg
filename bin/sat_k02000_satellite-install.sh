@@ -74,7 +74,8 @@ doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="5647/tcp" \
  --add-port="8000/tcp" --add-port="8140/tcp"
 
-katello-service status || satellite-installer --scenario satellite \
+#katello-service status || satellite-installer --scenario satellite \
+satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
