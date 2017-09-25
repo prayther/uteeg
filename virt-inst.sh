@@ -28,6 +28,7 @@ file ~/uteeg/bsfl || git clone https://github.com/SkypLabs/bsfl.git
 #source etc/virt-inst.cfg
 source etc/rhel.cfg
 source ./bsfl/lib/bsfl.sh || exit 1
+DEBUG=yes
 
 #if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
 if [ -z "${1}" ];then
@@ -137,12 +138,9 @@ or other application using the libvirt API.
   systemctl restart libvirtd
 EOFLAPTOPLAB
 }
-file_exists "/etc/libvirt/qemu/networks/laptoplab.xml" || libvirt_create_laptoplab_network
+cmd file_exists "/etc/libvirt/qemu/networks/laptoplab.xml" || libvirt_create_laptoplab_network
 
-cmd file_exists /var/www/html/uteeg
-die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/prayther/uteeg"
-cmd file_exists /var/www/html/uteeg/bsfl
-die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/skyplabs/bsfl"
+cmd directory_exists /var/www/html/uteeg || die_if_false msg_failed "Line $LINENO: execute: cd /var/www/html && git clone https://github.com/prayther/uteeg && cd uteeg && git clone https://github.com/skyplabs/bsfl"
 
 #setup rhel server media in /var/www/html/uteeg/rhel
 # assume media is located at $RHEL_ISO, etc/rhel.cfg
@@ -150,8 +148,7 @@ cmd mkdir -pv /mnt/rhel
 cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel
 cmd mkdir -v /var/www/html/uteeg/rhel
 cmd rsync -av /mnt/rhel/* /var/www/html/uteeg/rhel/
-cmd curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK"
-die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
+cmd curl -s --head http://"${VIRTHOST}"/ks/rhel/Packages/repodata/ | grep "200 OK" || die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"
 
 # Install httpd for ks, iso, manifest.zip
 
