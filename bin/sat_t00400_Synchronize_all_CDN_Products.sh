@@ -47,7 +47,7 @@ synchronize_all () { for i in $(hammer --csv repository list --organization=${OR
   do hammer repository synchronize --id ${i} --organization=${ORG} --async
 done
 }
-doit synchronize_all
+synchronize_all
 
 # async everything, but wait till all done
 	#for repo_list in $(hammer --csv repository list --organization=${ORG}| awk -F"," '!/Id/{print $1}')

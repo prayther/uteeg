@@ -76,7 +76,6 @@ cmd firewall-cmd --info-service http \
 	|| firewall-cmd --permanent --add-service=http && firewall-cmd --reload \
 	|| die_if_false msg_failed "Line $LINENO: could not setup firewall-cmd httpd" 
 
-
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
 inputfile=etc/hosts
 VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")
