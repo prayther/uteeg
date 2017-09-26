@@ -22,7 +22,7 @@ export HOME=/root
 cd "${BASH_SOURCE%/*}"
 
 # bsfl are bash libs used in scripts in uteeg
-file ~/uteeg/bsfl || git clone https://github.com/SkypLabs/bsfl.git
+ls -d ~/bsfl || git clone https://github.com/SkypLabs/bsfl.git /root/bsfl
 
 # read configuration (needs to be adopted!)
 #source etc/virt-inst.cfg
@@ -170,7 +170,7 @@ cmd directory_exists /mnt/rhel \
 	|| die_if_false msg_failed "Line $LINENO: could not mkdir /mnt/rhel"
 cmd mount -o loop /tmp/"${RHEL_ISO}" /mnt/rhel \
 	|| die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /tmp and I'll mount and copy it for ks and move it to url://../iso"
-cmd dirrectory_exists /var/www/html/uteeg/rhel \
+cmd directory_exists /var/www/html/uteeg/rhel \
 	|| cmd mkdir -v /var/www/html/uteeg/rhel \
 	|| die_if_false msg_failed "Line $LINENO: could not mkdir /var/www/html/uteeg/rhel"
 cmd directory_exists /var/www/html/uteeg/rhel/Packages \
