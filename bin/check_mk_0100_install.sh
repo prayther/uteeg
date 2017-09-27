@@ -69,12 +69,12 @@ firewall-cmd --reload
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
 yum install http://"${GATEWAY}"/ks/apps/check_mk/check-mk-raw-1.4.0p10-el7-57.x86_64.rpm -y
 #yum install http://"${GATEWAY}"/ks/apps/check_mk/check-mk-raw*
-omd create dev
-omd start dev
-systemctl status omd
+#omd create dev
+#omd start dev
+#systemctl status omd
 #htpasswd -m ~/etc/htpasswd cmkadmin' as site user
 #cmkadmin with password: ZSllOAuI
-htpasswd -b /opt/omd/sites/dev/etc/htpasswd cmkadmin redhat
+#htpasswd -b /opt/omd/sites/dev/etc/htpasswd cmkadmin redhat
 
 #Client cfg
 #check_mk plugin
@@ -101,9 +101,22 @@ sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
 
 #loginto the http://$(hostname)/dev/ #dev is the site name used above to create the omd site
 #got to WATO - Configuration menu -> Hosts
-#Create a directory and get it an ip range and snmp credential.
+#Create a folder and get it an ip range and snmp credential.
 #set all the defaults like 'important' server and enable monitoring
 #auto discovers your machines
+
+omd create dev
+omd start dev
+systemctl status omd
+#htpasswd -m ~/etc/htpasswd cmkadmin' as site user
+#cmkadmin with password: ZSllOAuI
+htpasswd -b /opt/omd/sites/dev/etc/htpasswd cmkadmin redhat
+echo "#loginto the http://$(hostname)/dev/ #dev is the site name used above to create the omd site
+#got to WATO - Configuration menu -> Hosts
+#Create a folder and get it an ip range and snmp credential.
+#set all the defaults like 'important' server and enable monitoring
+#auto discovers your machines
+"
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
