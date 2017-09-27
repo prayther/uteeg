@@ -44,7 +44,7 @@ doit() {
 # list all subs
 #hammer --csv subscription list --organization redhat
 setup_slow_vars () {
-                    SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| awk -F"," '{print $1}'| sort -n | grep -v ID | grep -v EPEL)
+                    SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| grep -v ID | grep -v EPEL | awk -F"," '{print $1}'| sort -n)
                     AK_var=$(hammer --csv activation-key list --organization="${ORG}" | awk -F"," '!/ID/{print $1}' | sort -n)
 	    }
 setup_slow_vars
