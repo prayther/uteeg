@@ -47,6 +47,7 @@ unregister_from_RedHat () {
 		   }
 unregister_from_RedHat
 
+subscription-manager refresh
 rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
 # add a activation key once i get satellite repos in my test bed.
 setup_slow_var () {

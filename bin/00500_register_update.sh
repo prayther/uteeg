@@ -165,7 +165,6 @@ subscribe_checkmk () {
   /usr/bin/yum clean all
   rm -rf /var/cache/yum
   /usr/bin/yum -y update
-  /usr/bin/yum -y install ovirt-hosted-engine-setup rhvm-appliance screen
 }
 
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
@@ -192,7 +191,7 @@ yum install -y net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
 net-snmp-config --create-snmpv3-user -A 12345678 -X 12345678 -a MD5 -x DES admin
 systemctl enable snmpd
 systemctl restart snmpd
-snmpwalk -v3 -u admin -l authNoPriv -a MD5 -x DES -A 12345678 -X 12345678 localhost
+#snmpwalk -v3 -u admin -l authNoPriv -a MD5 -x DES -A 12345678 -X 12345678 localhost
 firewall-cmd --add-service=snmp --permanent
 firewall-cmd --reload
 iptables -nL
