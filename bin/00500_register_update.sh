@@ -170,7 +170,7 @@ subscribe_checkmk () {
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
   subscribe_rhel
 fi
-if [[ $(hostname -s | awk -F"-" '{print $1}') = "sat" ]];then
+if [[ $(hostname -s) = "sat62" ]];then
   subscribe_sat
 fi
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "ceph" ]];then
@@ -183,6 +183,9 @@ if [[ $(hostname -s | awk -F"-" '{print $1}') = "virt" ]];then
   subscribe_virt
 fi
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "checkmk" ]];then
+  subscribe_checkmk
+fi
+if [[ $(hostname -s | awk -F"-" '{print $1}') = "ansible" ]];then
   subscribe_checkmk
 fi
 
