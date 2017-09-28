@@ -69,7 +69,7 @@ setup_slow_vars () {
                     LE_Count=$(echo "${LE_Count_var}" | tr '\n' ' ')
                     LEC_FROM=1
 	    }
-doit setup_slow_vars
+setup_slow_vars
 
 promote_dev_cv () { for CV in $CV_Count;do
   for LEC_TO in $(echo ${LE_Count});do
@@ -77,7 +77,7 @@ promote_dev_cv () { for CV in $CV_Count;do
   done
 done
 }
-doit promote_dev_cv
+promote_dev_cv
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
