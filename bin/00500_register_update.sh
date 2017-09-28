@@ -98,10 +98,12 @@ chmod 0440 /etc/sudoers.d/admin
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 subscribe_rhel () {
+  /usr/sbin/subscription-manager clean
   /usr/sbin/subscription-manager unregister
   #if you are unregistering from satellite and going back to cdn cp the rhsm.conf back to orig
   cp /etc/rhsm/rhsm.conf.kat-backup /etc/rhsm/rhsm.conf
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+  /usr/sbin/subscription-manager refresh
   /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms
 

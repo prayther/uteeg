@@ -61,6 +61,7 @@ setup_slow_var () {
 setup_slow_var
 
 /usr/sbin/subscription-manager --force --org="${ORG}" register --activationkey="${Sat_AK}"
+subscription-manager refresh
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
