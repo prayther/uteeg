@@ -98,23 +98,35 @@ chmod 0440 /etc/sudoers.d/admin
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
 subscribe_rhel () {
-  /usr/sbin/subscription-manager clean
-  /usr/sbin/subscription-manager unregister
-  #if you are unregistering from satellite and going back to cdn cp the rhsm.conf back to orig
-  cp /etc/rhsm/rhsm.conf.kat-backup /etc/rhsm/rhsm.conf
-  /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
-  /usr/sbin/subscription-manager refresh
-  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
-  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms
+	CA_CONSUMER_RPM=$(rpm -qa | grep katello-ca-consumer)
+	rpm -e "${CA_CONSUMER_RPM}"
+	#rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+	rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+	/usr/sbin/subscription-manager clean
+	/usr/sbin/subscription-manager unregister
+	#if you are unregistering from satellite and going back to cdn cp the rhsm.conf back to orig
+	cp /etc/rhsm/rhsm.conf.kat-backup /etc/rhsm/rhsm.conf
+	/usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+	/usr/sbin/subscription-manager refresh
+	/usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
+	/usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms
 
-  #Clean, update
-  /usr/bin/yum clean all
-  rm -rf /var/cache/yum
-  /usr/bin/yum -y update
+	#Clean, update
+	/usr/bin/yum clean all
+	rm -rf /var/cache/yum
+	/usr/bin/yum -y update
 }
 
 subscribe_sat () {
+        CA_CONSUMER_RPM=$(rpm -qa | grep katello-ca-consumer)
+        rpm -e "${CA_CONSUMER_RPM}"
+        #rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+        rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+        /usr/sbin/subscription-manager clean
   /usr/sbin/subscription-manager unregister
+        #if you are unregistering from satellite and going back to cdn cp the rhsm.conf back to orig
+        cp /etc/rhsm/rhsm.conf.kat-backup /etc/rhsm/rhsm.conf
+
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
   /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Red Hat Satellite' --pool-only | head -n 1)
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.2-rpms
