@@ -81,16 +81,19 @@ wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
 useradd geouser
 groupadd geogroup
+useradd user
 useradd apraythe
 echo "password" | passwd "geouser" --stdin
 echo "password" | passwd "apraythe" --stdin
+echo "password" | passwd "user" --stdin
 
-cat << EOF >/etc/sudoers.d/geouser
+cat << EOF >/etc/sudoers.d/admin
 geouser ALL = (root) NOPASSWD:ALL
 apraythe ALL = (root) NOPASSWD:ALL
+user ALL = (root) NOPASSWD:ALL
 EOF
 
-chmod 0440 /etc/sudoers.d/geouser
+chmod 0440 /etc/sudoers.d/admin
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.

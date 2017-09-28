@@ -1,0 +1,11 @@
+#package 
+virt-who
+git
+wget
+vim
+bind-utils
+deltarpm
+nfs-utils
+net-tools
+#ansible
+@core
