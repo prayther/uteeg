@@ -23,5 +23,6 @@ fedora-26 150 2 4096 10.0.0.18 fedora 26 generic
 #test
 serverd 50 2 1024 10.0.0.19 rhel 7.4 7.3
 #ansible
-ansible-admin 50 4 2048 10.0.0.20 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
-ansible-node1 50 4 2048 10.0.0.21 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+#0=ifs ans=ansible name=admin lifecycle=infra_dev exop=extras optional. i don't like using '-' and '_' is not valid in hostname
+ans0admin0infra0dev0exop 50 4 2048 10.0.0.20 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+ans0node10infra0dev0exop 50 4 2048 10.0.0.21 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
