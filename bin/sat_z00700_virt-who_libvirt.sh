@@ -44,10 +44,13 @@ doit() {
 # Install virt-who if it's not already
 rpm -q virt-who || doit /usr/bin/yum install -y virt-who
 
+#have to have ssh keys setup for root to libvirt host: ssh-copy-key 10.0.0.1 (libvirt host)
+
 # configure virt-who
 #if [ -f /etc/virt-who.d/$(hostname).conf ];then
-ls /etc/virt-who.d/$(hostname).conf || cat << EOF > /etc/virt-who.d/$(hostname).conf
-[sat.laptop.prayther]
+#ls /etc/virt-who.d/$(hostname).conf || cat << EOF > /etc/virt-who.d/$(hostname).conf
+cat << EOF > /etc/virt-who.d/$(hostname).conf
+[$(hostname)]
 #Don't forget that where ever this is running from... needs to be registered to the satellite/self-registered.
 type=libvirt
 #server=virt.laptop.prayther
@@ -74,14 +77,14 @@ setup_slow_vars () {
                     VIRT_HOST=$(hammer --csv host list | grep virt-who | awk -F"," '{print $2}')
                     SUBS_var=$(hammer --csv subscription list --organization "${ORG}"| awk -F"," '{print $1}'| sort -n | grep -v ID)
 	    }
-doit setup_slow_vars
+setup_slow_vars
 
 add_subs () {
 	for SUBS in ${SUBS_var}; do
-          hammer host subscription attach --host ${VIRT_HOST} --subscription-id ${SUBS}
+          hammer host subscription attach --host "${VIRT_HOST}" --subscription-id ${SUBS}
         done
 }
-doit add_subs
+add_subs
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
