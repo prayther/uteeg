@@ -49,6 +49,13 @@ done
 }
 doit repolist
 
+#adding tools for katello-agent
+repolist () { for i in $(hammer --csv repository list --organization="${ORG}" | grep "7 Server" | grep Tools | awk -F, {'print $1'} | grep -vi '^ID')
+  do hammer content-view add-repository --name='CV_RHEL7_EPEL' --organization="${ORG}" --repository-id=${i}
+done
+}
+doit repolist
+
 #Publish the content views to Library:
 doit hammer content-view publish --name="CV_RHEL7_EPEL" --organization="${ORG}" #--async
 

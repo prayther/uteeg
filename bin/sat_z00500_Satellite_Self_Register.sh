@@ -47,9 +47,8 @@ doit() {
 #		   }
 #unregister_from_RedHat
 
-subscription-manager clean
 subscription-manager unregister
-subscription-manager refresh
+subscription-manager clean
 CA_CONSUMER_RPM=$(rpm -qa | grep katello-ca-consumer)
 rpm -e "${CA_CONSUMER_RPM}"
 #rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
