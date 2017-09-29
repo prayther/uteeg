@@ -109,13 +109,23 @@ omd create dev
 omd start dev
 systemctl status omd
 #htpasswd -m ~/etc/htpasswd cmkadmin' as site user
-#cmkadmin with password: ZSllOAuI
 htpasswd -b /opt/omd/sites/dev/etc/htpasswd cmkadmin redhat
 echo "#loginto the http://$(hostname)/dev/ #dev is the site name used above to create the omd site
+credentials are:
+cmkadmin
+redhat
+
 #got to WATO - Configuration menu -> Hosts
 #Create a folder and get it an ip range and snmp credential.
 #set all the defaults like 'important' server and enable monitoring
 #auto discovers your machines
+
+SNMP credentials come from 00..register.sh script :
+#snmpwalk -v3 -u admin -l authNoPriv -a MD5 -x DES -A 12345678 -X 12345678 localhost
+When you do the dir setup in omd and get your hosts listed.
+click the 'edit' button below right of hosts and set:
+Criticality = Productiove system (defaults to not monitor)
+SNMPv3 creds admin 12345678 authNoPriv
 "
 
 echo "###INFO: Finished $0"
