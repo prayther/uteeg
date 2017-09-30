@@ -48,9 +48,10 @@ doit() {
 # Install nfs-utils if not already
 ssh ${GATEWAY} "rpm -q nfs-utils || dnf install -y nfs-utils"
 # open firewall to all for nfs if not already
-ssh ${GATEWAY} "firewall-cmd --list-all | grep -i services | grep nfs || firewall-cmd --permanent --add-service=nfs"
+ssh ${GATEWAY} "firewall-cmd --permanent --add-service=nfs"
+ssh ${GATEWAY} "firewall-cmd --reload"
 # Add entry in exports so export of katello content-views are possible in one step for maintaining local CDN
-ssh ${GATEWAY} grep "/var/www/html/uteeg" /etc/exports || echo "/var/www/html/uteeg     *(rw,no_acl)" >> /etc/exports
+ssh ${GATEWAY} "grep /var/www/html/uteeg" /etc/exports || echo "/var/www/html/uteeg     *(rw,no_acl)" >> /etc/exports
 ssh ${GATEWAY} chmod 0777 -R /var/www/html/uteeg/katello-export
 
 #Export latest so next time local is used it's more up-to-date
