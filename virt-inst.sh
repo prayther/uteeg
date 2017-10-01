@@ -80,7 +80,7 @@ cmd firewall-cmd --info-service http \
 inputfile=etc/hosts
 VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")
 DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")
-VCPU=$(awk /"${1}"/'{print $3}' "${inputfile}")
+VCPUS=$(awk /"${1}"/'{print $3}' "${inputfile}")
 RAM=$(awk /"${1}"/'{print $4}' "${inputfile}")
 IP=$(awk /"${1}"/'{print $5}' "${inputfile}")
 OS=$(awk /"${1}"/'{print $6}' "${inputfile}")
