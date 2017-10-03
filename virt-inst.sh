@@ -431,10 +431,12 @@ msg_ok grep ${IP} /root/.ssh/known_hosts \
 #fi
 
 #when looking at size, for sparse (thin provision) use du -sh, ls will show you what the OS thinks.
+#you can set sparse=false but performance is terrible
+#i setup a second disc sparse just in case. if you find you really need it probably make it sparse=false
 #virt_install() {
 virt-install \
    --name="${VMNAME}" \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=true,format=qcow2,cache=none \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=true,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
    --location=/tmp/"${ISO}" \
