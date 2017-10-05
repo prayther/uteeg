@@ -58,9 +58,9 @@ doit dvd_repo
 
 # If you a disconnected from internet and also for speed
 ls /mnt/rhel || mkdir /mnt/rhel
-mount -o loop /root/${RHEL_ISO} /mnt/rhel
+mount -o loop $(ls /root/rhel*latest*.iso) /mnt/rhel
 ls /mnt/sat || mkdir /mnt/sat
-mount -o loop /root/${SATELLITE_ISO} /mnt/sat
+mount -o loop $(ls /root/sat*latest*.iso) /mnt/sat
 doit /mnt/sat/install_packages
 
 doit /usr/bin/firewall-cmd --add-port="53/udp" --add-port="53/tcp" \

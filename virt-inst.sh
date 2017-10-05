@@ -437,7 +437,7 @@ msg_ok grep ${IP} /root/.ssh/known_hosts \
 virt-install \
    --name="${VMNAME}" \
    --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",sparse=false,format=qcow2,cache=none \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=true,format=qcow2,cache=none \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,sparse=false,format=qcow2,cache=none \
    --vcpus="${VCPUS}" --ram="${RAM}" \
    --location=/tmp/"${ISO}" \
    --os-type=linux \

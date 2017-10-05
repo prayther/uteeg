@@ -1,16 +1,16 @@
 volgroup vg00 --pesize=4096 pv.0
 part /boot --ondisk=vda --fstype=xfs --size=512
 part pv.0 --fstype=lvmpv --ondisk=vda --size=15360 --grow
-logvol none --fstype="None" --size=15360 --grow --thinpool --name=pool00 --vgname=vg00 --chunksize=64
-logvol /home --vgname=vg00 --name=home --fstype=xfs --size=1024 --thin --poolname=pool00
-logvol /var --vgname=vg00 --name=var --fstype=xfs --size=2048 --thin --poolname=pool00
-logvol /var/log --vgname=vg00 --name=varlog --fstype=xfs --size=2048 --thin --poolname=pool00
-logvol /var/log/audit --vgname=vg00 --name=varlogaudit --fstype=xfs --size=512 --thin --poolname=pool00
-logvol /tmp --vgname=vg00 --name=tmp --fstype=xfs --size=2048 --thin --poolname=pool00
-logvol / --vgname=vg00 --name=root --fstype=xfs --size=10240 --thin --poolname=pool00
-logvol swap --vgname=vg00 --name=swap --fstype=swap --size=4096 --thin --poolname=pool00
-logvol /opt --vgname=vg00 --name=opt --fstype=xfs --size=6144 --thin --poolname=pool00
-logvol /var/lib/mongodb --vgname=vg00 --name=mongodb --fstype=xfs --size=10240 --thin --poolname=pool00
-logvol /var/cache/pulp --vgname=vg00 --name=cachepulp --fstype=xfs --size=2048 --thin --poolname=pool00
-logvol /var/lib/pulp --vgname=vg00 --name=libpulp --fstype=xfs --size=153600 --thin --poolname=pool00
-logvol /var/lib/pgsql --vgname=vg00 --name=pgsql --fstype=xfs --size=2048 --thin --poolname=pool00
+#logvol none --fstype="None" --size=15360 --grow --thinpool --name=pool00 --vgname=vg00 --chunksize=64
+logvol /home --vgname=vg00 --name=home --fstype=xfs --size=1024
+logvol /var --vgname=vg00 --name=var --fstype=xfs --size=2048
+logvol /var/log --vgname=vg00 --name=varlog --fstype=xfs --size=2048
+logvol /var/log/audit --vgname=vg00 --name=varlogaudit --fstype=xfs --size=512
+logvol /tmp --vgname=vg00 --name=tmp --fstype=xfs --size=2048
+logvol / --vgname=vg00 --name=root --fstype=xfs --size=10240
+logvol swap --vgname=vg00 --name=swap --fstype=swap --size=4096
+logvol /opt --vgname=vg00 --name=opt --fstype=xfs --size=6144
+logvol /var/lib/mongodb --vgname=vg00 --name=mongodb --fstype=xfs --size=10240
+logvol /var/cache/pulp --vgname=vg00 --name=cachepulp --fstype=xfs --size=2048
+logvol /var/lib/pulp --vgname=vg00 --name=libpulp --fstype=xfs --size=153600
+logvol /var/lib/pgsql --vgname=vg00 --name=pgsql --fstype=xfs --size=2048
