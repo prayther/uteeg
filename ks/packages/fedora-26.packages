@@ -8,6 +8,8 @@
 @firefox
 chrony
 kexec-tools
+hplip-gui
+gnome-tweak-tool
 #added below for own purposes
 git
 mlocate

@@ -45,6 +45,8 @@ doit() {
 wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${SATELLITE_ISO}
 wget -P /root/ --no-clobber http://${SERVER}/ks/iso/${RHEL_ISO}
 
+git clone https://github.com/RedHatSatellite/satellite-sanity.git /root/satellite-sanity
+
 # Create Repository for Local install
 dvd_repo () { cat << EOF > /etc/yum.repos.d/rhel-dvd.repo
 [rhel]
