@@ -42,26 +42,64 @@ doit() {
 }
 
 # Enable stuff for Satellite
-setup_slow_vars () {
-                    Satellite_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-6.2-rpms/{print $6}')
-                    AK_Id=$(hammer --csv activation-key list --organization="${ORG}" | awk -F"," '/AK_Infra_1_Dev_CCV_RHEL7_Satellite/{print $1}')
-	    }
-setup_slow_vars
-hammer activation-key content-override --content-label="${Satellite_Label}" --id="${AK_Id}" --value 1
+#setup_slow_vars () {
+#                    Satellite_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-6.2-rpms/{print $6}')
+#                    AK_Id=$(hammer --csv activation-key list --organization="${ORG}" | awk -F"," '/AK_Infra_1_Dev_CCV_RHEL7_Satellite/{print $1}')
+#	    }
+#setup_slow_vars
+#hammer activation-key content-override --content-label="${Satellite_Label}" --id="${AK_Id}" --value 1
+#
+## Enable stuff for rhscl
+#setup_slow_vars1 () {
+#                     RHSCL_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-server-rhscl-7-rpms/{print $6}')
+#	     }
+#setup_slow_vars1
+#hammer activation-key content-override --content-label="${RHSCL_Label}" --id="${AK_Id}" --value 1
+#
+## Enable stuff for tools
+#setup_slow_vars2 () {
+#                     Tools_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-tools-6.2-rpms/{print $6}')
+#	     }
+#setup_slow_vars2
+#hammer activation-key content-override --content-label="${Tools_Label}" --id="${AK_Id}" --value 1
 
-# Enable stuff for rhscl
-setup_slow_vars1 () {
-                     RHSCL_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-server-rhscl-7-rpms/{print $6}')
-	     }
-setup_slow_vars1
-hammer activation-key content-override --content-label="${RHSCL_Label}" --id="${AK_Id}" --value 1
+#AK Activation Key
+#CL Content Label
+content_overide_rhel() {
+	for AK_Id in $(hammer --csv activation-key list --organization="${ORG}" | grep Core | awk -F"," '{print $1}' | sort -n);do
+		for CL in $(hammer --csv activation-key product-content --id="${AK_Id}" --organization="${ORG}" | grep Tools | awk -F"," '{print $6}');do
+                hammer activation-key content-override --content-label="${CL}" --id="${AK_Id}" --value 1
+                done
+        done
+}
+content_overide_rhel
 
-# Enable stuff for tools
-setup_slow_vars2 () {
-                     Tools_Label=$(hammer --csv activation-key product-content --name "AK_Infra_1_Dev_CCV_RHEL7_Satellite" --organization="${ORG}" | awk -F"," '/rhel-7-server-satellite-tools-6.2-rpms/{print $6}')
-	     }
-setup_slow_vars2
-hammer activation-key content-override --content-label="${Tools_Label}" --id="${AK_Id}" --value 1
+content_overide_extras_optional_epel() {
+        for AK_Id in $(hammer --csv activation-key list --organization="${ORG}" | grep Extras | awk -F"," '{print $1}' | sort -n);do
+		for CL in $(hammer --csv activation-key product-content --id="${AK_Id}" --organization="${ORG}" | grep -v satellite-6.2 | grep -v Capsule | grep -v Collections | grep -v ID | grep -v Kickstart | awk -F"," '{print $6}');do
+                hammer activation-key content-override --content-label="${CL}" --id="${AK_Id}" --value 1
+                done
+        done
+}
+content_overide_extras_optional_epel
+
+content_overide_sat() {
+	    for AK_Id in $(hammer --csv activation-key list --organization="${ORG}" | grep Satellite | grep -v Capsule | awk -F"," '{print $1}' | sort -n);do
+		for CL in $(hammer --csv activation-key product-content --id="${AK_Id}" --organization="${ORG}" | grep -v Label | grep -v EPEL | grep -v Optional | grep -v Extras | grep -v Capsule | grep -v Kickstart | awk -F"," '{print $6}');do
+		hammer activation-key content-override --content-label="${CL}" --id="${AK_Id}" --value 1
+		done
+	done
+}
+content_overide_sat
+
+content_overide_satcap() {
+            for AK_Id in $(hammer --csv activation-key list --organization="${ORG}" | grep Capsule | awk -F"," '{print $1}' | sort -n);do
+		    for CL in $(hammer --csv activation-key product-content --id="${AK_Id}" --organization="${ORG}" | grep -v Label | grep -v EPEL | grep -v Optional | grep -v Extras | grep -v Kickstart | grep -v satellite-6.2 | awk -F"," '{print $6}');do
+                hammer activation-key content-override --content-label="${CL}" --id="${AK_Id}" --value 1
+                done
+            done
+}
+content_overide_satcap
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
