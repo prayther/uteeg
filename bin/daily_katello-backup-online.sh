@@ -53,7 +53,7 @@ ssh ${GATEWAY} "firewall-cmd --reload"
 #firewall-cmd --list-services
 #firewall-cmd --get-services # display all available services
 # Add entry in exports so export of katello content-views are possible in one step for maintaining local CDN
-ssh ${GATEWAY} "grep /var/www/html/uteeg" /etc/exports || ssh ${GATEWAY} "echo '/var/www/html/uteeg     *(rw,no_acl)' >> /etc/exports"
+ssh ${GATEWAY} "grep /var/www/html/uteeg" /etc/exports || ssh ${GATEWAY} "echo '/var/www/html/uteeg     *(rw,no_acl,no_root_squash)' >> /etc/exports"
 ssh ${GATEWAY} chmod 0777 -R /var/www/html/uteeg/katello-export
 ssh ${GATEWAY} systemctl enable nfs-server
 ssh ${GATEWAY} systemctl start nfs-server
