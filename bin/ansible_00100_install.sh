@@ -9,9 +9,9 @@ ls -d ~/bsfl || git clone https://github.com/SkypLabs/bsfl.git /root/bsfl
 
 # read configuration (needs to be adopted!)
 #source etc/virt-inst.cfg
-source etc/virthost.cfg
-source etc/rhel.cfg
-source ./bsfl/lib/bsfl.sh || exit 1
+source ../etc/virthost.cfg
+source ../etc/rhel.cfg
+source ~/bsfl/lib/bsfl.sh || exit 1
 DEBUG=no
 LOG_ENABLED="yes"
 SYSLOG_ENABLED="yes"
