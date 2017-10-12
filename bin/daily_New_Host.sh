@@ -56,7 +56,7 @@ ssh ${GATEWAY} rm -f /var/lib/libvirt/images/"${VMNAME}".qcow2
 ssh ${GATEWAY} rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2
 
 hammer host create \
---name="${vmname}" \
+--name="${VMNAME}" \
 --hostgroup=HG_Infra_1_Dev_CV_RHEL7_Core_ORG_redhat_LOC_laptop \
 --organization=redhat \
 --location=laptop \
@@ -67,11 +67,11 @@ hammer host create \
 --compute-resource=Libvirt_CR
 
 # bootdisk host pulls down the boot media from satellite
-hammer bootdisk host --host=${vmname}.${DOMAIN}
-scp ${vmname}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
+hammer bootdisk host --host=${VMNAME}.${DOMAIN}
+scp ${VMNAME}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 # this is how to inline edit a libvirt vm to add cdrom
-ssh ${GATEWAY} "virsh dumpxml ${vmname}.${DOMAIN} > /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/>' /tmp/${vmname}.${DOMAIN}.xml"
+ssh ${GATEWAY} "virsh dumpxml ${VMNAME}.${DOMAIN} > /tmp/${VMNAME}.${DOMAIN}.xml"
+ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/>' /tmp/${VMNAME}.${DOMAIN}.xml"
 # search for </disk> and insert
 cat << EOH > /root/cdrom.txt
     <disk type='file' device='cdrom'>
@@ -82,11 +82,11 @@ cat << EOH > /root/cdrom.txt
     </disk>
 EOH
 scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
-ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "/bin/virsh define /tmp/${vmname}.${DOMAIN}.xml"
-ssh ${GATEWAY} "/bin/virsh start ${vmname}.${DOMAIN}"
-ssh ${GATEWAY} "/bin/virsh attach-disk ${vmname}.${DOMAIN} /var/lib/libvirt/images/${vmname}.${DOMAIN}.iso hda --type cdrom --mode readonly"
-ssh ${GATEWAY} "/bin/virsh reset ${vmname}.${DOMAIN}"
+ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${VMNAME}.${DOMAIN}.xml"
+ssh ${GATEWAY} "/bin/virsh define /tmp/${VMNAME}.${DOMAIN}.xml"
+ssh ${GATEWAY} "/bin/virsh start ${VMNAME}.${DOMAIN}"
+ssh ${GATEWAY} "/bin/virsh attach-disk ${VMNAME}.${DOMAIN} /var/lib/libvirt/images/${VMNAME}.${DOMAIN}.iso hda --type cdrom --mode readonly"
+ssh ${GATEWAY} "/bin/virsh reset ${VMNAME}.${DOMAIN}"
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
