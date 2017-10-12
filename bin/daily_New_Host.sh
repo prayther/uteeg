@@ -50,10 +50,10 @@ doit() {
 VMNAME="test02"
 vmip="10.0.0.24"
 
-ssh ${GATEWAY} "virsh list --all | grep "${VMNAME}" && cmd virsh destroy "${VMNAME}""
-ssh ${GATEWAY} "virsh list --all | grep "${VMNAME}" && cmd virsh undefine "${VMNAME}""
-ssh ${GATEWAY} "rm -f /var/lib/libvirt/images/"${VMNAME}"*"
-ssh ${GATEWAY} "rm -f /tmp/"${VMNAME}"*"
+ssh ${GATEWAY} "virsh list --all | grep ${VMNAME} && cmd virsh destroy ${VMNAME}"
+ssh ${GATEWAY} "virsh list --all | grep ${VMNAME} && cmd virsh undefine ${VMNAME}"
+ssh ${GATEWAY} "rm -fv /var/lib/libvirt/images/${VMNAME}*"
+ssh ${GATEWAY} "rm -fv /tmp/${VMNAME}*"
 #ssh ${GATEWAY} "rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2"
 
 hammer host create \
