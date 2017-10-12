@@ -69,10 +69,10 @@ hammer host create \
 
 # bootdisk host pulls down the boot media from satellite
 hammer bootdisk host --host=${VMNAME}.${DOMAIN}
-scp ${VMNAME}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
+scp -v ${VMNAME}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 # this is how to inline edit a libvirt vm to add cdrom
 ssh ${GATEWAY} "virsh dumpxml ${VMNAME}.${DOMAIN} > /tmp/${VMNAME}.${DOMAIN}.xml"
-ssh ${GATEWAY} "sed -i '/dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/>' /tmp/${VMNAME}.${DOMAIN}.xml"
+ssh ${GATEWAY} sed -i /dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/> /tmp/${VMNAME}.${DOMAIN}.xml
 # search for </disk> and insert
 cat << EOH > /root/cdrom.txt
     <disk type='file' device='cdrom'>
@@ -82,7 +82,7 @@ cat << EOH > /root/cdrom.txt
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
 EOH
-scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
+scp -v /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
 ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${VMNAME}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh define /tmp/${VMNAME}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh start ${VMNAME}.${DOMAIN}"
