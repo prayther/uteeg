@@ -50,29 +50,64 @@ doit() {
 VMNAME="test02"
 vmip="10.0.0.24"
 
-ssh ${GATEWAY} "virsh list --all | grep ${VMNAME} && cmd virsh destroy ${VMNAME}"
-ssh ${GATEWAY} "virsh list --all | grep ${VMNAME} && cmd virsh undefine ${VMNAME}"
+ssh ${GATEWAY} "systemctl stop libvirtd"
+ssh ${GATEWAY} "systemctl stop dnsmasq"
+ssh ${GATEWAY} "sleep 5"
+ssh ${GATEWAY} "pkill libvirtd"
+ssh ${GATEWAY} "pkill dnsmasq"
+ssh ${GATEWAY} "sleep 5"
+ssh ${GATEWAY} "systemctl start libvirtd"
+ssh ${GATEWAY} "systemctl start dnsmasq"
+ssh ${GATEWAY} "sleep 5"
+ssh ${GATEWAY} "systemctl status libvirtd"
+ssh ${GATEWAY} "systemctl status dnsmasq"
+
+ssh ${GATEWAY} "virsh list --all | grep ${VMNAME} && virsh destroy ${VMNAME}.${DOMAIN}"
+ssh ${GATEWAY} "virsh list --all | grep ${VMNAME} && virsh undefine ${VMNAME}.${DOMAIN}"
 ssh ${GATEWAY} "rm -fv /var/lib/libvirt/images/${VMNAME}*"
 ssh ${GATEWAY} "rm -fv /tmp/${VMNAME}*"
 #ssh ${GATEWAY} "rm -f /var/lib/libvirt/images/"${VMNAME}".data.qcow2"
+hammer host delete --name="${VMNAME}.${DOMAIN}"
 
-hammer host create \
---name="${VMNAME}" \
---hostgroup=HG_Infra_1_Dev_CV_RHEL7_Core_ORG_redhat_LOC_laptop \
---organization=redhat \
---location=laptop \
---interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
+ssh ${GATEWAY} "systemctl stop libvirtd"
+ssh ${GATEWAY} "systemctl stop dnsmasq"
+ssh ${GATEWAY} "sleep 5"
+ssh ${GATEWAY} "pkill libvirtd"
+ssh ${GATEWAY} "pkill dnsmasq"
+ssh ${GATEWAY} "sleep 5"
+ssh ${GATEWAY} "systemctl start libvirtd"
+ssh ${GATEWAY} "systemctl start dnsmasq"
+ssh ${GATEWAY} "sleep 5"
+ssh ${GATEWAY} "systemctl status libvirtd"
+ssh ${GATEWAY} "systemctl status dnsmasq"
+
+#hammer host create \
+#--name="${VMNAME}" \
+#--hostgroup=HG_Infra_1_Dev_CV_RHEL7_Core_ORG_redhat_LOC_laptop \
+#--organization=redhat \
+#--location=laptop \
+#--interface="primary=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
+#--subnet="10.0.0.0/24" \
+#--volume="capacity=10G,format_type=qcow2" \
+#--compute-attributes="cpus=1,memory=1024"
+#--compute-resource=Libvirt_CR
+
+hammer host create --name "test02" --organization "redhat" \
+--location "laptop" --hostgroup "HG_Infra_1_Dev_CV_RHEL7_Core_ORG_redhat_LOC_laptop" \
+--compute-resource "Libvirt_CR" \
+--interface "managed=true,primary=true,provision=true,compute_type=network,compute_network=laptoplab,ip=${vmip}" \
 --subnet="10.0.0.0/24" \
---volume="capacity=10G,format_type=qcow2" \
---compute-attributes="memory=1024" \
---compute-resource=Libvirt_CR
+--compute-attributes="cpus=1,memory=1073741824" \
+--volume="pool_name=default,capacity=20G,format_type=qcow2"
 
 # bootdisk host pulls down the boot media from satellite
+#hammer bootdisk host --force --host=${VMNAME}.${DOMAIN}
 hammer bootdisk host --host=${VMNAME}.${DOMAIN}
-scp -v ${VMNAME}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
+scp ${VMNAME}.${DOMAIN}.iso ${GATEWAY}:/var/lib/libvirt/images/
 # this is how to inline edit a libvirt vm to add cdrom
 ssh ${GATEWAY} "virsh dumpxml ${VMNAME}.${DOMAIN} > /tmp/${VMNAME}.${DOMAIN}.xml"
-ssh ${GATEWAY} sed -i /dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/> /tmp/${VMNAME}.${DOMAIN}.xml
+ssh ${GATEWAY} "sed -i '0,/network/s//cdrom/' /tmp/${VMNAME}.${DOMAIN}.xml"
+#ssh ${GATEWAY} sed -i /dev=\'network\'/a \ \ \ \ <boot dev=\'cdrom\'\ \/> /tmp/${VMNAME}.${DOMAIN}.xml
 # search for </disk> and insert
 cat << EOH > /root/cdrom.txt
     <disk type='file' device='cdrom'>
@@ -82,7 +117,7 @@ cat << EOH > /root/cdrom.txt
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
 EOH
-scp -v /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
+scp /root/cdrom.txt ${GATEWAY}:/var/lib/libvirt/images/
 ssh ${GATEWAY} "sed -iE '/\/disk\>/r /var/lib/libvirt/images/cdrom.txt' /tmp/${VMNAME}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh define /tmp/${VMNAME}.${DOMAIN}.xml"
 ssh ${GATEWAY} "/bin/virsh start ${VMNAME}.${DOMAIN}"
