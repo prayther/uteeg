@@ -48,7 +48,7 @@ doit() {
 }
 
 vmname="test02"
-vmip="10.0.0.11"
+vmip="10.0.0.24"
 
 hammer host create \
 --name="${vmname}" \

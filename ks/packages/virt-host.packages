@@ -9,3 +9,4 @@ deltarpm
 nfs-utils
 #ansible
 @core
+redhat-access-insights
