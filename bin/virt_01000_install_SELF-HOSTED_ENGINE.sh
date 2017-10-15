@@ -68,7 +68,7 @@ fi
 yum -y install sendmail mutt dns-server
 #wget -P /root/ --no-clobber http://${SERVER}/ks/iso/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
 #rpm -Uvh /root/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
-wget -P /usr/share/ovirt-engine-appliance/ http://${SERVER}/ks/apps/rhev/rhvm-appliance-20170914.0-1.x86_64.rhevm.ova
+wget -P /usr/share/ovirt-engine-appliance/ --no-clobber http://${SERVER}/ks/apps/rhev/rhvm-appliance-20170914.0-1.x86_64.rhevm.ova
 systemctl enable sendmail
 systemctl start sendmail
 
@@ -137,7 +137,7 @@ OVEHOSTED_VM/vmCDRom=none:None
 OVEHOSTED_VM/automateVMShutdown=bool:True
 OVEHOSTED_VM/cloudInitISO=str:generate
 OVEHOSTED_VM/cloudinitInstanceDomainName=str:prayther.org
-OVEHOSTED_VM/cloudinitInstanceHostName=str:virt-host.prayther.org
+OVEHOSTED_VM/cloudinitInstanceHostName=str:virt-engine.prayther.org
 OVEHOSTED_VM/rootSshPubkey=str:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqzz0IIJsnncRvTqrK8QM4y3Gt2I/c/GnW1pqFXst/uZGU14MxJSZsuFK5Xs7/GwpKPoDv9mwzUTs6Q4l5Pj8dHlwiJLjbFPi89Ri1kmV225+Tu+KgVO7q300kI5IknT4qpUKdlScAdSPm0mwJ6pb01hdc5iNKmGK8sEOkty+3nj7lbcXX1lR6NF2FmNaOn02c9ZKgun7uejJ2mplrIk/KR4AzMk9y0kuLhPpk1LDtitBKD2wpUTCh75C7j6GSe8BRGigvlcCBESZp7rCCoiAklhR9LcO0u9SaxHMnQpKmnQfLe3GMx7zJdJd0aD9XrvgG0aueZV0O7c9pAv+FETDD root@fedora.prayther.laptop
 OVEHOSTED_VM/cloudinitExecuteEngineSetup=bool:True
 OVEHOSTED_VM/cloudinitVMStaticCIDR=str:10.0.0.16/24

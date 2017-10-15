@@ -16,6 +16,7 @@ rhel-client 50 2 1024 10.0.0.13 rhel 7.4 7.3
 gfs-backup 50 2 1024 10.0.0.14 rhgf 7.4 7.3
 #Virtualization
 virt-host 300 6 6144 10.0.0.15 rhel 7.4 7.3 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+#virt-engine.prayther.org 10.0.0.16
 #Check_MK
 checkmk-admin 50 2 1024 10.0.0.17 rhel 7.4 7.3 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 #Fedora
