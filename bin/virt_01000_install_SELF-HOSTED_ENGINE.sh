@@ -66,8 +66,9 @@ fi
 #make sure you have setup your virt host (libvirt/kernel boot options) to enable nested virtualization. https://fedoraproject.org/wiki/How_to_enable_nested_virtualization_in_KVM
 #https://techglimpse.com/enable-nested-virtualization-support-virt-manager/
 yum -y install sendmail mutt dns-server
-wget -P /root/ --no-clobber http://${SERVER}/ks/iso/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
-rpm -Uvh /root/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
+#wget -P /root/ --no-clobber http://${SERVER}/ks/iso/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
+#rpm -Uvh /root/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
+wget -P /usr/share/ovirt-engine-appliance/ http://${SERVER}/ks/apps/rhev/rhvm-appliance-20170914.0-1.x86_64.rhevm.ova
 systemctl enable sendmail
 systemctl start sendmail
 
@@ -80,7 +81,7 @@ grep "var/tmp/data" /etc/exports || echo "/var/tmp/data *(rw,no_acl)" >> /etc/ex
 grep "var/tmp/iso " /etc/exports || echo "/var/tmp/iso *(rw,no_acl)" >> /etc/exports
 grep "var/tmp/export " /etc/exports || echo "/var/tmp/export *(rw,no_acl)" >> /etc/exports
 grep "var/tmp/nfs " /etc/exports || echo "/var/tmp/nfs *(rw,no_acl)" >> /etc/exports
-systemctl restart dns-server
+systemctl restart nfs-server
 #echo "/dev/vdb1               /var/tmp/vdb1               xfs     defaults        0 0" >> /etc/fstab
 #mount -a
 
@@ -131,7 +132,7 @@ OVEHOSTED_VM/consoleUUID=str:771feb49-bf8e-43de-8087-851c2ef5fc00
 OVEHOSTED_VM/vmVCpus=str:4
 OVEHOSTED_VM/nicUUID=str:6f3eb375-8bd5-4169-98d0-882b4ad5f1bc
 OVEHOSTED_VM/cdromUUID=str:dea377d1-1e08-4b65-90cd-ac6c82bae697
-OVEHOSTED_VM/ovfArchive=str:/usr/share/ovirt-engine-appliance/rhvm-appliance-4.1.20170811.0-1.el7.ova
+OVEHOSTED_VM/ovfArchive=str:/usr/share/ovirt-engine-appliance/rhvm-appliance-20170914.0-1.x86_64.rhevm.ova
 OVEHOSTED_VM/vmCDRom=none:None
 OVEHOSTED_VM/automateVMShutdown=bool:True
 OVEHOSTED_VM/cloudInitISO=str:generate
