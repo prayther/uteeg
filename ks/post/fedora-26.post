@@ -2,6 +2,11 @@
 #setup snmp
 dnf install -y net-snmp net-snmp-utils net-snmp-libs net-snmp-devel
 net-snmp-config --create-snmpv3-user -A 12345678 -X 12345678 -a MD5 -x DES admin
+#use rpmfusion a lot and this sets up for nvidia video. sound and video usually come from here also.
+#https://rpmfusion.org/Howto/NVIDIA#Current_GeForce.2FQuadro.2FTesla
+dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-26.noarch.rpm
+dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-27.noarch.rpm
+dnf install xorg-x11-drv-nvidia akmod-nvidia "kernel-devel-uname-r == $(uname -r)"
 systemctl enable snmpd
 systemctl restart snmpd
 snmpwalk -v3 -u admin -l authNoPriv -a MD5 -x DES -A 12345678 -X 12345678 localhost

@@ -433,11 +433,12 @@ msg_ok grep ${IP} /root/.ssh/known_hosts \
 #when looking at size, for sparse (thin provision) use du -sh, ls will show you what the OS thinks.
 #you can set sparse=false but performance is terrible
 #i setup a second disc sparse just in case. if you find you really need it probably make it sparse=false
+#https://www.linux-kvm.org/page/Tuning_KVM
 #virt_install() {
 virt-install \
    --name="${VMNAME}" \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",cache=writeback,sparse=false,format=qcow2,cache=none \
-   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,cache=writeback,sparse=false,format=qcow2,cache=none \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".qcow2,size="${DISC_SIZE}",cache=writeback,sparse=false,format=qcow2 \
+   --disk path=/var/lib/libvirt/images/"${VMNAME}".data.qcow2,size=50,cache=writeback,sparse=false,format=qcow2 \
    --vcpus="${VCPUS}" --ram="${RAM}" \
    --location=/var/lib/libvirt/images/"${ISO}" \
    --os-type=linux \

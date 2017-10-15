@@ -62,8 +62,10 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
+#https://fedoraproject.org/wiki/How_to_enable_nested_virtualization_in_KVM. Actually type 'host-passthrough" in the cpu type as outlined on web page. this makes nested virt work after enabling on the virthost/kvm
 #make sure you have setup your virt host (libvirt/kernel boot options) to enable nested virtualization. https://fedoraproject.org/wiki/How_to_enable_nested_virtualization_in_KVM
-yum -y install sendmail mutt
+#https://techglimpse.com/enable-nested-virtualization-support-virt-manager/
+yum -y install sendmail mutt dns-server
 wget -P /root/ --no-clobber http://${SERVER}/ks/iso/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
 rpm -Uvh /root/rhvm-appliance-4.1.20170811.0-1.el7.noarch.rpm
 systemctl enable sendmail
