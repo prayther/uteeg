@@ -157,6 +157,10 @@ EOF
 
 #screen -m bash -c 'hosted-engine --deploy; exec bash'
 screen -m bash -c 'hosted-engine --deploy --config-append=/root/hosted-engine-answer-file.txt; exec bash'
+#if you type exit after the screen command above...
+hosted-engine --vm-status
+systemctl status ovirt-ha-agent
+systemcls status nfs-server
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

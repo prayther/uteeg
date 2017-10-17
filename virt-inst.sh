@@ -77,27 +77,28 @@ cmd firewall-cmd --info-service http \
 	|| die_if_false msg_failed "Line $LINENO: could not setup firewall-cmd httpd" 
 
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
+#use ^ in search to make sure you're not getting comments #
 inputfile=etc/hosts
-VMNAME=$(awk /"${1}"/'{print $1}' "${inputfile}")
-DISC_SIZE=$(awk /"${1}"/'{print $2}' "${inputfile}")
-VCPUS=$(awk /"${1}"/'{print $3}' "${inputfile}")
-RAM=$(awk /"${1}"/'{print $4}' "${inputfile}")
-IP=$(awk /"${1}"/'{print $5}' "${inputfile}")
-OS=$(awk /"${1}"/'{print $6}' "${inputfile}")
-RHVER=$(awk /"${1}"/'{print $7}' "${inputfile}")
-OSVARIANT=$(awk /"${1}"/'{print $8}' "${inputfile}")
-VIRTHOST=$(awk /"${1}"/'{print $9}' "${inputfile}")
-DOMAIN=$(awk /"${1}"/'{print $10}' "${inputfile}")
-DISC=$(awk /"${1}"/'{print $11}' "${inputfile}")
-NIC=$(awk /"${1}"/'{print $12}' "${inputfile}")
-MASK=$(awk /"${1}"/'{print $13}' "${inputfile}")
-ISO=$(awk /"${1}"/'{print $14}' "${inputfile}")
-MEDIA=$(awk /"${1}"/'{print $15}' "${inputfile}")
-NETWORK=$(awk /"${1}"/'{print $16}' "${inputfile}")
+VMNAME=$(awk /"^${1}"/'{print $1}' "${inputfile}")
+DISC_SIZE=$(awk /"^${1}"/'{print $2}' "${inputfile}")
+VCPUS=$(awk /"^${1}"/'{print $3}' "${inputfile}")
+RAM=$(awk /"^${1}"/'{print $4}' "${inputfile}")
+IP=$(awk /"^${1}"/'{print $5}' "${inputfile}")
+OS=$(awk /"^${1}"/'{print $6}' "${inputfile}")
+RHVER=$(awk /"^${1}"/'{print $7}' "${inputfile}")
+OSVARIANT=$(awk /"^${1}"/'{print $8}' "${inputfile}")
+VIRTHOST=$(awk /"^${1}"/'{print $9}' "${inputfile}")
+DOMAIN=$(awk /"^${1}"/'{print $10}' "${inputfile}")
+DISC=$(awk /"^${1}"/'{print $11}' "${inputfile}")
+NIC=$(awk /"^${1}"/'{print $12}' "${inputfile}")
+MASK=$(awk /"^${1}"/'{print $13}' "${inputfile}")
+ISO=$(awk /"^${1}"/'{print $14}' "${inputfile}")
+MEDIA=$(awk /"^${1}"/'{print $15}' "${inputfile}")
+NETWORK=$(awk /"^${1}"/'{print $16}' "${inputfile}")
 
 cmd has_value VMNAME
 cmd has_value DISC_SIZE
-cmd has_value VCPU
+cmd has_value VCPUS
 cmd has_value RAM
 cmd has_value IP
 cmd has_value OS
@@ -126,6 +127,8 @@ cmd file_exists "./ks/post/"${VMNAME}".post" \
 
 #move to function file somewhere
 #setup the 10.0.0.0 libvirt network no dhcp and default it on
+#this only kinda works, fails after reboot/restart of libvirt. just create the network
+#name=laptoplab net=10.0.0.0 dhcp=no gateway/dns=10.0.0.1 (libvirt host...laptop)
 libvirt_create_laptoplab_network() {
   echo "Line $LINENO: creating libvirt network: /etc/libvirt/qemu/networks/laptoplab.xml"
   echo
@@ -165,6 +168,7 @@ cmd ls -l /var/www/html/ks \
 
 #setup rhel server kickstart media in /var/www/html/uteeg/rhel
 # assume media is located at $RHEL_ISO, etc/rhel.cfg
+# this media thing is messed up. fix it! being in tmp for the first uteeg run and then cp/mv to iso is not working
 cmd directory_exists /mnt/rhel \
 	|| cmd mkdir -pv /mnt/rhel \
 	|| die_if_false msg_failed "Line $LINENO: could not mkdir /mnt/rhel"
@@ -181,7 +185,7 @@ cmd directory_exists /var/www/html/uteeg/iso \
         || cmd mkdir -pv /var/www/html/uteeg/iso \
         || die_if_false msg_failed "Line $LINENO: could not mkdir /uteeg/iso"
 cmd file_exists /var/www/html/uteeg/iso/"${ISO}" \
-        || cmd mv /tmp/"${ISO}" /var/www/html/uteeg/iso/"${ISO}" \
+        || cmd cp /tmp/"${ISO}" /var/www/html/uteeg/iso/"${ISO}" \
         || die_if_false msg_failed "Line $LINENO: could not mv rhel dvd from tmp to uteeg/iso"
 cmd directory_exists rhel/Packages/repodata \
 	|| cmd createrepo_c rhel/Packages \
