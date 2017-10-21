@@ -186,7 +186,7 @@ cmd directory_exists /var/www/html/uteeg/iso \
         || die_if_false msg_failed "Line $LINENO: could not mkdir /uteeg/iso"
 cmd file_exists /var/www/html/uteeg/iso/"${ISO}" \
         || cmd cp /tmp/"${ISO}" /var/www/html/uteeg/iso/"${ISO}" \
-        || die_if_false msg_failed "Line $LINENO: could not mv rhel dvd from tmp to uteeg/iso"
+        || die_if_false msg_failed "Line $LINENO: could not cp rhel dvd from tmp to uteeg/iso"
 cmd directory_exists rhel/Packages/repodata \
 	|| cmd createrepo_c rhel/Packages \
 	|| die_if_false msg_failed "Line $LINENO: Need RHEL media setup /var/www/html/uteeg/rhel/Packages/repodata"

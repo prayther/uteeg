@@ -52,7 +52,8 @@ subscription-manager clean
 CA_CONSUMER_RPM=$(rpm -qa | grep katello-ca-consumer)
 rpm -e "${CA_CONSUMER_RPM}"
 #rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
-rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+#rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+rpm -Uvh http://gateway/pub/katello-ca-consumer-latest.noarch.rpm
 # add a activation key once i get satellite repos in my test bed.
 setup_slow_var () {
                    Sat_AK=$(hammer --csv activation-key list --organization redhat | grep Infra | grep -vi Capsule | awk -F"," '/Satellite/ {print $2}')

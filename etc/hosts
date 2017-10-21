@@ -36,6 +36,6 @@ serverd 50 2 1024 10.0.0.19 rhel 7.4 7.3
 ans0admin0infra0dev0exop 50 4 2048 10.0.0.20 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 ans0node10infra0dev0exop 50 4 2048 10.0.0.21 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 #CFME holder 10.0.0.22
-ans0cfme 50 4 2048 10.0.0.23 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
+ans0tower 50 4 2048 10.0.0.23 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 #test02 daily_new_host.sh
 #10.0.0.24
