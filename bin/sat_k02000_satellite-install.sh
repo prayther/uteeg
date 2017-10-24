@@ -75,7 +75,8 @@ doit firewall-cmd --permanent --add-port="53/udp" --add-port="53/tcp" \
  --add-port="67/udp" --add-port="69/udp" \
  --add-port="80/tcp"  --add-port="443/tcp" \
  --add-port="5647/tcp" \
- --add-port="8000/tcp" --add-port="8140/tcp"
+ --add-port="8000/tcp" --add-port="8140/tcp" \
+ --add-port="9090/tcp"
 
 #katello-service status || satellite-installer --scenario satellite \
 satellite-installer --scenario satellite \
@@ -85,8 +86,9 @@ satellite-installer --scenario satellite \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
 --foreman-proxy-tftp-servername $(hostname) \
---capsule-puppet false \
+--capsule-puppet true \
 --foreman-proxy-dns-managed=false \
+--enable-foreman-plugin-openscap \
 --foreman-proxy-dhcp-managed=false
 
 export VMNAME=$(echo "$(hostname)" | awk -F"." '{print $1}')
@@ -104,6 +106,10 @@ hammer_cli_config
 
 mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
 mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
+
+yum -y install puppet-foreman_scap_client
+foreman-rake foreman_openscap:bulk_upload:default
+mkdir -p /etc/puppet/environments/production/modules
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

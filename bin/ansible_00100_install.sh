@@ -63,3 +63,28 @@ intranetweb
 EOF" user
 
 ansible everyone -m command -a 'id'
+#https://docs.openstack.org/ansible-hardening/latest/getting-started.html
+ansible-galaxy install git+https://github.com/openstack/ansible-hardening
+#on tower /var/lib/awx/projects/*ansible-hardening/tests/test.yml change host from localhost to 'all'
+#then filter in tower for template can, test02.prayther.org
+cat << "EOF" >/root/ansible-hardening.yml
+---
+
+- name: Harden all systems
+#  hosts: all
+  hosts: localhost
+  become: yes
+#  vars:
+#    security_enable_firewalld: no
+#    security_rhel7_initialize_aide: no
+#    security_ntp_servers:
+#      - 1.example.com
+#      - 2.example.com
+  roles:
+    - ansible-hardening
+EOF
+
+#uncomment /etc/ansible/ansible.cfg log_path = /var/log/ansible.log to get logs
+#ansible-playbook -i "localhost," -c local harden.yml
+#[root@ans0tower _17__ansible_hardening]# scp /usr/share/awx/request_tower_configuration.sh test02:
+#./request_tower_configuration.sh -k -s https://ans0tower.prayther.org -c 9d449298a04321be6a5466ca752d718c -t 5
