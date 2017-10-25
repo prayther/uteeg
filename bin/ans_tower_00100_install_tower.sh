@@ -49,6 +49,21 @@ sed -i "s/rabbitmq_password=.*/rabbitmq_password='password'/g" /root/ansible-tow
 yum -y install python-pip
 pip install --upgrade pip
 pip install ansible-tower-cli
+
+#some tower-cli commands
+tower-cli config host ans0tower.prayther.org
+tower-cli config username admin
+tower-cli config password password
+
+tower-cli help
+tower-cli group list
+tower-cli host list
+
+#need to add source and credentials before the next tower-cli commands. the depend on those
+#create inventory
+tower-cli inventory create -n cli-satellite-inventory --organization Default
+tower-cli inventory_source create -n cli-inventory-source-satellite -i cli-satellite-inventory --source satellite6 --credential admin
+
 #yum -y install ansible
 #ansible --version
 
