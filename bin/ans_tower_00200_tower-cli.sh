@@ -143,31 +143,31 @@ inventory = {'_meta': {'hostvars': {'foobar': {}}}, 'ungrouped': {'hosts': ['foo
 print json.dumps(inventory)"
 
 # Inventory examples with custom scripts stored in Tower
-tower-cli inventory create --name="Custom script inventory" --description="this is an inventory that contains a custom inventory source" --organization="Bio Inc" --variables="@$DIR/variables.yml"
+#tower-cli inventory create --name="Custom script inventory" --description="this is an inventory that contains a custom inventory source" --organization="Bio Inc" --variables="@$DIR/variables.yml"
 # The script can also be obtained from a file using the "@" character
-tower-cli inventory_script create --name="foobar inventory script" --script="$example_script" --organization="Bio Inc"
-tower-cli inventory_source create --name="fetch foobar" --source-script="foobar inventory script" --inventory="Custom script inventory" --source="custom"
+#tower-cli inventory_script create --name="foobar inventory script" --script="$example_script" --organization="Bio Inc"
+#tower-cli inventory_source create --name="fetch foobar" --source-script="foobar inventory script" --inventory="Custom script inventory" --source="custom"
 # This will actually run the script, which fetches the host "foobar"
-tower-cli inventory_source update "fetch foobar" --monitor
+#tower-cli inventory_source update "fetch foobar" --monitor
 # Observe the new host "foobar"
-tower-cli host list --inventory="Custom script inventory"
+#tower-cli host list --inventory="Custom script inventory"
 
 # Examples of nested groups, associating and managing hosts/groups
-tower-cli inventory create --name="tower-cli manual examples" --organization="Default" --variables="@$DIR/variables.yml"
-tower-cli group create --name=web --inventory="tower-cli manual examples"
-tower-cli host create --name="10.42.0.6" --inventory="tower-cli manual examples"
-tower-cli host create --name="10.42.0.7" --inventory="tower-cli manual examples"
-tower-cli host create --name="10.42.0.8" --inventory="tower-cli manual examples"
-tower-cli host create --name="10.42.0.9" --inventory="tower-cli manual examples"
-tower-cli host create --name="10.42.0.10" --inventory="tower-cli manual examples"
+#tower-cli inventory create --name="tower-cli manual examples" --organization="Default" --variables="@$DIR/variables.yml"
+#tower-cli group create --name=web --inventory="tower-cli manual examples"
+#tower-cli host create --name="10.42.0.6" --inventory="tower-cli manual examples"
+#tower-cli host create --name="10.42.0.7" --inventory="tower-cli manual examples"
+#tower-cli host create --name="10.42.0.8" --inventory="tower-cli manual examples"
+#tower-cli host create --name="10.42.0.9" --inventory="tower-cli manual examples"
+#tower-cli host create --name="10.42.0.10" --inventory="tower-cli manual examples"
 # these include databases and web servers, with hosts in the web server group
-tower-cli group create --name="databases" --inventory="tower-cli manual examples"
+#tower-cli group create --name="databases" --inventory="tower-cli manual examples"
 # Setting up the web servers, associate hosts with the group
-tower-cli group create --name="web servers" --inventory="tower-cli manual examples"
-tower-cli host create --name="server.example1.com" --inventory="tower-cli manual examples"
-tower-cli host associate --host="server.example1.com" --group="web servers"
-tower-cli host create --name="server.example2.com" --inventory="tower-cli manual examples"
-tower-cli host associate --host="server.example2.com" --group="web servers"
+#tower-cli group create --name="web servers" --inventory="tower-cli manual examples"
+#tower-cli host create --name="server.example1.com" --inventory="tower-cli manual examples"
+#tower-cli host associate --host="server.example1.com" --group="web servers"
+#tower-cli host create --name="server.example2.com" --inventory="tower-cli manual examples"
+#tower-cli host associate --host="server.example2.com" --group="web servers"
 
 # Example of inventory contents sourced from a project
 tower-cli inventory create --name="tower-cli SCM inventory example" --organization="Default" --variables="@$DIR/variables.yml"
@@ -184,7 +184,7 @@ tower-cli job_template create --name="Hello World Debug" --description="debug st
 tower-cli job_template create --name="Hello World" --description="echo statement" --inventory=localhost --credential=user1 --project=sample_playbooks --playbook=helloworld.yml
 tower-cli job_template create --name="Hello World as user2" --description="echo statement with user2 credentials" --inventory=localhost --credential=user2 --project=sample_playbooks --playbook=helloworld.yml
 # Example from Hyrule data set
-tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
+#tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
 
 tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory=cli-satellite-inventory --credential=satellite --project=ansible-hardening --playbook=tests.yml
 
