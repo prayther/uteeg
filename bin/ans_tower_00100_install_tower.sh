@@ -39,7 +39,7 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 wget -P /root/ --no-clobber http://"${GATEWAY}"/ks/apps/tower/ansible-tower-setup-latest.tar.gz
-tar zxvf /root/ansible-tower-setup-latest.tar.gz
+tar zxvf /root/ansible-tower-setup-latest.tar.gz -C /root
 sed -i "s/admin_password=.*/admin_password='password'/g" /root/ansible-tower-setup-3.2.1/inventory
 sed -i "s/pg_password=.*/pg_password='password'/g" /root/ansible-tower-setup-3.2.1/inventory
 sed -i "s/rabbitmq_password=.*/rabbitmq_password='password'/g" /root/ansible-tower-setup-3.2.1/inventory
