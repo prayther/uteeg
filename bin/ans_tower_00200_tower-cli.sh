@@ -134,8 +134,8 @@ echo "Tower-CLI DATA FAKER: creating inventories and groups"
 #tower-cli inventory_source create --name=EC2 --credential="AWS creds" --source=ec2 --description="EC2 hosts" --inventory=Production --overwrite=true --source-regions="us-east-1" --overwrite-vars=false --source-vars="foo: bar"
 
 #create inventory
-tower-cli inventory create -n cli-satellite-inventory --organization ${ORGNAME}
-tower-cli inventory_source create -n cli-inventory-source-satellite -i cli-satellite-inventory --source satellite6 --credential satellite
+tower-cli inventory create --name="cli-satellite-inventory" --organization="${ORGNAME}"
+tower-cli inventory_source create --name="cli-inventory-source-satellite" --inventory="cli-satellite-inventory" --source="satellite6" --credential="satellite"
 
 example_script="#!/usr/bin/env python
 import json
@@ -186,7 +186,7 @@ tower-cli job_template create --name="Hello World as user2" --description="echo 
 # Example from Hyrule data set
 #tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
 
-tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory=cli-satellite-inventory --credential=satellite --project=ansible-hardening --playbook=tests.yml
+tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory=cli-satellite-inventory --credential=satellite --project=ansible-hardening --playbook=tests/test.yml
 
 echo "Tower-CLI DATA FAKER: run a job, check status, cancel, and run with monitoring"
 # Launch job without monitoring
