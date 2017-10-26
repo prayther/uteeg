@@ -61,10 +61,10 @@ tower-cli host list
 
 #need to add source and credentials before the next tower-cli commands. the depend on those
 #credential
-tower-cli credential create --name="satellite" --credential-type="Red Hat Satellite 6" --organization="Default" --inputs='{"username": "admin", "host": "sat62.prayther.org", "password": "password"}'
+#tower-cli credential create --name="satellite" --credential-type="Red Hat Satellite 6" --organization="Default" --inputs='{"username": "admin", "host": "sat62.prayther.org", "password": "password"}'
 #create inventory
-tower-cli inventory create -n cli-satellite-inventory --organization Default
-tower-cli inventory_source create -n cli-inventory-source-satellite -i cli-satellite-inventory --source satellite6 --credential satellite
+#tower-cli inventory create -n cli-satellite-inventory --organization Default
+#tower-cli inventory_source create -n cli-inventory-source-satellite -i cli-satellite-inventory --source satellite6 --credential satellite
 
 #yum -y install ansible
 #ansible --version
