@@ -180,26 +180,26 @@ print json.dumps(inventory)"
 echo "Tower-CLI DATA FAKER: create job templates"
 # Hello world example, including different credentials
 #  note that since we have set "connection: local", the credentials do not matter.
-tower-cli job_template create --name="Hello World Debug" --description="debug statement" --inventory=localhost --credential=user1 --project=sample_playbooks --playbook=debug.yml
-tower-cli job_template create --name="Hello World" --description="echo statement" --inventory=localhost --credential=user1 --project=sample_playbooks --playbook=helloworld.yml
-tower-cli job_template create --name="Hello World as user2" --description="echo statement with user2 credentials" --inventory=localhost --credential=user2 --project=sample_playbooks --playbook=helloworld.yml
+#tower-cli job_template create --name="Hello World Debug" --description="debug statement" --inventory=localhost --credential=user1 --project=sample_playbooks --playbook=debug.yml
+#tower-cli job_template create --name="Hello World" --description="echo statement" --inventory=localhost --credential=user1 --project=sample_playbooks --playbook=helloworld.yml
+#tower-cli job_template create --name="Hello World as user2" --description="echo statement with user2 credentials" --inventory=localhost --credential=user2 --project=sample_playbooks --playbook=helloworld.yml
 # Example from Hyrule data set
 #tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
 
-tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory=cli-satellite-inventory --credential=satellite --project=ansible-hardening --playbook=tests/test.yml
+tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory="cli-satellite-inventory" --credential="satellite" --project="ansible-hardening" --playbook="tests/test.yml"
 
 echo "Tower-CLI DATA FAKER: run a job, check status, cancel, and run with monitoring"
 # Launch job without monitoring
-tower-cli job launch --job-template="Hello World Debug" --job-explanation="launched by example script"
+#tower-cli job launch --job-template="Hello World Debug" --job-explanation="launched by example script"
 # Note that these only work because there are no other completed jobs from that template
 # If that is not true, you need to run "job list" and then cancel with the ID
-tower-cli job status --job-template="Hello World Debug" --status="running"
-tower-cli job cancel --job-template="Hello World Debug" --status="running"
+#tower-cli job status --job-template="Hello World Debug" --status="running"
+#tower-cli job cancel --job-template="Hello World Debug" --status="running"
 # Note that delete is different from cancel.
 # With delete, we remove the record of this job's run. For instance:
 # tower-cli job delete {pk}
 # launch a job with monitoring turned on
-tower-cli job launch --job-template="Hello World Debug" --monitor --job-explanation="launched by example script"
+#tower-cli job launch --job-template="Hello World Debug" --monitor --job-explanation="launched by example script"
 
 echo "Tower-CLI DATA FAKER: displaying jobs that have run via the fake data script"
-tower-cli job list --job-template="Hello World Debug"
+#tower-cli job list --job-template="Hello World Debug"
