@@ -45,7 +45,7 @@ ORGNAME="prayther"
 echo "Tower-CLI DATA FAKER: creating orgs and teams"
 # Data regarding ${ORGNAME} was taken from
 # https://github.com/jsmartin/tower_populator
-#tower-cli organization create --name="Default"
+#tower-cli organization create --name="${ORGNAME}"
 tower-cli organization create --name="${ORGNAME}" --description="prayther laptoplab"
 tower-cli team create --name="Ops" --organization="${ORGNAME}" --description="The Ops Team"
 tower-cli team create --name="QA" --organization="${ORGNAME}" --description="Assures quality of software"
@@ -61,9 +61,9 @@ echo "Tower-CLI DATA FAKER: adding projects (--wait flag waits for SCM update)"
 tower-cli project create --name="Lab Playbooks" --description="Configures all the servers in prayther.org." --scm-type=git --scm-url="https://github.com/jsmartin/tower-demo-example-simple" --organization="${ORGNAME}" --wait
 # Generic examples
 tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/openstack/ansible-hardening.git" --organization "${ORGNAME}" --wait
-tower-cli project create --name="Ansible Examples" --description="Some example roles and playbooks" --scm-type=git --scm-url="https://github.com/ansible/ansible-examples" --organization "Default" --wait
-tower-cli project create --name sample_playbooks --organization "Default" --scm-type git --scm-url https://github.com/AlanCoding/permission-testing-playbooks.git --wait
-tower-cli project create --name="Inventory file examples" --organization "Default" --scm-type git --scm-url https://github.com/AlanCoding/Ansible-inventory-file-examples.git --wait
+tower-cli project create --name="Ansible Examples" --description="Some example roles and playbooks" --scm-type=git --scm-url="https://github.com/ansible/ansible-examples" --organization "${ORGNAME}" --wait
+tower-cli project create --name sample_playbooks --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/permission-testing-playbooks.git --wait
+tower-cli project create --name="Inventory file examples" --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/Ansible-inventory-file-examples.git --wait
 
 
 echo "Tower-CLI DATA FAKER: creating users"
@@ -125,7 +125,7 @@ tower-cli credential create --credential-type="Machine" --name=user2 --inputs='{
 
 echo "Tower-CLI DATA FAKER: creating inventories and groups"
 # Basic localhost examples
-tower-cli inventory create --name=localhost --description="local machine" --organization=Default --variables="@$DIR/variables.yml"
+tower-cli inventory create --name=localhost --description="local machine" --organization=${ORGNAME} --variables="@$DIR/variables.yml"
 tower-cli host create --name="127.0.0.1" --description="this is a manually created host" --inventory="localhost" --variables="@$DIR/variables.yml"
 
 # Corporate example uses localhost with special vars for testing
@@ -134,7 +134,7 @@ tower-cli inventory create --name=Production --description="Production Machines"
 tower-cli inventory_source create --name=EC2 --credential="AWS creds" --source=ec2 --description="EC2 hosts" --inventory=Production --overwrite=true --source-regions="us-east-1" --overwrite-vars=false --source-vars="foo: bar"
 
 #create inventory
-tower-cli inventory create -n cli-satellite-inventory --organization Default
+tower-cli inventory create -n cli-satellite-inventory --organization ${ORGNAME}
 tower-cli inventory_source create -n cli-inventory-source-satellite -i cli-satellite-inventory --source satellite6 --credential satellite
 
 example_script="#!/usr/bin/env python
@@ -153,7 +153,7 @@ print json.dumps(inventory)"
 #tower-cli host list --inventory="Custom script inventory"
 
 # Examples of nested groups, associating and managing hosts/groups
-#tower-cli inventory create --name="tower-cli manual examples" --organization="Default" --variables="@$DIR/variables.yml"
+#tower-cli inventory create --name="tower-cli manual examples" --organization="${ORGNAME}" --variables="@$DIR/variables.yml"
 #tower-cli group create --name=web --inventory="tower-cli manual examples"
 #tower-cli host create --name="10.42.0.6" --inventory="tower-cli manual examples"
 #tower-cli host create --name="10.42.0.7" --inventory="tower-cli manual examples"
@@ -170,7 +170,7 @@ print json.dumps(inventory)"
 #tower-cli host associate --host="server.example2.com" --group="web servers"
 
 # Example of inventory contents sourced from a project
-tower-cli inventory create --name="tower-cli SCM inventory example" --organization="Default" --variables="@$DIR/variables.yml"
+tower-cli inventory create --name="tower-cli SCM inventory example" --organization="${ORGNAME}" --variables="@$DIR/variables.yml"
 # Uses an example taken from the official Ansible docs
 tower-cli inventory_source create --name="project-based source" --inventory="tower-cli SCM inventory example" --source="scm" --source-project="Inventory file examples" --source-path="official/inventory.ini" --overwrite-vars=true
 tower-cli inventory_source update "project-based source" --monitor
