@@ -125,13 +125,13 @@ tower-cli credential create --credential-type="Machine" --name=user2 --inputs='{
 
 echo "Tower-CLI DATA FAKER: creating inventories and groups"
 # Basic localhost examples
-tower-cli inventory create --name=localhost --description="local machine" --organization=${ORGNAME} --variables="@$DIR/variables.yml"
-tower-cli host create --name="127.0.0.1" --description="this is a manually created host" --inventory="localhost" --variables="@$DIR/variables.yml"
+#tower-cli inventory create --name=localhost --description="local machine" --organization=${ORGNAME} --variables="@$DIR/variables.yml"
+#tower-cli host create --name="127.0.0.1" --description="this is a manually created host" --inventory="localhost" --variables="@$DIR/variables.yml"
 
 # Corporate example uses localhost with special vars for testing
-tower-cli inventory create --name=Production --description="Production Machines" --organization="${ORGNAME}" --variables="@$DIR/variables.yml"
+#tower-cli inventory create --name=Production --description="Production Machines" --organization="${ORGNAME}" --variables="@$DIR/variables.yml"
 # Example of creating a cloud inventory source, with some configurables
-tower-cli inventory_source create --name=EC2 --credential="AWS creds" --source=ec2 --description="EC2 hosts" --inventory=Production --overwrite=true --source-regions="us-east-1" --overwrite-vars=false --source-vars="foo: bar"
+#tower-cli inventory_source create --name=EC2 --credential="AWS creds" --source=ec2 --description="EC2 hosts" --inventory=Production --overwrite=true --source-regions="us-east-1" --overwrite-vars=false --source-vars="foo: bar"
 
 #create inventory
 tower-cli inventory create -n cli-satellite-inventory --organization ${ORGNAME}
@@ -170,12 +170,12 @@ print json.dumps(inventory)"
 #tower-cli host associate --host="server.example2.com" --group="web servers"
 
 # Example of inventory contents sourced from a project
-tower-cli inventory create --name="tower-cli SCM inventory example" --organization="${ORGNAME}" --variables="@$DIR/variables.yml"
+#tower-cli inventory create --name="tower-cli SCM inventory example" --organization="${ORGNAME}" --variables="@$DIR/variables.yml"
 # Uses an example taken from the official Ansible docs
-tower-cli inventory_source create --name="project-based source" --inventory="tower-cli SCM inventory example" --source="scm" --source-project="Inventory file examples" --source-path="official/inventory.ini" --overwrite-vars=true
-tower-cli inventory_source update "project-based source" --monitor
+#tower-cli inventory_source create --name="project-based source" --inventory="tower-cli SCM inventory example" --source="scm" --source-project="Inventory file examples" --source-path="official/inventory.ini" --overwrite-vars=true
+#tower-cli inventory_source update "project-based source" --monitor
 # Have a look at the group structure from this import
-tower-cli group list --inventory="tower-cli SCM inventory example"
+#tower-cli group list --inventory="tower-cli SCM inventory example"
 
 echo "Tower-CLI DATA FAKER: create job templates"
 # Hello world example, including different credentials
