@@ -1,102 +1,3 @@
-#!/bin/bash
-
-export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
-export HOME=/root
-cd "${BASH_SOURCE%/*}"
-
-# bsfl are bash libs used in scripts in uteeg
-ls -d ~/bsfl || git clone https://github.com/SkypLabs/bsfl.git /root/bsfl
-
-# read configuration (needs to be adopted!)
-#source etc/virt-inst.cfg
-source ../etc/virt-inst.cfg
-source ../etc/virthost.cfg
-source ../etc/rhel.cfg
-source ~/bsfl/lib/bsfl.sh || exit 1
-DEBUG=no
-LOG_ENABLED="yes"
-SYSLOG_ENABLED="yes"
-
-#runs or not based on hostname; ceph-?? gfs-??? sat-???
-if [[ $(hostname -s | awk -F"0" '{print $1}') -ne "ans" ]];then
- echo ""
- echo "Need to run this on the 'gfs' node"
- echo ""
- exit 1
-fi
-
-if [[ $(hostname -s | awk -F"0" '{print $2}') -ne "tower" ]];then
- echo ""
- echo "Need to run this on the 'tower' node"
- echo ""
- exit 1
-fi
-
-if [[ $(id -u) != "0" ]];then
-        echo "Must run as root"
-        echo
-        exit 1
-fi
-
-wget -P /root/ --no-clobber http://"${GATEWAY}"/ks/apps/tower/ansible-tower-setup-latest.tar.gz
-tar zxvf /root/ansible-tower-setup-latest.tar.gz
-sed -i "s/admin_password=.*/admin_password='password'/g" /root/ansible-tower-setup-3.2.1/inventory
-sed -i "s/pg_password=.*/pg_password='password'/g" /root/ansible-tower-setup-3.2.1/inventory
-sed -i "s/rabbitmq_password=.*/rabbitmq_password='password'/g" /root/ansible-tower-setup-3.2.1/inventory
-
-/root/ansible-tower-setup-3.2.1/setup.sh
-
-yum -y install python-pip
-pip install --upgrade pip
-pip install ansible-tower-cli
-
-#some tower-cli commands
-tower-cli config host ans0tower.prayther.org
-tower-cli config username admin
-tower-cli config password password
-
-tower-cli help
-tower-cli group list
-tower-cli host list
-
-#need to add source and credentials before the next tower-cli commands. the depend on those
-#credential
-tower-cli credential create --name="satellite" --credential-type="Red Hat Satellite 6" --organization="Default" --inputs='{"username": "admin", "host": "sat62.prayther.org", "password": "password"}'
-#create inventory
-tower-cli inventory create -n cli-satellite-inventory --organization Default
-tower-cli inventory_source create -n cli-inventory-source-satellite -i cli-satellite-inventory --source satellite6 --credential satellite
-
-#yum -y install ansible
-#ansible --version
-
-#su -c "mkdir -pv ~/lab/inventory" user
-
-#su -c "cat << "EOF" > ~/lab/ansible.cfg
-#[defaults]
-#remote_user = user
-#inventory = inventory
-
-#[privilege_escalation]
-#become = False
-#become_method = sudo
-#become_user = root
-#become_ask_pass = False
-#EOF" user
-
-#su -c "cat << "EOF" > ~/lab/ansible.cfg
-#[intranetweb]
-#ansible-node1
-
-#[everyone:children]
-#intranetweb
-#EOF" user
-
-#ansible everyone -m command -a 'id'
-
-#commented section below has usefull tower-cli examples
-#comment block of text in bash shell
-: <<'END'
-
 # Copyright 2015, Ansible, Inc.
 # Alan Rominger <arominger@ansible.com> and others
 #
@@ -139,14 +40,16 @@ echo " current configuration settings:"
 echo $hostval
 echo $userval
 
+ORGNAME="prayther"
+
 echo "Tower-CLI DATA FAKER: creating orgs and teams"
-# Data regarding Hyrule Ventures was taken from
+# Data regarding ${ORGNAME} was taken from
 # https://github.com/jsmartin/tower_populator
-tower-cli organization create --name="Default"
-tower-cli organization create --name="Hyrule Ventures" --description="Mining Rupees Daily"
-tower-cli team create --name="Ops" --organization=Default --description="The Ops Team"
-tower-cli team create --name="QA" --organization=Default --description="Assures quality of software"
-tower-cli team create --name="Dev" --organization=Default --description="Develops software"
+#tower-cli organization create --name="Default"
+tower-cli organization create --name="${ORGNAME}" --description="prayther laptoplab"
+tower-cli team create --name="Ops" --organization="${ORGNAME}" --description="The Ops Team"
+tower-cli team create --name="QA" --organization="${ORGNAME}" --description="Assures quality of software"
+tower-cli team create --name="Dev" --organization="${ORGNAME}" --description="Develops software"
 
 tower-cli organization create --name="Bio Inc" --description="Medical services"
 tower-cli team create --name="Tech Services" --organization="Bio Inc" --description="Helps customers with problems"
@@ -155,23 +58,27 @@ tower-cli team create --name="Engineering" --organization="Bio Inc" --descriptio
 echo "Tower-CLI DATA FAKER: adding projects (--wait flag waits for SCM update)"
 # The Hyrulian playbooks configure servers on the planet of Hyrule,
 # and the project containing these playbooks belongs to their organization
-tower-cli project create --name="Hyrulian Playbooks" --description="Configures all the servers in Hyrule." --scm-type=git --scm-url="https://github.com/jsmartin/tower-demo-example-simple" --organization="Hyrule Ventures" --wait
+tower-cli project create --name="Lab Playbooks" --description="Configures all the servers in prayther.org." --scm-type=git --scm-url="https://github.com/jsmartin/tower-demo-example-simple" --organization="${ORGNAME}" --wait
 # Generic examples
+tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/openstack/ansible-hardening.git" --organization "${ORGNAME}" --wait
 tower-cli project create --name="Ansible Examples" --description="Some example roles and playbooks" --scm-type=git --scm-url="https://github.com/ansible/ansible-examples" --organization "Default" --wait
 tower-cli project create --name sample_playbooks --organization "Default" --scm-type git --scm-url https://github.com/AlanCoding/permission-testing-playbooks.git --wait
 tower-cli project create --name="Inventory file examples" --organization "Default" --scm-type git --scm-url https://github.com/AlanCoding/Ansible-inventory-file-examples.git --wait
 
 
 echo "Tower-CLI DATA FAKER: creating users"
-# The Hyrule Ventures team
+# The ${ORGNAME} team
+tower-cli user create --username="apraythe" --password="password" --email=apraythe@redhat.com --first-name=Aaron --last-name=Prayther
+tower-cli organization associate --organization="${ORGNAME}" --user=apraythe
+tower-cli team associate --team=Ops --user=apraythe
 tower-cli user create --username="link" --password="password" --email=asdf@asdf.com --first-name=Link --last-name=Smith
-tower-cli organization associate --organization="Hyrule Ventures" --user=link
+tower-cli organization associate --organization="${ORGNAME}" --user=link
 tower-cli team associate --team=Ops --user=link
 tower-cli user create --username="gdorf" --password="password" --email=asdf@asdf.com --first-name=Geoff --last-name=Smith
-tower-cli organization associate --organization="Hyrule Ventures" --user=gdorf
+tower-cli organization associate --organization="${ORGNAME}" --user=gdorf
 tower-cli team associate --team=QA --user=gdorf
 tower-cli user create --username="zelda" --password="password" --email=asdf@asdf.com --first-name=Zelda --last-name=Smith
-tower-cli organization associate --organization="Hyrule Ventures" --user=zelda
+tower-cli organization associate --organization="${ORGNAME}" --user=zelda
 tower-cli team associate --team=Dev --user=zelda
 # The Bio Inc team
 tower-cli user create --username="sherlock" --password="password" --email=asdf@asdf.com --first-name=Sherlock --last-name=Holmes
@@ -207,6 +114,7 @@ ssh_key_data: |
 
 echo "Tower-CLI DATA FAKER: creating credentials"
 # Example credentials for cloud and machine
+tower-cli credential create --name="satellite" --credential-type="Red Hat Satellite 6" --organization="${ORGNAME}" --inputs='{"username": "admin", "host": "sat62.prayther.org", "password": "password"}'
 tower-cli credential create --name="SSH example" --user=$userval --inputs="$machine_cred_inputs" --credential-type="Machine"
 tower-cli credential create --name="blank SSH" --user=$userval --inputs="{}" --credential-type="Machine"
 tower-cli credential create --name="vault password" --user=$userval --inputs="vault_password: password" --credential-type="Vault"
@@ -221,9 +129,13 @@ tower-cli inventory create --name=localhost --description="local machine" --orga
 tower-cli host create --name="127.0.0.1" --description="this is a manually created host" --inventory="localhost" --variables="@$DIR/variables.yml"
 
 # Corporate example uses localhost with special vars for testing
-tower-cli inventory create --name=Production --description="Production Machines" --organization="Hyrule Ventures" --variables="@$DIR/variables.yml"
+tower-cli inventory create --name=Production --description="Production Machines" --organization="${ORGNAME}" --variables="@$DIR/variables.yml"
 # Example of creating a cloud inventory source, with some configurables
 tower-cli inventory_source create --name=EC2 --credential="AWS creds" --source=ec2 --description="EC2 hosts" --inventory=Production --overwrite=true --source-regions="us-east-1" --overwrite-vars=false --source-vars="foo: bar"
+
+#create inventory
+tower-cli inventory create -n cli-satellite-inventory --organization Default
+tower-cli inventory_source create -n cli-inventory-source-satellite -i cli-satellite-inventory --source satellite6 --credential satellite
 
 example_script="#!/usr/bin/env python
 import json
@@ -274,6 +186,8 @@ tower-cli job_template create --name="Hello World as user2" --description="echo 
 # Example from Hyrule data set
 tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
 
+tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory=cli-satellite-inventory --credential=satellite --project=ansible-hardening --playbook=tests.yml
+
 echo "Tower-CLI DATA FAKER: run a job, check status, cancel, and run with monitoring"
 # Launch job without monitoring
 tower-cli job launch --job-template="Hello World Debug" --job-explanation="launched by example script"
@@ -289,4 +203,3 @@ tower-cli job launch --job-template="Hello World Debug" --monitor --job-explanat
 
 echo "Tower-CLI DATA FAKER: displaying jobs that have run via the fake data script"
 tower-cli job list --job-template="Hello World Debug"
-END
