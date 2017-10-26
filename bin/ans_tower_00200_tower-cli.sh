@@ -60,7 +60,7 @@ echo "Tower-CLI DATA FAKER: adding projects (--wait flag waits for SCM update)"
 # and the project containing these playbooks belongs to their organization
 tower-cli project create --name="Lab Playbooks" --description="Configures all the servers in prayther.org." --scm-type=git --scm-url="https://github.com/jsmartin/tower-demo-example-simple" --organization="${ORGNAME}" --wait
 # Generic examples
-tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/openstack/ansible-hardening.git" --organization "${ORGNAME}" --wait
+tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/prayther/ansible-hardening.git" --organization "${ORGNAME}" --wait
 tower-cli project create --name="Ansible Examples" --description="Some example roles and playbooks" --scm-type=git --scm-url="https://github.com/ansible/ansible-examples" --organization "${ORGNAME}" --wait
 tower-cli project create --name sample_playbooks --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/permission-testing-playbooks.git --wait
 tower-cli project create --name="Inventory file examples" --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/Ansible-inventory-file-examples.git --wait
@@ -114,12 +114,13 @@ ssh_key_data: |
 
 echo "Tower-CLI DATA FAKER: creating credentials"
 # Example credentials for cloud and machine
-tower-cli credential create --name="satellite" --credential-type="Red Hat Satellite 6" --organization="${ORGNAME}" --inputs='{"username": "admin", "host": "sat62.prayther.org", "password": "password"}'
+tower-cli credential create --name="satellite" --credential-type="Red Hat Satellite 6" --organization="${ORGNAME}" --inputs='{"username": "admin", "host": "https://sat62.prayther.org", "password": "password"}'
 tower-cli credential create --name="SSH example" --user=$userval --inputs="$machine_cred_inputs" --credential-type="Machine"
 tower-cli credential create --name="blank SSH" --user=$userval --inputs="{}" --credential-type="Machine"
 tower-cli credential create --name="vault password" --user=$userval --inputs="vault_password: password" --credential-type="Vault"
 tower-cli credential create --name="AWS creds" --team=Ops --credential-type="Amazon Web Services" --inputs='{"username": "your_username", "password": "password"}'
 # Two users who can become the other to escalate a task
+tower-cli credential create --credential-type="Machine" --name=apraythe --inputs='{"username": "apraythe", "password": "password", "become_method": "sudo"}' --user=$userval
 tower-cli credential create --credential-type="Machine" --name=user1 --inputs='{"username": "user1", "password": "pass1", "become_method": "su", "become_username": "user2"}' --user=$userval
 tower-cli credential create --credential-type="Machine" --name=user2 --inputs='{"username": "user2", "password": "pass1", "become_method": "su", "become_username": "user1"}' --user=$userval
 
@@ -186,7 +187,7 @@ echo "Tower-CLI DATA FAKER: create job templates"
 # Example from Hyrule data set
 #tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
 
-tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory="cli-satellite-inventory" --credential="satellite" --project="ansible-hardening" --playbook="tests/test.yml"
+tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory="cli-satellite-inventory" --credential="apraythe" --project="Ansible Hardening" --playbook="tests/test.yml" --limit="test02.prayther.org"
 
 echo "Tower-CLI DATA FAKER: run a job, check status, cancel, and run with monitoring"
 # Launch job without monitoring
