@@ -42,6 +42,9 @@ echo $userval
 
 ORGNAME="prayther"
 
+# when i setup the project with same git ansible-hardening, it does not find it... working through the paths
+ansible-galaxy install git+https://github.com/openstack/ansible-hardening
+
 echo "Tower-CLI DATA FAKER: creating orgs and teams"
 # Data regarding ${ORGNAME} was taken from
 # https://github.com/jsmartin/tower_populator
