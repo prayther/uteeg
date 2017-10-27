@@ -43,6 +43,11 @@ echo $userval
 ORGNAME="prayther"
 
 # when i setup the project with same git ansible-hardening, it does not find it... working through the paths
+# it needs to find it in one of several places, but /etc/ansible/roles/ansible-hardening works.
+# ansible-galaxy install was defaulting to /etc/ansible/roles/ansible-hardening, but then it started putting it in ~/.ansible/roles
+# this is all messed up.
+# have to modify ansible-hardening/tests/test.yml to change localhost to all, then inventoryto add test02.prayther.org to the [all] line.
+# then change the project for ansible-hardening to manual and point to the modified code. will fail on modified code otherwise.
 ansible-galaxy install git+https://github.com/openstack/ansible-hardening
 
 echo "Tower-CLI DATA FAKER: creating orgs and teams"
