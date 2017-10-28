@@ -146,7 +146,7 @@ echo "Tower-CLI DATA FAKER: creating inventories and groups"
 
 #create inventory
 tower-cli inventory create --name="cli-satellite-inventory" --organization="${ORGNAME}"
-tower-cli inventory_source create --name="cli-inventory-source-satellite" --inventory="cli-satellite-inventory" --source="satellite6" --credential="satellite"
+tower-cli inventory_source create --name="cli-inventory-source-satellite" --inventory="cli-satellite-inventory" --source="satellite6" --credential="satellite" --update-on-launch="true" --overwrite="true"
 
 example_script="#!/usr/bin/env python
 import json
