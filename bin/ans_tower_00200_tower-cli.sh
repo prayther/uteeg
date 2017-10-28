@@ -48,6 +48,7 @@ ORGNAME="prayther"
 # this is all messed up.
 # have to modify ansible-hardening/tests/test.yml to change localhost to all, then inventoryto add test02.prayther.org to the [all] line.
 # then change the project for ansible-hardening to manual and point to the modified code. will fail on modified code otherwise.
+#ansible-galaxy install git+https://github.com/prayther/ansible-hardening
 ansible-galaxy install git+https://github.com/openstack/ansible-hardening
 
 echo "Tower-CLI DATA FAKER: creating orgs and teams"
@@ -68,7 +69,8 @@ echo "Tower-CLI DATA FAKER: adding projects (--wait flag waits for SCM update)"
 # and the project containing these playbooks belongs to their organization
 tower-cli project create --name="Lab Playbooks" --description="Configures all the servers in prayther.org." --scm-type=git --scm-url="https://github.com/jsmartin/tower-demo-example-simple" --organization="${ORGNAME}" --wait
 # Generic examples
-tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/openstack/ansible-hardening.git" --organization "${ORGNAME}" --wait
+#tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/openstack/ansible-hardening.git" --organization "${ORGNAME}" --wait
+tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/prayther/ansible-hardening.git" --organization "${ORGNAME}" --wait
 tower-cli project create --name="Ansible Examples" --description="Some example roles and playbooks" --scm-type=git --scm-url="https://github.com/ansible/ansible-examples" --organization "${ORGNAME}" --wait
 tower-cli project create --name sample_playbooks --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/permission-testing-playbooks.git --wait
 tower-cli project create --name="Inventory file examples" --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/Ansible-inventory-file-examples.git --wait
@@ -195,7 +197,7 @@ echo "Tower-CLI DATA FAKER: create job templates"
 # Example from Hyrule data set
 #tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
 
-tower-cli job_template create --name="Ansible Hardening" --description="STIG Hosts" --inventory="cli-satellite-inventory" --credential="apraythe" --project="Ansible Hardening" --playbook="tests/test.yml" --limit="test02.prayther.org"
+tower-cli job_template create --name="Ansible Hardening" --description="ansible hardening" --inventory="cli-satellite-inventory" --credential="apraythe" --project="Ansible Hardening" --playbook="tests/test.yml" --limit="test02.prayther.org"
 
 echo "Tower-CLI DATA FAKER: run a job, check status, cancel, and run with monitoring"
 # Launch job without monitoring
