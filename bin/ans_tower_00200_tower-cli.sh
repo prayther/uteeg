@@ -68,7 +68,7 @@ echo "Tower-CLI DATA FAKER: adding projects (--wait flag waits for SCM update)"
 # and the project containing these playbooks belongs to their organization
 tower-cli project create --name="Lab Playbooks" --description="Configures all the servers in prayther.org." --scm-type=git --scm-url="https://github.com/jsmartin/tower-demo-example-simple" --organization="${ORGNAME}" --wait
 # Generic examples
-tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/prayther/ansible-hardening.git" --organization "${ORGNAME}" --wait
+tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/openstack/ansible-hardening.git" --organization "${ORGNAME}" --wait
 tower-cli project create --name="Ansible Examples" --description="Some example roles and playbooks" --scm-type=git --scm-url="https://github.com/ansible/ansible-examples" --organization "${ORGNAME}" --wait
 tower-cli project create --name sample_playbooks --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/permission-testing-playbooks.git --wait
 tower-cli project create --name="Inventory file examples" --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/Ansible-inventory-file-examples.git --wait
