@@ -48,8 +48,8 @@ ORGNAME="prayther"
 # this is all messed up.
 # have to modify ansible-hardening/tests/test.yml to change localhost to all, then inventoryto add test02.prayther.org to the [all] line.
 # then change the project for ansible-hardening to manual and point to the modified code. will fail on modified code otherwise.
-#ansible-galaxy install git+https://github.com/prayther/ansible-hardening
-ansible-galaxy install git+https://github.com/openstack/ansible-hardening
+ansible-galaxy install git+https://github.com/prayther/ansible-hardening
+#ansible-galaxy install git+https://github.com/openstack/ansible-hardening
 
 echo "Tower-CLI DATA FAKER: creating orgs and teams"
 # Data regarding ${ORGNAME} was taken from
@@ -197,7 +197,8 @@ echo "Tower-CLI DATA FAKER: create job templates"
 # Example from Hyrule data set
 #tower-cli job_template create --name=Apache --description="Confgure Apache servers" --inventory="tower-cli manual examples" --project="Hyrulian Playbooks" --playbook="site.yml" --credential="SSH example" --job-type=run --verbosity=verbose --forks=5
 
-tower-cli job_template create --name="Ansible Hardening" --description="ansible hardening" --inventory="cli-satellite-inventory" --credential="apraythe" --project="Ansible Hardening" --playbook="tests/test.yml" --limit="test02.prayther.org"
+#the become_enabled true does not work. You have to go to the template in tower and click "Enable Privilege Escalation"
+tower-cli job_template create --name="Ansible Hardening" --description="ansible hardening" --inventory="cli-satellite-inventory" --credential="apraythe" --project="Ansible Hardening" --playbook="tests/test.yml" --limit="test02.prayther.org" --extra-vars='{"become_enabled": "true"}'
 
 echo "Tower-CLI DATA FAKER: run a job, check status, cancel, and run with monitoring"
 # Launch job without monitoring
