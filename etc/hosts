@@ -1,4 +1,4 @@
-#VMNAME DISCSIZE VCPU MEM IP OS RHVER OSVARIANT VIRTHOST DOMAIN DISC NIC MASK ISO MEDIA NETWORK
+#VMNAME DISCSIZE VCPU MEM IP OS RHVER OSVARIANT VIRTHOST DOMAIN DISC NIC MASK ISO MEDIA NETWORK LIFECYCLE CONTENTVIEW
 #list of os-variant: osinfo-query os # libvirt thing
 #CEPH
 ceph-admin 100 2 2048 10.0.0.2 rhel 7.4 7.3
@@ -10,6 +10,7 @@ otrs-admin 50 2 1024 10.0.0.6 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.25
 #jenkins
 jenkins-admin 50 2 1024 10.0.0.7 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 #Satellite
+# sat62 is a uniq identifier in ../bin/00*register.sh. I'm going to use sat0 as machines that are being provisioned by satellite, from sat bin/Daily_New_host.sh
 sat62 300 2 8192 10.0.0.8 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 #Gluster
 gfs-admin 50 2 1024 10.0.0.9 rhgf 7.4 7.3
@@ -37,5 +38,7 @@ ans0admin0infra0dev0exop 50 4 2048 10.0.0.20 rhel 7.4 7.4 10.0.0.1 prayther.org 
 ans0node10infra0dev0exop 50 4 2048 10.0.0.21 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 #CFME holder 10.0.0.22
 ans0tower 50 4 2048 10.0.0.23 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
+#starting 'sat0???' section from here down to represent the machines that are provisioned on satellite. test02 was the first machine used when doing script
 #test02 daily_new_host.sh
 #10.0.0.24
+sat0otrs 50 4 2048 10.0.0.25 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab Infra_1_Dev CV_RHEL7_Extras_Optional_EPEL

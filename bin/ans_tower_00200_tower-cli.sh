@@ -71,6 +71,10 @@ tower-cli project create --name="Lab Playbooks" --description="Configures all th
 # Generic examples
 #tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/openstack/ansible-hardening.git" --organization "${ORGNAME}" --wait
 tower-cli project create --name="Ansible Hardening" --description="ansible-hardening" --scm-type=git --scm-url="https://github.com/prayther/ansible-hardening.git" --organization "${ORGNAME}" --wait
+
+tower-cli project create --name="Insights" --description="insights" --scm-type="insights" --scm-credential="insights" --organization "${ORGNAME}" --wait
+tower-cli project create --name="Insights Scan" --description="insights" --scm-type="git" --scm-url="https://github.com/ansible/awx-facts-playbooks" --organization "${ORGNAME}" --wait
+
 tower-cli project create --name="Ansible Examples" --description="Some example roles and playbooks" --scm-type=git --scm-url="https://github.com/ansible/ansible-examples" --organization "${ORGNAME}" --wait
 tower-cli project create --name sample_playbooks --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/permission-testing-playbooks.git --wait
 tower-cli project create --name="Inventory file examples" --organization "${ORGNAME}" --scm-type git --scm-url https://github.com/AlanCoding/Ansible-inventory-file-examples.git --wait
@@ -125,6 +129,7 @@ ssh_key_data: |
 echo "Tower-CLI DATA FAKER: creating credentials"
 # Example credentials for cloud and machine
 tower-cli credential create --name="satellite" --credential-type="Red Hat Satellite 6" --organization="${ORGNAME}" --inputs='{"username": "admin", "host": "https://sat62.prayther.org", "password": "password"}'
+tower-cli credential create --name="insights" --credential-type="Insights" --organization="${ORGNAME}" --inputs='{"username": "apraythe@redhat.com", "password": "rabQuec888;"}'
 tower-cli credential create --name="SSH example" --user=$userval --inputs="$machine_cred_inputs" --credential-type="Machine"
 tower-cli credential create --name="blank SSH" --user=$userval --inputs="{}" --credential-type="Machine"
 tower-cli credential create --name="vault password" --user=$userval --inputs="vault_password: password" --credential-type="Vault"
@@ -144,9 +149,13 @@ echo "Tower-CLI DATA FAKER: creating inventories and groups"
 # Example of creating a cloud inventory source, with some configurables
 #tower-cli inventory_source create --name=EC2 --credential="AWS creds" --source=ec2 --description="EC2 hosts" --inventory=Production --overwrite=true --source-regions="us-east-1" --overwrite-vars=false --source-vars="foo: bar"
 
-#create inventory
+#create satellite inventory
 tower-cli inventory create --name="cli-satellite-inventory" --organization="${ORGNAME}"
 tower-cli inventory_source create --name="cli-inventory-source-satellite" --inventory="cli-satellite-inventory" --source="satellite6" --credential="satellite" --update-on-launch="true" --overwrite="true"
+
+#create insights inventory
+tower-cli inventory create --name="cli-insights-inventory" --insights-credential="insights" --organization="${ORGNAME}"
+tower-cli host create --name="test02.prayther.org" --inventory="cli-insights-inventory" --insights-system-id="test02.prayther.org" --variables="ansible_connection: local"
 
 example_script="#!/usr/bin/env python
 import json
@@ -199,6 +208,8 @@ echo "Tower-CLI DATA FAKER: create job templates"
 
 #the become_enabled true does not work. You have to go to the template in tower and click "Enable Privilege Escalation"
 tower-cli job_template create --name="Ansible Hardening" --description="ansible hardening" --inventory="cli-satellite-inventory" --credential="apraythe" --project="Ansible Hardening" --playbook="tests/test.yml" --limit="test02.prayther.org" --extra-vars='{"become_enabled": "true"}'
+
+tower-cli job_template create --name="Insights Scan" --description="insight scan" --inventory="cli-insights-inventory" --credential="apraythe" --project="Insights Scan" --use-fact-cache="true" --playbook="scan_facts.yml"
 
 echo "Tower-CLI DATA FAKER: run a job, check status, cancel, and run with monitoring"
 # Launch job without monitoring
