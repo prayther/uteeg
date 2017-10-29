@@ -72,7 +72,7 @@ MASK=$(awk /"^${1}"/'{print $13}' "${inputfile}")
 ISO=$(awk /"^${1}"/'{print $14}' "${inputfile}")
 MEDIA=$(awk /"^${1}"/'{print $15}' "${inputfile}")
 NETWORK=$(awk /"^${1}"/'{print $16}' "${inputfile}")
-LIVECYCLE=$(awk /"^${1}"/'{print $17}' "${inputfile}")
+LIFECYCLE=$(awk /"^${1}"/'{print $17}' "${inputfile}")
 CONTENTVIEW=$(awk /"^${1}"/'{print $18}' "${inputfile}")
 
 ssh ${GATEWAY} "grep -i "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts' || echo "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts"
