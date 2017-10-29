@@ -42,3 +42,4 @@ ans0tower 50 4 2048 10.0.0.23 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.25
 #test02 daily_new_host.sh
 #10.0.0.24
 sat0otrs 50 4 2048 10.0.0.25 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab Infra_1_Dev CV_RHEL7_Extras_Optional_EPEL
+sat0stig 50 4 2048 10.0.0.26 rhel 7.4 7.4 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab App_1_Dev CV_RHEL7_Extras_Optional_EPEL
