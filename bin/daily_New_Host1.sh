@@ -62,7 +62,8 @@ doit() {
 # exit 1
 #fi
 
-if [[ $(katello-service status && echo 0) != "0" ]];then
+katello-service status
+if [[ ${?} != "0" ]];then
         echo "Either this is not a Satellite, or you have an error on katello-service status"
         echo
         exit 1
