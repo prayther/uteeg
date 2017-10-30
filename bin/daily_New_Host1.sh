@@ -79,6 +79,7 @@ if [[ -z ${0} ]];then
 	echo "Have to have an uteeg/etc/hosts entry"
 	echo ""
 	echo "And use the vmanme as parameter: ./daily_New_host.sh vmname"
+	exit 1
 fi
 
 #if [[ -z ${0} ]]; [[ -z ${1} ]];then
