@@ -75,7 +75,7 @@ NETWORK=$(awk /"^${1}"/'{print $16}' "${inputfile}")
 LIFECYCLE=$(awk /"^${1}"/'{print $17}' "${inputfile}")
 CONTENTVIEW=$(awk /"^${1}"/'{print $18}' "${inputfile}")
 
-ssh ${GATEWAY} "grep -i "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" /etc/hosts' || echo "${IP} ${VMNAME}.${DOMAIN} ${VMNAME}" >> /etc/hosts"
+ssh ${GATEWAY} "grep -i ${IP} ${VMNAME}.${DOMAIN} ${VMNAME} /etc/hosts || echo ${IP} ${VMNAME}.${DOMAIN} ${VMNAME} >> /etc/hosts"
 
 ssh ${GATEWAY} "systemctl stop libvirtd"
 ssh ${GATEWAY} "systemctl stop dnsmasq"
