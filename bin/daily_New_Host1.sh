@@ -186,5 +186,8 @@ ssh ${GATEWAY} "/bin/virsh start ${VMNAME}.${DOMAIN}"
 ssh ${GATEWAY} "/bin/virsh attach-disk ${VMNAME}.${DOMAIN} /var/lib/libvirt/images/${VMNAME}.${DOMAIN}.iso hda --type cdrom --mode readonly"
 ssh ${GATEWAY} "/bin/virsh reset ${VMNAME}.${DOMAIN}"
 
+#all this silly restarting is messing up virt-who
+systemctl restart virt-who
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

@@ -36,10 +36,13 @@ SYSLOG_ENABLED="yes"
 #if [ -z "${1}" ]; [ -z "${2}" ]; [ -z "${3}" ]; [ -z "${4}" ];then
 if [ -z "${1}" ];then
   echo ""
-  echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
+  #echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
+  echo " ./virt-install.sh <vmname>
   echo ""
-  echo "Ex: ./virt-install.sh testvm 10 2 2048"
+  echo "Ex: ./virt-install.sh testvm
+  #echo "Ex: ./virt-install.sh testvm 10 2 2048"
   echo ""
+  echo "Make sure you have an entry in uteeg/etc/hosts for your vmname"
   echo "Only run one of these at a time. Building multiple"
   echo "VM's gets all wacky with the libvirtd restart and "
   echo "starting and stopping the network"
