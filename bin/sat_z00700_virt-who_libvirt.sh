@@ -66,6 +66,8 @@ EOF
 
 # config satellite 6 if not already
 grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLITE6=1" >> /etc/sysconfig/virt-who
+#sed search and replace
+sed -i 's/^VIRTWHO_DEBUG=0/VIRTWHO_DEBUG=1/g' /etc/sysconfig/virt-who
 
 /usr/bin/systemctl enable virt-who
 /usr/bin/systemctl restart virt-who

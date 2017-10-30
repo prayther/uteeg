@@ -47,6 +47,39 @@ doit() {
         fi
 }
 
+#runs or not based on hostname; ceph-?? gfs-??? sat-???
+#if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "gfs" ]];then
+# echo ""
+# echo "Need to run this on the 'gfs' node"
+# echo ""
+# exit 1
+#fi
+
+#if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
+# echo ""
+# echo "Need to run this on the 'admin' node"
+# echo ""
+# exit 1
+#fi
+
+if [[ $(katello-service status) != "0" ]];then
+        echo "Either this is not a Satellite, or you have an error on katello-service status"
+        echo
+        exit 1
+fi
+
+if [[ $(id -u) != "0" ]];then
+        echo "Must run as root"
+        echo
+        exit 1
+fi
+
+if [[ -z ${0} ]];then
+	echo "Have to have an uteeg/etc/hosts entry"
+	echo ""
+	echo "And use the vmanme as parameter: ./daily_New_host.sh vmname"
+fi
+
 #if [[ -z ${0} ]]; [[ -z ${1} ]];then
 #	VMNAME="test02"
 #	IP="10.0.0.24"
