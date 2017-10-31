@@ -18,13 +18,6 @@ LOG_ENABLED="yes"
 SYSLOG_ENABLED="yes"
 
 #runs or not based on hostname; ceph-?? gfs-??? sat-???
-if [[ $(hostname -s | awk -F"0" '{print $1}') -ne "ans" ]];then
- echo ""
- echo "Need to run this on the 'gfs' node"
- echo ""
- exit 1
-fi
-
 if [[ $(hostname -s | awk -F"0" '{print $2}') -ne "tower" ]];then
  echo ""
  echo "Need to run this on the 'tower' node"

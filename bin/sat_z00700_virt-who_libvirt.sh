@@ -51,16 +51,17 @@ rpm -q virt-who || doit /usr/bin/yum install -y virt-who
 #ls /etc/virt-who.d/$(hostname).conf || cat << EOF > /etc/virt-who.d/$(hostname).conf
 cat << EOF > /etc/virt-who.d/$(hostname).conf
 [$(hostname)]
-#Don't forget that where ever this is running from... needs to be registered to the satellite/self-registered.
 type=libvirt
-#server=virt.laptop.prayther
-server=${GATEWAY}
-#username=root
-#password=password
-#encrypted_password=
-owner=${ORG}
-env=Library
 hypervisor_id=hostname
+owner=redhat
+env=Library
+server=10.0.0.1
+username=root
+encrypted_password=7c4dc5ac3653b3aa71346c09fd943e78
+rhsm_hostname=sat62.prayther.org
+rhsm_username=admin
+rhsm_encrypted_password=80d4326276fd47f13eed914c74a265dd
+rhsm_prefix=/rhsm
 EOF
 #fi
 
@@ -69,6 +70,7 @@ grep -i "^VIRTWHO_SATELLITE6=1" /etc/sysconfig/virt-who || echo "VIRTWHO_SATELLI
 #sed search and replace
 sed -i 's/^VIRTWHO_DEBUG=0/VIRTWHO_DEBUG=1/g' /etc/sysconfig/virt-who
 
+virt-who --one-shot
 /usr/bin/systemctl enable virt-who
 /usr/bin/systemctl restart virt-who
 #journalctl -u virt-who -f
