@@ -163,5 +163,8 @@ hosted-engine --vm-status
 systemctl status ovirt-ha-agent
 systemcls status nfs-server
 
+#trouble shooting
+#https://access.redhat.com/documentation/en-us/red_hat_virtualization/4.1/html/self-hosted_engine_guide/troubleshooting
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
