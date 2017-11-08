@@ -10,7 +10,7 @@ logvol /tmp --vgname=vg00 --name=tmp --fstype=xfs --size=2048
 logvol / --vgname=vg00 --name=root --fstype=xfs --size=15360
 logvol swap --vgname=vg00 --name=swap --fstype=swap --size=4096
 logvol /opt --vgname=vg00 --name=opt --fstype=xfs --size=6144
-logvol /var/lib/mongodb --vgname=vg00 --name=mongodb --fstype=xfs --size=12288
+logvol /var/lib/mongodb --vgname=vg00 --name=mongodb --fstype=xfs --size=15718
 logvol /var/cache/pulp --vgname=vg00 --name=cachepulp --fstype=xfs --size=2048
 logvol /var/lib/pulp --vgname=vg00 --name=libpulp --fstype=xfs --size=153600
 logvol /var/lib/pgsql --vgname=vg00 --name=pgsql --fstype=xfs --size=2048
