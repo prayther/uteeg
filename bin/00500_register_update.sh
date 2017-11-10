@@ -220,6 +220,18 @@ subscribe_ans_tower() {
   /usr/bin/yum -y update
 }
 
+subscribe_ose() {
+  /usr/sbin/subscription-manager unregister
+  /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches '*OpenShift*' --pool-only | head -n 1)
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-7-server-extras-rpms --enable="rhel-7-server-ose-3.6-rpms" --enable="rhel-7-fast-datapath-rpms"
+
+  #Clean, update
+  /usr/bin/yum clean all
+  rm -rf /var/cache/yum
+  /usr/bin/yum -y update
+}
+
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "rhel" ]];then
   subscribe_rhel
 fi
@@ -243,6 +255,9 @@ if [[ $(hostname -s | awk -F"0" '{print $1}') = "ans" ]];then
 fi
 if [[ $(hostname -s | awk -F"0" '{print $2}') = "tower" ]];then
   subscribe_ans_tower
+fi
+if [[ $(hostname -s | awk -F"0" '{print $1}') = "ose" ]];then
+  subscribe_ose
 fi
 
 #setup snmp

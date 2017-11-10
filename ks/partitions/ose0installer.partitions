@@ -1,0 +1,6 @@
+volgroup vg00 --pesize=4096 pv.0
+part /boot --ondisk=vda --fstype=xfs --size=512
+part pv.0 --fstype=lvmpv --ondisk=vda --size=15360 --grow
+logvol none --fstype="None" --size=15360 --grow --thinpool --name=pool00 --vgname=vg00 --chunksize=64
+logvol / --vgname=vg00 --name=root --fstype=xfs --size=102400 --thin --poolname=pool00
+logvol swap --vgname=vg00 --name=swap --fstype=swap --size=4096 --thin --poolname=pool00

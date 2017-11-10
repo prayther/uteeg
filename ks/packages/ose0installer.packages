@@ -1,0 +1,11 @@
+#package 
+virt-who
+git
+wget
+vim
+bind-utils
+deltarpm
+nfs-utils
+#ansible
+@core
+redhat-access-insights
