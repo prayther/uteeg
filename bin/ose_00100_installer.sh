@@ -223,5 +223,73 @@ ssh root@atomic01 "docker load -i ose3-builder-images.tar"
 
 sshpass -p'password' ssh-copy-id -o StrictHostKeyChecking=no atomic01.prayther.org
 
+#looking at the config file. Notice everything is on the one Atomic host, except nfs (not supported) which is on the ose0installer host.
+#So 2 hosts to do all-in-one for OSE container install
+
+cat << "EOF" > /root/.config/openshift/.ansible/callback_facts.yaml
+ansible_callback_facts_yaml: /root/.config/openshift/.ansible/callback_facts.yaml
+ansible_inventory_path: /root/.config/openshift/hosts
+ansible_log_path: /tmp/ansible.log
+deployment:
+  ansible_ssh_user: root
+  hosts:
+  - connect_to: atomic01.prayther.org
+    containerized: true
+    hostname: atomic01.prayther.org
+    ip: 10.0.0.30
+    node_labels: '{''region'': ''infra''}'
+    public_hostname: atomic01.prayther.org
+    public_ip: 10.0.0.30
+    roles:
+    - master
+    - etcd
+    - node
+  - connect_to: ose0installer.prayther.org
+    hostname: ose0installer.prayther.org
+    ip: 10.0.0.27
+    public_hostname: ose0installer.prayther.org
+    public_ip: 10.0.0.27
+    roles:
+    - storage
+  master_routingconfig_subdomain: ''
+  openshift_master_cluster_hostname: None
+  openshift_master_cluster_public_hostname: None
+  proxy_exclude_hosts: ''
+  proxy_http: ''
+  proxy_https: ''
+  roles:
+    etcd: {}
+    master: {}
+    node: {}
+    storage: {}
+variant: openshift-enterprise
+variant_version: '3.6'
+version: v2
+EOF
+
+#AllowAllPasswordIdentityProvider
+#put this in for kind: and a user gets create for any non empty user name in the login field.
+
+#did not get htpasswd working. might have to do with not being able to put htpasswd tools on atomic (i put it on another machine and then copied the htpass config file created when setting up a user/pass.
+#https://docs.openshift.com/container-platform/latest/getting_started/configure_openshift.html
+#defaults to no login.
+#/etc/origin/master/master-config.yaml
+#modify
+#  identityProviders:
+#  - challenge: true
+#    login: true
+#    mappingMethod: claim
+#    #name: deny_all
+#    name: htpasswd_auth provider
+#    provider:
+#      apiVersion: v1
+#      #kind: DenyAllPasswordIdentityProvider
+#      kind: HTPasswordIdentityProvider
+#      file: /etc/origin/openshift-passwd
+
+
+atomic-openshift-installer -u -c /root/.config/openshift/installer.cfg.yml install
+curl https://atomic01.prayther.org:8443/console
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
