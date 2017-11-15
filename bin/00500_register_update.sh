@@ -208,6 +208,18 @@ subscribe_ansible() {
   /usr/bin/yum -y update
 }
 
+subscribe_exop() {
+  /usr/sbin/subscription-manager unregister
+  /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-extras-rpms
+
+  #Clean, update
+  /usr/bin/yum clean all
+  rm -rf /var/cache/yum
+  /usr/bin/yum -y update
+}
+
 subscribe_ans_tower() {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
@@ -252,6 +264,9 @@ if [[ $(hostname -s | awk -F"-" '{print $1}') = "checkmk" ]];then
 fi
 if [[ $(hostname -s | awk -F"0" '{print $1}') = "ans" ]];then
   subscribe_ansible
+fi
+if [[ $(hostname -s | awk -F"0" '{print $1}') = "exop" ]];then
+  subscribe_exop
 fi
 if [[ $(hostname -s | awk -F"0" '{print $2}') = "tower" ]];then
   subscribe_ans_tower

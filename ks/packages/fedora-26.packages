@@ -20,3 +20,5 @@ deltarpm
 nfs-utils
 @core
 redhat-access-insights
+handbrake
+glances

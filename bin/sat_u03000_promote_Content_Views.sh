@@ -74,6 +74,7 @@ setup_slow_vars
 promote_dev_cv () { for CV in $CV_Count;do
   for LEC_TO in $(echo ${LE_Count});do
     hammer content-view version promote --organization="${ORG}" --from-lifecycle-environment-id="${LEC_FROM}" --to-lifecycle-environment-id="${LEC_TO}" --content-view-id="${CV}"
+    while [[ $(hammer --csv task list | grep -v stopped | grep Promotion) ]];do sleep 30; echo "Content View is still promoting...";done
   done
 done
 }
