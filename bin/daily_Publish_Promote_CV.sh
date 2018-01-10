@@ -81,7 +81,15 @@ for repo in $(echo "${REPOS}")
   do hammer content-view publish --id="${repo}" --organization="${ORG}" --async
 done
 
-bin/sat_u03000_promote_Content_Views.sh
+#bin/sat_u03000_promote_Content_Views.sh
+
+if [[ -f bin/sat_u03000_promote_Content_Views.sh ]];then
+  bin/sat_u03000_promote_Content_Views.sh
+
+else
+  ./sat_u03000_promote_Content_Views.sh
+fi
+
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
