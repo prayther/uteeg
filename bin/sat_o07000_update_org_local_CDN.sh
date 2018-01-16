@@ -42,7 +42,7 @@ doit() {
 }
 
 # curl to see if the local CDN even has the directory && check to see if sat is already configged with local || then change if need be
-curl -f http://"${GATEWAY}"/ks/katello-export && if [[ $(hammer organization info --id 1 | grep "${GATEWAY}" | awk -F"/" '{print $3}') != "${GATEWAY}" ]];then hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/;fi
+curl -f http://"${GATEWAY}"/uteeg/katello-export && if [[ $(hammer organization info --id 1 | grep "${GATEWAY}" | awk -F"/" '{print $3}') != "${GATEWAY}" ]];then hammer organization update --name ${ORG} --redhat-repository-url ${URL}/katello-export/redhat-Default_Organization_View-v1.0/redhat/Library/;fi
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
