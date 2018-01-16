@@ -85,8 +85,8 @@ satellite-installer --scenario satellite \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
---foreman-proxy-tftp-servername $(hostname) \
---capsule-puppet true \
+--foreman-proxy-tftp-servername $(hostname)  #--capsule-puppet true \ #sat62
+--foreman-proxy-puppetca true \ # sat63
 --foreman-proxy-dns-managed=false \
 --enable-foreman-plugin-openscap \
 --foreman-proxy-dhcp-managed=false
