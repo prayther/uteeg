@@ -1,2 +1,2 @@
 #i was using '-' as an easy way to parse hostnames because u r not supposed to use '_'. I think it can cause issue with satellite and it's ca.
-network --device=eth0 --bootproto=static --ip=10.0.0.8 --netmask=255.255.255.0 --gateway=10.0.0.1 --nameserver=10.0.0.1 --hostname=sat62.prayther.org
+network --device=eth0 --bootproto=static --ip=10.0.0.8 --netmask=255.255.255.0 --gateway=10.0.0.1 --nameserver=10.0.0.1 --hostname=sat62.example.org
