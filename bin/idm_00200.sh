@@ -73,7 +73,7 @@ fi
 /usr/bin/firewall-cmd --reload
 
 #configure ipa-server
-/usr/sbin/ipa-server-install --unattended --ds-password=password --admin-password=password --domain=example.org --realm=EXAMPLE.ORG --hostname=$(hostname) --setup-dns --mkhomedir --ssh-trust-dns --auto-forwarders
+/usr/sbin/ipa-server-install --unattended --ds-password=password --admin-password=password --domain=example.org --allow-zone-overlap --realm=EXAMPLE.ORG --hostname=$(hostname) --setup-dns --mkhomedir --ssh-trust-dns --auto-forwarders
 
 #==============================================================================
 #Setup complete
