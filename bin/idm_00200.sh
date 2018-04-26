@@ -62,6 +62,9 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 ####################################################################################
+# docs to setup kerberos nfs, automount and roaming home dir
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/linux_domain_identity_authentication_and_policy_guide/#automount
+
 # admin node: non interactive, emptly pass ""
 if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
         ls ~/.ssh/id_rsa && rm -f ~/.ssh/id_rsa
