@@ -96,8 +96,8 @@ EOF
 chmod 0440 /etc/sudoers.d/admin
 
 #configure http proxy for rhsm on the libvirt host of these vm's
-sed -i "s/proxy_hostname =/proxy_hostname = ${SERVER}/g" /etc/rhsm/rhsm.conf #sed search and replace with var
-sed -i 's/proxy_port =/proxy_port = 3128/g' /etc/rhsm/rhsm.conf
+#sed -i "s/proxy_hostname =/proxy_hostname = ${SERVER}/g" /etc/rhsm/rhsm.conf #sed search and replace with var
+#sed -i 's/proxy_port =/proxy_port = 3128/g' /etc/rhsm/rhsm.conf
 
 # Unregister so if your are testing over and over you don't run out of subscriptions and annoy folks.
 # Register.
