@@ -151,7 +151,8 @@ subscribe_sat63 () {
         cp /etc/rhsm/rhsm.conf.kat-backup /etc/rhsm/rhsm.conf
         /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
         /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Red Hat Satellite' --pool-only | head -n 1)
-        /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.3-rpms --enable=rhel-7-server-satellite-6.3-puppet4-rpms
+        /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.3-rpms
+        #/usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.3-rpms --enable=rhel-7-server-satellite-6.3-puppet4-rpms
 
         #Clean, update
         /usr/bin/yum clean all
