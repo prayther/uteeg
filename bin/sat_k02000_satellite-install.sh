@@ -85,8 +85,7 @@ satellite-installer --scenario satellite \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
---foreman-proxy-tftp-servername $(hostname)
---foreman-proxy-puppetca true \ # =sat63 "--capsule-puppet true \ =sat62"
+--foreman-proxy-tftp-servername $(hostname) # --foreman-proxy-puppetca true \ # =sat63 "--capsule-puppet true \ =sat62"
 --foreman-proxy-dns-managed=false \
 --enable-foreman-plugin-openscap \
 --foreman-proxy-dhcp-managed=false
@@ -107,9 +106,9 @@ hammer_cli_config
 mv /etc/yum.repos.d/rhel-dvd.repo /etc/yum.repos.d/rhel-dvd.repo.off
 mv /etc/yum.repos.d/satellite-local.repo /etc/yum.repos.d/satellite-local.repo.off
 
-yum -y install puppet-foreman_scap_client
-foreman-rake foreman_openscap:bulk_upload:default
-mkdir -p /etc/puppet/environments/production/modules
+#yum -y install puppet-foreman_scap_client
+#foreman-rake foreman_openscap:bulk_upload:default
+#mkdir -p /etc/puppet/environments/production/modules
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

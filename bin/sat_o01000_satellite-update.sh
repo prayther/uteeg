@@ -53,8 +53,7 @@ satellite-installer --scenario satellite \
 --foreman-admin-username admin \
 --foreman-admin-password password \
 --foreman-proxy-tftp true \
---foreman-proxy-tftp-servername $(hostname) \
---foreman-proxy-puppetca true \ # sat62=--capsule-puppet true
+--foreman-proxy-tftp-servername $(hostname)  #--foreman-proxy-puppetca true \ # sat62=--capsule-puppet true
 
 #Upload our manifest.zip (created in RH Portal)
 wget -P /root/ --no-clobber http://${SERVER}/ks/manifest/manifest.zip
