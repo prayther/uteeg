@@ -46,7 +46,7 @@ doit() {
 #doit hammer repository-set enable --organization="${ORG}" --new-name="${RHELKS}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.4' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 #doit hammer repository-set enable --organization="${ORG}" --new-name="${RHEL}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
 #doit hammer repository-set enable --organization="$ORG" --new-name="${TOOLS}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
-doit hammer repository-set enable --organization="${ORG}" --name="${RHELKS}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.4' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
+doit hammer repository-set enable --organization="${ORG}" --name="${RHELKS}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7.5' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 doit hammer repository-set enable --organization="${ORG}" --name="${RHEL}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --releasever='7Server' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
 doit hammer repository-set enable --organization="$ORG" --name="${TOOLS}" --product 'Red Hat Enterprise Linux Server' --basearch='x86_64' --name 'Red Hat Satellite Tools 6.2 (for RHEL 7 Server) (RPMs)'
 
