@@ -49,3 +49,4 @@ sat63 300 2 8192 10.0.0.29 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.25
 cap631 300 2 8192 10.0.0.30 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 cap632 300 2 8192 10.0.0.31 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 idm 50 2 2048 10.0.0.32 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+fips 50 2 2048 10.0.0.33 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab

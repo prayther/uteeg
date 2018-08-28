@@ -452,7 +452,7 @@ virt-install \
    --noautoconsole --wait -1 \
    --os-variant=rhel"${OSVARIANT}" \
    --network network="${NETWORK}" \
-   --extra-args "ks=${URL}/ks_${UNIQ}.cfg ip=${IP} gateway=${VIRTHOST} netmask=${MASK} hostname=${VMNAME}.${DOMAIN} device=${NIC} nameserver=${VIRTHOST}"
+   --extra-args "fips=1 ks=${URL}/ks_${UNIQ}.cfg ip=${IP} gateway=${VIRTHOST} netmask=${MASK} hostname=${VMNAME}.${DOMAIN} device=${NIC} nameserver=${VIRTHOST}"
 #   --extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF}"
 #   --extra-args "ks=${URL}/ks_${UNIQ}.cfg ip=${IP} gateway=${VIRTHOST} netmask=${MASK} hostname=${VMNAME}.${DOMAIN} device=${NIC} nameserver=${VIRTHOST}"
    #--extra-args ks="${URL}/ks_${UNIQ}.cfg ip=${IP}::${VIRTHOST}:${MASK}:${VMNAME}.${DOMAIN}:${NIC}:${AUTOCONF} nameserver=${VIRTHOST}"
