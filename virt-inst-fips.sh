@@ -462,6 +462,8 @@ virt-install \
 
 #test fips
 # sysctl crypto.fips_enabled
+# oscap list profiles 
+# oscap info /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
 
 #[root@localhost disk]# virt-install --name=server2.example.com --ram=2048 --vcpus=2 --autostart --os-type=linux --extra-args='ks=ftp://192.168.0.43/pub/centos/ks.cfg ksdevice=ens3 ip=192.168.122.90 netmask=255.255.255.0 gateway=192.168.122.1 dns=8.8.8.8' --disk vol=skladishte/volume1,bus=virtio --location=ftp://192.168.0.43/pub/centos --network bridge=virbr0
 
