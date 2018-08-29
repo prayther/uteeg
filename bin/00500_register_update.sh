@@ -344,5 +344,7 @@ firewall-cmd --reload
 iptables -nL
 systemctl status snmpd
 
+subscription-manager repos --list-enabled
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
