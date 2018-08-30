@@ -63,6 +63,7 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 yum -y install redhat-ds 389-ds-base-snmp
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y # just need this for facter. ugh.
 
 firewall-cmd --permanent --add-port={389/tcp,636/tcp,9830/tcp}
 firewall-cmd --reload
