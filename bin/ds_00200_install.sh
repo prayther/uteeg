@@ -62,12 +62,38 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
-yum install redhat-ds
+yum -y install redhat-ds 389-ds-base-snmp
 
 firewall-cmd --permanent --add-port={389/tcp,636/tcp,9830/tcp}
 firewall-cmd --reload
 
-setup-ds-admin.pl --file=
+setup-ds-admin.pl --file=$(cat << "EOF" > /root/ds.config
+[General] 
+FullMachineName= $(hostname -s).$(DOMAIN)
+SuiteSpotUserID= dirsrv
+SuiteSpotGroup= dirsrv
+AdminDomain= $(DOMAIN)
+ConfigDirectoryAdminID= admin 
+ConfigDirectoryAdminPwd= admin 
+ConfigDirectoryLdapURL= ldap://$(/usr/bin/hostname -s).$(DOMAIN):389/o=NetscapeRoot 
+
+[slapd] 
+SlapdConfigForMC= Yes 
+UseExistingMC= 0 
+ServerPort= 389 
+ServerIdentifier= dir 
+Suffix= dc=$(facter domain | awk -F. '{print $1}'),dc=$(facter domain | awk -F. '{print $2}')
+RootDN= cn=Directory Manager 
+RootDNPwd= password
+ds_bename=exampleDB 
+AddSampleEntries= No
+
+[admin] 
+Port= 9830
+ServerIpAddress= $(/usr/bin/facter ip)
+ServerAdminID= admin 
+ServerAdminPwd= admin
+EOF)
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

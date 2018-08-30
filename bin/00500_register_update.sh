@@ -344,6 +344,8 @@ firewall-cmd --reload
 iptables -nL
 systemctl status snmpd
 
+yum install -y facter # just so handy for thing like 'facter ip'
+
 subscription-manager repos --list-enabled
 
 echo "###INFO: Finished $0"
