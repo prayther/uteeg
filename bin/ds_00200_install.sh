@@ -109,21 +109,21 @@ ISO=$(awk /"^${1}"/'{print $14}' "${inputfile}")
 MEDIA=$(awk /"^${1}"/'{print $15}' "${inputfile}")
 NETWORK=$(awk /"^${1}"/'{print $16}' "${inputfile}")
 
-cmd has_value VMNAME
-cmd has_value DISC_SIZE
-cmd has_value VCPUS
-cmd has_value RAM
-cmd has_value IP
-cmd has_value OS
-cmd has_value RHVER
-cmd has_value OSVARIANT
-cmd has_value VIRTHOST
-cmd has_value DISC
-cmd has_value NIC
-cmd has_value MASK
-cmd has_value ISO
-cmd has_value MEDIA
-cmd has_value NETWORK
+#cmd has_value VMNAME
+#cmd has_value DISC_SIZE
+#cmd has_value VCPUS
+#cmd has_value RAM
+#cmd has_value IP
+#cmd has_value OS
+#cmd has_value RHVER
+#cmd has_value OSVARIANT
+#cmd has_value VIRTHOST
+#cmd has_value DISC
+#cmd has_value NIC
+#cmd has_value MASK
+#cmd has_value ISO
+#cmd has_value MEDIA
+#cmd has_value NETWORK
 
 cat << "EOF" > /root/ds.config
 [General] 
@@ -157,7 +157,7 @@ EOF
 /usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
 /usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
 
-setup-ds-admin.pl --file=/root/ds.config -d --continue
+setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
