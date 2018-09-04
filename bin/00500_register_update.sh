@@ -164,6 +164,7 @@ subscribe_ceph () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
   /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
+  # subscription-manager repos --enable "rhel-*-optional-rpms" --enable "rhel-*-extras-rpms"
   /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-extras-rpms --enable=rhel-7-server-optional-rpms --enable=rhel-7-server-rpms --enable=rhel-7-server-rhceph-2-mon-rpms --enable=rhel-7-server-rhceph-2-osd-rpms --enable=rhel-7-server-rhceph-2-tools-rpms --enable=rhel-7-server-rhscon-2-agent-rpms --enable=rhel-7-server-rhscon-2-installer-rpms
 
   #Clean, update

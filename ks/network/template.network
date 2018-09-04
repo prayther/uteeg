@@ -1,0 +1,6 @@
+network --device=eth0 --bootproto=static --ip=<IP> --netmask=255.255.255.0 --gateway=10.0.0.1 --nameserver=10.0.0.1 --hostname=<VMNAME>.<DOMAIN>
+
+#%addon org_fedora_oscap
+#content-type = scap-security-guide
+#profile = stig-rhel7-disa
+#%end
