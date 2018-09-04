@@ -1,5 +1,26 @@
 #!/bin/bash -x
 
+
+if [ -z "${1}" ];then
+  echo ""
+  #echo " ./virt-install.sh <vmname> <disc in GB> <vcpus> <ram>"
+  echo " ./ds-install.sh shortname ds (short for ds.example.org)
+  echo ""
+  echo "Ex: ./virt-install.sh testvm
+  #echo "Ex: ./virt-install.sh testvm 10 2 2048"
+  echo ""
+  echo "Make sure you have an entry in uteeg/etc/hosts for your vmname"
+  echo "Only run one of these at a time. Building multiple"
+  echo "VM's gets all wacky with the libvirtd restart and "
+  echo "starting and stopping the network"
+  echo ""
+  echo "All the starting and stopping is to get dhcp leases straight"
+  echo ""
+  echo ""
+  exit 1
+fi
+
+
 #https://github.com/prayther/uteeg
 #http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
 # mschreie@redhat.com
@@ -136,7 +157,7 @@ EOF
 /usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
 /usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
 
-setup-ds-admin.pl --file=/root/ds.config
+setup-ds-admin.pl --file=/root/ds.config -d --continue
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
