@@ -106,10 +106,10 @@ cmd has_value NETWORK
 
 cat << "EOF" > /root/ds.config
 [General] 
-FullMachineName= ${VMNAME}.${DOMAIN}
+FullMachineName= <VMNAME>.<DOMAIN>
 SuiteSpotUserID= dirsrv
 SuiteSpotGroup= dirsrv
-AdminDomain= ${DOMAIN}
+AdminDomain= <DOMAIN>
 ConfigDirectoryAdminID= admin 
 ConfigDirectoryAdminPwd= admin 
 ConfigDirectoryLdapURL= ldap://$(/usr/bin/hostname -s).$(DOMAIN):389/o=NetscapeRoot 
@@ -119,7 +119,7 @@ SlapdConfigForMC= Yes
 UseExistingMC= 0 
 ServerPort= 389 
 ServerIdentifier= dir 
-Suffix= dc=$(facter domain | awk -F. '{print $1}'),dc=$(facter domain | awk -F. '{print $2}')
+Suffix= dc=$(echo ${DOMAIN} | awk -F. '{print $1}'),dc=$(echo ${DOMAIN} | awk -F. '{print $2}')
 RootDN= cn=Directory Manager 
 RootDNPwd= password
 ds_bename=exampleDB 
@@ -127,10 +127,14 @@ AddSampleEntries= No
 
 [admin] 
 Port= 9830
-ServerIpAddress= $(/usr/bin/facter ipaddress)
+ServerIpAddress= <IP>
 ServerAdminID= admin 
 ServerAdminPwd= admin
 EOF
+
+/usr/bin/sed -i "s/<IP>/${IP}/g" /root/ds.config
+/usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
+/usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
 
 setup-ds-admin.pl --file=/root/ds.config
 
