@@ -164,6 +164,9 @@ EOF
 
 # cleanup to do reinstall
 pkill dirsrv
+pkill httpd
+pkill ns-slapd
+
 rm -rf /etc/dirsrv
 /usr/bin/yum -y reinstall redhat-ds 389-ds-base 389-admin
 
