@@ -63,17 +63,53 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 yum -y install redhat-ds 389-ds-base-snmp
-yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y # just need this for facter. ugh.
+yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm # just need this for facter. ugh.
 
 firewall-cmd --permanent --add-port={389/tcp,636/tcp,9830/tcp}
 firewall-cmd --reload
 
-setup-ds-admin.pl --file=$(cat << "EOF" > /root/ds.config
+#this set vars per vm from hosts file based on $1, vmname used to launch this script
+#use ^ in search to make sure you're not getting comments #
+inputfile=../etc/hosts
+VMNAME=$(awk /"^${1}"/'{print $1}' "${inputfile}")
+DISC_SIZE=$(awk /"^${1}"/'{print $2}' "${inputfile}")
+VCPUS=$(awk /"^${1}"/'{print $3}' "${inputfile}")
+RAM=$(awk /"^${1}"/'{print $4}' "${inputfile}")
+IP=$(awk /"^${1}"/'{print $5}' "${inputfile}")
+OS=$(awk /"^${1}"/'{print $6}' "${inputfile}")
+RHVER=$(awk /"^${1}"/'{print $7}' "${inputfile}")
+OSVARIANT=$(awk /"^${1}"/'{print $8}' "${inputfile}")
+VIRTHOST=$(awk /"^${1}"/'{print $9}' "${inputfile}")
+DOMAIN=$(awk /"^${1}"/'{print $10}' "${inputfile}")
+DISC=$(awk /"^${1}"/'{print $11}' "${inputfile}")
+NIC=$(awk /"^${1}"/'{print $12}' "${inputfile}")
+MASK=$(awk /"^${1}"/'{print $13}' "${inputfile}")
+ISO=$(awk /"^${1}"/'{print $14}' "${inputfile}")
+MEDIA=$(awk /"^${1}"/'{print $15}' "${inputfile}")
+NETWORK=$(awk /"^${1}"/'{print $16}' "${inputfile}")
+
+cmd has_value VMNAME
+cmd has_value DISC_SIZE
+cmd has_value VCPUS
+cmd has_value RAM
+cmd has_value IP
+cmd has_value OS
+cmd has_value RHVER
+cmd has_value OSVARIANT
+cmd has_value VIRTHOST
+cmd has_value DISC
+cmd has_value NIC
+cmd has_value MASK
+cmd has_value ISO
+cmd has_value MEDIA
+cmd has_value NETWORK
+
+cat << "EOF" > /root/ds.config
 [General] 
-FullMachineName= $(hostname -s).$(DOMAIN)
+FullMachineName= ${VMNAME}.${DOMAIN}
 SuiteSpotUserID= dirsrv
 SuiteSpotGroup= dirsrv
-AdminDomain= $(DOMAIN)
+AdminDomain= ${DOMAIN}
 ConfigDirectoryAdminID= admin 
 ConfigDirectoryAdminPwd= admin 
 ConfigDirectoryLdapURL= ldap://$(/usr/bin/hostname -s).$(DOMAIN):389/o=NetscapeRoot 
@@ -95,6 +131,8 @@ ServerIpAddress= $(/usr/bin/facter ipaddress)
 ServerAdminID= admin 
 ServerAdminPwd= admin
 EOF
+
+setup-ds-admin.pl --file=/root/ds.config
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
