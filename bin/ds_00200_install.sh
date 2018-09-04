@@ -165,6 +165,7 @@ EOF
 # cleanup to do reinstall
 pkill dirsrv
 rm -rf /etc/dirsrv
+/usr/bin/yum -y reinstall redhat-ds
 
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
 
