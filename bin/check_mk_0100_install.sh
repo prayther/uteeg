@@ -63,8 +63,11 @@ if [[ $(id -u) != "0" ]];then
 fi
 ####################################################################################
 #Check_MK / OMD server install/cfg
-firewall-cmd --add-port=80/tcp --add-port=6556/tcp --permanent
+#firewall-cmd --add-port=80/tcp --add-port=6556/tcp --permanent
+#firewall-cmd --reload
+firewall-cmd --permanent --add-port={161/udp,162/udp,10161/udp,10162/udp}
 firewall-cmd --reload
+
 #subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
 yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
 yum install http://"${GATEWAY}"/ks/apps/check_mk/check-mk-raw-1.4.0p10-el7-57.x86_64.rpm -y

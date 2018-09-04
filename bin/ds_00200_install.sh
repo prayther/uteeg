@@ -91,10 +91,10 @@ AddSampleEntries= No
 
 [admin] 
 Port= 9830
-ServerIpAddress= $(/usr/bin/facter ip)
+ServerIpAddress= $(/usr/bin/facter ipaddress)
 ServerAdminID= admin 
 ServerAdminPwd= admin
-EOF)
+EOF
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

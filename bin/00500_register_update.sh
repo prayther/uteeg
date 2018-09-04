@@ -339,7 +339,8 @@ net-snmp-config --create-snmpv3-user -A 12345678 -X 12345678 -a MD5 -x DES admin
 systemctl enable snmpd
 systemctl restart snmpd
 #snmpwalk -v3 -u admin -l authNoPriv -a MD5 -x DES -A 12345678 -X 12345678 localhost
-firewall-cmd --add-service=snmp --permanent
+#firewall-cmd --add-service=snmp --permanent
+firewall-cmd --permanent --add-port={161/udp,162/udp,10161/udp,10162/udp}
 firewall-cmd --reload
 iptables -nL
 systemctl status snmpd
