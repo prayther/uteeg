@@ -162,6 +162,10 @@ EOF
 /usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
 /usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
 
+# cleanup to do reinstall
+pkill dirsrv
+rm -rf /etc/dirsrv
+
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
 
 echo "###INFO: Finished $0"
