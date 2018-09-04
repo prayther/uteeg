@@ -109,6 +109,9 @@ ISO=$(awk /"^${1}"/'{print $14}' "${inputfile}")
 MEDIA=$(awk /"^${1}"/'{print $15}' "${inputfile}")
 NETWORK=$(awk /"^${1}"/'{print $16}' "${inputfile}")
 
+DC1=$(echo ${DOMAIN} | awk '{print $1}')
+DC2=$(echo ${DOMAIN} | awk '{print $2}')
+
 #cmd has_value VMNAME
 #cmd has_value DISC_SIZE
 #cmd has_value VCPUS
@@ -140,7 +143,7 @@ SlapdConfigForMC= Yes
 UseExistingMC= 0 
 ServerPort= 389 
 ServerIdentifier= dir 
-Suffix= dc=$(echo ${DOMAIN} | awk -F. '{print $1}'),dc=$(echo ${DOMAIN} | awk -F. '{print $2}')
+Suffix= dc=<DC1>,dc=<DC2>
 RootDN= cn=Directory Manager 
 RootDNPwd= password
 ds_bename=exampleDB 
@@ -153,6 +156,8 @@ ServerAdminID= admin
 ServerAdminPwd= admin
 EOF
 
+/usr/bin/sed -i "s/<DC1>/${DC1}/g" /root/ds.config
+/usr/bin/sed -i "s/<DC2>/${DC2}/g" /root/ds.config
 /usr/bin/sed -i "s/<IP>/${IP}/g" /root/ds.config
 /usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
 /usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
