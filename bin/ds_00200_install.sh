@@ -109,8 +109,8 @@ ISO=$(awk /"^${1}"/'{print $14}' "${inputfile}")
 MEDIA=$(awk /"^${1}"/'{print $15}' "${inputfile}")
 NETWORK=$(awk /"^${1}"/'{print $16}' "${inputfile}")
 
-DC1=$(echo ${DOMAIN} | awk '{print $1}')
-DC2=$(echo ${DOMAIN} | awk '{print $2}')
+DC1=$(echo ${DOMAIN} | awk -F. '{print $1}')
+DC2=$(echo ${DOMAIN} | awk -F. '{print $2}')
 
 #cmd has_value VMNAME
 #cmd has_value DISC_SIZE
