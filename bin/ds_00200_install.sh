@@ -129,31 +129,30 @@ DC2=$(echo ${DOMAIN} | awk -F. '{print $2}')
 #cmd has_value NETWORK
 
 cat << "EOF" > /root/ds.config
-[General] 
-FullMachineName= <VMNAME>.<DOMAIN>
-SuiteSpotUserID= dirsrv
-SuiteSpotGroup= dirsrv
-AdminDomain= <DOMAIN>
-ConfigDirectoryAdminID= admin 
-ConfigDirectoryAdminPwd= admin 
-ConfigDirectoryLdapURL= ldap://$(/usr/bin/hostname -s).$(DOMAIN):389/o=NetscapeRoot 
-
-[slapd] 
-SlapdConfigForMC= Yes 
-UseExistingMC= 0 
-ServerPort= 389 
-ServerIdentifier= dir 
-Suffix= dc=<DC1>,dc=<DC2>
-RootDN= cn=Directory Manager 
-RootDNPwd= password
-ds_bename=exampleDB 
-AddSampleEntries= No
-
-[admin] 
-Port= 9830
-ServerIpAddress= <IP>
-ServerAdminID= admin 
-ServerAdminPwd= admin
+[General]
+FullMachineName=         <VMNAME>.<DOMAIN>
+SuiteSpotUserID=         dirsrv
+SuiteSpotGroup=          dirsrv
+AdminDomain=             <DOMAIN>
+ConfigDirectoryAdminID=  admin
+ConfigDirectoryAdminPwd= password
+ConfigDirectoryLdapURL=  ldap://<VMNAME>.<DOMAIN>:389/o=NetscapeRoot
+[slapd]
+SlapdConfigForMC=        Yes
+UseExistingMC=           0
+ServerPort=              389
+ServerIdentifier=        example
+Suffix=                  dc=<DC1>,dc=<DC2>
+RootDN=                  cn=Directory Manager
+RootDNPwd=               password
+InstallLdifFile=         suggest
+AddOrgEntries=           Yes
+[admin]
+SysUser=                 dirsrv
+Port=                    9830
+ServerIpAddress=         <IP>
+ServerAdminID=           admin
+ServerAdminPwd=          password
 EOF
 
 /usr/bin/sed -i "s/<DC1>/${DC1}/g" /root/ds.config
