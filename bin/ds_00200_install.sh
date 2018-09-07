@@ -171,6 +171,7 @@ pkill ns-slapd
 
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
 
+<<COMMENT
 #setup TLS
 echo password >/root/password.txt
 #9.3.1.1. Creating the NSS Database Using the Command Line
@@ -272,6 +273,7 @@ add: nsSSL3Ciphers
 nsSSL3Ciphers: -all,+TLS_RSA_WITH_AES_128_GCM_SHA256
 #restart
 systemctl restart dirsrv@example
+COMMENT
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
