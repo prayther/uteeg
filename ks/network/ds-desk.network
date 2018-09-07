@@ -1,0 +1,7 @@
+network --device=eth0 --bootproto=static --ip=10.0.0.38 --netmask=255.255.255.0 --gateway=10.0.0.1 --nameserver=10.0.0.1 --hostname=ds-desk.example.org
+
+xconfig --startxonboot
+#%addon org_fedora_oscap
+#content-type = scap-security-guide
+#profile = stig-rhel7-disa
+#%end

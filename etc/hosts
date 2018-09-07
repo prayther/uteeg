@@ -53,4 +53,6 @@ ds-stig 50 2 2048 10.0.0.33 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.2
 #windows 10 desktop 10.0.0.34
 #rhel 7.5 desktop 10.0.0.35
 rhel-7.5 50 2 2048 10.0.0.36 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+#rhel 6.10 10.0.0.37
+ds-desk 50 2 2048 10.0.0.38 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
 
