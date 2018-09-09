@@ -9,3 +9,4 @@ nfs-utils
 #ansible
 @core
 redhat-access-insights
+net-tools
