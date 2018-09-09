@@ -166,7 +166,7 @@ pkill dirsrv
 pkill httpd
 pkill ns-slapd
 
-#rm -rf /etc/dirsrv
+rm -rf /etc/dirsrv
 /usr/bin/yum -y reinstall redhat-ds 389-ds-console 389-console 389-admin 389-admin-console 389-ds-base
 
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
