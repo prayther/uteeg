@@ -97,7 +97,7 @@ chmod 600 /etc/dirsrv/slapd-example/pkcs11.txt
 mkdir /root/pki
 /usr/bin/certutil -d /etc/dirsrv/slapd-example -R -g 2048 -a -o /root/pki/ds-stig.example.org.csr -8 ds-stig.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US" -f /root/password.txt
 #verify
-openssl req -in ds-stig.example.org.csr -noout -text
+openssl req -in /root/pki/ds-stig.example.org.csr -noout -text
 #openssl req -new -sha256 -key mydomain.com.key -subj "/C=US/ST=CA/O=MyOrg, Inc./CN=mydomain.com" -out mydomain.com.csr
 
 #make private key
@@ -106,22 +106,18 @@ openssl genpkey -algorithm RSA -out /root/pki/privkey.pem
 #4.7.2.2. Creating a Self-signed Certificate
 openssl req -new -x509 -key /root/pki/privkey.pem -out /root/pki/selfcert.pem -days 366
 
+#To verify a certificate chain the leaf certificate must be in cert.pem and the intermediate certificates which you do not trust must be directly concatenated in untrusted.pem. The trusted root CA certificate must be either among the default CA listed in /etc/pki/tls/certs/ca-bundle.crt or in a cacert.pem file. Then, to verify the chain, 
+cat /root/pki/selfcert.pem >> /etc/pki/tls/certs/ca-bundle.crt
+
 #4.7.3. Verifying Certificates
 openssl verify /root/pki/selfcert.pem
-#selfcert.pem: C = US, ST = North Carolina, L = Default City, O = Default Company Ltd, CN = ds-stig.example.org
-#error 18 at 0 depth lookup:self signed certificate
-#OK
+#/root/pki/selfcert.pem: OK
 
 #9.3.3.1. Installing a CA Certificate Using the Command Line
-certutil -d /etc/dirsrv/slapd-example/ -A -n "tst" -t "C,," -i /root/pki/selfcert.pem
+certutil -d /etc/dirsrv/slapd-example/ -A -n "example" -t "C,," -i /root/pki/selfcert.pem
 
-#9.3.4. Installing a Certificate
-certutil -d /etc/dirsrv/slapd-example/ -A -n "tst" -t ",," -a -i /root/pki/selfcert.pem
-
-#9.3.4.1. Installing a Server Certificate Using the Command Line
-certutil -d /etc/dirsrv/slapd-example/ -A -n "tst" -t ",," -a -i /root/pki/selfcert.pem
 #verify the certificate:
-certutil -d /etc/dirsrv/slapd-example/ -V -n "tst" -u V
+certutil -d /etc/dirsrv/slapd-example/ -V -n "example" -u V
 
 #Verify if the Network Security Services (NSS) database is already initialized:
 certutil -d /etc/dirsrv/slapd-example -L
@@ -129,9 +125,10 @@ certutil -d /etc/dirsrv/slapd-example -L
 #make noise
 openssl rand -out /tmp/noise.bin 4096
 #Create the self-signed certificate and add it to the NSS database:
-certutil -S -x -d /etc/dirsrv/slapd-example/ -z /tmp/noise.bin -n "server cert" -s "CN=ds-stig.example.org" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment -f /root/password
+#certutil -S -x -d /etc/dirsrv/slapd-example/ -z /tmp/noise.bin -n "server cert" -s "CN=ds-stig.example.org" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment -f root/password
+certutil -S -x -d /etc/dirsrv/slapd-example/ -z /tmp/noise.bin -n "server cert" -s "CN=ds-stig.example.org" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
 #verify that the generated certificate is self-signed:
-certutil -L -d /etc/dirsrv/slapd-example/ -n "tst" | egrep "Issuer|Subject"
+certutil -L -d /etc/dirsrv/slapd-example/ -n "example" | egrep "Issuer|Subject"
 
 #9.4.1.1. Enabling TLS in Directory Server Using the Command Line
 ls -1 /etc/dirsrv/slapd-example/*.db
@@ -186,6 +183,9 @@ nsSSL3Ciphers: -all,+TLS_RSA_WITH_AES_128_GCM_SHA256
 #restart
 systemctl restart dirsrv@example
 COMMENT
+
+systemctl restart dirsrv@example
+systemctl status dirsrv@example
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
