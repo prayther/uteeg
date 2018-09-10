@@ -143,7 +143,7 @@ UseExistingMC=           0
 ServerPort=              389
 ServerIdentifier=        ds-stig
 Suffix=                  dc=<DC1>,dc=<DC2>
-RootDN=                  cn=Directory Manager
+RootDN=                  cn="Directory Manager"
 RootDNPwd=               password
 InstallLdifFile=         suggest
 AddOrgEntries=           Yes
