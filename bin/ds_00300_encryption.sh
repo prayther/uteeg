@@ -87,8 +87,8 @@ fi
 #setup TLS
 echo password >/root/password.txt
 #9.3.10.1. Changing the Password of the NSS Database Using the Command Line
-ldapmodify -D "cn=Directory Manager" -W -x
-#9.4.1.5. Creating a Password File for Directory Server
+ldapmodify -D "cn=Directory_Manager" -W -x
+#9.4.1.5. Creating a Password File for Directory_Server
 echo "Internal (Software) Token:password" >> /etc/dirsrv/slapd-example/pin.txt
 chown dirsrv:dirsrv /etc/dirsrv/slapd-example/pin.txt
 chmod 400 /etc/dirsrv/slapd-example/pin.txt
@@ -138,11 +138,11 @@ certutil -S -x -d /etc/dirsrv/slapd-example/ -z /tmp/noise.bin -n "server cert" 
 #verify that the generated certificate is self-signed:
 certutil -L -d /etc/dirsrv/slapd-example/ -n "example" | egrep "Issuer|Subject"
 
-#9.4.1.1. Enabling TLS in Directory Server Using the Command Line
+#9.4.1.1. Enabling TLS in Directory_Server Using the Command Line
 ls -1 /etc/dirsrv/slapd-example/*.db
 #run this first line on it's own, ldapmodify... -x and hit enter, put in password
-#ldapmodify -D "cn=Directory Manager" -W -p 389 -h example -x
-ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
+#ldapmodify -D "cn=Directory_Manager" -W -p 389 -h example -x
+ldapmodify -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
 # cut and paste these next lines, hit enter and then ctrl D to exit interactive mode. need to put this in an input ldif file and get rid of the interactive stuff.
 dn: cn=config
 changetype: modify
@@ -162,7 +162,7 @@ certutil -L -d /etc/dirsrv/slapd-example/
 
 
 #To enable the RSA cipher family, setting the NSS database security device, and the server certificate nickname, add the following entry to the directory:
-ldapadd -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
+ldapadd -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
 dn: cn=RSA,cn=encryption,cn=config
 cn: RSA
 objectClass: top
@@ -175,10 +175,10 @@ nsSSLActivation: on
 
 systemctl restart dirsrv@example
 
-#9.4.1.3.1. Displaying and Setting the Ciphers Used by Directory Server Using the Command Line
+#9.4.1.3.1. Displaying and Setting the Ciphers Used by Directory_Server Using the Command Line
 #Displaying all Available Ciphers
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -w password
-#Displaying the Ciphers Directory Server Uses
+#Displaying the Ciphers Directory_Server Uses
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -w password
 #display the ciphers which are configured to be enabled and disabled:
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -w password
