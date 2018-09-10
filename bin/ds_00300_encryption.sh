@@ -87,7 +87,7 @@ fi
 #setup TLS
 echo password >/root/password.txt
 #9.3.10.1. Changing the Password of the NSS Database Using the Command Line
-ldapmodify -D "cn=Directory_Manager" -W -x
+#ldapmodify -D "cn=Directory_Manager" -W -x
 #9.4.1.5. Creating a Password File for Directory_Server
 echo "Internal (Software) Token:password" >> /etc/dirsrv/slapd-example/pin.txt
 chown dirsrv:dirsrv /etc/dirsrv/slapd-example/pin.txt
@@ -148,9 +148,9 @@ dn: cn=config
 changetype: modify
 replace: nsslapd-securePort
 nsslapd-securePort: 636
--
-replace: nsslapd-security
-nsslapd-security: on
+#-
+#replace: nsslapd-security
+#nsslapd-security: on
 
 #Display the nickname of the server certificate in the NSS database:
 certutil -L -d /etc/dirsrv/slapd-example/
@@ -168,29 +168,38 @@ cn: RSA
 objectClass: top
 objectClass: nsEncryptionModule
 nsSSLToken: internal (software)
-nsSSLPersonalitySSL: tst1
+nsSSLPersonalitySSL: selfcert.pem
 nsSSLActivation: on
+
+###################
+#If the previous command fails, because the cn=RSA,cn=encryption,cn=config entry already exists, update the corresponding attributes:
+ldapmodify -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
+dn: cn=RSA,cn=encryption,cn=config
+changetype: modify
+replace: nsSSLToken
+nsSSLToken: internal (software)
 
 #adding new entry "cn=RSA,cn=encryption,cn=config"
 
 systemctl restart dirsrv@example
 
-#9.4.1.3.1. Displaying and Setting the Ciphers Used by Directory_Server Using the Command Line
-#Displaying all Available Ciphers
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -w password
-#Displaying the Ciphers Directory_Server Uses
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -w password
-#display the ciphers which are configured to be enabled and disabled:
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -w password
-
-#o enable only specific ciphers, update the nsSSL3Ciphers attribute. For example, to enable only the TLS_RSA_WITH_AES_128_GCM_SHA256 cipher:
-ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
+#to enable only specific ciphers, update the nsSSL3Ciphers attribute. For example, to enable only the TLS_RSA_WITH_AES_128_GCM_SHA256 cipher:
+ldapmodify -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
 dn: cn=encryption,cn=config
 changetype: modify
 add: nsSSL3Ciphers
 nsSSL3Ciphers: -all,+TLS_RSA_WITH_AES_128_GCM_SHA256
 #restart
 systemctl restart dirsrv@example
+
+#9.4.1.3.1. Displaying and Setting the Ciphers Used by Directory_Server Using the Command Line
+#Displaying all Available Ciphers
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory_Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -w password
+#Displaying the Ciphers Directory_Server Uses
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory_Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -w password
+#display the ciphers which are configured to be enabled and disabled:
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory_Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -w password
+
 COMMENT
 
 systemctl restart dirsrv@example
