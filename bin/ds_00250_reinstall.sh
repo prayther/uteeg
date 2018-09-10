@@ -141,9 +141,9 @@ ConfigDirectoryLdapURL=  ldap://<VMNAME>.<DOMAIN>:389/o=NetscapeRoot
 SlapdConfigForMC=        Yes
 UseExistingMC=           0
 ServerPort=              389
-ServerIdentifier=        example
+ServerIdentifier=        ds-stig
 Suffix=                  dc=<DC1>,dc=<DC2>
-RootDN=                  cn=Directory_Manager
+RootDN=                  cn=Directory Manager
 RootDNPwd=               password
 InstallLdifFile=         suggest
 AddOrgEntries=           Yes
