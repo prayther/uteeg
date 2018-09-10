@@ -87,23 +87,23 @@ fi
 #setup TLS
 echo password >/root/password.txt
 #9.3.10.1. Changing the Password of the NSS Database Using the Command Line
-#ldapmodify -D "cn=Directory_Manager" -W -x
+#ldapmodify -D "cn=Directory Manager" -W -x
 #9.4.1.5. Creating a Password File for Directory_Server
-echo "Internal (Software) Token:password" >> /etc/dirsrv/slapd-example/pin.txt
-chown dirsrv:dirsrv /etc/dirsrv/slapd-example/pin.txt
-chmod 400 /etc/dirsrv/slapd-example/pin.txt
+echo "Internal (Software) Token:password" >> /etc/dirsrv/slapd-ds-stig/pin.txt
+chown dirsrv:dirsrv /etc/dirsrv/slapd-ds-stig/pin.txt
+chmod 400 /etc/dirsrv/slapd-ds-stig/pin.txt
 
 #9.3.1.1. Creating the NSS Database Using the Command Line
-#/usr/bin/certutil -d /etc/dirsrv/slapd-example/ -N -f /root/password.txt
-/usr/bin/certutil -d /etc/dirsrv/slapd-example/ -N
-#cp /etc/pki/nssdb/pkcs11.txt /etc/dirsrv/slapd-example/
-chown dirsrv:dirsrv /etc/dirsrv/slapd-example/*.db
-#chown dirsrv:dirsrv /etc/dirsrv/slapd-example/pkcs11.txt
-chmod 600 /etc/dirsrv/slapd-example/*.db
-#chmod 600 /etc/dirsrv/slapd-example/pkcs11.txt
+#/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig/ -N -f /root/password.txt
+/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig/ -N
+#cp /etc/pki/nssdb/pkcs11.txt /etc/dirsrv/slapd-ds-stig/
+chown dirsrv:dirsrv /etc/dirsrv/slapd-ds-stig/*.db
+#chown dirsrv:dirsrv /etc/dirsrv/slapd-ds-stig/pkcs11.txt
+chmod 600 /etc/dirsrv/slapd-ds-stig/*.db
+#chmod 600 /etc/dirsrv/slapd-ds-stig/pkcs11.txt
 #9.3.2. Creating a Certificate Signing Request
 mkdir /root/pki
-/usr/bin/certutil -d /etc/dirsrv/slapd-example -R -g 2048 -a -o /root/pki/ds-stig.example.org.csr -8 ds-stig.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US" 
+/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig -R -g 2048 -a -o /root/pki/ds-stig.example.org.csr -8 ds-stig.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US" 
 #verify
 openssl req -in /root/pki/ds-stig.example.org.csr -noout -text
 #openssl req -new -sha256 -key mydomain.com.key -subj "/C=US/ST=CA/O=MyOrg, Inc./CN=mydomain.com" -out mydomain.com.csr
@@ -122,27 +122,27 @@ openssl verify /root/pki/selfcert.pem
 #/root/pki/selfcert.pem: OK
 
 #9.3.3.1. Installing a CA Certificate Using the Command Line
-certutil -d /etc/dirsrv/slapd-example/ -A -n "example" -t "C,," -i /root/pki/selfcert.pem
+certutil -d /etc/dirsrv/slapd-ds-stig/ -A -n "example" -t "C,," -i /root/pki/selfcert.pem
 
 #verify the certificate:
-certutil -d /etc/dirsrv/slapd-example/ -V -n "example" -u V
+certutil -d /etc/dirsrv/slapd-ds-stig/ -V -n "example" -u V
 
 #Verify if the Network Security Services (NSS) database is already initialized:
-certutil -d /etc/dirsrv/slapd-example -L
+certutil -d /etc/dirsrv/slapd-ds-stig -L
 
 #make noise
 openssl rand -out /tmp/noise.bin 4096
 #Create the self-signed certificate and add it to the NSS database:
-#certutil -S -x -d /etc/dirsrv/slapd-example/ -z /tmp/noise.bin -n "server cert" -s "CN=ds-stig.example.org" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment -f root/password
-certutil -S -x -d /etc/dirsrv/slapd-example/ -z /tmp/noise.bin -n "server cert" -s "CN=ds-stig.example.org" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
+#certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n "server cert" -s "CN=ds-stig.example.org" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment -f root/password
+certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n "server cert" -s "CN=ds-stig.example.org" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
 #verify that the generated certificate is self-signed:
-certutil -L -d /etc/dirsrv/slapd-example/ -n "example" | egrep "Issuer|Subject"
+certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n "example" | egrep "Issuer|Subject"
 
 #9.4.1.1. Enabling TLS in Directory_Server Using the Command Line
-ls -1 /etc/dirsrv/slapd-example/*.db
+ls -1 /etc/dirsrv/slapd-ds-stig/*.db
 #run this first line on it's own, ldapmodify... -x and hit enter, put in password
-#ldapmodify -D "cn=Directory_Manager" -W -p 389 -h example -x
-ldapmodify -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
+#ldapmodify -D "cn=Directory Manager" -W -p 389 -h example -x
+ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
 # cut and paste these next lines, hit enter and then ctrl D to exit interactive mode. need to put this in an input ldif file and get rid of the interactive stuff.
 dn: cn=config
 changetype: modify
@@ -153,7 +153,7 @@ nsslapd-securePort: 636
 #nsslapd-security: on
 
 #Display the nickname of the server certificate in the NSS database:
-certutil -L -d /etc/dirsrv/slapd-example/
+certutil -L -d /etc/dirsrv/slapd-ds-stig/
 #Certificate Nickname                                         Trust Attributes
 #                                                             SSL,S/MIME,JAR/XPI
 #
@@ -162,7 +162,7 @@ certutil -L -d /etc/dirsrv/slapd-example/
 
 
 #To enable the RSA cipher family, setting the NSS database security device, and the server certificate nickname, add the following entry to the directory:
-ldapadd -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
+ldapadd -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
 dn: cn=RSA,cn=encryption,cn=config
 cn: RSA
 objectClass: top
@@ -173,7 +173,7 @@ nsSSLActivation: on
 
 ###################
 #If the previous command fails, because the cn=RSA,cn=encryption,cn=config entry already exists, update the corresponding attributes:
-ldapmodify -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
+ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
 dn: cn=RSA,cn=encryption,cn=config
 changetype: modify
 replace: nsSSLToken
@@ -184,7 +184,7 @@ nsSSLToken: internal (software)
 systemctl restart dirsrv@example
 
 #to enable only specific ciphers, update the nsSSL3Ciphers attribute. For example, to enable only the TLS_RSA_WITH_AES_128_GCM_SHA256 cipher:
-ldapmodify -D "cn=Directory_Manager" -W -p 389 -h ds-stig.example.org -x
+ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
 dn: cn=encryption,cn=config
 changetype: modify
 add: nsSSL3Ciphers
@@ -194,11 +194,11 @@ systemctl restart dirsrv@example
 
 #9.4.1.3.1. Displaying and Setting the Ciphers Used by Directory_Server Using the Command Line
 #Displaying all Available Ciphers
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory_Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -w password
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -w password
 #Displaying the Ciphers Directory_Server Uses
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory_Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -w password
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -w password
 #display the ciphers which are configured to be enabled and disabled:
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory_Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -w password
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -w password
 
 COMMENT
 
