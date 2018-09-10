@@ -135,7 +135,7 @@ SuiteSpotUserID=         dirsrv
 SuiteSpotGroup=          dirsrv
 AdminDomain=             <DOMAIN>
 ConfigDirectoryAdminID=  admin
-ConfigDirectoryAdminPwd= password
+ConfigDirectoryAdminPwd= 'P@$$w0rd'
 ConfigDirectoryLdapURL=  ldap://<VMNAME>.<DOMAIN>:389/o=NetscapeRoot
 [slapd]
 SlapdConfigForMC=        Yes
@@ -144,7 +144,7 @@ ServerPort=              389
 ServerIdentifier=        ds-stig
 Suffix=                  dc=<DC1>,dc=<DC2>
 RootDN=                  cn="Directory Manager"
-RootDNPwd=               password
+RootDNPwd=               'P@$$w0rd'
 InstallLdifFile=         suggest
 AddOrgEntries=           Yes
 [admin]
@@ -152,7 +152,7 @@ SysUser=                 dirsrv
 Port=                    9830
 ServerIpAddress=         <IP>
 ServerAdminID=           admin
-ServerAdminPwd=          password
+ServerAdminPwd=          'P@$$w0rd'
 EOF
 
 /usr/bin/sed -i "s/<DC1>/${DC1}/g" /root/ds.config
@@ -169,9 +169,10 @@ EOF
 #rm -rf /etc/dirsrv
 #/usr/bin/yum -y reinstall redhat-ds 389-ds-console 389-console 389-admin 389-admin-console 389-ds-base
 
-setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
+setup-ds-admin.pl --file=/root/ds.config -d --continue --silent --keepcache
 
 systemctl enable dirsrv@example
+systemctl enable dirsrv-admin
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
