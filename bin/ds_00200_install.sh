@@ -171,5 +171,7 @@ EOF
 
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
 
+systemctl enable dirsrv@example
+
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

@@ -86,14 +86,21 @@ fi
 <<COMMENT
 #setup TLS
 echo password >/root/password.txt
+#9.3.10.1. Changing the Password of the NSS Database Using the Command Line
+ldapmodify -D "cn=Directory Manager" -W -x
+#9.4.1.5. Creating a Password File for Directory Server
+echo "Internal (Software) Token:password" >> /etc/dirsrv/slapd-example/pin.txt
+chown dirsrv:dirsrv /etc/dirsrv/slapd-example/pin.txt
+chmod 400 /etc/dirsrv/slapd-example/pin.txt
+
 #9.3.1.1. Creating the NSS Database Using the Command Line
 #/usr/bin/certutil -d /etc/dirsrv/slapd-example/ -N -f /root/password.txt
 /usr/bin/certutil -d /etc/dirsrv/slapd-example/ -N
 #cp /etc/pki/nssdb/pkcs11.txt /etc/dirsrv/slapd-example/
 chown dirsrv:dirsrv /etc/dirsrv/slapd-example/*.db
-chown dirsrv:dirsrv /etc/dirsrv/slapd-example/pkcs11.txt
+#chown dirsrv:dirsrv /etc/dirsrv/slapd-example/pkcs11.txt
 chmod 600 /etc/dirsrv/slapd-example/*.db
-chmod 600 /etc/dirsrv/slapd-example/pkcs11.txt
+#chmod 600 /etc/dirsrv/slapd-example/pkcs11.txt
 #9.3.2. Creating a Certificate Signing Request
 mkdir /root/pki
 /usr/bin/certutil -d /etc/dirsrv/slapd-example -R -g 2048 -a -o /root/pki/ds-stig.example.org.csr -8 ds-stig.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US" 
@@ -134,7 +141,8 @@ certutil -L -d /etc/dirsrv/slapd-example/ -n "example" | egrep "Issuer|Subject"
 #9.4.1.1. Enabling TLS in Directory Server Using the Command Line
 ls -1 /etc/dirsrv/slapd-example/*.db
 #run this first line on it's own, ldapmodify... -x and hit enter, put in password
-ldapmodify -D "cn=Directory Manager" -W -p 389 -h example -x
+#ldapmodify -D "cn=Directory Manager" -W -p 389 -h example -x
+ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
 # cut and paste these next lines, hit enter and then ctrl D to exit interactive mode. need to put this in an input ldif file and get rid of the interactive stuff.
 dn: cn=config
 changetype: modify
