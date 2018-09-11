@@ -84,6 +84,7 @@ if [[ $(id -u) != "0" ]];then
 fi
 
 <<COMMENT
+echo 'P@$$w0rd' >/root/password.txt
 
 #Chapter 11. Managing FIPS Mode Support
 #https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html-single/administration_guide/#Managing_FIPS_mode_support
@@ -112,7 +113,7 @@ cat /etc/pki/CA/selfcert.pem >> /etc/pki/tls/certs/ca-bundle.crt
 openssl verify /etc/pki/CA/selfcert.pem
 
 #9.3.3.1. Installing a CA Certificate Using the Command Line
-certutil -d /etc/dirsrv/slapd-ds-stig/ -A -n "ca-cert`" -t "C,," -i /etc/pki/CA/selfcert.pem
+certutil -d /etc/dirsrv/slapd-ds-stig/ -A -n "ca-cert" -t "C,," -i /etc/pki/CA/selfcert.pem
 
 #verify the certificate:
 certutil -d /etc/dirsrv/slapd-ds-stig/ -V -n "ca-cert" -u V
@@ -121,7 +122,7 @@ certutil -d /etc/dirsrv/slapd-ds-stig/ -V -n "ca-cert" -u V
 certutil -d /etc/dirsrv/slapd-ds-stig -L
 
 #make noise
-openssl rand -out /tmp/noise.bin 8192
+openssl rand -out /tmp/noise.bin 4096
 
 #Create the self-signed certificate and add it to the NSS database:
 #https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/security_guide/#sec-Generating_Certificates
@@ -144,6 +145,9 @@ dn: cn=config
 changetype: modify
 replace: nsslapd-securePort
 nsslapd-securePort: 636
+-
+replace: nsslapd-security
+nsslapd-security: on
 
 #Display the nickname of the server certificate in the NSS database:
 certutil -L -d /etc/dirsrv/slapd-ds-stig/
@@ -174,7 +178,6 @@ dn: cn=encryption,cn=config
 changetype: modify
 add: nsSSL3Ciphers
 nsSSL3Ciphers: +all
-allowWeakCipher: off
 
 #restart
 systemctl restart dirsrv@ds-stig
@@ -192,6 +195,9 @@ ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -w P@$$w0rd
 #display the ciphers which are configured to be enabled and disabled:
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -w P@$$w0rd
+
+#9.5. Displaying the Encryption Protocols Enabled in Directory Server
+ldapsearch -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x -s base -b 'cn=encryption,cn=config' sslVersionMin sslVersionMax
 
 COMMENT
 

@@ -135,7 +135,7 @@ SuiteSpotUserID=         dirsrv
 SuiteSpotGroup=          dirsrv
 AdminDomain=             <DOMAIN>
 ConfigDirectoryAdminID=  admin
-ConfigDirectoryAdminPwd= 'P@$$w0rd'
+ConfigDirectoryAdminPwd= P@$$w0rd
 ConfigDirectoryLdapURL=  ldap://<VMNAME>.<DOMAIN>:389/o=NetscapeRoot
 [slapd]
 SlapdConfigForMC=        Yes
@@ -144,7 +144,7 @@ ServerPort=              389
 ServerIdentifier=        ds-stig
 Suffix=                  dc=<DC1>,dc=<DC2>
 RootDN=                  cn="Directory Manager"
-RootDNPwd=               'P@$$w0rd'
+RootDNPwd=               P@$$w0rd
 InstallLdifFile=         suggest
 AddOrgEntries=           Yes
 [admin]
@@ -152,7 +152,7 @@ SysUser=                 dirsrv
 Port=                    9830
 ServerIpAddress=         <IP>
 ServerAdminID=           admin
-ServerAdminPwd=          'P@$$w0rd'
+ServerAdminPwd=          P@$$w0rd
 EOF
 
 /usr/bin/sed -i "s/<DC1>/${DC1}/g" /root/ds.config
