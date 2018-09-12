@@ -105,13 +105,17 @@ systemctl status dirsrv@ds-stig
 /usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig/ -N
 
 #9.3.2. Creating a Certificate Signing Request
-/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig -R -g 2048 -a -o /etc/pki/CA/ds-stig.example.org.csr -8 ds-stig.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US"
+/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig -R -g 2048 -a -o /etc/pki/CA/ds-stig.example.org.csr -8 ds-stig.example.org,ds-repl.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US"
 
 #make private key
 openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem
 
 #4.7.2.2. Creating a Self-signed Certificate
 openssl req -new -x509 -key /etc/pki/CA/privkey.pem -out /etc/pki/CA/selfcert.pem -days 366
+#Table 12.2. certutil Examples
+#Creates a self-signed CA certificate.
+#https://access.redhat.com/documentation/en-US/Red_Hat_Directory_Server/8.1/html/Administration_Guide/Managing_SSL-Using_certutil.html
+#certutil -S -n "CA certificate" -s "cn=My Org CA cert, dc=example,dc=org" -2 -x -t "CT,," -m 1000 -v 120 -d . -k rsa -f /root/password.txt
 
 #To verify a certificate chain the leaf certificate must be in cert.pem and the intermediate certificates which you do not trust must be directly concatenated in untrusted.pem. The trusted root CA certificate must be either among the default CA listed in /etc/pki/tls/certs/ca-bundle.crt or in a cacert.pem file. Then, to verify the chain,
 cat /etc/pki/CA/selfcert.pem >> /etc/pki/tls/certs/ca-bundle.crt
@@ -132,8 +136,8 @@ certutil -d /etc/dirsrv/slapd-ds-stig -L
 openssl rand -out /tmp/noise.bin 4096
 
 #Create the self-signed certificate and add it to the NSS database:
-#https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/security_guide/#sec-Generating_Certificates
-certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n server-cert -s "CN=$HOSTNAME" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
+#https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/security_guide/#sec-Generating_Certificates. -8 adds subject alternative name
+certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n server-cert -s "CN=$HOSTNAME" -8 ds-stig.example.org,ds-repl.example.org -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
 
 #verify that the generated certificate is self-signed:
 certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n server-cert | egrep "Issuer|Subject"
