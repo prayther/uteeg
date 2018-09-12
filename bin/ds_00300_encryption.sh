@@ -126,10 +126,10 @@ openssl rand -out /tmp/noise.bin 4096
 
 #Create the self-signed certificate and add it to the NSS database:
 #https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/security_guide/#sec-Generating_Certificates
-certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n "server-cert" -s "CN=$HOSTNAME" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
+certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n server-cert -s "CN=$HOSTNAME" -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
 
 #verify that the generated certificate is self-signed:
-certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n "server-cert" | egrep "Issuer|Subject"
+certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n server-cert | egrep "Issuer|Subject"
 
 #9.4.1.5. Creating a Password File for Directory_Server
 echo "Internal (Software) Token:P@\$\$w0rd" >> /etc/dirsrv/slapd-ds-stig/pin.txt
@@ -159,7 +159,7 @@ cn: RSA
 objectClass: top
 objectClass: nsEncryptionModule
 nsSSLToken: internal (software)
-nsSSLPersonalitySSL: "server-cert"
+nsSSLPersonalitySSL: server-cert
 nsSSLActivation: on
 
 ###################
@@ -186,15 +186,15 @@ systemctl status dirsrv@ds-stig
 #display encryption cert info
 ldapsearch -H ldap://localhost:389 -D 'cn=Directory Manager' -W -Z -b 'cn=encryption,cn=config' -x
 certutil -K -d /etc/dirsrv/slapd-ds-stig
-certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n "server-cert"
+certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n server-cert
 
 #9.4.1.3.1. Displaying and Setting the Ciphers Used by Directory_Server Using the Command Line
 #Displaying all Available Ciphers
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -w P@$$w0rd
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -W
 #Displaying the Ciphers Directory_Server Uses
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -w P@$$w0rd
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -W
 #display the ciphers which are configured to be enabled and disabled:
-ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -w P@$$w0rd
+ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -W
 
 #9.5. Displaying the Encryption Protocols Enabled in Directory Server
 ldapsearch -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x -s base -b 'cn=encryption,cn=config' sslVersionMin sslVersionMax
