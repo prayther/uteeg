@@ -162,13 +162,26 @@ nsSSLToken: internal (software)
 nsSSLPersonalitySSL: server-cert
 nsSSLActivation: on
 
-###################
+#######################
+# this is how to modify existing...
+#######################
+# don't run by default!!!
+#######################
+# this modifies the previous command!!!
+#######################
 #If the previous command fails, because the cn=RSA,cn=encryption,cn=config entry already exists, update the corresponding attributes:
 ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x
 dn: cn=RSA,cn=encryption,cn=config
 changetype: modify
 replace: nsSSLToken
 nsSSLToken: internal (software)
+
+#only modify one attribute at a time
+dn: cn=RSA,cn=encryption,cn=config
+changetype: modify
+replace: nsSSLPersonalitySSL
+nsSSLPersonalitySSL: server-cert
+#######################
 #######################
 
 #http://directory.fedoraproject.org/docs/389ds/design/nss-cipher-design.html#available-by-setting-all-but-weak--nss-3162-1
