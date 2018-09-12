@@ -100,18 +100,24 @@ modutil -dbdir /etc/dirsrv/slapd-ds-stig/ -fips true
 #restart to confirm things work now.
 systemctl restart dirsrv@ds-stig
 systemctl status dirsrv@ds-stig
+systemctl restart dirsrv-admin
+systemctl status dirsrv-admin
 
 #9.3.1.1. Creating the NSS Database Using the Command Line
-/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig/ -N
+/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig/ -N -f /root/password.txt
 
 #9.3.2. Creating a Certificate Signing Request
-/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig -R -g 2048 -a -o /etc/pki/CA/ds-stig.example.org.csr -8 ds-stig.example.org,ds-repl.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US"
+/usr/bin/certutil -d /etc/dirsrv/slapd-ds-stig -R -g 2048 -a -o /etc/pki/CA/ds-stig.example.org.csr -8 ds-stig.example.org,ds-repl.example.org -s "CN=ds-stig.example.org,O=Example,L=Default,ST=North Carolina,C=US" -f /root/password.txt
 
 #make private key
-openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem
+echo 'P@\$\$w0rd' > /root/openssl_password.txt
+chown root.root /root/openssl_password.txt
+chmod 400 /root/openssl_password.txt
+openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pass file:/root/openssl_password.txt
 
 #4.7.2.2. Creating a Self-signed Certificate
-openssl req -new -x509 -key /etc/pki/CA/privkey.pem -out /etc/pki/CA/selfcert.pem -days 366
+openssl req -new -x509 -key /etc/pki/CA/privkey.pem -out /etc/pki/CA/selfcert.pem -days 366 -subj "/C=US/ST=North Carolina/L=Default/O=Default/OU=Default"
+
 #Table 12.2. certutil Examples
 #Creates a self-signed CA certificate.
 #https://access.redhat.com/documentation/en-US/Red_Hat_Directory_Server/8.1/html/Administration_Guide/Managing_SSL-Using_certutil.html
@@ -124,7 +130,7 @@ cat /etc/pki/CA/selfcert.pem >> /etc/pki/tls/certs/ca-bundle.crt
 openssl verify /etc/pki/CA/selfcert.pem
 
 #9.3.3.1. Installing a CA Certificate Using the Command Line
-certutil -d /etc/dirsrv/slapd-ds-stig/ -A -n "ca-cert" -t "C,," -i /etc/pki/CA/selfcert.pem
+certutil -d /etc/dirsrv/slapd-ds-stig/ -A -n "ca-cert" -t "C,," -i /etc/pki/CA/selfcert.pem -f /root/password.txt
 
 #verify the certificate:
 certutil -d /etc/dirsrv/slapd-ds-stig/ -V -n "ca-cert" -u V
@@ -137,7 +143,7 @@ openssl rand -out /tmp/noise.bin 4096
 
 #Create the self-signed certificate and add it to the NSS database:
 #https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html-single/security_guide/#sec-Generating_Certificates. -8 adds subject alternative name
-certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n server-cert -s "CN=$HOSTNAME" -8 ds-stig.example.org,ds-repl.example.org -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment
+certutil -S -x -d /etc/dirsrv/slapd-ds-stig/ -z /tmp/noise.bin -n server-cert -s "CN=$HOSTNAME" -8 ds-stig.example.org,ds-repl.example.org -t "CT,C,C" -m $RANDOM --keyUsage digitalSignature,nonRepudiation,keyEncipherment,dataEncipherment -f /root/password.txt
 
 #verify that the generated certificate is self-signed:
 certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n server-cert | egrep "Issuer|Subject"
@@ -215,8 +221,10 @@ certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n server-cert
 #9.4.1.3.1. Displaying and Setting the Ciphers Used by Directory_Server Using the Command Line
 #Displaying all Available Ciphers
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLSupportedCiphers -o ldif-wrap=no -W
+
 #Displaying the Ciphers Directory_Server Uses
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -W
+
 #display the ciphers which are configured to be enabled and disabled:
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSL3Ciphers -o ldif-wrap=no -W
 
@@ -230,6 +238,7 @@ systemctl stop dirsrv@ds-stig
 #List the contents of the Directory Server NSS database:
 certutil -L -d /etc/dirsrv/admin-serv/
 
+#Setup https for console
 #Export the private key and certificate with the name server-cert from the Directory Server's PKI database:
 pk12util -o /tmp/keys.pk12 -n server-cert -d /etc/dirsrv/slapd-ds-stig/
 
