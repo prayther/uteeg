@@ -171,8 +171,8 @@ rm -rf /etc/dirsrv
 
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent
 
-systemctl enable dirsrv-admin
-systemctl enable dirsrv@${VMNAME}
+#systemctl enable dirsrv-admin
+#systemctl enable dirsrv@${VMNAME}
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

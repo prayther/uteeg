@@ -171,8 +171,8 @@ EOF
 
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent --keepcache
 
-systemctl enable dirsrv@${VMNAME}
-systemctl enable dirsrv-admin
+#systemctl enable dirsrv@${VMNAME}
+#systemctl enable dirsrv-admin
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

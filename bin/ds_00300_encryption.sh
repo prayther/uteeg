@@ -223,8 +223,53 @@ ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W
 #9.5. Displaying the Encryption Protocols Enabled in Directory Server
 ldapsearch -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x -s base -b 'cn=encryption,cn=config' sslVersionMin sslVersionMax
 
+#E.2.7.1.1. Using the Directory Server Private Key and Certificate for the Admin Server
+systemctl stop dirsrv-admin
+systemctl stop dirsrv@ds-stig
+
+#List the contents of the Directory Server NSS database:
+certutil -L -d /etc/dirsrv/admin-serv/
+
+#Export the private key and certificate with the name server-cert from the Directory Server's PKI database:
+pk12util -o /tmp/keys.pk12 -n server-cert -d /etc/dirsrv/slapd-ds-stig/
+
+#Import the private key and certificate into the Administration Server's PKI database:
+pk12util -i /tmp/keys.pk12 -d /etc/dirsrv/admin-serv/
+
+#Trust the Demo CA:
+certutil -M -d /etc/dirsrv/admin-serv/ -n "server-cert" -t CT,,
+
+#Delete the temporarily exported file:
+rm -f /tmp/keys.pk12
+
+#start services
+systemctl restart dirsrv@ds-stig
+systemctl restart dirsrv-admin
+
+#Create a password file named password.conf. The file should include a line with the token name and password, in the form token:password
+#identify the admin user
+cd /etc/dirsrv/admin-serv/
+grep \^User console.conf
+#User dirsrv
+
+echo 'internal:P@$$w0rd' > /etc/dirsrv/admin-serv/password.conf
+chown dirsrv.dirsrv /etc/dirsrv/admin-serv/password.conf
+chmod 0400 /etc/dirsrv/admin-serv/password.conf
+
+/bin/sed '/^NSSPassPhraseDialog/ s/builtin/file\:\/\/etc\/dirsrv\/admin-serv\/password.conf/g' /etc/dirsrv/admin-serv/nss.conf > /etc/dirsrv/admin-serv/nss.conf.sed
+/bin/cp /etc/dirsrv/admin-serv/nss.conf /etc/dirsrv/admin-serv/nss.conf.orig
+/bin/cp /etc/dirsrv/admin-serv/nss.conf.sed /etc/dirsrv/admin-serv/nss.conf
+
+#systemctl enable dirsrv-admin.service
+systemctl restart dirsrv-admin.service
+systemctl status dirsrv-admin.service
+
+#9.8.1. Setting up Certificate-based User Authentication
+#https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html-single/administration_guide/#Managing_Replication-Configuring_Multi_Master_Replication
+
 COMMENT
 
+#systemctl enable dirsrv@ds-stig
 systemctl restart dirsrv@ds-stig
 systemctl status dirsrv@ds-stig
 
