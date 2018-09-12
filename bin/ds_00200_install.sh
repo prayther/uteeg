@@ -141,7 +141,7 @@ ConfigDirectoryLdapURL=  ldap://<VMNAME>.<DOMAIN>:389/o=NetscapeRoot
 SlapdConfigForMC=        Yes
 UseExistingMC=           0
 ServerPort=              389
-ServerIdentifier=        ds-stig
+ServerIdentifier=        <VMNAME>
 Suffix=                  dc=<DC1>,dc=<DC2>
 RootDN=                  cn="Directory Manager"
 RootDNPwd=               P@$$w0rd
@@ -171,7 +171,7 @@ EOF
 
 setup-ds-admin.pl --file=/root/ds.config -d --continue --silent --keepcache
 
-systemctl enable dirsrv@example
+systemctl enable dirsrv@${VMNAME}
 systemctl enable dirsrv-admin
 
 echo "###INFO: Finished $0"

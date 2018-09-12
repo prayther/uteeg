@@ -89,8 +89,15 @@ echo 'P@$$w0rd' >/root/password.txt
 #Chapter 11. Managing FIPS Mode Support
 #https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html-single/administration_guide/#Managing_FIPS_mode_support
 modutil -dbdir /etc/dirsrv/slapd-ds-stig/ -fips true
+
+#test
+sysctl crypto.fips_enabled
+modutil -dbdir /etc/dirsrv/slapd-ds-stig/ -fips true
+
 #turn off
 #modutil -dbdir /etc/dirsrv/slapd-ds-stig/ -fips false
+
+#restart to confirm things work now.
 systemctl restart dirsrv@ds-stig
 systemctl status dirsrv@ds-stig
 

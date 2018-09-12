@@ -1,0 +1,12 @@
+#package 
+git
+mlocate
+wget
+vim
+bind-utils
+net-tools
+deltarpm
+nfs-utils
+#ansible
+@core
+redhat-access-insights
