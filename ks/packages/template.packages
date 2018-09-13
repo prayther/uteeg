@@ -5,6 +5,7 @@ wget
 vim
 bind-utils
 net-tools
+screen
 deltarpm
 nfs-utils
 #ansible

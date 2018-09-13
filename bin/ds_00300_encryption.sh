@@ -113,10 +113,13 @@ systemctl status dirsrv-admin
 echo 'P@\$\$w0rd' > /root/openssl_password.txt
 chown root.root /root/openssl_password.txt
 chmod 400 /root/openssl_password.txt
-openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pass file:/root/openssl_password.txt
+#openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pass file:/root/openssl_password.txt
+#openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pkeyopt rsa_keygen_bits:2048 -pass:P@$$w0rd
+openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pkeyopt rsa_keygen_bits:2048 -pass file:/root/openssl_password.txt
 
 #4.7.2.2. Creating a Self-signed Certificate
-openssl req -new -x509 -key /etc/pki/CA/privkey.pem -out /etc/pki/CA/selfcert.pem -days 366 -subj "/C=US/ST=North Carolina/L=Default/O=Default/OU=Default"
+openssl req -new -x509 -key /etc/pki/CA/privkey.pem -out /etc/pki/CA/selfcert.pem -days 366 -subj "/C=US/ST=North Carolina/L=Default/O=Global Security/OU=IT Department/CN=example.org"
+#openssl req -new -x509 -key /etc/pki/CA/privkey.pem -out /etc/pki/CA/selfcert.pem -days 366
 
 #Table 12.2. certutil Examples
 #Creates a self-signed CA certificate.
@@ -212,9 +215,11 @@ nsSSL3Ciphers: +all
 #restart
 systemctl restart dirsrv@ds-stig
 systemctl status dirsrv@ds-stig
+systemctl restart dirsrv-admin
+systemctl status dirsrv-admin
+
 
 #display encryption cert info
-ldapsearch -H ldap://localhost:389 -D 'cn=Directory Manager' -W -Z -b 'cn=encryption,cn=config' -x
 certutil -K -d /etc/dirsrv/slapd-ds-stig
 certutil -L -d /etc/dirsrv/slapd-ds-stig/ -n server-cert
 
@@ -231,56 +236,8 @@ ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W
 #9.5. Displaying the Encryption Protocols Enabled in Directory Server
 ldapsearch -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x -s base -b 'cn=encryption,cn=config' sslVersionMin sslVersionMax
 
-#E.2.7.1.1. Using the Directory Server Private Key and Certificate for the Admin Server
-systemctl stop dirsrv-admin
-systemctl stop dirsrv@ds-stig
-
-#List the contents of the Directory Server NSS database:
-certutil -L -d /etc/dirsrv/admin-serv/
-
-#Setup https for console
-#Export the private key and certificate with the name server-cert from the Directory Server's PKI database:
-pk12util -o /tmp/keys.pk12 -n server-cert -d /etc/dirsrv/slapd-ds-stig/
-
-#Import the private key and certificate into the Administration Server's PKI database:
-pk12util -i /tmp/keys.pk12 -d /etc/dirsrv/admin-serv/
-
-#Trust the Demo CA:
-certutil -M -d /etc/dirsrv/admin-serv/ -n "server-cert" -t CT,,
-
-#Delete the temporarily exported file:
-rm -f /tmp/keys.pk12
-
-#start services
-systemctl restart dirsrv@ds-stig
-systemctl restart dirsrv-admin
-
-#Create a password file named password.conf. The file should include a line with the token name and password, in the form token:password
-#identify the admin user
-cd /etc/dirsrv/admin-serv/
-grep \^User console.conf
-#User dirsrv
-
-echo 'internal:P@$$w0rd' > /etc/dirsrv/admin-serv/password.conf
-chown dirsrv.dirsrv /etc/dirsrv/admin-serv/password.conf
-chmod 0400 /etc/dirsrv/admin-serv/password.conf
-
-/bin/sed '/^NSSPassPhraseDialog/ s/builtin/file\:\/\/etc\/dirsrv\/admin-serv\/password.conf/g' /etc/dirsrv/admin-serv/nss.conf > /etc/dirsrv/admin-serv/nss.conf.sed
-/bin/cp /etc/dirsrv/admin-serv/nss.conf /etc/dirsrv/admin-serv/nss.conf.orig
-/bin/cp /etc/dirsrv/admin-serv/nss.conf.sed /etc/dirsrv/admin-serv/nss.conf
-
-#systemctl enable dirsrv-admin.service
-systemctl restart dirsrv-admin.service
-systemctl status dirsrv-admin.service
-
-#9.8.1. Setting up Certificate-based User Authentication
-#https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html-single/administration_guide/#Managing_Replication-Configuring_Multi_Master_Replication
 
 COMMENT
-
-#systemctl enable dirsrv@ds-stig
-systemctl restart dirsrv@ds-stig
-systemctl status dirsrv@ds-stig
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
