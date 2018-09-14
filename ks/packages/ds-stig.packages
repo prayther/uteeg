@@ -6,6 +6,8 @@ vim
 bind-utils
 deltarpm
 nfs-utils
+screen
+yum-utils
 #ansible
 @core
 redhat-access-insights

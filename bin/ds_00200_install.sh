@@ -172,6 +172,38 @@ ConfigFile=                     /tmp/ds1/ds-network.ldif
 
 EOF
 
+cat << "EOF" > /root/ds/ds-network.ldif
+# ###
+# ds-network.ldif
+# ###
+
+dn: cn=config
+changetype: modify
+replace: nsslapd-port
+nsslapd-port: 389
+
+dn: cn=config
+changetype: modify
+replace: nsslapd-secureport
+nsslapd-secureport: 636
+
+dn: cn=config
+changetype: modify
+replace: nsslapd-listenhost
+nsslapd-listenhost: ds-stig.example.org
+
+dn: cn=config
+changetype: modify
+replace: nsslapd-securelistenhost
+nsslapd-securelistenhost: ds-stig.example.org
+
+dn: cn=config
+changetype: modify
+replace: nsslapd-saslpath
+nsslapd-saslpath: /etc/dirsrv/slapd-ds1/sasl2
+
+EOF
+
 #/usr/bin/sed -i "s/<DC1>/${DC1}/g" /root/ds.config
 #/usr/bin/sed -i "s/<DC2>/${DC2}/g" /root/ds.config
 #/usr/bin/sed -i "s/<IP>/${IP}/g" /root/ds.config
