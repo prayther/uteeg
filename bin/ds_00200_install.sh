@@ -168,7 +168,7 @@ sbindir=                        /usr/sbin
 schema_dir=                     /etc/dirsrv/slapd-ds1/schema
 sysconfdir=                     /etc
 tmp_dir=                        /tmp
-ConfigFile=                     /tmp/ds1/ds-network.ldif
+ConfigFile=                     /root/ds/ds-network.ldif
 
 EOF
 
