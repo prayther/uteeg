@@ -128,6 +128,8 @@ DC2=$(echo ${DOMAIN} | awk -F. '{print $2}')
 #cmd has_value MEDIA
 #cmd has_value NETWORK
 
+mkdir /root/ds
+
 cat << "EOF" > /root/ds/setup.inf
 # ###
 # setup.inf:
