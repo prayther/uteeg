@@ -83,8 +83,8 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
-yum -y install redhat-ds 389-ds-base-snmp
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm # just need this for facter. ugh.
+yum -y install redhat-ds python-ldap python-netifaces gnutls-utils
+#yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm # just need this for facter. ugh.
 
 firewall-cmd --permanent --add-port={389/tcp,636/tcp,9830/tcp}
 firewall-cmd --reload
@@ -128,51 +128,56 @@ DC2=$(echo ${DOMAIN} | awk -F. '{print $2}')
 #cmd has_value MEDIA
 #cmd has_value NETWORK
 
-cat << "EOF" > /root/ds.config
+cat << "EOF" > /root/ds/setup.inf
+# ###
+# setup.inf:
+# ###
+
 [General]
-FullMachineName=         <VMNAME>.<DOMAIN>
-SuiteSpotUserID=         dirsrv
-SuiteSpotGroup=          dirsrv
-AdminDomain=             <DOMAIN>
-ConfigDirectoryAdminID=  admin
-ConfigDirectoryAdminPwd= P@$$w0rd
-ConfigDirectoryLdapURL=  ldap://<VMNAME>.<DOMAIN>:389/o=NetscapeRoot
+FullMachineName=                ds-stig.example.org
+ServerRoot=                     /usr/lib64/dirsrv
+SuiteSpotGroup=                 dirsrv
+SuiteSpotUserID=                dirsrv
+
 [slapd]
-SlapdConfigForMC=        Yes
-UseExistingMC=           0
-ServerPort=              389
-ServerIdentifier=        <VMNAME>
-Suffix=                  dc=<DC1>,dc=<DC2>
-RootDN=                  cn="Directory Manager"
-RootDNPwd=               P@$$w0rd
-InstallLdifFile=         suggest
-AddOrgEntries=           Yes
-[admin]
-SysUser=                 dirsrv
-Port=                    9830
-ServerIpAddress=         <IP>
-ServerAdminID=           admin
-ServerAdminPwd=          P@$$w0rd
+AddOrgEntries=                  Yes
+AddSampleEntries=               No
+InstallLdifFile=                suggest
+RootDN=                         cn=Directory Manager
+RootDNPwd=                      {SSHA}ayg7sGDCaUMtCKwztHozfApAA10=
+ServerIdentifier=               ds1
+ServerPort=                     11389
+Suffix=                         dc=ds1
+bak_dir=                        /var/lib/dirsrv/slapd-ds1/bak
+bindir=                         /usr/bin
+cert_dir=                       /etc/dirsrv/slapd-ds1
+config_dir=                     /etc/dirsrv/slapd-ds1
+datadir=                        /usr/share
+db_dir=                         /var/lib/dirsrv/slapd-ds1/db
+ds_bename=                      userRoot
+inst_dir=                       /usr/lib64/dirsrv/slapd-ds1
+ldif_dir=                       /var/lib/dirsrv/slapd-ds1/ldif
+localstatedir=                  /var
+lock_dir=                       /var/lock/dirsrv/slapd-ds1
+log_dir=                        /var/log/dirsrv/slapd-ds1
+naming_value=                   test
+run_dir=                        /var/run/dirsrv
+sbindir=                        /usr/sbin
+schema_dir=                     /etc/dirsrv/slapd-ds1/schema
+sysconfdir=                     /etc
+tmp_dir=                        /tmp
+ConfigFile=                     /tmp/ds1/ds-network.ldif
+
 EOF
 
-/usr/bin/sed -i "s/<DC1>/${DC1}/g" /root/ds.config
-/usr/bin/sed -i "s/<DC2>/${DC2}/g" /root/ds.config
-/usr/bin/sed -i "s/<IP>/${IP}/g" /root/ds.config
-/usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
-/usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
+#/usr/bin/sed -i "s/<DC1>/${DC1}/g" /root/ds.config
+#/usr/bin/sed -i "s/<DC2>/${DC2}/g" /root/ds.config
+#/usr/bin/sed -i "s/<IP>/${IP}/g" /root/ds.config
+#/usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
+#/usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
 
-# cleanup to do reinstall
-#pkill dirsrv
-#pkill httpd
-#pkill ns-slapd
+/usr/sbin/setup-ds.pl -s -d -f /root/ds/setup.inf
 
-#rm -rf /etc/dirsrv
-#/usr/bin/yum -y reinstall redhat-ds 389-ds-console 389-console 389-admin 389-admin-console 389-ds-base
-
-setup-ds-admin.pl --file=/root/ds.config -d --continue --silent --keepcache
-
-#systemctl enable dirsrv@${VMNAME}
-#systemctl enable dirsrv-admin
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"

@@ -83,12 +83,6 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
-yum -y install redhat-ds 389-ds-base-snmp
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm # just need this for facter. ugh.
-
-firewall-cmd --permanent --add-port={389/tcp,636/tcp,9830/tcp}
-firewall-cmd --reload
-
 #this set vars per vm from hosts file based on $1, vmname used to launch this script
 #use ^ in search to make sure you're not getting comments #
 inputfile=../etc/hosts
@@ -161,12 +155,98 @@ EOF
 /usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
 /usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
 
-remove-ds.pl -fi slapd-ds1
+#15.2.1. Configuring Suppliers from the Command Line
+#https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html-single/administration_guide/#Configuring-Replication-Suppliers-cmd
+#On the supplier server, use ldapmodify to create the changelog entry.
+
+#supplier of replication
+ldapmodify -D "cn=Directory Manager" -W -x -h ds-stig.example.org -v -a
+dn: cn=changelog5,cn=config
+changetype: add
+objectclass: top
+objectclass: extensibleObject
+cn: changelog5
+nsslapd-changelogdir: /var/lib/dirsrv/slapd-ds-stig/changelogdb
+nsslapd-changelogmaxage: 10d
+
+#Create the supplier replica.
+ldapmodify -D "cn=Directory Manager" -W -x -h ds-stig.example.org -v -a
+dn: cn=replica,cn=dc\=example\,dc\=org,cn=mapping tree,cn=config
+changetype: add
+objectclass: top
+objectclass: nsds5replica
+objectclass: extensibleObject
+cn: replica
+nsds5replicaroot: dc=example,dc=org
+nsds5replicaid: 7
+nsds5replicatype: 3
+nsds5flags: 1
+nsds5ReplicaPurgeDelay: 604800
+nsds5ReplicaBindDN: cn=replication manager,cn=config
+
+#15.2.4. Configuring Replication Agreements from the Command Line
+ldapmodify -D "cn=Directory Manager" -W -x -h ds-stig.example.org -v -a
+dn: cn=ExampleAgreement,cn=replica,cn=dc\=example\,dc\=org,cn=mapping tree,cn=config
+objectclass: top
+objectclass: nsds5ReplicationAgreement
+cn: ExampleAgreement
+nsds5replicahost: ds-repl
+nsds5replicaport: 389
+nsds5ReplicaBindDN: cn=replication manager,cn=config
+nsds5replicabindmethod: SIMPLE
+nsds5replicaroot: dc=example,dc=org
+description: agreement between ds-stig and ds-repl
+nsds5replicaupdateschedule: 0000-0500 1
+nsds5replicatedattributelist: (objectclass=*) $ EXCLUDE authorityRevocationList accountUnlockTime memberof
+nsDS5ReplicatedAttributeListTotal: (objectclass=*) $ EXCLUDE accountUnlockTime
+nsds5replicacredentials: P@$$w0rd
+
+#status
+ldapsearch -D "cn=Directory Manager" -W -p 389 -h ds-repl.example.org -b "cn=ExampleAgreement,cn=replica,cn=dc\=example\,dc\=org,cn=mapping tree,cn=config" nsds5replicaLastUpdateStatus
+
+#15.2.5. Initializing Consumers Online from the Command Line
+ldapmodify -D "cn=Directory Manager" -W -x -h ds-stig.example.org -v -a
+dn: cn=ExampleAgreement,cn=replica,cn=dc\=example\,dc\=org,cn=mapping tree,cn=config
+changetype: modify
+replace: nsds5BeginReplicaRefresh
+nsds5BeginReplicaRefresh: start
+
+systemctl restart dirsrv@ds-stig
+systemctl status dirsrv@ds-stig
+systemctl restart dirsrv-admin
+systemctl status dirsrv-admin
 
 
 
-#systemctl enable dirsrv-admin
-#systemctl enable dirsrv@${VMNAME}
+#here down is for consumer of the replication
+#Create the replica entry:
+ldapadd -D "cn=Directory Manager" -W -p 389 -h ds-repl.example.org -x
+dn: cn=replica,cn=dc\=example\,dc\=org,cn=mapping tree,cn=config
+objectclass: top
+objectclass: nsds5replica
+objectclass: extensibleObject
+cn: replica
+nsds5replicaroot: dc=example,dc=org
+nsds5replicaid: 65535
+nsds5replicatype: 2
+nsds5ReplicaBindDN: cn=replication manager,cn=config
+nsds5flags: 0
+
+ldapadd -D "cn=Directory Manager" -W -p 389 -h ds-repl.example.org -x
+dn: cn=dc\=example\,dc\=org,cn=mapping tree,cn=config
+changetype: modify
+replace: nsslapd-referral
+nsslapd-referral: ldap://ds-stig.example.org:389/dc\=example\,dc\=org
+-
+replace: nsslapd-state
+nsslapd-state: referral on update
+
+
+systemctl restart dirsrv@ds-repl
+systemctl status dirsrv@ds-repl
+systemctl restart dirsrv-admin
+systemctl status dirsrv-admin
+
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
