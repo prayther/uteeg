@@ -128,6 +128,11 @@ DC2=$(echo ${DOMAIN} | awk -F. '{print $2}')
 #cmd has_value MEDIA
 #cmd has_value NETWORK
 
+#if reinstall...
+if [ -f /usr/sbin/remove-ds.pl ];then
+	/usr/sbin/remove-ds.pl -fi slapd-ds1
+fi
+
 mkdir /root/ds
 
 cat << "EOF" > /root/ds/setup.inf

@@ -119,7 +119,8 @@ openssl verify /root/ds/pki/ca_server.pem
 
 ##9.3.3.1. Installing a CA Certificate Using the Command Line
 printf P@\$\$w0rd > /root/ds/password.txt
-certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "CT,C,C" -i /root/ds/pki/ca_server.pem -f /root/ds/password
+chmod 400 /root/ds/password.txt
+certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "CT,C,C" -i /root/ds/pki/ca_server.pem -f /root/ds/password.txt
 
 #verify that the generated certificate is self-signed:
 certutil -L -d /etc/dirsrv/slapd-ds1/ -n ca-cert | egrep "Issuer|Subject"
@@ -149,7 +150,7 @@ cn: RSA
 objectClass: top
 objectClass: nsEncryptionModule
 nsSSLToken: internal (software)
-nsSSLPersonalitySSL: server-cert
+nsSSLPersonalitySSL: ca-cert
 nsSSLActivation: on
 EOF
 
