@@ -1,5 +1,6 @@
 #!/bin/bash -x
 
+screen -dm
 
 if [ -z "${1}" ];then
   echo ""
