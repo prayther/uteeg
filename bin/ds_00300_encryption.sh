@@ -120,10 +120,16 @@ openssl verify /root/ds/pki/ca_server.pem
 ##9.3.3.1. Installing a CA Certificate Using the Command Line
 printf P@\$\$w0rd > /root/ds/password.txt
 chmod 400 /root/ds/password.txt
-certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "CT,C,C" -i /root/ds/pki/ca_server.pem -f /root/ds/password.txt
+certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "T,," -i /root/ds/pki/ca_server.pem -f /root/ds/password.txt
 
 #verify that the generated certificate is self-signed:
-certutil -L -d /etc/dirsrv/slapd-ds1/ -n ca-cert | egrep "Issuer|Subject"
+#certutil -L -d /etc/dirsrv/slapd-ds1/ -n ca-cert | egrep "Issuer|Subject"
+
+#Import the certificate. For example to import the certificate stored in the /root/instance_name.crt file:
+certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t ",," -i /root/ds/pki/ldap_server.key -f /root/ds/password.txt
+
+#verify the certificate:
+certutil -d /etc/dirsrv/slapd-ds1/ -V -n "ca-cert" -u V
 
 #9.4.1.5. Creating a Password File for Directory_Server
 echo "Internal (Software) Token:P@\$\$w0rd" >> /etc/dirsrv/slapd-ds1/pin.txt
@@ -166,8 +172,8 @@ ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W
 #restart
 systemctl restart dirsrv@ds1
 systemctl status dirsrv@ds1
-systemctl restart dirsrv-admin
-systemctl status dirsrv-admin
+#systemctl restart dirsrv-admin
+#systemctl status dirsrv-admin
 
 <<COMMENT
 echo 'P@$$w0rd' >/root/password.txt

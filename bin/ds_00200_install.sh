@@ -128,13 +128,6 @@ DC2=$(echo ${DOMAIN} | awk -F. '{print $2}')
 #cmd has_value MEDIA
 #cmd has_value NETWORK
 
-#if reinstall...
-if [ -f /usr/sbin/remove-ds.pl ];then
-	/usr/sbin/remove-ds.pl -fi slapd-ds1
-fi
-
-mkdir /root/ds
-
 cat << "EOF" > /root/ds/setup.inf
 # ###
 # setup.inf:
@@ -215,8 +208,17 @@ EOF
 #/usr/bin/sed -i "s/<VMNAME>/${VMNAME}/g" /root/ds.config
 #/usr/bin/sed -i "s/<DOMAIN>/${DOMAIN}/g" /root/ds.config
 
+#if reinstall...
+if [ -f /usr/sbin/remove-ds.pl ];then
+        /usr/sbin/remove-ds.pl -fi slapd-ds1
+fi
+
+mkdir -p /root/ds/pki
+
 /usr/sbin/setup-ds.pl -s -d -f /root/ds/setup.inf
 
+systemctl restart dirsrv@ds1
+systemctl status dirsrv@ds1
 
 echo "###INFO: Finished $0"
 echo "###INFO: $(date)"
