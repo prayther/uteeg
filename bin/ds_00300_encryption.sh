@@ -222,7 +222,7 @@ cat /etc/pki/CA/selfcert.pem >> /etc/pki/tls/certs/ca-bundle.crt
 openssl verify /etc/pki/CA/selfcert.pem
 
 #9.3.3.1. Installing a CA Certificate Using the Command Line
-certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "C,," -i /etc/pki/CA/selfcert.pem -f /root/password.txt
+certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "C,," -i /etc/pki/CA/selfcert.pem
 
 #verify the certificate:
 certutil -d /etc/dirsrv/slapd-ds1/ -V -n "ca-cert" -u V
