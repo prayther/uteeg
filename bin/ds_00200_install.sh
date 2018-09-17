@@ -129,6 +129,8 @@ DC2=$(echo ${DOMAIN} | awk -F. '{print $2}')
 #cmd has_value MEDIA
 #cmd has_value NETWORK
 
+mkdir -p /root/ds/pki
+
 cat << "EOF" > /root/ds/setup.inf
 # ###
 # setup.inf:
@@ -213,8 +215,6 @@ EOF
 if [ -f /usr/sbin/remove-ds.pl ];then
         /usr/sbin/remove-ds.pl -fi slapd-ds1
 fi
-
-mkdir -p /root/ds/pki
 
 /usr/sbin/setup-ds.pl -s -d -f /root/ds/setup.inf
 
