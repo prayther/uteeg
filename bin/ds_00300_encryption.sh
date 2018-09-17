@@ -156,11 +156,11 @@ cn: RSA
 objectClass: top
 objectClass: nsEncryptionModule
 nsSSLToken: internal (software)
-nsSSLPersonalitySSL: ca-cert
+nsSSLPersonalitySSL: server-cert
 nsSSLActivation: on
 EOF
 
-ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x -y /root/ds/password.txt -f /root/ds/tls.ldif
+ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x -y /root/ds/password.txt -f /root/ds/cipher.ldif
 
 certutil -K -d /etc/dirsrv/slapd-ds1
 certutil -L -d /etc/dirsrv/slapd-ds1/ -n ca-cert
@@ -176,16 +176,18 @@ systemctl status dirsrv@ds1
 #systemctl status dirsrv-admin
 
 <<COMMENT
-echo 'P@$$w0rd' >/root/password.txt
+#echo 'P@$$w0rd' >/root/password.txt
+printf P@\$\$w0rd > /root/ds/password.txt
+chmod 400 /root/ds/password.txt
+
 
 #restart to confirm things work now.
 systemctl restart dirsrv@ds-stig
 systemctl status dirsrv@ds-stig
-systemctl restart dirsrv-admin
-systemctl status dirsrv-admin
 
 #9.3.1.1. Creating the NSS Database Using the Command Line
-/usr/bin/certutil -d /etc/dirsrv/slapd-ds1/ -N -f /root/password.txt
+#/usr/bin/certutil -d /etc/dirsrv/slapd-ds1/ -N -f /root/password.txt
+/usr/bin/certutil -d /etc/dirsrv/slapd-ds1/ -N
 
 #Chapter 11. Managing FIPS Mode Support
 #https://access.redhat.com/documentation/en-us/red_hat_directory_server/10/html-single/administration_guide/#Managing_FIPS_mode_support
