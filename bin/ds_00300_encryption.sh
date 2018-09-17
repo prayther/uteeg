@@ -205,7 +205,8 @@ modutil -dbdir /etc/dirsrv/slapd-ds1/ -fips true
 echo 'P@\$\$w0rd' > /root/openssl_password.txt
 chown root.root /root/openssl_password.txt
 chmod 400 /root/openssl_password.txt
-openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pkeyopt rsa_keygen_bits:2048 -pass file:/root/openssl_password.txt
+#openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pkeyopt rsa_keygen_bits:2048 -pass file:/root/openssl_password.txt
+openssl genpkey -algorithm RSA -out /etc/pki/CA/privkey.pem -pkeyopt rsa_keygen_bits:2048
 
 #4.7.2.2. Creating a Self-signed Certificate
 openssl req -new -x509 -key /etc/pki/CA/privkey.pem -out /etc/pki/CA/selfcert.pem -days 366 -subj "/C=US/ST=North Carolina/L=Default/O=Global Security/OU=IT Department/CN=example.org"

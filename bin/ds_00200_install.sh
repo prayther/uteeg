@@ -147,7 +147,7 @@ AddOrgEntries=                  Yes
 AddSampleEntries=               No
 InstallLdifFile=                suggest
 RootDN=                         cn=Directory Manager
-RootDNPwd=                      {SSHA}ayg7sGDCaUMtCKwztHozfApAA10=
+RootDNPwd=                      P@$$w0rd
 ServerIdentifier=               ds1
 ServerPort=                     11389
 Suffix=                         dc=ds1
