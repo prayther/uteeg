@@ -293,6 +293,18 @@ subscribe_ds () {
   /usr/bin/yum -y update
 }
 
+subscribe_pace () {
+  /usr/sbin/subscription-manager unregister
+  /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+  /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Employee SKU' --pool-only | head -n 1)
+  /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-ha-for-rhel-7-server-rpms --enable=rhel-rs-for-rhel-7-server-rpms --enable=rhel-7-server-extras-rpms
+
+  #Clean, update
+  /usr/bin/yum clean all
+  rm -rf /var/cache/yum
+  /usr/bin/yum -y update
+}
+
 
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "ds" ]];then
   subscribe_ds
@@ -332,6 +344,9 @@ if [[ $(hostname -s | awk -F"0" '{print $2}') = "tower" ]];then
 fi
 if [[ $(hostname -s | awk -F"0" '{print $1}') = "ose" ]];then
   subscribe_ose
+fi
+if [[ $(hostname -s | awk -F"0" '{print $1}') = "pace" ]];then
+  subscribe_pace
 fi
 
 #setup snmp

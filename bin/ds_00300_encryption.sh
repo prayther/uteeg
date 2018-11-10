@@ -111,7 +111,7 @@ certtool -s --load-privkey /root/ds/pki/ca_server.key --template /root/ds/pki/ca
 certtool -p --sec-param high --outfile /root/ds/pki/ldap_server.key
 
 #Once we have the private key for the LDAP server, we have everything we need to generate a certificate for the server. We will need to pull in almost all of the components we've created thus far (the CA certificate and key, the LDAP server key, and the LDAP server template).
-certtool -c --load-privkey /root/ds/pki/ldap_server.key --load-ca-certificate /root/ds/pki/ca_server.pem --load-ca-privkey /root/ds/pki/ca_server.key --template /root/ds/ldap_server.conf --outfile /root/ds/pki/ldap_server.pem
+certtool -c --load-privkey /root/ds/pki/ldap_server.key --load-server-certificate /root/ds/pki/ca_server.pem --load-ca-privkey /root/ds/pki/ca_server.key --template /root/ds/ldap_server.conf --outfile /root/ds/pki/ldap_server.pem
 
 #4.7.1 add to bundle and Verifying Certificates
 cat /root/ds/pki/ca_server.pem  >> /etc/pki/tls/certs/ca-bundle.crt
@@ -120,16 +120,16 @@ openssl verify /root/ds/pki/ca_server.pem
 ##9.3.3.1. Installing a CA Certificate Using the Command Line
 printf P@\$\$w0rd > /root/ds/password.txt
 chmod 400 /root/ds/password.txt
-certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "T,," -i /root/ds/pki/ca_server.pem -f /root/ds/password.txt
+certutil -d /etc/dirsrv/slapd-ds1/ -A -n "server-cert" -t "T,," -i /root/ds/pki/ca_server.pem -f /root/ds/password.txt
 
 #verify that the generated certificate is self-signed:
-#certutil -L -d /etc/dirsrv/slapd-ds1/ -n ca-cert | egrep "Issuer|Subject"
+#certutil -L -d /etc/dirsrv/slapd-ds1/ -n server-cert | egrep "Issuer|Subject"
 
 #Import the certificate. For example to import the certificate stored in the /root/instance_name.crt file:
-certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t ",," -i /root/ds/pki/ldap_server.key -f /root/ds/password.txt
+certutil -d /etc/dirsrv/slapd-ds1/ -A -n "server-cert" -t ",," -i /root/ds/pki/ldap_server.key -f /root/ds/password.txt
 
 #verify the certificate:
-certutil -d /etc/dirsrv/slapd-ds1/ -V -n "ca-cert" -u V
+certutil -d /etc/dirsrv/slapd-ds1/ -V -n "server-cert" -u V
 
 #9.4.1.5. Creating a Password File for Directory_Server
 echo "Internal (Software) Token:P@\$\$w0rd" >> /etc/dirsrv/slapd-ds1/pin.txt
@@ -163,7 +163,7 @@ EOF
 ldapmodify -D "cn=Directory Manager" -W -p 389 -h ds-stig.example.org -x -y /root/ds/password.txt -f /root/ds/cipher.ldif
 
 certutil -K -d /etc/dirsrv/slapd-ds1
-certutil -L -d /etc/dirsrv/slapd-ds1/ -n ca-cert
+certutil -L -d /etc/dirsrv/slapd-ds1/ -n server-cert
 
 #Displaying the Ciphers Directory_Server Uses
 ldapsearch -xLLL -H ldap://ds-stig.example.org:389 -D "cn=Directory Manager" - W -b 'cn=encryption,cn=config' -s base nsSSLEnabledCiphers -o ldif-wrap=no -W -y /root/ds/password.txt
@@ -225,10 +225,10 @@ cat /etc/pki/CA/selfcert.pem >> /etc/pki/tls/certs/ca-bundle.crt
 openssl verify /etc/pki/CA/selfcert.pem
 
 #9.3.3.1. Installing a CA Certificate Using the Command Line
-certutil -d /etc/dirsrv/slapd-ds1/ -A -n "ca-cert" -t "C,," -i /etc/pki/CA/selfcert.pem
+certutil -d /etc/dirsrv/slapd-ds1/ -A -n "server-cert" -t "C,," -i /etc/pki/CA/selfcert.pem
 
 #verify the certificate:
-certutil -d /etc/dirsrv/slapd-ds1/ -V -n "ca-cert" -u V
+certutil -d /etc/dirsrv/slapd-ds1/ -V -n "server-cert" -u V
 
 #Verify if the Network Security Services (NSS) database is already initialized:
 certutil -d /etc/dirsrv/slapd-ds1 -L
