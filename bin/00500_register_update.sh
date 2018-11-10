@@ -345,7 +345,7 @@ fi
 if [[ $(hostname -s | awk -F"0" '{print $1}') = "ose" ]];then
   subscribe_ose
 fi
-if [[ $(hostname -s | awk -F"0" '{print $1}') = "pace" ]];then
+if [[ $(hostname -s | awk -F"-" '{print $1}') = "pace" ]];then
   subscribe_pace
 fi
 
