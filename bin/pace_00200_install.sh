@@ -54,9 +54,14 @@ systemctl enable pcsd.service
 #z1.example.com: Authorized
 #z2.example.com: Authorized
 
+pcs cluster auth pace-01.example.org pace-02.example.org -u hacluster -p password
+
 #[root@z1 ~]# pcs cluster setup --start --name my_cluster \
 #z1.example.com z2.example.com
 
-#pcs cluster enable --all
+pcs cluster setup --start --name my_cluster \
+	pace-01.example.org pace-02.example.org
 
-#pcs cluster status
+pcs cluster enable --all
+
+pcs cluster status
