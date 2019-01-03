@@ -64,4 +64,22 @@ pcs cluster setup --start --name my_cluster \
 
 pcs cluster enable --all
 
+mkdir -p /etc/cluster
+
+#on kvm host
+#dnf install fence-virt fence-virtd fence-virtd-libvirt fence-virtd-multicast fence-virtd-serial
+
+#mkdir -p /etc/cluster
+#cd /etc/cluster/
+#dd if=/dev/urandom of=/etc/cluster/fence_xvm.key bs=4k count=1
+#scp -r /etc/cluster/fence_xvm.key root@pace-01:/etc/cluster/fence_xvm.key
+#scp -r /etc/cluster/fence_xvm.key root@pace-02:/etc/cluster/fence_xvm.key
+
+
+pcs resource create ClusterIP ocf:heartbeat:IPaddr2 \
+    ip=10.0.0.42 cidr_netmask=24 op monitor interval=30s
+
+#disable fencing for testing
+pcs property set stonith-enabled=false
+
 pcs cluster status
