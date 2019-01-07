@@ -62,13 +62,36 @@ if [[ $(id -u) != "0" ]];then
         exit 1
 fi
 
-#https://access.redhat.com/documentation/en-us/openshift_container_platform/3.11/html-single/installing_clusters/#installing-base-packages
-yum -y install openshift-ansible docker-1.13.1 atomic wget git net-tools bind-utils yum-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
+#https://developers.redhat.com/products/cdk/hello-world/#fndtn-rhel
+cd /etc/pki/rpm-gpg
+wget -O RPM-GPG-KEY-redhat-devel https://www.redhat.com/security/data/a5787476.txt
+rpm --import RPM-GPG-KEY-redhat-devel
 
-#https://access.redhat.com/documentation/en-us/openshift_container_platform/3.11/html-single/installing_clusters/#configuring-docker-thin-pool
-docker-storage-setup
-cat /etc/sysconfig/docker-storage
-systemctl enable docker
-systemctl start docker
+yum -y install cdk-minishift docker-machine-kvm
 
-atomic trust show
+minishift setup-cdk
+
+export MINISHIFT_USERNAME=rhn-gps-apraythe
+echo export MINISHIFT_USERNAME=$MINISHIFT_USERNAME >> ~/.bashrc
+
+minishift start
+
+minishift console
+minishift console --url
+
+#After the minishift VM has been started, you need to add oc to your PATH. The oc command must match the version of the OpenShift cluster that is running inside of the Red Hat VM. The following command sets the correct version dynamically by running minishift oc-env and parsing the output.
+eval $(minishift oc-env)
+
+#Stopping minishift and the CDK life-cycle
+#You can stop the minishift VM with the command:
+
+#minishift stop
+#You can restart it again with:
+
+#minishift start
+#If necessary, you can delete the VM to start over with a clean VM using:
+
+#minishift delete
+#You won't need to run minishift setup-cdk again unless you delete the contents of ~/.minishift. You can learn more in the CDK life-cycle section of the CDK Getting Started Guide.
+
+
