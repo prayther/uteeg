@@ -70,6 +70,15 @@ rpm --import RPM-GPG-KEY-redhat-devel
 yum -y install cdk-minishift docker-machine-kvm
 
 minishift setup-cdk
+#Setting up CDK 3 on host using '/root/.minishift' as Minishift's home directory
+#Copying minishift-rhel7.iso to '/root/.minishift/cache/iso/minishift-rhel7.iso'
+#Copying oc to '/root/.minishift/cache/oc/v3.11.43/linux/oc'
+#Creating configuration file '/root/.minishift/config/config.json'
+#Creating marker file '/root/.minishift/cdk'
+#Default add-ons anyuid, admin-user, xpaas, registry-route, che, htpasswd-identity-provider, eap-cd installed
+#Default add-ons anyuid, admin-user, xpaas enabled
+#CDK 3 setup complete.
+
 
 export MINISHIFT_USERNAME=rhn-gps-apraythe
 echo export MINISHIFT_USERNAME=$MINISHIFT_USERNAME >> ~/.bashrc
@@ -94,4 +103,5 @@ eval $(minishift oc-env)
 #minishift delete
 #You won't need to run minishift setup-cdk again unless you delete the contents of ~/.minishift. You can learn more in the CDK life-cycle section of the CDK Getting Started Guide.
 
-
+#https://developers.redhat.com/articles/cdk-nodejs-openshift-web-console/
+oc new-app https://github.com/openshift/nodejs-ex
