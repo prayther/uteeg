@@ -83,10 +83,12 @@ minishift setup-cdk
 export MINISHIFT_USERNAME=rhn-gps-apraythe
 echo export MINISHIFT_USERNAME=$MINISHIFT_USERNAME >> ~/.bashrc
 
+systemctl start libvirtd
+systemctl status libvirtd
 minishift start
 
-minishift console
-minishift console --url
+#minishift console
+#minishift console --url
 
 #After the minishift VM has been started, you need to add oc to your PATH. The oc command must match the version of the OpenShift cluster that is running inside of the Red Hat VM. The following command sets the correct version dynamically by running minishift oc-env and parsing the output.
 eval $(minishift oc-env)
