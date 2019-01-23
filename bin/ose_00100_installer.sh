@@ -83,6 +83,8 @@ minishift setup-cdk
 export MINISHIFT_USERNAME=rhn-gps-apraythe
 echo export MINISHIFT_USERNAME=$MINISHIFT_USERNAME >> ~/.bashrc
 
+#grub.conf intel_iommu=on iommu=pt
+
 systemctl start libvirtd
 systemctl status libvirtd
 minishift start
