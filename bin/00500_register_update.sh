@@ -160,6 +160,26 @@ subscribe_sat63 () {
         /usr/bin/yum -y update
 }
 
+subscribe_sat64 () {
+        CA_CONSUMER_RPM=$(rpm -qa | grep katello-ca-consumer)
+        rpm -e "${CA_CONSUMER_RPM}"
+        #rpm -qa | grep katello-ca-consumer || rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+        rpm -Uvh /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm
+        /usr/sbin/subscription-manager clean
+        /usr/sbin/subscription-manager unregister
+        #if you are unregistering from satellite and going back to cdn cp the rhsm.conf back to orig
+        cp /etc/rhsm/rhsm.conf.kat-backup /etc/rhsm/rhsm.conf
+        /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
+        /usr/sbin/subscription-manager attach --pool=$(subscription-manager list --all --available --matches 'Red Hat Satellite' --pool-only | head -n 1)
+        /usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.4-rpms
+        #/usr/sbin/subscription-manager repos '--disable=*' --enable=rhel-7-server-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-satellite-6.3-rpms --enable=rhel-7-server-satellite-6.3-puppet4-rpms
+
+        #Clean, update
+        /usr/bin/yum clean all
+        rm -rf /var/cache/yum
+        /usr/bin/yum -y update
+}
+
 subscribe_ceph () {
   /usr/sbin/subscription-manager unregister
   /usr/sbin/subscription-manager --username=$(cat /root/rhn-acct) --password=$(cat /root/passwd) register
@@ -320,6 +340,9 @@ if [[ $(hostname -s) = "sat62" ]];then
 fi
 if [[ $(hostname -s) = "sat63" ]];then
   subscribe_sat63
+fi
+if [[ $(hostname -s) = "sat64" ]];then
+  subscribe_sat64
 fi
 if [[ $(hostname -s | awk -F"-" '{print $1}') = "ceph" ]];then
   subscribe_ceph
