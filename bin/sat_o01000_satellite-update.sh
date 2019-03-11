@@ -47,13 +47,23 @@ satellite-installer --scenario satellite --upgrade
 
 # Notice adding of tftp for provisioning from capsules and the removal of Puppet
 #katello-service status || satellite-installer --scenario satellite \
+#satellite-installer --scenario satellite \
+#--foreman-initial-organization "${ORG}" \
+#--foreman-initial-location "${LOC}" \
+#--foreman-admin-username admin \
+#--foreman-admin-password password \
+#--foreman-proxy-tftp true \
+#--foreman-proxy-tftp-servername $(hostname)  #--foreman-proxy-puppetca true \ # sat62=--capsule-puppet true
+
+#update for sat64
 satellite-installer --scenario satellite \
 --foreman-initial-organization "${ORG}" \
 --foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
 --foreman-admin-password password \
+--foreman-proxy-puppetca true \
 --foreman-proxy-tftp true \
---foreman-proxy-tftp-servername $(hostname)  #--foreman-proxy-puppetca true \ # sat62=--capsule-puppet true
+--enable-foreman-plugin-discovery
 
 #Upload our manifest.zip (created in RH Portal)
 wget -P /root/ --no-clobber http://${SERVER}/ks/manifest/manifest.zip
