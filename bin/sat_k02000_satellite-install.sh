@@ -88,8 +88,10 @@ doit firewall-cmd --runtime-to-permanent
 #--foreman-proxy-dhcp-managed=false
 
 satellite-installer --scenario satellite \
+--foreman-initial-organization "${ORG}" \
+--foreman-initial-location "${LOC}" \
 --foreman-admin-username admin \
---foreman-admin-password redhat \
+--foreman-admin-password password \
 --foreman-proxy-puppetca true \
 --foreman-proxy-tftp true \
 --enable-foreman-plugin-discovery
