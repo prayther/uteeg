@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+#
+# dont' seem to need this anymore. appears that satellite creates a domain for itself based on fqdn... example.org
+#
 #https://github.com/prayther/uteeg
 #http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
 # mschreie@redhat.com
