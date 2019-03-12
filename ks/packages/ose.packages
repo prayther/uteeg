@@ -1,0 +1,19 @@
+#package 
+git
+mlocate
+wget
+vim
+bind-utils
+net-tools
+screen
+yum-utils
+#gnutls-utils
+deltarpm
+nfs-utils
+#ansible
+@core
+redhat-access-insights
+
+#in the other scripts want to add a yumdownloader section creating local rpm cache and installing from there.
+#if not exist, yumdownloader <package> else just yum install http://localhost/rpm
+#to begin with just clean them out every couple of weeks or so so they are not to old. make it better using yum check-update or something
