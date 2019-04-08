@@ -44,6 +44,7 @@ ans0tower 50 4 2048 10.0.0.23 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255
 sat0otrs 50 4 2048 10.0.0.25 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab Infra_1_Dev CV_RHEL7_Extras_Optional_EPEL
 sat0stig 50 4 2048 10.0.0.26 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab App_1_Dev CV_RHEL7_Extras_Optional_EPEL
 exop0atomic01 100 2 4096 10.0.0.28 rhel 7.4 7.3 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab App_1_Dev CV_RHEL7_Extras_Optional_EPEL
+sat58 300 2 8192 10.0.0.29 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 sat64 300 2 8192 10.0.0.29 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 cap631 300 2 8192 10.0.0.30 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 cap632 300 2 8192 10.0.0.31 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
@@ -51,7 +52,7 @@ idm 50 2 2048 10.0.0.32 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0
 ds-stig 50 2 2048 10.0.0.33 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
 #windows 10 desktop 10.0.0.34
 #rhel 7.5 desktop 10.0.0.35
-rhel-7.5 50 2 2048 10.0.0.36 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+rhel 50 2 2048 10.0.0.36 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
 #rhel 6.10 10.0.0.37
 ds-desk 50 2 2048 10.0.0.38 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
 ds-repl 50 2 2048 10.0.0.39 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
