@@ -176,7 +176,7 @@ cmd directory_exists /mnt/rhel \
 	|| cmd mkdir -pv /mnt/rhel \
 	|| die_if_false msg_failed "Line $LINENO: could not mkdir /mnt/rhel"
 cmd mount -o loop /var/www/html/uteeg/iso/"${RHEL_ISO}" /mnt/rhel \
-	|| die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /tmp and I'll mount and copy it for ks and move it to url://../iso"
+	|| die_if_false msg_failed "Line $LINENO: put "${RHEL_ISO}" in /var/www/html/uteeg/iso/ and I'll mount and copy it for ks and move it to url://../iso"
 cmd directory_exists /var/www/html/uteeg/rhel \
 	|| cmd mkdir -v /var/www/html/uteeg/rhel \
 	|| die_if_false msg_failed "Line $LINENO: could not mkdir /var/www/html/uteeg/rhel"

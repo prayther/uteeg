@@ -60,3 +60,4 @@ pace-01 50 2 2048 10.0.0.40 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.2
 pace-02 50 2 2048 10.0.0.41 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
 pace resource ip 10.0.0.42
 ose 100 2 8192 10.0.0.43 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+ans01 100 2 8192 10.0.0.44 rhel 7.6 7.6 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.6-x86_64-dvd.iso rhel laptoplab
