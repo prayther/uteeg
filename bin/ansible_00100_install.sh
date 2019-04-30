@@ -1,13 +1,47 @@
-#!/bin/bash
+#!/bin/bash -x
+
+#https://github.com/prayther/uteeg
+#http://www.opensourcerers.org/installing-and-configuring-red-hat-satellite-6-via-shell-script/
+# mschreie@redhat.com
+# setting up  a satellite for demo purposes
+# mainly following Adrian Bredshaws awsome book: http://gsw-hammer.documentation.rocks/
 
 export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
 export HOME=/root
 cd "${BASH_SOURCE%/*}"
 
-# bsfl are bash libs used in scripts in uteeg
-ls -d ~/bsfl || git clone https://github.com/SkypLabs/bsfl.git /root/bsfl
+logfile="../log/$(basename $0 .sh).log"
+donefile="../log/$(basename $0 .sh).done"
+touch $logfile
+touch $donefile
+
+exec > >(tee -a "$logfile") 2>&1
+
+echo "###INFO: Starting $0"
+echo "###INFO: $(date)"
 
 # read configuration (needs to be adopted!)
+#. ./satenv.sh
+source ../etc/virt-inst.cfg
+
+
+doit() {
+        echo "INFO: doit: $@" >&2
+        cmd2grep=$(echo "$*" | sed -e 's/\\//' | tr '\n' ' ')
+        grep -q "$cmd2grep" $donefile
+        if [ $? -eq 0 ] ; then
+                echo "INFO: doit: found cmd in donefile - skipping" >&2
+        else
+                "$@" 2>&1 || {
+                        echo "ERROR: cmd was unsuccessfull RC: $? - bailing out" >&2
+                        exit 1
+                }
+                echo "$cmd2grep" >> $donefile
+                echo "INFO: doit: cmd finished successfull" >&2
+        fi
+}
+
+
 #source etc/virt-inst.cfg
 source ../etc/virthost.cfg
 source ../etc/rhel.cfg
@@ -15,21 +49,6 @@ source ~/bsfl/lib/bsfl.sh || exit 1
 DEBUG=no
 LOG_ENABLED="yes"
 SYSLOG_ENABLED="yes"
-
-#runs or not based on hostname; ceph-?? gfs-??? sat-???
-if [[ $(hostname -s | awk -F"-" '{print $1}') -ne "ansible" ]];then
- echo ""
- echo "Need to run this on the 'gfs' node"
- echo ""
- exit 1
-fi
-
-if [[ $(hostname -s | awk -F"-" '{print $2}') -ne "admin" ]];then
- echo ""
- echo "Need to run this on the 'admin' node"
- echo ""
- exit 1
-fi
 
 if [[ $(id -u) != "0" ]];then
         echo "Must run as root"
@@ -40,49 +59,64 @@ fi
 yum -y install ansible
 ansible --version
 
-su -c "mkdir -pv ~/lab/inventory" user
+#seutp /etc/ansible/hosts file
+if [ ! -f /etc/ansible/hosts.uteeg ];then
+	cp /etc/ansible/hosts /etc/ansible/hosts.uteeg
+fi
 
-su -c "cat << "EOF" > ~/lab/ansible.cfg
-[defaults]
-remote_user = user
-inventory = inventory
+cat << "EOF" >/etc/ansible/hosts
+[webservers]
+server[a:d].lab.example.com
 
-[privilege_escalation]
-become = False
-become_method = sudo
-become_user = root
-become_ask_pass = False
-EOF" user
+[raleigh]
+servera.lab.example.com
+serverb.lab.example.com
 
-su -c "cat << "EOF" > ~/lab/ansible.cfg
-[intranetweb]
-ansible-node1
+[mountainview]
+serverc.lab.example.com
 
-[everyone:children]
-intranetweb
-EOF" user
+[london]
+serverd.lab.example.com
+
+[development]
+servera.lab.example.com
+
+[testing]
+serverb.lab.example.com
+
+[production]
+serverc.lab.example.com
+serverd.lab.example.com
+
+[us:children]
+raleigh
+mountainview
+EOF
+
+ansible all --list-hosts
 
 ansible everyone -m command -a 'id'
+
 #https://docs.openstack.org/ansible-hardening/latest/getting-started.html
-ansible-galaxy install git+https://github.com/openstack/ansible-hardening
+#ansible-galaxy install git+https://github.com/openstack/ansible-hardening
 #on tower /var/lib/awx/projects/*ansible-hardening/tests/test.yml change host from localhost to 'all'
 #then filter in tower for template can, test02.prayther.org
-cat << "EOF" >/root/ansible-hardening.yml
----
-
-- name: Harden all systems
-#  hosts: all
-  hosts: localhost
-  become: yes
-#  vars:
-#    security_enable_firewalld: no
-#    security_rhel7_initialize_aide: no
-#    security_ntp_servers:
-#      - 1.example.com
-#      - 2.example.com
-  roles:
-    - ansible-hardening
-EOF
+#cat << "EOF" >/root/ansible-hardening.yml
+#---
+#
+#- name: Harden all systems
+##  hosts: all
+#  hosts: localhost
+#  become: yes
+##  vars:
+##    security_enable_firewalld: no
+##    security_rhel7_initialize_aide: no
+##    security_ntp_servers:
+##      - 1.example.com
+##      - 2.example.com
+#  roles:
+#    - ansible-hardening
+#EOF
 
 #uncomment /etc/ansible/ansible.cfg log_path = /var/log/ansible.log to get logs
 #ansible-playbook -i "localhost," -c local harden.yml
