@@ -45,7 +45,6 @@ doit() {
 #source etc/virt-inst.cfg
 source ../etc/virthost.cfg
 source ../etc/rhel.cfg
-source ~/bsfl/lib/bsfl.sh || exit 1
 DEBUG=no
 LOG_ENABLED="yes"
 SYSLOG_ENABLED="yes"
