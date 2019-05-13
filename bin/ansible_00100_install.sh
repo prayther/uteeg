@@ -98,4 +98,35 @@ ansible all -m command -a 'id'
 
 ansible --version
 
+mkdir /home/student/deploy-manage
+cd /home/student/deploy-manage
+
+
+cat << "EOF" >> /home/student/deploy-manage/ansible.cfg
+[defaults]
+inventory = ./inventory
+
+[privilege_escalation]
+become = true
+become_method = sudo
+become_user = root
+become_ask_pass = true
+
+[myself]
+localhost
+
+[intranetweb]
+servera.lab.example.com
+
+[everyone:children]
+myself
+intranetweb
+EOF
+
+ansible myself --list-hosts
+ansible intranetweb --list-hosts
+ansible everyone --list-hosts
+
+ansible intranetweb --list-hosts
+
 
