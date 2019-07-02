@@ -79,6 +79,8 @@ fi
 wget -P /root/ --no-clobber http://${SERVER}/passwd
 wget -P /root/ --no-clobber http://${SERVER}/rhn-acct
 
+useradd student
+groupadd student
 useradd geouser
 groupadd geogroup
 useradd user
@@ -86,10 +88,12 @@ useradd apraythe
 echo "password" | passwd "geouser" --stdin
 echo "password" | passwd "apraythe" --stdin
 echo "password" | passwd "user" --stdin
+echo "password" | passwd "student" --stdin
 
 cat << EOF >/etc/sudoers.d/admin
 geouser ALL = (root) NOPASSWD:ALL
 apraythe ALL = (root) NOPASSWD:ALL
+student ALL = (root) NOPASSWD:ALL
 user ALL = (root) NOPASSWD:ALL
 EOF
 
