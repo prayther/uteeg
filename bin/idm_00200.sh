@@ -72,7 +72,7 @@ if [[ $(hostname -s | awk -F"-" '{print $2}') -eq "admin" ]];then
 fi
 
 #firewall
-/usr/bin/firewall-cmd --permanent --add-port={80/tcp,443/tcp,389/tcp,636/tcp,53/tcp,53/udp,123/udp}
+/usr/bin/firewall-cmd --permanent --add-port={80/tcp,88/tcp,88/udp,464/tcp,464/udp,7389/tcp,443/tcp,389/tcp,636/tcp,53/tcp,53/udp,123/udp}
 /usr/bin/firewall-cmd --reload
 
 #configure ipa-server
