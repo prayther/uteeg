@@ -78,6 +78,10 @@ fi
 #configure ipa-server
 /usr/sbin/ipa-server-install --unattended --ds-password=password --admin-password=password --domain=example.org --allow-zone-overlap --realm=EXAMPLE.ORG --hostname=$(hostname) --setup-dns --mkhomedir --ssh-trust-dns --auto-forwarders
 
+#install on client
+#yum -y install ipa-client ipa-admintools
+#ipa-client-install --enable-dns-updates
+
 #==============================================================================
 #Setup complete
 #
