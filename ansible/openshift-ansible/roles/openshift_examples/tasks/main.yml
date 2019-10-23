@@ -1,0 +1,20 @@
+---
+
+#create tar file for openshift_examples.
+- name: Copy examples
+  import_tasks: create_example_tar.yml
+  when: ansible_architecture == 'x86_64' or ansible_architecture == 'ppc64le'
+
+#create image stream secrets
+- name: Create image stream secrets
+  import_tasks: stream_secrets.yml
+  when: ansible_architecture == 'x86_64' or ansible_architecture == 'ppc64le'
+
+# import streams based on arch
+- name: Import x86_64 examples
+  import_tasks: x86_64_examples.yml
+  when: ansible_architecture == 'x86_64'
+
+- name: Import ppc64le examples
+  import_tasks: ppc64le_examples.yml
+  when: ansible_architecture == 'ppc64le'

@@ -1,0 +1,28 @@
+---
+- name: Create docker-gc tempdir
+  command: mktemp -d
+  register: templates_tmpdir
+
+- name: Add dockergc as privileged
+  command: >
+    {{ openshift_client_binary }} adm policy add-scc-to-user privileged system:serviceaccount:default:dockergc
+    --config={{ openshift.common.config_base }}/master/admin.kubeconfig
+
+- name: Create dockergc DaemonSet
+  become: yes
+  template:
+    src: dockergc-ds.yaml.j2
+    dest: "{{ templates_tmpdir.stdout }}/dockergc-ds.yaml"
+
+- name: Apply dockergc DaemonSet
+  oc_obj:
+    state: present
+    kind: DaemonSet
+    name: "dockergc"
+    files:
+    - "{{ templates_tmpdir.stdout }}/dockergc-ds.yaml"
+
+- name: Remove temp directory
+  file:
+    state: absent
+    name: "{{ templates_tmpdir.stdout }}"

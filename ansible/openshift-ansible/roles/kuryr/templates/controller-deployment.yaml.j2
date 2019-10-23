@@ -1,0 +1,83 @@
+# More info about the template: https://docs.openstack.org/kuryr-kubernetes/latest/installation/containerized.html#generating-kuryr-resource-definitions-for-kubernetes
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: kuryr-controller
+  namespace: {{ kuryr_namespace }}
+spec:
+  replicas: {{ kuryr_controller_replicas }}
+  strategy:
+    type: RollingUpdate
+{% if (kuryr_controller_replicas|default(1)|int == 1) %}
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+{% endif %}
+  template:
+    metadata:
+      labels:
+        app: kuryr
+        component: network
+        type: infra
+        openshift.io/component: network
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+      name: kuryr-controller
+    spec:
+      serviceAccountName: kuryr-controller
+      hostNetwork: true
+      containers:
+      - image: {{ openshift_openstack_kuryr_controller_image }}
+        name: controller
+{% if enable_kuryr_controller_probes|default(true)|bool %}
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: {{ kuryr_controller_healthcheck_port }}
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /alive
+            port: {{ kuryr_controller_healthcheck_port }}
+          initialDelaySeconds: 15
+{% endif %}
+        # FIXME(dulek): This shouldn't be required, but without it selinux is
+        #               complaining about access to kuryr.conf.
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+        - name: config-volume
+          mountPath: "/etc/kuryr"
+        - name: certificates-volume
+          mountPath: "/etc/ssl/certs/kuryr-ca-bundle.crt"
+          subPath: kuryr-ca-bundle.crt
+          readOnly: true
+{% if (kuryr_controller_replicas|default(1)|int > 1) %}
+      - image: {{ openshift_openstack_kuryr_elector_image }}
+        name: leader-elector
+        args:
+        - "--election=kuryr-controller"
+        - "--http=0.0.0.0:{{ kuryr_controller_leader_elector_port }}"
+        - "--election-namespace={{ kuryr_namespace }}"
+        - "--ttl=5s"
+        ports:
+        - containerPort: {{ kuryr_controller_leader_elector_port }}
+          protocol: TCP
+{% endif %}
+      volumes:
+      - name: config-volume
+        projected:
+          defaultMode: 0666
+          sources:
+          - configMap:
+              name: kuryr-config
+              items:
+              - key: kuryr.conf
+                path: kuryr.conf
+      - name: certificates-volume
+        secret:
+          secretName: kuryr-certificates
+      nodeSelector:
+        node-role.kubernetes.io/infra: "true"

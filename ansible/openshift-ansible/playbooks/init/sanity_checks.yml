@@ -1,0 +1,93 @@
+---
+# l_sanity_check_hosts may be passed in during scale-up plays
+- name: Verify Requirements
+  hosts: oo_first_master
+  roles:
+  - role: openshift_facts
+  - role: lib_utils
+  tasks:
+  # sanity_checks is a custom action plugin defined in lib_utils.
+  # This module will loop through all the hostvars for each host
+  # specified in check_hosts.
+  # Since sanity_checks is an action_plugin, it executes on the control host.
+  # Thus, sanity_checks cannot gather new information about any hosts.
+  - name: Run variable sanity checks
+    sanity_checks:
+      check_hosts: "{{ l_sanity_check_hosts | default(groups['oo_all_hosts']) }}"
+  # node_group_checks is a custom action plugin defined in lib_utils.
+  - name: Validate openshift_node_groups and openshift_node_group_name
+    node_group_checks: {}
+  - name: Validate openshift_master_ca_certificate when defined
+    fail:
+      msg: >
+        If defined, openshift_master_ca_certificate must include two
+        parameters: certfile and keyfile. The certfile parameter must contain
+        only the single certificate that signs the OpenShift Container Platform
+        certificates. If you have intermediate certificates in your chain, you
+        must bundle them into a different file.
+        See https://docs.openshift.org/latest/install_config/redeploying_certificates.html#redeploying-new-custom-ca
+    when:
+    - openshift_master_ca_certificate is defined
+    - ( 'certfile' not in openshift_master_ca_certificate )
+      or 'keyfile' not in openshift_master_ca_certificate
+      or lookup('file', openshift_master_ca_certificate.certfile) | regex_findall('BEGIN CERTIFICATE') | count != 1
+  - name: Fetch ca.crt from cluster if exists
+    slurp:
+      src: "{{ openshift.common.config_base }}/master/ca.crt"
+    failed_when: false
+    changed_when: false
+    register: l_existing_master_ca_certificate
+  - name: Validate ca.crt from cluster if exists
+    fail:
+      msg: >
+        There is an issue with the existing ca.crt in the cluster
+        ( {{ inventory_hostname }}:{{ openshift.common.config_base }}/master/ca.crt ).
+        It must contain only the single certificate that signs the OpenShift
+        Container Platform certificates. If you have intermediate certificates
+        in your chain, you must bundle them into ca-bundle.crt. It is possible
+        the ca.crt and ca-bundle.crt files are symlinked, in which case you
+        will need to seperate the two to achieve the desired configuration.
+        See https://docs.openshift.org/latest/install_config/redeploying_certificates.html#redeploying-new-custom-ca
+    when:
+    - l_existing_master_ca_certificate is defined
+    - l_existing_master_ca_certificate.content is defined
+    - l_existing_master_ca_certificate.content | b64decode | regex_findall('BEGIN CERTIFICATE') | count != 1
+
+# l_prereq_check_hosts may be passed in via playbooks/deploy_cluster.yml
+# and master/node scaleup plays
+- name: Verify Node Prerequisites
+  # We only want to run this on new installs and node/master scaleup.
+  hosts: "{{ l_prereq_check_hosts | default('all:!all') }}"
+
+  roles:
+  - role: openshift_facts
+
+  tasks:
+  - name: Check for NetworkManager service
+    command: 'systemctl show NetworkManager'
+    register: nm_show
+    changed_when: false
+    ignore_errors: True
+
+  # https://docs.openshift.com/container-platform/3.11/install/prerequisites.html#prereq-networkmanager
+  - name: Verify NetworkManager is active
+    fail:
+      msg: "NetworkManager must be installed and enabled prior to installation."
+    when:
+    - not ('ActiveState=active' in nm_show.stdout) | bool
+
+  # https://docs.openshift.com/container-platform/3.11/install/prerequisites.html#prereq-selinux
+  - name: Verify SELinux is enabled
+    fail:
+      msg: |
+        The openshift-enterprise deployment type requires SELinux is 'enforcing' with type 'targeted'
+        SELinux status: "{{ ansible_selinux.status | default ('Unable to determine SELinux status') }}"
+        SELinux mode: "{{ ansible_selinux.mode | default('') }}"
+        SELinux type: "{{ ansible_selinux.type | default('') }}"
+    when:
+    - ansible_selinux is not defined or
+      ansible_selinux.status | default ('') != 'enabled' or
+      ansible_selinux.mode | default ('') != 'enforcing' or
+      ansible_selinux.type | default ('') != 'targeted'
+    - openshift_deployment_type == 'openshift-enterprise'
+    - not openshift_use_crio | bool

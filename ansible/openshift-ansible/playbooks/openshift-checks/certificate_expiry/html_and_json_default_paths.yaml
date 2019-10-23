@@ -1,0 +1,16 @@
+---
+# Generate HTML and JSON artifacts in their default paths:
+
+- name: Initialize facts
+  import_playbook: ../../init/main.yml
+  vars:
+    l_init_fact_hosts: nodes:masters:etcd
+    l_openshift_version_set_hosts: nodes:masters:etcd
+
+- name: Check cert expirys
+  hosts: nodes:masters:etcd
+  vars:
+    openshift_certificate_expiry_generate_html_report: yes
+    openshift_certificate_expiry_save_json_results: yes
+  roles:
+    - role: openshift_certificate_expiry

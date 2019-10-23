@@ -8,10 +8,10 @@ ceph-node3 100 2 2048 10.0.0.5 rhel 7.4 7.3
 #avail
 #10.0.0.6
 #jenkins
-jenkins-admin 50 2 1024 10.0.0.7 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+jenkins-admin 50 2 1024 10.0.0.7 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 #Satellite
 # sat62 is a uniq identifier in ../bin/00*register.sh. I'm going to use sat0 as machines that are being provisioned by satellite, from sat bin/Daily_New_host.sh
-sat62 300 2 8192 10.0.0.8 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+sat62 300 2 8192 10.0.0.8 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 #Gluster
 gfs-admin 50 2 1024 10.0.0.9 rhgf 7.4 7.3
 gfs-node1 50 2 1024 10.0.0.10 rhgf 7.4 7.3
@@ -23,10 +23,10 @@ gfs-backup 50 2 1024 10.0.0.14 rhgf 7.4 7.3
 #virt-host is the vm we built. virt-engine is the ova that is imported during setup. both need to resolve. so reserving the ip here.
 #have to setup virt-eninge host to resolve manually. i just put an entry in /etc/hosts for dnsmasq and restarted before starting the install.
 #probably add it to the bin/virt_01000_install_SELF-HOSTED_ENGINE.sh to put the entry in and restart dnsmasq
-virt-host 300 6 6144 10.0.0.15 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
-#virt-engine.example.org 10.0.0.16 
+virt-host 300 6 6144 10.0.0.15 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+#virt-engine.ocp.example.org 10.0.0.16 
 #Check_MK
-checkmk-admin 50 2 1024 10.0.0.17 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+checkmk-admin 50 2 1024 10.0.0.17 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
 #Fedora
 fedora-26 150 2 4096 10.0.0.18 fedora 26 generic
 #test
@@ -34,32 +34,32 @@ serverd 50 2 1024 10.0.0.19 rhel 7.4 7.3
 #ansible
 #0=ifs ans=ansible name=admin lifecycle=infra_dev exop=extras optional. i don't like using '-' and '_' is not valid in hostname
 #dont like these names. move the info into more var fields right here.
-ans0admin0infra0dev0exop 50 4 2048 10.0.0.20 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
-ans0node10infra0dev0exop 50 4 2048 10.0.0.21 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
+ans0admin0infra0dev0exop 50 4 2048 10.0.0.20 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
+ans0node10infra0dev0exop 50 4 2048 10.0.0.21 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 #CFME holder 10.0.0.22
-ans0tower 50 4 2048 10.0.0.23 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
+ans0tower 50 4 2048 10.0.0.23 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
 #starting 'sat0???' section from here down to represent the machines that are provisioned on satellite. test02 was the first machine used when doing script
 #test02 daily_new_host.sh
 #10.0.0.24
-sat0otrs 50 4 2048 10.0.0.25 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab Infra_1_Dev CV_RHEL7_Extras_Optional_EPEL
-sat0stig 50 4 2048 10.0.0.26 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab App_1_Dev CV_RHEL7_Extras_Optional_EPEL
-exop0atomic01 100 2 4096 10.0.0.28 rhel 7.4 7.3 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab App_1_Dev CV_RHEL7_Extras_Optional_EPEL
-sat58 300 2 8192 10.0.0.29 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
-sat64 300 2 8192 10.0.0.29 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
-cap631 300 2 8192 10.0.0.30 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
-cap632 300 2 8192 10.0.0.31 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
-idm 50 2 2048 10.0.0.32 rhel 7.4 7.4 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
-ds-stig 50 2 2048 10.0.0.33 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+sat0otrs 50 4 2048 10.0.0.25 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab Infra_1_Dev CV_RHEL7_Extras_Optional_EPEL
+sat0stig 50 4 2048 10.0.0.26 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab App_1_Dev CV_RHEL7_Extras_Optional_EPEL
+exop0atomic01 100 2 4096 10.0.0.28 rhel 7.4 7.3 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab App_1_Dev CV_RHEL7_Extras_Optional_EPEL
+sat58 300 2 8192 10.0.0.29 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
+sat64 300 2 8192 10.0.0.29 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.latest-x86_64-dvd.iso rhel laptoplab
+cap631 300 2 8192 10.0.0.30 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+cap632 300 2 8192 10.0.0.31 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+idm 50 2 2048 10.0.0.32 rhel 7.4 7.4 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.4-x86_64-dvd.iso rhel laptoplab
+ds-stig 50 2 2048 10.0.0.33 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
 #windows 10 desktop 10.0.0.34
 ##rhel 7.5 desktop 10.0.0.35
-rhel7 50 2 2048 10.0.0.36 rhel 7.6 7.6 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.6-x86_64-dvd.iso rhel laptoplab
+rhel7 50 2 2048 10.0.0.36 rhel 7.6 7.6 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.6-x86_64-dvd.iso rhel laptoplab
 #rhel 6.10 10.0.0.37
-ds-desk 50 2 2048 10.0.0.38 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
-ds-repl 50 2 2048 10.0.0.39 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
-pace-01 50 2 2048 10.0.0.40 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
-pace-02 50 2 2048 10.0.0.41 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+ds-desk 50 2 2048 10.0.0.38 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+ds-repl 50 2 2048 10.0.0.39 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+pace-01 50 2 2048 10.0.0.40 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+pace-02 50 2 2048 10.0.0.41 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
 pace resource ip 10.0.0.42
-ose 100 2 8192 10.0.0.43 rhel 7.5 7.5 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
-ans01 100 2 8192 10.0.0.44 rhel 7.6 7.6 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-7.6-x86_64-dvd.iso rhel laptoplab
-rhel8 100 2 8192 10.0.0.45 rhel 8.0 8.0 10.0.0.1 example.org vda eth0 255.255.255.0 rhel-server-8.0-x86_64-dvd.iso rhel laptoplab
+ose 100 2 8192 10.0.0.43 rhel 7.5 7.5 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.5-x86_64-dvd.iso rhel laptoplab
+ans01 100 2 8192 10.0.0.44 rhel 7.6 7.6 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-7.6-x86_64-dvd.iso rhel laptoplab
+rhel8 100 2 8192 10.0.0.45 rhel 8.0 8.0 10.0.0.1 ocp.example.org vda eth0 255.255.255.0 rhel-server-8.0-x86_64-dvd.iso rhel laptoplab
 rhel6 100 2 8192 10.0.0.46 rhel 6.10 6.10 10.0.0.1 prayther.org vda eth0 255.255.255.0 rhel-server-6.10-x86_64-dvd.iso rhel laptoplab

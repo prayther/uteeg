@@ -1,0 +1,19 @@
+---
+- name: Check status of control plane image pre-pull
+  async_status:
+    jid: "{{ image_prepull.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 20
+  delay: 30
+  failed_when: false
+
+- name: Check status of etcd image pre-pull
+  async_status:
+    jid: "{{ etcd_prepull.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 20
+  delay: 30
+  failed_when: false
+  when: etcd_prepull is defined

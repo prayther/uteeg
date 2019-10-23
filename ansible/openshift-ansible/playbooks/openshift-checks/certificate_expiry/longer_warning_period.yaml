@@ -1,0 +1,16 @@
+---
+# Change the expiration warning window to 1500 days (good for testing
+# the module out):
+
+- name: Initialize facts
+  import_playbook: ../../init/main.yml
+  vars:
+    l_init_fact_hosts: nodes:masters:etcd
+    l_openshift_version_set_hosts: nodes:masters:etcd
+
+- name: Check cert expirys
+  hosts: nodes:masters:etcd
+  vars:
+    openshift_certificate_expiry_warning_days: 1500
+  roles:
+    - role: openshift_certificate_expiry

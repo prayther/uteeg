@@ -1,0 +1,47 @@
+#!/usr/bin/ansible-playbook --module-path=../../../library/
+# ./oc_pvc.yml -e "cli_master_test=$OPENSHIFT_MASTER
+---
+- hosts: "{{ cli_master_test }}"
+  gather_facts: no
+
+  tasks:
+  - name: Ensure test pvc is not present (pre-test cleanup)
+    oc_pvc:
+      state: absent
+      name: oc-pvc-create-test
+      namespace: default
+
+  - name: create pvc
+    oc_pvc:
+      state: present
+      name: oc-pvc-create-test
+      namespace: default
+      volume_capacity: 3G
+      access_modes:
+      - ReadWriteOnce
+      selector:
+        foo: bar
+      storage_class_name: my-storage-class-name
+    register: pvcout
+  - debug: var=pvcout
+
+  - assert:
+      that:
+      - pvcout.module_results.results[0]['metadata']['name'] == 'oc-pvc-create-test'
+      - pvcout.module_results.results[0]['spec']['storageClassName'] == 'my-storage-class-name'
+      - pvcout.module_results.results[0]['spec']['selector']['matchLabels']['foo'] == 'bar'
+      - pvcout.changed
+      msg: pvc create failed.
+
+  - name: Remove test pvc
+    oc_pvc:
+      state: absent
+      name: oc-pvc-create-test
+      namespace: default
+    register: pvcout
+  - debug: var=pvcout
+  - assert:
+      that:
+      - pvcout.changed
+      - pvcout.module_results.results == {}
+      - pvcout.module_results.returncode == 0

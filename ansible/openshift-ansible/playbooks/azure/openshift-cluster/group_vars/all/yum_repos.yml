@@ -1,0 +1,61 @@
+---
+azure_base_repos:
+  RedHat:
+  - name: rhel-7-server-rpms
+    baseurl: https://cdn.redhat.com/content/dist/rhel/server/7/7Server/$basearch/os
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    sslcacert: /etc/rhsm/ca/redhat-uep.pem
+    sslclientcert: /var/lib/yum/client-cert.pem
+    sslclientkey: /var/lib/yum/client-key.pem
+    enabled: yes
+
+  - name: rhel-7-server-extras-rpms
+    baseurl: https://cdn.redhat.com/content/dist/rhel/server/7/7Server/$basearch/extras/os
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    sslcacert: /etc/rhsm/ca/redhat-uep.pem
+    sslclientcert: /var/lib/yum/client-cert.pem
+    sslclientkey: /var/lib/yum/client-key.pem
+    enabled: yes
+
+  CentOS: []
+
+azure_node_repos:
+  RedHat:
+  - name: rhel-7-server-rpms
+    baseurl: https://cdn.redhat.com/content/dist/rhel/server/7/7Server/$basearch/os
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    sslcacert: /etc/rhsm/ca/redhat-uep.pem
+    sslclientcert: /var/lib/yum/client-cert.pem
+    sslclientkey: /var/lib/yum/client-key.pem
+    enabled: yes
+
+  - name: rhel-7-server-extras-rpms
+    baseurl: https://cdn.redhat.com/content/dist/rhel/server/7/7Server/$basearch/extras/os
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    sslcacert: /etc/rhsm/ca/redhat-uep.pem
+    sslclientcert: /var/lib/yum/client-cert.pem
+    sslclientkey: /var/lib/yum/client-key.pem
+    enabled: yes
+
+  - name: rhel-7-server-ansible-2.6-rpms
+    baseurl: https://cdn.redhat.com/content/dist/rhel/server/7/7Server/$basearch/ansible/2.6/os
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    sslcacert: /etc/rhsm/ca/redhat-uep.pem
+    sslclientcert: /var/lib/yum/client-cert.pem
+    sslclientkey: /var/lib/yum/client-key.pem
+    enabled: yes
+
+  - name: rhel-7-server-ose-3.11-rpms
+    baseurl: https://cdn.redhat.com/content/dist/rhel/server/7/7Server/$basearch/ose/3.11/os
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    sslcacert: /etc/rhsm/ca/redhat-uep.pem
+    sslclientcert: /var/lib/yum/client-cert.pem
+    sslclientkey: /var/lib/yum/client-key.pem
+    enabled: yes
+
+  CentOS:
+  # TODO: should be using a repo which only provides prerequisites
+  - name: openshift-origin
+    baseurl: http://mirror.centos.org/centos/7/paas/x86_64/openshift-origin/
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-PaaS
+    enabled: yes

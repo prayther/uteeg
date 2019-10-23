@@ -1,0 +1,128 @@
+---
+# fail is we don't have an endpoint for ES to connect to?
+
+# fail fast if kibana session timeout isn't valid value
+# note that 0 menas that sessions never expire
+- name: Check that kibana session timeout is positive number
+  assert:
+    that:
+      - "openshift_logging_kibana_session_timeout_seconds is defined"
+      - "openshift_logging_kibana_session_timeout_seconds | int >= 0"
+    msg: "Provided value for 'openshift_logging_kibana_session_timeout_seconds' is invalid. Only positive integers are allowed."
+
+- name: Ensure that Kibana has nodes to run on
+  include_role:
+    name: openshift_control_plane
+    tasks_from: ensure_nodes_matching_selector.yml
+  vars:
+    openshift_master_ensure_nodes_selector: "{{ openshift_logging_kibana_nodeselector | map_to_pairs }}"
+    openshift_master_ensure_nodes_service: Kibana
+
+# allow passing in a tempdir
+- name: Create temp directory for doing work in
+  command: mktemp -d /tmp/openshift-logging-ansible-XXXXXX
+  register: mktemp
+  changed_when: False
+
+- set_fact:
+    tempdir: "{{ mktemp.stdout }}"
+
+# This may not be necessary in this role
+- name: Create templates subdirectory
+  file:
+    state: directory
+    path: "{{ tempdir }}/templates"
+    mode: 0755
+  changed_when: False
+
+# we want to make sure we have all the necessary components here
+
+# create service account
+- name: Create Kibana service account
+  oc_serviceaccount:
+    state: present
+    name: "aggregated-logging-kibana"
+    namespace: "{{ openshift_logging_namespace }}"
+    image_pull_secrets: "{{ openshift_logging_kibana_image_pull_secret }}"
+    secrets:
+      - logging-kibana
+  when: openshift_logging_kibana_image_pull_secret != ''
+
+- name: Create Kibana service account
+  oc_serviceaccount:
+    state: present
+    name: "aggregated-logging-kibana"
+    namespace: "{{ openshift_logging_namespace }}"
+    secrets:
+      - logging-kibana
+  when:
+    - openshift_logging_kibana_image_pull_secret == ''
+
+- set_fact:
+    kibana_name: "{{ 'logging-kibana' ~ ( (openshift_logging_kibana_ops_deployment | default(false) | bool) | ternary('-ops', '')) }}"
+    kibana_component: "{{ 'kibana' ~ ( (openshift_logging_kibana_ops_deployment | default(false) | bool) | ternary('-ops', '')) }}"
+
+# Generate proxy specific secret files
+- include_tasks: generate_proxy_secret_files.yaml
+
+- include_tasks: load_secret_files.yaml
+
+# services
+- name: Set {{ kibana_name }} service
+  oc_service:
+    state: present
+    name: "{{ kibana_name }}"
+    namespace: "{{ openshift_logging_kibana_namespace }}"
+    selector:
+      component: "{{ kibana_component }}"
+      provider: openshift
+    labels:
+      logging-infra: 'support'
+    ports:
+      - port: 443
+        targetPort: "oaproxy"
+
+- include_tasks: generate_route.yaml
+- include_tasks: generate_oauth_client.yaml
+
+# create secrets
+- include_tasks: generate_secret.yaml
+
+# create Kibana DC
+- name: Generate Kibana DC template
+  template:
+    src: "kibana.j2"
+    dest: "{{ tempdir }}/templates/kibana-dc.yaml"
+  vars:
+    component: "{{ kibana_component }}"
+    logging_component: kibana
+    deploy_name: "{{ kibana_name }}"
+    es_host: "{{ openshift_logging_kibana_es_host }}"
+    es_port: "{{ openshift_logging_kibana_es_port }}"
+    kibana_cpu_limit: "{{ openshift_logging_kibana_cpu_limit }}"
+    kibana_cpu_request: "{{ openshift_logging_kibana_cpu_request | min_cpu(openshift_logging_kibana_cpu_limit | default(none)) }}"
+    kibana_memory_limit: "{{ openshift_logging_kibana_memory_limit }}"
+    kibana_proxy_cpu_limit: "{{ openshift_logging_kibana_proxy_cpu_limit }}"
+    kibana_proxy_cpu_request: "{{ openshift_logging_kibana_proxy_cpu_request | min_cpu(openshift_logging_kibana_proxy_cpu_limit | default(none)) }}"
+    kibana_proxy_memory_limit: "{{ openshift_logging_kibana_proxy_memory_limit }}"
+    kibana_replicas: "{{ openshift_logging_kibana_replicas | default (1) }}"
+    kibana_node_selector: "{{ openshift_logging_kibana_nodeselector | default({}) }}"
+    kibana_env_vars: "{{ openshift_logging_kibana_env_vars | default({}) }}"
+
+- name: Set Kibana DC
+  oc_obj:
+    state: present
+    name: "{{ kibana_name }}"
+    namespace: "{{ openshift_logging_namespace }}"
+    kind: dc
+    files:
+      - "{{ tempdir }}/templates/kibana-dc.yaml"
+    delete_after: true
+
+# update master configs?
+
+- name: Delete temp directory
+  file:
+    name: "{{ tempdir }}"
+    state: absent
+  changed_when: False

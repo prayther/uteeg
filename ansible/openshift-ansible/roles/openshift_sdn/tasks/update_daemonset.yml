@@ -1,0 +1,31 @@
+---
+
+- name: Retrieve openshift-sdn DaemonSet [{{ l_daemonset }}]
+  oc_obj:
+    namespace: "openshift-sdn"
+    kind: DaemonSet
+    name: "{{ l_daemonset }}"
+    state: list
+  register: ds_out
+  ignore_errors: true
+
+- when:
+    - ds_out is succeeded
+    - ds_out.module_results.results[0].spec.updateStrategy.type == 'RollingUpdate'
+  block:
+    - name: Update DaemonSet updateStrategy
+      set_fact:
+        daemonset: "{{ ds_out.module_results.results[0] | combine(dict_edit, recursive=True) }}"
+      vars:
+        dict_edit:
+          spec:
+            updateStrategy:
+              type: "OnDelete"
+
+    - name: Apply DaemonSet manifest
+      oc_obj:
+        namespace: "openshift-sdn"
+        kind: DaemonSet
+        name: "ovs"
+        state: present
+        content: "{{ daemonset }}"

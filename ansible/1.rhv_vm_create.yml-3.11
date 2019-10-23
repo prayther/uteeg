@@ -23,7 +23,7 @@
     vm_cluster: Default
     vm_template: default
     vm_storage_domain: hosted_storage
-    vm_domain: example.org
+    vm_domain: ocp.example.org
     qcow_path: files/rhel-server-7.7-x86_64-kvm.qcow2
     #ssh_public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6bwWbzdzwx33QMR5FwUosXraOchkS5Ci7wj5s1taW62vzrlxXQF1RzxAegCTaJKy4sKcoMgNmx77TsXkaqA/vfzkgW//EStMr/q/QGzMePS/uYaUyGf0XvmUnouEKgUQhRq8q0G4Wa9uOmsiQDJEgIexyXZa8HSRo2dWyJd4A0UcJklR4yvTMuNd8Uq1qAVuMzBhy1075DMNRi56RW5bRs2N2nhiFuesC6RF3RDJKkRO6ld3e+0ddqFWhMIYyB9VpifH6UnSBUUmu3yW8uqFJ3Pnh908lWYqqADNj5zBezTi+mJqdKhZF77RaDhaBLG1i+llf0NBqHBWiihoeKbFP root@fedora-26.prayther.org
 
@@ -34,7 +34,7 @@
         vm_netmask: 255.255.255.0
         vm_gateway: 192.168.1.1
         vm_dns_server: 192.168.1.120
-        vm_dns_search: example.org
+        vm_dns_search: ocp.example.org
 
   tasks:
   - name: Create VM with cloud init
@@ -53,7 +53,7 @@
         custom_script: |
           write_files:
            - content: |
-               search example.org
+               search ocp.example.org
                nameserver 192.168.1.120
                nameserver 192.168.1.100
              path: /etc/resolv.conf
@@ -72,14 +72,14 @@
         authorized_ssh_keys: "{{ vault_ssh_public_key }}"
       cloud_init_persist: true
     loop:
-      - { name: 'master0', vm_memory: '16GiB', vm_cpu_sockets: '4', host_name: 'master0.example.org', nic_ip_address: '192.168.1.18' }
-      - { name: 'master1', vm_memory: '16GiB', vm_cpu_sockets: '4', host_name: 'master1.example.org', nic_ip_address: '192.168.1.16' }
-      - { name: 'master2', vm_memory: '16GiB', vm_cpu_sockets: '4', host_name: 'master2.example.org', nic_ip_address: '192.168.1.17' }
-      - { name: 'infra0', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'infra0.example.org', nic_ip_address: '192.168.1.24' }
-      - { name: 'infra1', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'infra1.example.org', nic_ip_address: '192.168.1.22' }
-      - { name: 'infra2', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'infra2.example.org', nic_ip_address: '192.168.1.23' }
-      - { name: 'compute0', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'compute0.example.org', nic_ip_address: '192.168.1.21' }
-      - { name: 'lb0', vm_memory: '4GiB', vm_cpu_sockets: '1', host_name: 'lb0.example.org', nic_ip_address: '192.168.1.25' }
+      - { name: 'master0', vm_memory: '16GiB', vm_cpu_sockets: '4', host_name: 'master0.ocp.example.org', nic_ip_address: '192.168.1.18' }
+      - { name: 'master1', vm_memory: '16GiB', vm_cpu_sockets: '4', host_name: 'master1.ocp.example.org', nic_ip_address: '192.168.1.16' }
+      - { name: 'master2', vm_memory: '16GiB', vm_cpu_sockets: '4', host_name: 'master2.ocp.example.org', nic_ip_address: '192.168.1.17' }
+      - { name: 'infra0', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'infra0.ocp.example.org', nic_ip_address: '192.168.1.24' }
+      - { name: 'infra1', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'infra1.ocp.example.org', nic_ip_address: '192.168.1.22' }
+      - { name: 'infra2', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'infra2.ocp.example.org', nic_ip_address: '192.168.1.23' }
+      - { name: 'compute0', vm_memory: '8GiB', vm_cpu_sockets: '1', host_name: 'compute0.ocp.example.org', nic_ip_address: '192.168.1.21' }
+      - { name: 'lb0', vm_memory: '4GiB', vm_cpu_sockets: '1', host_name: 'lb0.ocp.example.org', nic_ip_address: '192.168.1.25' }
 
     # Upload local image to disk and attach it to vm:
     # Since Ansible 2.3

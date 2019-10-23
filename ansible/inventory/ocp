@@ -1,10 +1,10 @@
 # vim: set syntax=dosini
 [ajpocpinfra]
-master0.example.org
-master1.example.org
-master2.example.org
-infra0.example.org
-infra1.example.org
-infra2.example.org
-compute0.example.org
-lb0.example.org
+master0.ocp.example.org
+master1.ocp.example.org
+master2.ocp.example.org
+infra0.ocp.example.org
+infra1.ocp.example.org
+infra2.ocp.example.org
+compute0.ocp.example.org
+lb0.ocp.example.org

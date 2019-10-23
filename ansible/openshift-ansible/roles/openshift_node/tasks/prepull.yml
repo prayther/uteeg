@@ -1,0 +1,18 @@
+---
+# This task runs async to save time while the node is being configured
+- name: Pre-pull node image
+  command: "{{ openshift_container_cli }} pull {{ osn_image }}"
+  # 10 minutes to pull the image
+  async: 600
+  poll: 0
+  register: image_prepull
+
+# This task runs async to save time while other downloads proceed
+- name: pre-pull pod image
+  command: "{{ openshift_container_cli }} pull {{ osn_pod_image }}"
+  environment:
+    NO_PROXY: "{{ openshift.common.no_proxy | default('') }}"
+  # 10 minutes to pull the image
+  async: 600
+  poll: 0
+  register: pod_image_prepull

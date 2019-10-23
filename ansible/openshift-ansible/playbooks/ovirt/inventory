@@ -1,0 +1,122 @@
+[all:vars]
+openshift_ovirt_dns_zone=ocp.ocp.example.org
+
+[OSEv3:children]
+nodes
+masters
+etcd
+lb
+
+[OSEv3:vars]
+# General variables
+timeout=60
+ansible_user=root
+openshift_deployment_type=origin
+#openshift_deployment_type=openshift-enterprise
+openshift_enable_service_catalog=False
+
+# Hostnames
+load_balancer_hostname=lb0.{{openshift_ovirt_dns_zone}}
+openshift_master_cluster_hostname="{{ load_balancer_hostname }}"
+openshift_master_cluster_public_hostname=openshift-master.{{ openshift_ovirt_dns_zone }}
+openshift_master_default_subdomain=apps.{{ openshift_ovirt_dns_zone }}
+openshift_public_hostname="{{openshift_master_cluster_public_hostname}}"
+# ajp added following based on ocp 3.11 install docs
+# Example 38.4. Deploying without Persistent Storage
+#openshift_metrics_install_metrics=true
+#openshift_metrics_hawkular_hostname=hawkular-metrics.{{openshift_master_default_subdomain}}
+#openshift_web_console_install=true
+#openshift_console_hostname=console.apps.ocp.example.org
+#openshift_disable_check=docker_image_availability,docker_storage,package_availability
+
+
+# oreg_url is for private registry
+#oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
+#oreg_auth_user=prayther
+#oreg_auth_user=5318211|prayther
+#oreg_auth_user='rhn-gps-apraythe'
+#oreg_test_login=false
+#oreg_auth_password='eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiIyY2RkNGE3NzQ0NzY0ZDMxYjViZDAyYTdjMDcxMjQ2MCJ9.hBE5eD3l6Z6F-vjfTMicwH_Og747id3Z8rk96a_J7yKYHtrdMe8uBOj4n92Bs_0_A8ulJabau2LEZVBsm6-CEi7fnnqUlhGUYN8DgnG5svgJ039iyucX4lYYb_-0iFfpM1LEOj_1lO4JZN9g6RMtD2mT33Loo5OQbEgVcXR1sxyLSLLeCgkmykRcU4XLdENmlTDh8f128Bhnyu1MjGHav512JvC3UK4lcMPDewTp56whE-HxVi6TSD88uUX7h4YyLqrWsSm0VILCb9_JKBGB9pZzmY8xzVxthjQzi7LMphwSTeaw2J_7NDSIu6fUNN_5zKRhOzru4KKYblZmWuV5ZcjdU8z09v0aUnpSgAKzSJElc34xnCKjgJL3TtktD1m046hbs_1HvhIXHmubNhpWf6inPc4TthfCtEVot16yQqpZ8qjEODQOhgvMjlL8l7NClxRcetMcVe81dY_A7qKsEP6EBTkAIAM-3uLw8i60LelCRcvdwR1FSgwB2sipHWOCj0emuMPqG5ugw6e57iGCfj0b-cqmta6sLZW0vI0WhF-FDswfkmyHVdjRpOkMp_c3JeH9IxZbxgzPcJLW5yKVypcNjNiHo5kmil6kblswrO9s8ndMRA_CXsrryXkkrdXefnbNlKgXH5BVx0sIwcNJ6mKFkXjK3K6-cUEFCzjNa2o'
+#oreg_auth_password='rabQuec888;'
+#openshift_logging_install_logging=true
+
+# Docker setup for extra disks on nodes
+container_runtime_docker_storage_setup_device=/dev/vdb
+container_runtime_docker_storage_type=overlay2
+openshift_node_local_quota_per_fsgroup=512Mi
+
+[masters:vars]
+container_runtime_extra_storage=[{'device': '/dev/vdb', 'path': '/var/lib/origin/openshift.local.volumes', 'options': 'gquota', 'filesystem': 'xfs', 'format': 'True'}, {'device': '/dev/vdd', 'path': '/var/lib/etcd', 'hosts': 'masters', 'filesystem': 'xfs', 'format': 'True'}]
+
+[nodes:vars]
+container_runtime_extra_storage=[{'device': '/dev/vdb', 'path': '/var/lib/origin/openshift.local.volumes', 'options': 'gquota', 'filesystem': 'xfs', 'format': 'True'}]
+
+[masters]
+master0.ocp.example.org
+master1.ocp.example.org
+master2.ocp.example.org
+
+[etcd]
+master0.ocp.example.org
+master1.ocp.example.org
+master2.ocp.example.org
+
+[infras]
+infra0.ocp.example.org
+infra1.ocp.example.org
+infra2.ocp.example.org
+
+[lb]
+lb0.ocp.example.org
+
+[nodes]
+master0.ocp.example.org openshift_node_group_name=node-config-master
+master1.ocp.example.org openshift_node_group_name=node-config-master
+master2.ocp.example.org openshift_node_group_name=node-config-master
+infra0.ocp.example.org openshift_node_group_name=node-config-infra
+infra1.ocp.example.org openshift_node_group_name=node-config-infra
+infra2.ocp.example.org openshift_node_group_name=node-config-infra
+compute0.ocp.example.org openshift_node_group_name=node-config-compute
+# vim: set syntax=dosini
+
+
+#All-in-one stand-alone OpenShift Container Registry inventory file
+
+# Create an OSEv3 group that contains the masters and nodes groups
+#[OSEv3:children]
+#masters
+#nodes
+#etcd
+
+# Set variables common for all OSEv3 hosts
+#[OSEv3:vars]
+# SSH user, this user should allow ssh based auth without requiring a password
+#ansible_ssh_user=root
+
+#openshift_master_default_subdomain=apps.test.example.com
+
+# If ansible_ssh_user is not root, ansible_become must be set to true
+#ansible_become=true
+
+#openshift_deployment_type=openshift-enterprise
+#deployment_subtype=registry 1
+#openshift_hosted_infra_selector="" 2
+
+# uncomment the following to enable htpasswd authentication; defaults to DenyAllPasswordIdentityProvider
+#openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+
+# host group for masters
+#[masters]
+#registry.example.com
+
+# host group for etcd
+#[etcd]
+#registry.example.com
+
+# host group for nodes
+#[nodes]
+#registry.example.com openshift_node_group_name='node-config-all-in-one'
+#1
+#Set deployment_subtype=registry to ensure installation of stand-alone OCR and not a full OpenShift Container Platform environment.
+#2
+#Allows the registry and its web console to be scheduled on the single host.
