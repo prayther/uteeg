@@ -1,0 +1,50 @@
+---
+- name: oVirt ocp vm absent
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+   # - vars_files/rhv_vars.yml
+    - vars_files/password.yml
+#     vm_1: ocpmaster1
+#     vm_2: ocpmaster2
+#     vm_3: ocpmaster3
+
+  pre_tasks:
+    - name: Login to oVirt
+      ovirt_auth:
+        hostname: "{{ engine_fqdn }}"
+        username: "{{ engine_user }}"
+        password: "{{ engine_password }}"
+        ca_file: "{{ engine_cafile }}"
+        insecure: "{{ engine_insecure | default(true) }}"
+      tags:
+        - always
+  vars:
+    engine_fqdn: virt1.example.org
+    engine_user: admin@internal
+    engine_cafile: /etc/ansible/ca.pem
+  tasks:
+  - name: Make Absent ocp vm's
+    ovirt_vm:
+      auth: "{{ ovirt_auth }}"
+      name: "{{ item }}"
+      state: absent
+    loop:
+       - master0
+       - master1
+       - master2
+       - infra0
+       - infra1
+       - infra2
+       - compute0
+       - lb0
+
+  post_tasks:
+    - name: Logout from oVirt
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always
+

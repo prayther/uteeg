@@ -1,0 +1,5 @@
+---
+# credential except password for virt engine. password in vault file password.yml. vault password in password.txt and protected by file attributes in linux.
+engine_fqdn: virt1.example.org
+engine_user: admin@internal
+engine_cafile: /etc/ansible/ca.pem

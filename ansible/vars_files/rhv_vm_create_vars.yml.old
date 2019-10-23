@@ -1,0 +1,127 @@
+---
+- name: oVirt ocp vm node build playbook
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+   # - vars_files/rhv_vars.yml
+    - vars_files/password.yml
+  pre_tasks:
+    - name: Login to oVirt
+      ovirt_auth:
+        hostname: "{{ engine_fqdn }}"
+        username: "{{ engine_user }}"
+        password: "{{ engine_password }}"
+        ca_file: "{{ engine_cafile }}"
+        insecure: "{{ engine_insecure | default(true) }}"
+      tags:
+        - always
+  vars:
+    engine_fqdn: virt1.example.org
+    engine_user: admin@internal
+    engine_cafile: /etc/ansible/ca.pem
+    #vm_datacenter: Default
+    vm_cluster: Default
+    vm_template: default
+    vm_storage_domain: hosted_storage
+    vm_domain: example.org
+    ssh_public_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD6bwWbzdzwx33QMR5FwUosXraOchkS5Ci7wj5s1taW62vzrlxXQF1RzxAegCTaJKy4sKcoMgNmx77TsXkaqA/vfzkgW//EStMr/q/QGzMePS/uYaUyGf0XvmUnouEKgUQhRq8q0G4Wa9uOmsiQDJEgIexyXZa8HSRo2dWyJd4A0UcJklR4yvTMuNd8Uq1qAVuMzBhy1075DMNRi56RW5bRs2N2nhiFuesC6RF3RDJKkRO6ld3e+0ddqFWhMIYyB9VpifH6UnSBUUmu3yW8uqFJ3Pnh908lWYqqADNj5zBezTi+mJqdKhZF77RaDhaBLG1i+llf0NBqHBWiihoeKbFP root@fedora-26.prayther.org
+
+    master:
+        vm_memory: 16GiB
+        vm_cpu_cores: 4
+        vm_disc_vda: 50GiB
+        vm_disc_vdb: 100GiB
+        vm_netmask: 255.255.255.0
+        vm_gateway: 192.168.1.1
+        vm_user_root: root
+        vm_user_root_passwd: password
+
+#  tasks:
+#  - name: Create VM with cloud init
+#    ovirt_vm:
+#      auth: "{{ ovirt_auth }}"
+##      name: "{{ item.name }}"
+#      template: "{{ vm_template }}"
+#      cluster: "{{ vm_cluster }}"
+#      memory: "{{ master.vm_memory }}"
+#      state: present
+#      high_availability: true
+#      high_availability_priority: 50  # Available from Ansible 2.5
+#      cloud_init:
+#        host_name: "{{ item.host_name }}"
+#        nic_boot_protocol: static
+#        nic_ip_address: "{{ item.nic_ip_address }}"
+#        nic_netmask: "{{ master.vm_netmask }}"
+#        nic_gateway: "{{ master.vm_gateway }}"
+#        nic_name: eth0
+#        nic_on_boot: true
+#        user_name: "{{ master.vm_user_root }}"
+#        root_password: "{{ master.vm_user_root_passwd }}"
+#        authorized_ssh_keys: "{{ ssh_public_key }}"
+#      cloud_init_persist: true
+#    loop:
+#       - { name: 'ocpmaster0', host_name: 'ocpmaster0.example.org', nic_ip_address: '192.168.1.16' }
+#       - { name: 'ocpmaster1', host_name: 'ocpmaster1.example.org', nic_ip_address: '192.168.1.17' }
+
+    # Upload local image to disk and attach it to vm:
+    # Since Ansible 2.3
+    #- name: Add qcow RHEL image
+#    ovirt_disk:
+#      auth: "{{ ovirt_auth }}"
+#      name: disc1
+#      force: true
+#      vm_name: "{{ item }}"
+#      interface: virtio
+#      size: "{{ master.vm_disc_vda }}"
+#      format: cow
+#      image_path: "{{ qcow_path }}"
+#      storage_domain: "{{ vm_storage_domain }}"
+#    loop:
+#       - { name: 'ocpmaster0', host_name: 'ocpmaster0.example.org', nic_ip_address: '192.168.1.16' }
+#       - { name: 'ocpmaster1', host_name: 'ocpmaster1.example.org', nic_ip_address: '192.168.1.17' }
+#
+#  - name: Increase the size of the RHEL OS disc
+#    ovirt_disk:
+#      auth: "{{ ovirt_auth }}"
+#      name: disc1
+#      force: true
+#      vm_name: "{{ item }}"
+#      interface: virtio
+#      size: "{{ master.vm_disc_vda }}"
+#      format: cow
+#      storage_domain: "{{ vm_storage_domain }}"
+#    loop:
+#       - ocpmaster0
+#       - ocpmaster1
+#
+#  - name: Add disc for data
+#    ovirt_disk:
+#      auth: "{{ ovirt_auth }}"
+#      name: disc2
+#      force: true
+#      vm_name: "{{ item }}"
+#      interface: virtio
+#      size: "{{ master.vm_disc_vdb }}"
+#      format: raw
+#      storage_domain: hosted_storage
+#    loop:
+#       - ocpmaster0
+#       - ocpmaster1
+
+#  - name: Set state running ocpmaster1
+#    ovirt_vm:
+#      auth: "{{ ovirt_auth }}"
+#      state: running
+#      name: "{{ item }}"
+#    loop:
+#       - ocpmaster0
+#       - ocpmaster1
+
+  post_tasks:
+    - name: Logout from oVirt
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always

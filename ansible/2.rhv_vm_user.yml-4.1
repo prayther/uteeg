@@ -1,0 +1,40 @@
+---
+- name: Create ansible user acct with nopasswd sudo
+  hosts: ajpocpinfra
+  remote_user: root
+  become: true
+#  vars_files:
+#    - vars_files/password.yml
+
+  tasks:
+  - name: Create ansible user for automation
+    user:
+      name: ansible
+      ssh_key_file: files/ssh_public_key.txt
+  - name: set authorized keys on user ansible
+    authorized_key:
+      user: ansible
+      state: present
+      key: "{{ lookup('file', 'files/ssh_public_key.txt') }}"
+  - name: nopasswd in sudo
+    copy:
+      content: 'ansible ALL=(root) NOPASSWD:ALL'
+      dest: /etc/sudoers.d/ansible
+      owner: root
+      group: root
+      mode: 0440
+  - name: ssh private key
+    copy:
+      src: files/ssh_private_key.txt
+      dest: ~ansible/.ssh/id_rsa
+      owner: ansible
+      group: ansible
+      mode: 0600
+  - name: ssh public key
+    copy:
+      src: files/ssh_public_key.txt
+      dest: ~ansible/.ssh/id_rsa.pub
+      owner: ansible
+      group: ansible
+      mode: 0644
+
