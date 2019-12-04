@@ -34,7 +34,6 @@
         vm_netmask: 255.255.255.0
         vm_gateway: 192.168.1.1
         vm_dns_server: 192.168.1.120
-        vm_dns_search: ocp.example.org
 
   tasks:
   - name: Create VM with cloud init
@@ -53,7 +52,6 @@
         custom_script: |
           write_files:
            - content: |
-               search ocp.example.org
                nameserver 192.168.1.120
                nameserver 192.168.1.100
              path: /etc/resolv.conf
@@ -64,7 +62,6 @@
         nic_netmask: "{{ network.vm_netmask }}"
         nic_gateway: "{{ network.vm_gateway }}"
         dns_servers: "{{ network.vm_dns_server }}"
-        dns_search: "{{ network.vm_dns_search }}"
         nic_name: eth0
         nic_on_boot: true
         user_name: "{{ common.vm_user_root }}"

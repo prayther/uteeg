@@ -11,7 +11,7 @@
       state: latest
     register: task_result
     retries: 5
-    delay: 10
+    delay: 3
 
   - name: Reboot immediately if there was a change.
     shell: "sleep 5 && reboot"

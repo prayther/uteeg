@@ -5,7 +5,7 @@
   become: true
   vars:
     # subscription-manager list --all --available --matches 'Employee SKU' --pool-only
-    vm_pool_id: 8a85f98c60c2c2b40160c324e5d21d70
+    vm_pool_id: 8a85f98c60c2c2b40160c31fadbe0afd
   vars_files:
     - vars_files/password.yml
   tasks:

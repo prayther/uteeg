@@ -1,5 +1,5 @@
 [all:vars]
-openshift_ovirt_dns_zone=ocp.ocp.example.org
+openshift_ovirt_dns_zone=ocp.example.org
 
 [OSEv3:children]
 nodes
